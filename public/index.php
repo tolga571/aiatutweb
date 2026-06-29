@@ -1,0 +1,324 @@
+<?php
+require __DIR__ . '/../autoload.php';
+$config = require __DIR__ . '/../config.php';
+
+use App\Src\Database;
+use App\Src\Auth;
+use App\Src\Chat;
+use App\Src\GeminiClient;
+use App\Src\AdminController;
+use App\Src\Language;
+use App\Src\Flashcard;
+
+session_start();
+
+$db     = new Database($config['db_path']);
+$auth   = new Auth($db);
+$chat   = new Chat($db, $config);
+$gemini = new GeminiClient($config['gemini_api_key']);
+$adminCtrl = new AdminController($db);
+$flashcard = new Flashcard($db);
+
+// Initialize language system
+$detectedLang = 'en';
+if ($auth->isLoggedIn()) {
+    $currentUser = $auth->currentUser();
+    $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
+}
+Language::load($detectedLang);
+
+$page = $_GET['page'] ?? 'home';
+
+// Auth-required pages helper
+$requireAuth = function() use ($auth) {
+    if (!$auth->isLoggedIn()) {
+        header('Location: ?page=login');
+        exit;
+    }
+};
+$requirePlan = function() use ($auth) {
+    if (!$auth->isLoggedIn()) { header('Location: ?page=login'); exit; }
+    if (!$auth->hasPaid())    { header('Location: ?page=pricing'); exit; }
+};
+
+switch ($page) {
+
+    // ── Auth ─────────────────────────────────────────────────────
+    case 'login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = trim($_POST['email'] ?? '');
+            $pass  = $_POST['password'] ?? '';
+            if ($auth->login($email, $pass)) {
+                header('Location: ?page=dashboard'); exit;
+            }
+            $loginError = 'Invalid email or password.';
+        }
+        require __DIR__ . '/../views/login.php';
+        break;
+
+    case 'register':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = trim($_POST['email'] ?? '');
+            $pass  = $_POST['password'] ?? '';
+            $name  = trim($_POST['name'] ?? '');
+            if ($auth->register($email, $pass, $name)) {
+                $auth->login($email, $pass);
+                header('Location: ?page=onboarding'); exit;
+            }
+            $registerError = 'Registration failed. Email may already be taken.';
+        }
+        require __DIR__ . '/../views/register.php';
+        break;
+
+    case 'logout':
+        $auth->logout();
+        header('Location: ?page=login'); exit;
+
+    // ── Onboarding ────────────────────────────────────────────────
+    case 'onboarding':
+        $requireAuth();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth->saveOnboarding(
+                $auth->userId(),
+                $_POST['native_lang']   ?? 'en',
+                $_POST['target_lang']   ?? 'en',
+                $_POST['cefr_level']    ?? 'A1',
+                $_POST['learning_goal'] ?? 'conversation',
+                $_POST['interest_area'] ?? 'general'
+            );
+            header('Location: ?page=pricing'); exit;
+        }
+        require __DIR__ . '/../views/onboarding.php';
+        break;
+
+    // ── Pricing ───────────────────────────────────
+    case 'pricing':
+        $requireAuth();
+        $currentUser = $auth->currentUser();
+        require __DIR__ . '/../views/pricing.php';
+        break;
+
+    case 'check-payment-status':
+        $requireAuth();
+        header('Content-Type: application/json');
+        echo json_encode(['paid' => $auth->hasPaid()]);
+        exit;
+
+    case 'start-trial':
+        $requireAuth();
+        $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
+        header('Location: ?page=chat');
+        exit;
+
+    case 'flashcards':
+        $requirePlan();
+        $currentUser = $auth->currentUser();
+        // Auto-import static cards if user has none for their target language
+        $vocabCount = $db->fetchOne(
+            'SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id = ? AND language = ?',
+            [$auth->userId(), $currentUser['target_lang'] ?? 'en']
+        );
+        if ((int)($vocabCount['c'] ?? 0) < 50) {
+            $flashcard->importStaticCards(
+                $auth->userId(),
+                $currentUser['target_lang'] ?? 'en',
+                $currentUser['native_lang'] ?? 'en'
+            );
+        }
+        require __DIR__ . '/../views/flashcards.php';
+        break;
+
+    case 'flashcard-stats':
+        $requireAuth();
+        header('Content-Type: application/json');
+        $fc = new \App\Src\Flashcard($db);
+        echo json_encode($fc->getStats($auth->userId(), $auth->currentUser()['target_lang'] ?? 'en'));
+        exit;
+
+    case 'flashcard-due':
+        $requireAuth();
+        header('Content-Type: application/json');
+        $fc = new \App\Src\Flashcard($db);
+        $tab = $_GET['tab'] ?? 'due';
+        $lang = $auth->currentUser()['target_lang'] ?? 'en';
+        $userId = $auth->userId();
+        
+        if ($tab === 'due') {
+            echo json_encode($fc->getDueCards($userId, $lang));
+        } elseif ($tab === 'chat') {
+            echo json_encode($fc->getChatWords($userId, $lang));
+        } else {
+            $cat = $_GET['category'] ?? 'all';
+            $search = $_GET['q'] ?? '';
+            echo json_encode($fc->getAllCards($userId, $lang, $cat, $search));
+        }
+        exit;
+
+    case 'flashcard-review':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), true) ?? [];
+            if (isset($input['vocab_id'], $input['quality'])) {
+                $fc = new \App\Src\Flashcard($db);
+                $result = $fc->reviewCard($auth->userId(), (int)$input['vocab_id'], (int)$input['quality']);
+                echo json_encode($result);
+                exit;
+            }
+        }
+        echo json_encode(['success' => false]);
+        exit;
+
+    case 'flashcard-import':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $fc = new \App\Src\Flashcard($db);
+            $user = $auth->currentUser();
+            $result = $fc->importStaticCards($auth->userId(), $user['target_lang'] ?? 'en', $user['native_lang'] ?? 'en');
+            echo json_encode(array_merge(['success' => true], $result));
+            exit;
+        }
+        echo json_encode(['success' => false]);
+        exit;
+
+    // ── Dashboard ─────────────────────────────────────────────────
+    case 'dashboard':
+        $requirePlan();
+        require __DIR__ . '/../views/dashboard.php';
+        break;
+
+    // ── Chat ──────────────────────────────────────────────────────
+    case 'chat':
+                $requirePlan();
+        // Ensure JSON response only for AJAX requests (chat history loading)
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['conv_id'])) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+                header('Content-Type: application/json');
+            }
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input  = json_decode(file_get_contents('php://input'), true) ?? [];
+            $userId = $auth->userId();
+            $msg    = trim($input['message'] ?? '');
+            $convId = isset($input['conversationId']) ? (int)$input['conversationId'] : null;
+            $topic  = $input['topicId'] ?? null;
+
+            if ($msg === '') {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Message cannot be empty.']);
+                exit;
+            }
+
+            $currentUser = $auth->currentUser();
+            $isTrial = (($currentUser['plan_status'] ?? '') === 'trial');
+            if ($isTrial && $auth->getTrialMessagesSent($userId) >= 5) {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => __('error.trial_expired')]);
+                exit;
+            }
+
+            try {
+                $result = $chat->handleMessage($userId, $msg, $gemini, $convId, $topic);
+                $result['isTrial'] = $isTrial;
+                if ($isTrial) {
+                    $sent = $auth->getTrialMessagesSent($userId);
+                    $result['trialRemaining'] = max(0, 5 - $sent);
+                }
+            } catch (\Throwable $e) {
+                $result = ['error' => 'AI unavailable, please try again.'];
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+            exit;
+        }
+
+        // AJAX: get conversation messages
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['conv_id']) &&
+            !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+            $msgs = $chat->getMessages($auth->userId(), (int)$_GET['conv_id']);
+            header('Content-Type: application/json');
+            echo json_encode(['messages' => $msgs]);
+            exit;
+        }
+
+        $conversations = $chat->getConversations($auth->userId());
+        $currentUser   = $auth->currentUser();
+        require __DIR__ . '/../views/chat.php';
+        break;
+
+    // ── Blog ──────────────────────────────────────────────────────
+    case 'blog':
+        $posts = $db->fetchAll('SELECT id,title,slug,created_at FROM posts WHERE published=1 AND category="blog" ORDER BY created_at DESC LIMIT 20');
+        require __DIR__ . '/../views/blog/list.php';
+        break;
+
+    case 'post':
+        $slug = $_GET['slug'] ?? '';
+        $post = $db->fetchOne('SELECT * FROM posts WHERE slug=? AND published=1', [$slug]);
+        if (!$post) { header('Location: ?page=blog'); exit; }
+        require __DIR__ . '/../views/blog/post.php';
+        break;
+
+    // ── Admin panel routes ──────────────────────────────────────
+    case 'admin-login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->handleLogin($_POST);
+        } else {
+            $adminCtrl->showLogin();
+        }
+        break;
+    case 'admin-logout':
+        $adminCtrl->logout();
+        break;
+    case 'admin-dashboard':
+        $adminCtrl->dashboard();
+        break;
+    case 'admin-users':
+        $adminCtrl->listUsers();
+        break;
+    case 'admin-admins':
+        $adminCtrl->listAdmins();
+        break;
+    case 'admin-payments':
+        $adminCtrl->listPayments();
+        break;
+    case 'admin-conversations':
+        $adminCtrl->listConversations();
+        break;
+    case 'admin-conversation':
+        $adminCtrl->viewConversation((int)($_GET['conv_id'] ?? 0));
+        break;
+    case 'admin-settings':
+        $adminCtrl->settings();
+        break;
+    case 'admin-update-settings':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->updateSettings($_POST);
+        }
+        break;
+    case 'admin-export':
+        $adminCtrl->exportCsv($_GET['type'] ?? '');
+        break;
+
+    // ── Static pages ──────────────────────────────────────────────
+    case 'chat-tips':
+    case 'privacy-policy':
+    case 'terms-and-conditions':
+    case 'refund-policy':
+    case 'license-agreement':
+    case 'cookie-policy':
+    case 'about':
+    case 'contact':
+    case 'faq':
+        $allowed = ['chat-tips','privacy-policy','terms-and-conditions','refund-policy','license-agreement','cookie-policy','about','contact','faq'];
+        if (in_array($page, $allowed, true)) {
+            require __DIR__ . '/../views/pages/' . $page . '.php';
+        }
+        break;
+
+    default:
+        require __DIR__ . '/../views/home.php';
+}
+?>

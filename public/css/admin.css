@@ -1,0 +1,114 @@
+/* public/assets/css/admin.css */
+
+/* Design Tokens */
+:root {
+    --bg-dark: #121212;
+    --sidebar-bg: #1e1e1e;
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --text-color: #e0e0e0;
+    --accent: #ff6b6b;
+    --border-radius: 12px;
+    --transition: 0.2s ease;
+}
+
+/* Global */
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.5;
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    background: var(--sidebar-bg);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    display: block;
+    margin: 8px 0;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color var(--transition);
+}
+
+.sidebar a:hover {
+    color: var(--accent);
+}
+
+/* Content */
+.content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+header {
+    background: #222;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+}
+
+/* Card Grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Stat Card */
+.stat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: transform var(--transition);
+    color: var(--text-color);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .content {
+        margin-left: 0;
+    }
+}

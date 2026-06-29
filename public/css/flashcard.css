@@ -1,0 +1,72 @@
+/* Sidebar active word highlight */
+.word-list-link.active-card {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+.filter-chip.active-filter {
+  box-shadow: 0 0 0 1px rgba(180, 197, 255, 0.25);
+}
+
+/* Grid Card Flip 3D Styles */
+.fc-scene {
+  perspective: 1000px;
+  width: 100%;
+  height: 220px;
+  margin: 0 auto;
+}
+
+.fc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.fc-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.fc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Sweet styling for cards */
+.fc-front {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.fc-front:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.fc-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  border: 1px solid rgba(226, 232, 240, 1);
+}
+
+/* Dark mode overrides if any surface-dim etc is used, assume tailwind handles it but let's add dark mode support manually just in case */
+@media (prefers-color-scheme: dark) {
+  .fc-front {
+    background: #1e293b;
+    border-color: rgba(51, 65, 85, 1);
+  }
+  .fc-back {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: rgba(51, 65, 85, 1);
+  }
+}

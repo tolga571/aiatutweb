@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:8080/)",
+      "Bash(find C:UsersMonsterOneDesktop -maxdepth 3 -name *AiTut* -o -name *aitut* -o -name *ai_tut*)",
+      "Bash(rm \"C:\\\\Users\\\\MonsterOne\\\\.gemini\\\\antigravity\\\\scratch\\\\ai_tut_desktop\\\\data\\\\aiut.db\")",
+      "Bash(php seed.php)",
+      "Bash(curl -s \"http://localhost:8080/?page=login\")",
+      "Bash(curl -s -c /tmp/cookies.txt -X POST \"http://localhost:8080/?page=login\" -d \"email=test@example.com&password=password123\" -D -)",
+      "Bash(curl -sv -c /tmp/cookies.txt -X POST \"http://localhost:8080/?page=login\" -d \"email=test@example.com&password=password123\")",
+      "Bash(php:*)",
+      "Bash(rm:*)",
+      "Bash(curl -s -c /tmp/cookies.txt -b /tmp/cookies.txt \"http://localhost:8080/?page=dashboard\")",
+      "Bash(curl -s -b /tmp/cookies.txt \"http://localhost:8080/?page=chat\")"
+    ]
+  }
+}
