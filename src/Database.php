@@ -7,21 +7,12 @@ class Database {
 
     public function __construct(string $dbPath, string $dbUrl = '') {
         if (!empty($dbUrl) && extension_loaded('pdo_pgsql')) {
-            $host = getenv('PGHOST') ?: '';
-            $port = getenv('PGPORT') ?: '5432';
-            $dbname = getenv('PGDATABASE') ?: '';
-            $user = getenv('PGUSER') ?: '';
-            $pass = getenv('PGPASSWORD') ?: '';
-            if (empty($host) || empty($dbname)) {
-                $parts = @parse_url($dbUrl);
-                if ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) {
-                    $host = $parts['host'];
-                    $port = $parts['port'] ?? '5432';
-                    $dbname = ltrim($parts['path'] ?? '/postgres', '/');
-                    $user = $parts['user'] ?? 'postgres';
-                    $pass = $parts['pass'] ?? '';
-                }
-            }
+            $parts = @parse_url($dbUrl);
+            $host = ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) ? $parts['host'] : (getenv('PGHOST') ?: '');
+            $port = ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) ? ($parts['port'] ?? '5432') : (getenv('PGPORT') ?: '5432');
+            $dbname = ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) ? ltrim($parts['path'] ?? '/postgres', '/') : (getenv('PGDATABASE') ?: '');
+            $user = ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) ? ($parts['user'] ?? 'postgres') : (getenv('PGUSER') ?: 'postgres');
+            $pass = ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) ? ($parts['pass'] ?? '') : (getenv('PGPASSWORD') ?: '');
             if (!empty($host) && !empty($dbname)) {
                 $dsn = sprintf(
                     'pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s',
