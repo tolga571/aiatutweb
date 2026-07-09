@@ -8,14 +8,24 @@ class Database {
     public function __construct(string $dbPath, string $dbUrl = '') {
         if (!empty($dbUrl) && extension_loaded('pdo_pgsql')) {
             $this->isPostgres = true;
-            $parts = parse_url($dbUrl);
+            $host = getenv('PGHOST') ?: '';
+            $port = getenv('PGPORT') ?: '5432';
+            $dbname = getenv('PGDATABASE') ?: '';
+            $user = getenv('PGUSER') ?: '';
+            $pass = getenv('PGPASSWORD') ?: '';
+            if (empty($host) || empty($dbname)) {
+                $parts = @parse_url($dbUrl);
+                if ($parts && isset($parts['host'])) {
+                    $host = $parts['host'];
+                    $port = $parts['port'] ?? '5432';
+                    $dbname = ltrim($parts['path'] ?? '/postgres', '/');
+                    $user = $parts['user'] ?? 'postgres';
+                    $pass = $parts['pass'] ?? '';
+                }
+            }
             $dsn = sprintf(
                 'pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s',
-                $parts['host'] ?? 'localhost',
-                $parts['port'] ?? '5432',
-                ltrim($parts['path'] ?? '/postgres', '/'),
-                $parts['user'] ?? 'postgres',
-                $parts['pass'] ?? ''
+                $host, $port, $dbname, $user, $pass
             );
             $this->pdo = new \PDO($dsn);
         } else {
