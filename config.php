@@ -1,6 +1,5 @@
 <?php
-$dbUrl = getenv('DATABASE_URL');
-$isPg = !empty($dbUrl);
+$dbUrl = getenv('DATABASE_URL') ?: getenv('DATABASE_PUBLIC_URL');
 
 return [
     // Database (SQLite fallback, PostgreSQL via DATABASE_URL env)
