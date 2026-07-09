@@ -6,7 +6,7 @@ class Database {
     private bool $isPostgres;
 
     public function __construct(string $dbPath, string $dbUrl = '') {
-        if (!empty($dbUrl)) {
+        if (!empty($dbUrl) && extension_loaded('pdo_pgsql')) {
             $this->isPostgres = true;
             $this->pdo = new \PDO($dbUrl);
         } else {
