@@ -8,7 +8,16 @@ class Database {
     public function __construct(string $dbPath, string $dbUrl = '') {
         if (!empty($dbUrl) && extension_loaded('pdo_pgsql')) {
             $this->isPostgres = true;
-            $this->pdo = new \PDO($dbUrl);
+            $parts = parse_url($dbUrl);
+            $dsn = sprintf(
+                'pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s',
+                $parts['host'] ?? 'localhost',
+                $parts['port'] ?? '5432',
+                ltrim($parts['path'] ?? '/postgres', '/'),
+                $parts['user'] ?? 'postgres',
+                $parts['pass'] ?? ''
+            );
+            $this->pdo = new \PDO($dsn);
         } else {
             $this->isPostgres = false;
             $dsn = "sqlite:" . $dbPath;
