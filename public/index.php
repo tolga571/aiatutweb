@@ -469,6 +469,20 @@ switch ($page) {
         }
         break;
 
+    // ── Temporary: Create admin ─────────────────────────────
+    case 'create-admin':
+        header('Content-Type: text/plain');
+        $existing = $db->fetchOne('SELECT id FROM admins WHERE email = ?', ['admin@example.com']);
+        if ($existing) {
+            echo "Admin already exists (id={$existing['id']}).\n";
+            exit;
+        }
+        $hash = password_hash('12345678', PASSWORD_DEFAULT);
+        $db->execute('INSERT INTO admins (email, password, name, created_at) VALUES (?, ?, ?, NOW())', ['admin@example.com', $hash, 'Admin']);
+        echo "Admin created!\nEmail: admin@example.com\nPassword: 12345678\n";
+        echo "Login: ?page=admin-login\n";
+        exit;
+
     default:
         require __DIR__ . '/../views/home.php';
 }
