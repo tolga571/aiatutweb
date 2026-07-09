@@ -21,13 +21,15 @@ class Database {
                 try {
                     $this->isPostgres = true;
                     $this->pdo = new \PDO($dsn);
+                    error_log('Database: PostgreSQL connected (' . $host . ')');
                 } catch (\PDOException $e) {
-                    error_log('PostgreSQL connection failed: ' . $e->getMessage());
+                    error_log('Database: PostgreSQL failed, using SQLite: ' . $e->getMessage());
                 }
             }
         }
         if (!isset($this->pdo)) {
             $this->isPostgres = false;
+            error_log('Database: Using SQLite');
             $dsn = "sqlite:" . $dbPath;
             $this->pdo = new \PDO($dsn);
             $this->pdo->exec('PRAGMA foreign_keys = ON;');
