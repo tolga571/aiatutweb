@@ -18,7 +18,11 @@
     </div>
 
     <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-8">
-      <form method="POST" action="?page=onboarding" class="space-y-5">
+      <div id="onboarding-error" class="<?= empty($onboardingError) ? 'hidden' : '' ?> bg-error-container border border-error text-on-error-container px-4 py-3 rounded-xl mb-4 text-sm flex items-start gap-2">
+        <span class="material-symbols-outlined text-error text-lg shrink-0">error</span>
+        <span id="onboarding-error-text"><?= htmlspecialchars($onboardingError ?? '') ?></span>
+      </div>
+      <form method="POST" action="?page=onboarding" class="space-y-5" id="onboarding-form">
         <?php
         // Native & target languages: all 8 languages
         $nativeLangOptions = [
@@ -88,6 +92,20 @@
           document.getElementById(id + '-label').textContent = name;
           document.getElementById(id + '-val').value = code;
           document.getElementById(id + '-dropdown').classList.add('hidden');
+          clearOnboardingError();
+        }
+        function clearOnboardingError() {
+          const el = document.getElementById('onboarding-error');
+          if (el) el.classList.add('hidden');
+        }
+        function showOnboardingError(msg) {
+          const el = document.getElementById('onboarding-error');
+          const txt = document.getElementById('onboarding-error-text');
+          if (el && txt) {
+            txt.textContent = msg;
+            el.classList.remove('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         }
         document.addEventListener('click', function(e) {
           ['native','target'].forEach(id => {
@@ -95,6 +113,14 @@
             const drop = document.getElementById(id + '-dropdown');
             if (!disp.contains(e.target) && !drop.contains(e.target)) drop.classList.add('hidden');
           });
+        });
+        document.getElementById('onboarding-form')?.addEventListener('submit', function(e) {
+          const native = document.getElementById('native-val').value;
+          const target = document.getElementById('target-val').value;
+          if (native === target) {
+            e.preventDefault();
+            showOnboardingError('<?= __('onboarding.same_lang_error') ?>');
+          }
         });
         </script>
 

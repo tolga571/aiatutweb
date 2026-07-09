@@ -1,4 +1,9 @@
 <?php
+// Load Composer autoloader (GuzzleHttp etc.)
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require __DIR__ . '/vendor/autoload.php';
+}
+
 // Simple .env parser to load configuration variables into environment
 if (file_exists(__DIR__ . '/.env')) {
     $lines = file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

@@ -1,12 +1,15 @@
 <?php
+$dbUrl = getenv('DATABASE_URL');
+$isPg = !empty($dbUrl);
+
 return [
-    // SQLite database file path
-    'db_path' => __DIR__ . '/data/aiut.db',
-    // Gemini API key – replace with your own key or set in .env
-    'gemini_api_key' => getenv('GEMINI_API_KEY') ?: 'AIzaSyBkEISDbR545jV3fq7ZaTH3lCN6x_TqMrw',
-    // Daily token limit per user
+    // Database (SQLite fallback, PostgreSQL via DATABASE_URL env)
+    'db_path'   => __DIR__ . '/data/aiut.db',
+    'db_url'    => $dbUrl ?: '',
+
+    // Gemini API key – set in .env
+    'gemini_api_key' => getenv('GEMINI_API_KEY') ?: '',
     'daily_token_limit' => 1000,
-    // Flag to indicate whether a user has paid (stub implementation)
     'payment_required' => true,
 
     'paddle_premium_price_id' => getenv('PADDLE_PREMIUM_PLAN_PRICE_ID'),
@@ -16,6 +19,7 @@ return [
 
     'paddle_client_token'     => getenv('PADDLE_CLIENT_TOKEN'),
     'paddle_environment'      => getenv('PADDLE_ENVIRONMENT') ?: 'sandbox',
+
+    // Google Sign-In Client ID
+    'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',
 ];
-$paddlePremiumPriceId = $config['paddle_premium_price_id'] ?? '';
-?>

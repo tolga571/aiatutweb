@@ -16,7 +16,7 @@ class Flashcard {
         if ($quality < 2) {
             // Failed: reset repetitions, short interval
             $repetitions = 0;
-            $interval = ($quality === 0) ? 1 : 1; // Review again soon
+            $interval = ($quality === 0) ? 1 : 2; // Review again soon or hard
             $easeFactor = max(1.3, $easeFactor - 0.2);
         } else {
             // Passed
@@ -53,17 +53,37 @@ class Flashcard {
      * Get cards that are due for review (next_review <= now).
      */
     public function getDueCards(int $userId, string $lang, int $limit = 20): array {
-        return $this->db->fetchAll(
+        // Prioritize actual reviews (not new)
+        $due = $this->db->fetchAll(
             'SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                     uf.last_reviewed, uf.correct_count, uf.incorrect_count, uf.status as review_status,
                     uf.id as flashcard_id
              FROM vocabulary_words vw
              JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-             WHERE vw.user_id = ? AND vw.language = ? AND uf.next_review <= datetime("now")
+             WHERE vw.user_id = ? AND vw.language = ? AND uf.next_review <= ' . $this->db->now() . ' AND (uf.status != "new" OR uf.status IS NULL)
              ORDER BY uf.next_review ASC
              LIMIT ?',
             [$userId, $lang, $limit]
         );
+
+        // Fill remaining slots with new cards, max 20 new cards per session
+        $newLimit = min(20, $limit - count($due));
+        if ($newLimit > 0) {
+            $new = $this->db->fetchAll(
+                'SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
+                        uf.last_reviewed, uf.correct_count, uf.incorrect_count, uf.status as review_status,
+                        uf.id as flashcard_id
+                 FROM vocabulary_words vw
+                 JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
+                 WHERE vw.user_id = ? AND vw.language = ? AND uf.status = "new"
+                 ORDER BY vw.id ASC
+                 LIMIT ?',
+                [$userId, $lang, $newLimit]
+            );
+            $due = array_merge($due, $new);
+        }
+
+        return $due;
     }
 
     /**
@@ -159,7 +179,7 @@ class Flashcard {
         $this->db->execute(
             'UPDATE user_flashcards 
              SET ease_factor = ?, interval = ?, repetitions = ?, 
-                 next_review = ?, last_reviewed = datetime("now"),
+                 next_review = ?, last_reviewed = ' . $this->db->now() . ',
                  correct_count = correct_count + ?, incorrect_count = incorrect_count + ?,
                  status = ?
              WHERE user_id = ? AND vocab_id = ?',
@@ -203,13 +223,10 @@ class Flashcard {
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [$userId, $word, $translation, $pronunciation, $example, 'chat', $lang, 'chat']
         );
-        $vocabId = $this->db->lastInsertId();
+        $vocabId = $this->db->lastInsertId('vocabulary_words');
 
         // Auto-create flashcard record
-        $this->db->execute(
-            'INSERT OR IGNORE INTO user_flashcards (user_id, vocab_id) VALUES (?, ?)',
-            [$userId, $vocabId]
-        );
+        $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
 
         return $vocabId;
     }
@@ -263,13 +280,10 @@ class Flashcard {
                     'static'
                 ]
             );
-            $vocabId = $this->db->lastInsertId();
+            $vocabId = $this->db->lastInsertId('vocabulary_words');
 
             // Auto-create flashcard record
-            $this->db->execute(
-                'INSERT OR IGNORE INTO user_flashcards (user_id, vocab_id) VALUES (?, ?)',
-                [$userId, $vocabId]
-            );
+            $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
 
             $imported++;
         }
@@ -289,7 +303,7 @@ class Flashcard {
         $due = $this->db->fetchOne(
             'SELECT COUNT(*) as c FROM user_flashcards uf
              JOIN vocabulary_words vw ON vw.id = uf.vocab_id
-             WHERE uf.user_id = ? AND vw.language = ? AND uf.next_review <= datetime("now")',
+             WHERE uf.user_id = ? AND vw.language = ? AND uf.next_review <= ' . $this->db->now(),
             [$userId, $lang]
         );
 

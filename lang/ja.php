@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => 'スポーツ',
     'onboarding.interest_business' => 'ビジネス',
     'onboarding.save_continue' => '保存して次へ →',
+    'onboarding.same_lang_error' => '母国語と学習言語は同じにできません。',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'チャット – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => 'チャットを始める',
     'chat.write_something' => '%sで何か書いてみましょう...',
     'chat.trial_expired_placeholder' => '体験期間が終了しました。プランを選択して続けてください。',
+    'chat.trial_expired_banner' => '無料トライアルが終了しました。学習を続けるにはプランを選択してください！',
     'chat.trial_remaining' => '無料体験：残り %d メッセージ（全5件）',
     'chat.send' => '送信',
     'chat.you' => 'あなた',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => 'アカウントを有効化しています。このページを閉じないでください...',
     'pricing.price_id_error' => 'エラー：Price IDが設定されていません。`.env`設定を確認してください。',
     'pricing.checkout_error' => 'チェックアウトオーバーレイを開けません。もう一度お試しください。',
+    'pricing.already_subscribed_title' => '登録済みです！',
+    'pricing.already_subscribed_body' => '既に有効なプランがあります。チャットに戻って学習を続けてください。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'ダッシュボード – AiTut',

@@ -50,9 +50,18 @@ return [
     'auth.has_account' => 'Zaten hesabınız var mı?',
     'auth.sign_in_link' => 'Giriş yap',
     'auth.invalid_credentials' => 'Geçersiz e-posta veya şifre.',
+    'auth.error_email_not_found' => 'Bu e-posta adresiyle bir hesap bulunamadı.',
+    'auth.error_wrong_password' => 'Yanlış şifre. Lütfen tekrar deneyin.',
+    'auth.error_generic' => 'Geçersiz e-posta veya şifre. Bilgilerinizi kontrol edin.',
+    'auth.error_invalid_email' => 'Lütfen geçerli bir e-posta adresi girin.',
+    'auth.error_invalid_name' => 'Lütfen adınızı girin (en az 2 karakter).',
+    'auth.error_weak_password' => 'Şifre en az 8 karakter uzunluğunda olmalıdır.',
     'auth.registration_failed' => 'Kayıt başarısız. E-posta zaten kullanılıyor olabilir.',
     'auth.message_empty' => 'Mesaj boş olamaz.',
     'auth.ai_unavailable' => 'Yapay zeka kullanılamıyor, lütfen tekrar deneyin.',
+    'auth.or_continue_with' => 'Veya şununla devam et',
+    'auth.continue_with_google' => 'Google ile devam et',
+    'auth.google_config_warning' => 'Google ile Giriş/Kayıt özelliğini aktifleştirmek için lütfen .env dosyasına GOOGLE_CLIENT_ID değerini tanımlayın.',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Profilinizi ayarlayın',
@@ -72,6 +81,7 @@ return [
     'onboarding.interest_sports' => 'Spor',
     'onboarding.interest_business' => 'İş',
     'onboarding.save_continue' => 'Kaydet ve devam et →',
+    'onboarding.same_lang_error' => 'Ana dil ve öğrenilecek dil aynı olamaz.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Sohbet – AiTut',
@@ -82,6 +92,7 @@ return [
     'chat.your_progress' => 'İlerlemeniz',
     'chat.new_chat' => 'Yeni Sohbet',
     'chat.search_conv' => 'Konuşmaları ara...',
+    'chat.search_no_results' => 'Konuşma bulunamadı.',
     'chat.section_recent' => 'Son konuşmalar',
     'chat.just_now' => 'şimdi',
     'chat.mins_ago' => 'dakika önce',
@@ -93,6 +104,7 @@ return [
     'chat.start_chatting' => 'Sohbete başla',
     'chat.write_something' => '%s dilinde bir şeyler yaz...',
     'chat.trial_expired_placeholder' => 'Deneme süreniz sona erdi. Devam etmek için bir plan seçin.',
+    'chat.trial_expired_banner' => 'Deneme süreniz doldu. Öğrenmeye devam etmek için bir plan seçin!',
     'chat.trial_remaining' => 'Ücretsiz Deneme: %d / 5 mesaj kaldı',
     'chat.send' => 'Gönder',
     'chat.you' => 'Sen',
@@ -141,6 +153,10 @@ return [
     'fc.category_house' => 'Ev',
     'fc.category_travel' => 'Seyahat',
     'fc.category_emotion' => 'Duygu',
+    'fc.category_family' => 'Aile',
+    'fc.category_education' => 'Eğitim',
+    'fc.category_general' => 'Genel',
+    'fc.category_shopping' => 'Alışveriş',
     'fc.words_in' => '%s Kelime',
     'fc.xp_earned' => '%d XP Kazanıldı',
     'fc.fallback_title' => 'Dil Desteği Bildirimi:',
@@ -229,6 +245,13 @@ return [
     'pricing.payment_modal_body' => 'Hesabınız etkinleştiriliyor. Lütfen bu sayfayı kapatmayın...',
     'pricing.price_id_error' => 'Hata: Fiyat Kimliği yapılandırılmamış. Lütfen `.env` ayarlarınızı kontrol edin.',
     'pricing.checkout_error' => 'Ödeme ekranı açılamıyor. Lütfen tekrar deneyin.',
+    'pricing.status_active' => 'Plan Aktif',
+    'pricing.already_subscribed_title' => 'Zaten Abonesiniz!',
+    'pricing.already_subscribed_body' => 'Zaten aktif bir planınız bulunuyor. Öğrenmeye devam etmek için sohbet sayfasına dönün.',
+    'pricing.timeout_title' => 'Aktivasyon Beklenenden Uzun Sürüyor',
+    'pricing.timeout_body' => 'Ödemeniz alındı ancak aktivasyon gecikti. Lütfen tekrar deneyin veya destek ekibine ulaşın.',
+    'pricing.timeout_retry' => 'Tekrar Dene',
+    'pricing.timeout_chat' => 'Sohbete Git',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Kontrol Paneli – AiTut',
@@ -251,6 +274,9 @@ return [
     'dash.new_conversation' => 'Yeni bir konuşma başlat',
     'dash.new_conv_desc' => 'AI öğretmeninizle %s pratiği yapın',
     'dash.recent_convs' => 'Son konuşmalar',
+    'dash.level_up_title' => 'Seviye atlamaya hazır mısın?',
+    'dash.level_up_body' => '%d kelime öğrendin! Kai ile bir sohbet başlat ve daha üst seviyede pratik yapmayı dene.',
+    'dash.level_up_btn' => 'Şimdi Pratik Yap',
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – AI Dil Öğretmeni',

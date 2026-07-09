@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => 'Sports',
     'onboarding.interest_business' => 'Affaires',
     'onboarding.save_continue' => 'Enregistrer et continuer →',
+    'onboarding.same_lang_error' => 'La langue maternelle et la langue cible ne peuvent pas être identiques.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Discussion – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => 'Commencer à discuter',
     'chat.write_something' => 'Écrivez quelque chose en %s...',
     'chat.trial_expired_placeholder' => 'Votre essai est terminé. Veuillez choisir un forfait pour continuer.',
+    'chat.trial_expired_banner' => 'Votre essai gratuit est terminé. Choisissez un forfait pour continuer à apprendre!',
     'chat.trial_remaining' => 'Essai gratuit : %d messages sur 5 restants',
     'chat.send' => 'Envoyer',
     'chat.you' => 'Vous',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => 'Activation de votre compte. Veuillez ne pas fermer cette page...',
     'pricing.price_id_error' => 'Erreur : l\'ID de prix n\'est pas configuré. Veuillez vérifier vos paramètres `.env`.',
     'pricing.checkout_error' => 'Impossible d\'ouvrir la superposition de paiement. Veuillez réessayer.',
+    'pricing.already_subscribed_title' => 'Vous êtes abonné!',
+    'pricing.already_subscribed_body' => 'Vous avez déjà un plan actif. Retournez au chat pour continuer à apprendre.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Tableau de bord – AiTut',

@@ -12,7 +12,7 @@ use App\Src\Flashcard;
 
 session_start();
 
-$db     = new Database($config['db_path']);
+$db     = new Database($config['db_path'], $config['db_url']);
 $auth   = new Auth($db);
 $chat   = new Chat($db, $config);
 $gemini = new GeminiClient($config['gemini_api_key']);
@@ -23,7 +23,10 @@ $flashcard = new Flashcard($db);
 $detectedLang = 'en';
 if ($auth->isLoggedIn()) {
     $currentUser = $auth->currentUser();
-    $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
+    // Use user's language preference only after onboarding is completed
+    if (!empty($currentUser['onboarding_completed'])) {
+        $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
+    }
 }
 Language::load($detectedLang);
 
@@ -45,30 +48,156 @@ switch ($page) {
 
     // ── Auth ─────────────────────────────────────────────────────
     case 'login':
+        if (isset($_SESSION['login_error'])) {
+            $loginError = $_SESSION['login_error'];
+            unset($_SESSION['login_error']);
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $pass  = $_POST['password'] ?? '';
             if ($auth->login($email, $pass)) {
                 header('Location: ?page=dashboard'); exit;
             }
-            $loginError = 'Invalid email or password.';
+            $loginError = $auth->lastError ?: __('auth.error_generic');
         }
         require __DIR__ . '/../views/login.php';
         break;
 
     case 'register':
+        if (isset($_SESSION['register_error'])) {
+            $registerError = $_SESSION['register_error'];
+            unset($_SESSION['register_error']);
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $pass  = $_POST['password'] ?? '';
             $name  = trim($_POST['name'] ?? '');
-            if ($auth->register($email, $pass, $name)) {
-                $auth->login($email, $pass);
-                header('Location: ?page=onboarding'); exit;
+            $errors = [];
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors[] = __('auth.error_invalid_email');
             }
-            $registerError = 'Registration failed. Email may already be taken.';
+            if (empty($name) || mb_strlen($name) < 2) {
+                $errors[] = __('auth.error_invalid_name');
+            }
+            if (strlen($pass) < 8) {
+                $errors[] = __('auth.error_weak_password');
+            }
+            if (empty($errors)) {
+                if ($auth->register($email, $pass, $name)) {
+                    $auth->login($email, $pass);
+                    header('Location: ?page=onboarding'); exit;
+                }
+                $errors[] = __('auth.registration_failed');
+            }
+            $registerError = $errors;
         }
         require __DIR__ . '/../views/register.php';
         break;
+
+    case 'google-login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['credential'])) {
+            $credential = $_POST['credential'];
+            $googleClientId = $config['google_client_id'] ?? '';
+            
+            if (empty($googleClientId)) {
+                $_SESSION['login_error'] = __('auth.google_config_warning');
+                header('Location: ?page=login');
+                exit;
+            }
+            
+            $data = null;
+            
+            try {
+                $client = new \GuzzleHttp\Client();
+                $response = $client->get('https://oauth2.googleapis.com/tokeninfo', [
+                    'query' => ['id_token' => $credential]
+                ]);
+                
+                $decoded = json_decode($response->getBody()->getContents(), true);
+                if ($decoded && isset($decoded['aud']) && $decoded['aud'] === $googleClientId) {
+                    $data = $decoded;
+                }
+            } catch (\Exception $e) {
+                // Verification failed
+            }
+            
+            if ($data) {
+                $googleId = $data['sub'] ?? '';
+                $email = trim($data['email'] ?? '');
+                $name = trim($data['name'] ?? '');
+                $picture = trim($data['picture'] ?? '');
+                
+                if (!empty($email)) {
+                    // Check if user exists by google_id
+                    $user = $db->fetchOne('SELECT * FROM users WHERE google_id = ?', [$googleId]);
+                    
+                    if (!$user) {
+                        // Check if user exists by email
+                        $user = $db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
+                        
+                        if ($user) {
+                            // User exists, link Google ID and optionally picture
+                            $db->execute(
+                                'UPDATE users SET google_id = ?, profile_image = COALESCE(profile_image, ?) WHERE id = ?',
+                                [$googleId, $picture ?: null, $user['id']]
+                            );
+                        } else {
+                            // User does not exist, register new user
+                            $randomPassword = bin2hex(random_bytes(16));
+                            $hash = password_hash($randomPassword, PASSWORD_BCRYPT);
+                            
+                            $db->execute(
+                                'INSERT INTO users (email, password, name, google_id, profile_image) VALUES (?, ?, ?, ?, ?)',
+                                [$email, $hash, $name, $googleId, $picture ?: null]
+                            );
+                            
+                            $user = $db->fetchOne('SELECT * FROM users WHERE google_id = ?', [$googleId]);
+                        }
+                    } else {
+                        // If picture is updated or wasn't set, update it
+                        if (!empty($picture) && $user['profile_image'] !== $picture) {
+                            $db->execute('UPDATE users SET profile_image = ? WHERE id = ?', [$picture, $user['id']]);
+                        }
+                    }
+                    
+                    // Log user in
+                    $_SESSION['user_id'] = $user['id'];
+                    
+                    // Update streak / activity date
+                    $today = date('Y-m-d');
+                    $lastActivity = $user['last_activity_date'] ?? null;
+                    
+                    if ($lastActivity !== $today) {
+                        $yesterday = date('Y-m-d', strtotime('-1 day'));
+                        $streak = (int)($user['streak_count'] ?? 0);
+                        
+                        if ($lastActivity === $yesterday) {
+                            $streak++;
+                        } else {
+                            $streak = 1;
+                        }
+                        
+                        $db->execute(
+                            'UPDATE users SET streak_count = ?, last_activity_date = ? WHERE id = ?',
+                            [$streak, $today, $user['id']]
+                        );
+                    }
+                    
+                    if ($auth->hasCompletedOnboarding()) {
+                        header('Location: ?page=dashboard');
+                    } else {
+                        header('Location: ?page=onboarding');
+                    }
+                    exit;
+                }
+            }
+            
+            $_SESSION['login_error'] = __('auth.invalid_credentials');
+            header('Location: ?page=login');
+            exit;
+        }
+        header('Location: ?page=login');
+        exit;
 
     case 'logout':
         $auth->logout();
@@ -77,19 +206,41 @@ switch ($page) {
     // ── Onboarding ────────────────────────────────────────────────
     case 'onboarding':
         $requireAuth();
+        if ($auth->hasCompletedOnboarding()) {
+            header('Location: ?page=dashboard'); exit;
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $auth->saveOnboarding(
-                $auth->userId(),
-                $_POST['native_lang']   ?? 'en',
-                $_POST['target_lang']   ?? 'en',
-                $_POST['cefr_level']    ?? 'A1',
-                $_POST['learning_goal'] ?? 'conversation',
-                $_POST['interest_area'] ?? 'general'
-            );
-            header('Location: ?page=pricing'); exit;
+            $native = $_POST['native_lang'] ?? 'en';
+            $target = $_POST['target_lang'] ?? 'en';
+            if ($native === $target) {
+                $onboardingError = __('onboarding.same_lang_error');
+            } else {
+                $auth->saveOnboarding(
+                    $auth->userId(),
+                    $native,
+                    $target,
+                    $_POST['cefr_level']    ?? 'A1',
+                    $_POST['learning_goal'] ?? 'conversation',
+                    $_POST['interest_area'] ?? 'general'
+                );
+                header('Location: ?page=dashboard'); exit;
+            }
         }
         require __DIR__ . '/../views/onboarding.php';
         break;
+
+    // ── Update Lang ────────────────────────────────────────────────
+    case 'update_lang':
+        $requireAuth();
+        $lang = $_GET['lang'] ?? 'en';
+        if (in_array($lang, ['en','de','fr','es','zh','ja','ar','tr'])) {
+            $currentUser = $auth->currentUser();
+            if ($lang === ($currentUser['native_lang'] ?? '')) {
+                header('Location: ?page=chat'); exit;
+            }
+            $db->execute('UPDATE users SET target_lang = ? WHERE id = ?', [$lang, $auth->userId()]);
+        }
+        header('Location: ?page=chat'); exit;
 
     // ── Pricing ───────────────────────────────────
     case 'pricing':

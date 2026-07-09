@@ -3,6 +3,7 @@ namespace App\Src;
 
 class Auth {
     private Database $db;
+    public string $lastError = '';
     public function __construct(Database $db) {
         $this->db = $db;
         if (session_status() === PHP_SESSION_NONE) {
@@ -11,11 +12,36 @@ class Auth {
     }
     public function login(string $email, string $password): bool {
         $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            return true;
+        if (!$user) {
+            $this->lastError = __('auth.error_email_not_found');
+            return false;
         }
-        return false;
+        if (!password_verify($password, $user['password'])) {
+            $this->lastError = __('auth.error_wrong_password');
+            return false;
+        }
+        $_SESSION['user_id'] = $user['id'];
+        
+        $today = date('Y-m-d');
+        $lastActivity = $user['last_activity_date'] ?? null;
+        
+        if ($lastActivity !== $today) {
+            $yesterday = date('Y-m-d', strtotime('-1 day'));
+            $streak = (int)($user['streak_count'] ?? 0);
+            
+            if ($lastActivity === $yesterday) {
+                $streak++;
+            } else {
+                $streak = 1;
+            }
+            
+            $this->db->execute(
+                'UPDATE users SET streak_count = ?, last_activity_date = ? WHERE id = ?',
+                [$streak, $today, $user['id']]
+            );
+        }
+        
+        return true;
     }
 
     public function register(string $email, string $password, string $name = ''): bool {

@@ -18,6 +18,10 @@ $totalConvs = $db->fetchOne('SELECT COUNT(*) as c FROM conversations WHERE user_
 $totalMsgs  = $db->fetchOne('SELECT COUNT(*) as c FROM messages WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id=?)', [$auth->userId()])['c'] ?? 0;
 $vocabCount = $db->fetchOne('SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id=?', [$auth->userId()])['c'] ?? 0;
 $recentConvs = $db->fetchAll('SELECT id, updated_at, (SELECT content FROM messages WHERE conversation_id=conversations.id ORDER BY created_at ASC LIMIT 1) as title FROM conversations WHERE user_id=? ORDER BY updated_at DESC LIMIT 5', [$auth->userId()]);
+$streak = (int)($user['streak_count'] ?? 0);
+$wordsToday = $db->fetchOne('SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id=? AND date(created_at) = date("now")', [$auth->userId()])['c'] ?? 0;
+$dueCount = $db->fetchOne('SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND next_review <= datetime("now")', [$auth->userId()])['c'] ?? 0;
+$masteredCount = $db->fetchOne('SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND status="mastered"', [$auth->userId()])['c'] ?? 0;
 $tips = [
   __('dash.tip_1'),
   __('dash.tip_2'),
@@ -70,6 +74,16 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
         <div class="text-headline-sm font-bold text-on-surface"><?= $vocabCount ?></div>
         <div class="text-label-md text-outline"><?= __('dash.words_count') ?></div>
       </div>
+      <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-3 text-center">
+        <div class="text-headline-sm font-bold text-on-surface flex items-center justify-center gap-1">
+           <?= $streak ?> <span class="material-symbols-outlined text-orange-500 text-[20px]">local_fire_department</span>
+        </div>
+        <div class="text-label-md text-outline">Day Streak</div>
+      </div>
+      <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-3 text-center">
+        <div class="text-headline-sm font-bold text-on-surface"><?= $wordsToday ?></div>
+        <div class="text-label-md text-outline">Words Today</div>
+      </div>
     </div>
 
     <div class="space-y-1 mt-2">
@@ -117,6 +131,27 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
         </div>
         <span class="material-symbols-outlined text-primary text-2xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
       </a>
+
+      <?php if ($dueCount > 0): ?>
+      <a href="?page=flashcards" class="flex items-center justify-between bg-secondary/10 border border-secondary/30 hover:border-secondary/60 rounded-2xl p-5 transition group">
+        <div>
+          <div class="font-headline-sm text-headline-sm text-secondary mb-1">Time for a quick review!</div>
+          <div class="text-body-md text-on-surface-variant">You have <?= $dueCount ?> words waiting to be reviewed. Keep your streak alive!</div>
+        </div>
+        <span class="material-symbols-outlined text-secondary text-2xl group-hover:scale-110 transition-transform">style</span>
+      </a>
+      <?php endif; ?>
+
+      <?php if ($masteredCount >= 50 && ($user['cefr_level'] ?? 'A1') === 'A1'): ?>
+      <a href="?page=chat" class="block bg-tertiary/10 border border-tertiary/30 hover:border-tertiary/60 rounded-2xl p-5 transition group">
+        <div class="font-headline-sm text-headline-sm text-tertiary mb-1"><?= __('dash.level_up_title') ?></div>
+        <p class="text-body-md text-on-surface-variant mb-3"><?= sprintf(__('dash.level_up_body'), $masteredCount) ?></p>
+        <span class="inline-flex items-center gap-2 bg-tertiary text-on-tertiary px-4 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition group-hover:gap-3">
+          <?= __('dash.level_up_btn') ?>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </span>
+      </a>
+      <?php endif; ?>
 
       <?php if ($recentConvs): ?>
       <div>

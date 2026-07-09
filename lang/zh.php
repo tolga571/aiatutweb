@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => '体育',
     'onboarding.interest_business' => '商务',
     'onboarding.save_continue' => '保存并继续 →',
+    'onboarding.same_lang_error' => '母语和目标语言不能相同。',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => '聊天 – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => '开始聊天',
     'chat.write_something' => '用%s写点什么...',
     'chat.trial_expired_placeholder' => '您的试用已结束。请选择套餐继续。',
+    'chat.trial_expired_banner' => '免费试用已结束。选择套餐继续学习！',
     'chat.trial_remaining' => '免费试用：剩余 %d 条消息（共5条）',
     'chat.send' => '发送',
     'chat.you' => '您',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => '正在激活您的账号。请勿关闭此页面...',
     'pricing.price_id_error' => '错误：未配置价格ID。请检查您的`.env`设置。',
     'pricing.checkout_error' => '无法打开结账覆盖层。请重试。',
+    'pricing.already_subscribed_title' => '您已订阅！',
+    'pricing.already_subscribed_body' => '您已拥有有效套餐。返回聊天页面继续学习。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => '仪表盘 – AiTut',

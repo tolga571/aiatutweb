@@ -43,6 +43,40 @@
         </button>
       </form>
 
+      <?php $googleClientId = $config['google_client_id'] ?? ''; ?>
+      <?php if (!empty($googleClientId)): ?>
+      <!-- Divider -->
+      <div class="relative my-6 flex items-center justify-center">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-outline-variant/20"></div>
+        </div>
+        <span class="relative bg-surface-container px-3 text-[10px] text-outline uppercase font-bold tracking-wider">
+          <?= __('auth.or_continue_with') ?>
+        </span>
+      </div>
+
+      <!-- Real Google Sign-In Button -->
+      <div id="google-signin-container" class="flex justify-center w-full">
+        <div id="g_id_onload"
+             data-client_id="<?= htmlspecialchars($googleClientId) ?>"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_select="false"
+             data-itp_support="true">
+        </div>
+        <div class="g_id_signin w-full"
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="filled_blue"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left"
+             data-width="382">
+        </div>
+      </div>
+      <?php endif; ?>
+
       <p class="text-center text-body-md text-outline mt-6">
         <?= __('auth.no_account') ?>
         <a href="?page=register" class="text-primary hover:text-primary-fixed transition"><?= __('auth.create_one') ?></a>
@@ -50,6 +84,28 @@
     </div>
   </div>
 </div>
+
+<?php if (!empty($googleClientId)): ?>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+function handleCredentialResponse(response) {
+  if (response.credential) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '?page=google-login';
+    
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'credential';
+    input.value = response.credential;
+    
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+  }
+}
+</script>
+<?php endif; ?>
 
 </body>
 </html>

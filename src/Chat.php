@@ -27,11 +27,25 @@ class Chat {
         $this->tokenManager = new TokenManager($db, $config['daily_token_limit'] ?? 1000);
     }
 
-    public function getTopics(): array {
-        return self::TOPICS;
+    public function getTopics(?string $interest = null): array {
+        $topics = self::TOPICS;
+        if ($interest === 'sports') {
+            $topics['sports_match'] = ['en' => 'Discuss a recent sports match', 'label' => 'Sports Match'];
+            $topics['sports_gym'] = ['en' => 'Talk about going to the gym', 'label' => 'Gym Workout'];
+        } elseif ($interest === 'tech') {
+            $topics['tech_gadget'] = ['en' => 'Talk about the latest tech gadgets', 'label' => 'Tech Gadgets'];
+            $topics['tech_code'] = ['en' => 'Discuss coding and software development', 'label' => 'Software Dev'];
+        } elseif ($interest === 'movies') {
+            $topics['movie_review'] = ['en' => 'Review a movie you recently watched', 'label' => 'Movie Review'];
+            $topics['movie_cinema'] = ['en' => 'Buy tickets at the cinema', 'label' => 'Cinema Tickets'];
+        } elseif ($interest === 'business') {
+            $topics['biz_meeting'] = ['en' => 'Participate in a business meeting', 'label' => 'Business Meeting'];
+            $topics['biz_negotiation'] = ['en' => 'Negotiate a contract', 'label' => 'Negotiation'];
+        }
+        return $topics;
     }
 
-    private function buildSystemPrompt(string $targetLang, string $nativeLang, string $cefrLevel, ?string $topicId, array $knownWords, array $recentMistakes): string {
+    private function buildSystemPrompt(string $targetLang, string $nativeLang, string $cefrLevel, ?string $topicId, array $knownWords, array $recentMistakes, string $goal = 'conversation', string $interest = 'general'): string {
         $cefrHint = self::CEFR_GUIDE[$cefrLevel] ?? self::CEFR_GUIDE['A1'];
 
         $topicBlock = '';
@@ -53,6 +67,7 @@ class Chat {
 
         return "You are an enthusiastic, encouraging language tutor helping a student learn {$targetLang}.
 Their native language is {$nativeLang} and their current proficiency is CEFR level {$cefrLevel} ({$cefrHint}).{$topicBlock}{$memoryBlock}
+User's learning goal: {$goal}. Their interests: {$interest}. Tailor your vocabulary and examples accordingly.
 
 PERSONALITY:
 - Be warm, friendly, and motivating
@@ -118,6 +133,8 @@ WORDS RULES:
         $targetLang  = $user['target_lang']  ?? 'en';
         $nativeLang  = $user['native_lang']  ?? 'en';
         $cefrLevel   = $user['cefr_level']   ?? 'A1';
+        $goal        = $user['learning_goal'] ?? 'conversation';
+        $interest    = $user['interest_area'] ?? 'general';
 
         // Load conversation history (last 20 messages)
         $history = [];
@@ -148,7 +165,7 @@ WORDS RULES:
         );
         $recentMistakes = array_filter(array_column($mistakeRows, 'correction'));
 
-        $systemPrompt = $this->buildSystemPrompt($targetLang, $nativeLang, $cefrLevel, $topicId, $knownWords, array_values($recentMistakes));
+        $systemPrompt = $this->buildSystemPrompt($targetLang, $nativeLang, $cefrLevel, $topicId, $knownWords, array_values($recentMistakes), $goal, $interest);
 
         $aiRaw = $gemini->chatWithHistory($message, $history, $systemPrompt, $targetLang);
 
@@ -183,7 +200,7 @@ WORDS RULES:
                 'INSERT INTO conversations (user_id, topic_id) VALUES (?, ?)',
                 [$userId, $topicId]
             );
-            $conversationId = $this->db->lastInsertId();
+            $conversationId = $this->db->lastInsertId('conversations');
         } else {
             $this->db->execute('UPDATE conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = ?', [$conversationId]);
         }
@@ -208,21 +225,19 @@ WORDS RULES:
                 if (!$exists) {
                     $this->db->execute(
                         'INSERT INTO vocabulary_words (user_id, word, translation, pronunciation, example, category, language, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [$userId, $w['word'], $w['definition'], $w['pronunciation'] ?? '', '', 'chat', $targetLang, 'chat']
+                        [$userId, $w['word'], $w['definition'], $w['pronunciation'] ?? '', $content, 'chat', $targetLang, 'chat']
                     );
-                    $vocabId = $this->db->lastInsertId();
+                    $vocabId = $this->db->lastInsertId('vocabulary_words');
                     
-                    $this->db->execute(
-                        'INSERT OR IGNORE INTO user_flashcards (user_id, vocab_id) VALUES (?, ?)',
-                        [$userId, $vocabId]
-                    );
+                    $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
                 }
             }
         }
 
         // XP + token usage
         $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
-        $this->tokenManager->addUsage($userId, 1);
+        $tokens = (int)ceil((strlen($message) + strlen($content)) / 4);
+        $this->tokenManager->addUsage($userId, max(1, $tokens));
 
         return [
             'content'             => $content,

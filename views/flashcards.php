@@ -52,13 +52,25 @@ $firstCard = $cards[0] ?? null;
         <input type="text" id="word-search" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl pl-9 pr-3 py-2.5 text-xs text-on-surface placeholder-outline focus:outline-none focus:border-primary/50 transition-colors" placeholder="<?= __('fc.search_words') ?>">
       </div>
 
+      <?php
+      $uniqueCats = array_unique(array_map(function($c) { return $c['category'] ?? 'General'; }, $cards));
+      $catLabels = [
+        'Greeting' => __('fc.category_greeting'),
+        'Food' => __('fc.category_food'),
+        'House' => __('fc.category_house'),
+        'Travel' => __('fc.category_travel'),
+        'Emotion' => __('fc.category_emotion'),
+        'Family' => __('fc.category_family'),
+        'Education' => __('fc.category_education'),
+        'General' => __('fc.category_general'),
+        'Shopping' => __('fc.category_shopping'),
+      ];
+      ?>
       <div class="flex flex-wrap gap-xs py-xs" id="category-filters">
         <button class="filter-chip active-filter bg-primary text-on-primary text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all hover:opacity-90" data-cat="all"><?= __('fc.all') ?></button>
-        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="Greeting"><?= __('fc.category_greeting') ?></button>
-        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="Food"><?= __('fc.category_food') ?></button>
-        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="House"><?= __('fc.category_house') ?></button>
-        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="Travel"><?= __('fc.category_travel') ?></button>
-        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="Emotion"><?= __('fc.category_emotion') ?></button>
+        <?php foreach ($uniqueCats as $cat): ?>
+        <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="<?= htmlspecialchars($cat) ?>"><?= htmlspecialchars($catLabels[$cat] ?? $cat) ?></button>
+        <?php endforeach; ?>
       </div>
 
       <div class="flex-1 flex flex-col gap-xs overflow-y-auto chat-scrollbar" id="words-list"></div>

@@ -31,7 +31,7 @@ return [
     'nav.profile' => 'Profile',
     'nav.logout' => 'Logout',
     'nav.login' => 'Sign In',
-    'nav.register' => 'Get Started',
+    'nav.register' => 'Register',
     'nav.logged_in_as' => 'Logged in as',
 
     // ── Auth ────────────────────────────────────────────────
@@ -50,9 +50,18 @@ return [
     'auth.has_account' => 'Already have an account?',
     'auth.sign_in_link' => 'Sign in',
     'auth.invalid_credentials' => 'Invalid email or password.',
+    'auth.error_email_not_found' => 'No account found with this email address.',
+    'auth.error_wrong_password' => 'Incorrect password. Please try again.',
+    'auth.error_generic' => 'Invalid email or password. Please check your credentials.',
+    'auth.error_invalid_email' => 'Please enter a valid email address.',
+    'auth.error_invalid_name' => 'Please enter your name (at least 2 characters).',
+    'auth.error_weak_password' => 'Password must be at least 8 characters long.',
     'auth.registration_failed' => 'Registration failed. Email may already be taken.',
     'auth.message_empty' => 'Message cannot be empty.',
     'auth.ai_unavailable' => 'AI unavailable, please try again.',
+    'auth.or_continue_with' => 'Or continue with',
+    'auth.continue_with_google' => 'Continue with Google',
+    'auth.google_config_warning' => 'To enable Sign-In/Registration with Google, please configure GOOGLE_CLIENT_ID in your .env file.',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Set up your profile',
@@ -72,6 +81,7 @@ return [
     'onboarding.interest_sports' => 'Sports',
     'onboarding.interest_business' => 'Business',
     'onboarding.save_continue' => 'Save and continue →',
+    'onboarding.same_lang_error' => 'Native language and target language cannot be the same.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Chat – AiTut',
@@ -82,6 +92,7 @@ return [
     'chat.your_progress' => 'Your Progress',
     'chat.new_chat' => 'New Chat',
     'chat.search_conv' => 'Search conversations...',
+    'chat.search_no_results' => 'No conversations found.',
     'chat.section_recent' => 'Recent conversations',
     'chat.just_now' => 'just now',
     'chat.mins_ago' => 'mins ago',
@@ -93,6 +104,7 @@ return [
     'chat.start_chatting' => 'Start chatting',
     'chat.write_something' => 'Write something in %s...',
     'chat.trial_expired_placeholder' => 'Your trial has ended. Please choose a plan to continue.',
+    'chat.trial_expired_banner' => 'Your free trial has ended. Select a plan to continue learning!',
     'chat.trial_remaining' => 'Free Trial: %d out of 5 messages remaining',
     'chat.send' => 'Send',
     'chat.you' => 'You',
@@ -141,6 +153,10 @@ return [
     'fc.category_house' => 'House',
     'fc.category_travel' => 'Travel',
     'fc.category_emotion' => 'Emotion',
+    'fc.category_family' => 'Family',
+    'fc.category_education' => 'Education',
+    'fc.category_general' => 'General',
+    'fc.category_shopping' => 'Shopping',
     'fc.words_in' => '%s Words',
     'fc.xp_earned' => '%d XP Earned',
     'fc.fallback_title' => 'Language Support Notice:',
@@ -229,6 +245,13 @@ return [
     'pricing.payment_modal_body' => 'Activating your account. Please do not close this page...',
     'pricing.price_id_error' => 'Error: Price ID is not configured. Please check your `.env` settings.',
     'pricing.checkout_error' => 'Unable to open checkout overlay. Please try again.',
+    'pricing.status_active' => 'Plan Active',
+    'pricing.already_subscribed_title' => 'You\'re Subscribed!',
+    'pricing.already_subscribed_body' => 'You already have an active plan. Head back to the chat to continue learning.',
+    'pricing.timeout_title' => 'Activation Taking Longer Than Expected',
+    'pricing.timeout_body' => 'Your payment was received but activation is delayed. Please try again or contact support.',
+    'pricing.timeout_retry' => 'Try Again',
+    'pricing.timeout_chat' => 'Go to Chat',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Dashboard – AiTut',
@@ -251,6 +274,9 @@ return [
     'dash.new_conversation' => 'Start a new conversation',
     'dash.new_conv_desc' => 'Practice %s with your AI tutor',
     'dash.recent_convs' => 'Recent conversations',
+    'dash.level_up_title' => 'Ready to level up?',
+    'dash.level_up_body' => 'You\'ve mastered %d words! Start a conversation with Kai and try practicing at a higher level.',
+    'dash.level_up_btn' => 'Practice Now',
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – AI Language Tutor',

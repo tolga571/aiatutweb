@@ -13,14 +13,14 @@ class TokenManager {
     private function ensureUserRow(int $userId): void {
         $row = $this->db->fetchOne('SELECT id FROM token_usage WHERE user_id = ?', [$userId]);
         if (!$row) {
-            $this->db->execute('INSERT INTO token_usage (user_id, used_today, last_reset) VALUES (?, 0, DATE("now"))', [$userId]);
+            $this->db->execute('INSERT INTO token_usage (user_id, used_today, last_reset) VALUES (?, 0, ' . $this->db->dateNow() . ')', [$userId]);
         }
     }
 
     private function resetIfNewDay(int $userId): void {
         $row = $this->db->fetchOne('SELECT last_reset FROM token_usage WHERE user_id = ?', [$userId]);
         if ($row && $row['last_reset'] !== date('Y-m-d')) {
-            $this->db->execute('UPDATE token_usage SET used_today = 0, last_reset = DATE("now") WHERE user_id = ?', [$userId]);
+            $this->db->execute('UPDATE token_usage SET used_today = 0, last_reset = ' . $this->db->dateNow() . ' WHERE user_id = ?', [$userId]);
         }
     }
 

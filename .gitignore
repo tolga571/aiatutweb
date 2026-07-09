@@ -1,0 +1,31 @@
+# ── Secrets ──────────────────────────
+.env
+
+# ── Dependencies ─────────────────────
+vendor/
+
+# ── Database ─────────────────────────
+data/*.db
+data/*.log
+*.sqlite
+
+# But keep flashcards data
+!data/flashcards_data.php
+
+# ── IDE / Editor ─────────────────────
+.agents/
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ───────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Cookie jar (cURL) ────────────────
+cookie.jar
+
+# ── Logs ─────────────────────────────
+*.log

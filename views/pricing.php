@@ -38,7 +38,21 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     $trialMessagesSent = $isTrialUser ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
     ?>
 
-    <?php if (!$isPaidUser): ?>
+    <?php if ($isPaidUser): ?>
+      <!-- Already subscribed message -->
+      <div class="max-w-xl mx-auto mb-10 p-8 rounded-2xl border border-primary/30 bg-primary/5 backdrop-blur-md shadow-lg text-center">
+        <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-4">
+          <span class="material-symbols-outlined text-[36px]">workspace_premium</span>
+        </div>
+        <span class="inline-block bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3"><?= __('pricing.status_active') ?></span>
+        <h3 class="text-2xl font-bold text-on-surface mb-2"><?= __('pricing.already_subscribed_title') ?></h3>
+        <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.already_subscribed_body') ?></p>
+        <a href="?page=chat" class="inline-flex items-center gap-2 bg-primary text-on-primary hover:opacity-90 font-semibold text-sm px-xl py-3 rounded-xl transition-all shadow-md glow-hover">
+          <?= __('pricing.go_to_chat') ?>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    <?php else: ?>
       <!-- Free Trial Promo Banner -->
       <div class="max-w-2xl mx-auto mb-10 p-6 rounded-2xl border border-primary/30 bg-surface-container-high/60 backdrop-blur-md shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 transition-all hover:border-primary/50">
         <!-- Glow effect -->
@@ -71,9 +85,8 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           </a>
         <?php endif; ?>
       </div>
-    <?php endif; ?>
 
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
       <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] border border-outline/20 relative">
         <div>
@@ -185,18 +198,20 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         </div>
       </div>
     </div>
+  <?php endif; ?>
   </div>
 </main>
 
 <!-- Payment processing modal -->
 <div id="payment-loading-modal" class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center z-[100] hidden">
   <div class="glass-panel max-w-sm w-full p-8 rounded-2xl border border-primary/30 text-center shadow-2xl">
-    <div class="relative flex justify-center mb-6">
-      <!-- Loading spinner with double ring glow -->
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+    <div id="payment-loading-content">
+      <div class="relative flex justify-center mb-6">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+      </div>
+      <h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.payment_modal_title') ?></h3>
+      <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.payment_modal_body') ?></p>
     </div>
-    <h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.payment_modal_title') ?></h3>
-    <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.payment_modal_body') ?></p>
   </div>
 </div>
 
@@ -223,25 +238,45 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
   function handleCheckoutSuccess() {
     // Show the processing overlay
     const modal = document.getElementById('payment-loading-modal');
+    const content = document.getElementById('payment-loading-content');
     if (modal) {
       modal.classList.remove('hidden');
     }
 
+    var pollCount = 0;
+    const maxPolls = 20; // 20 * 1.5s = 30 seconds
+
     // Start polling the server to verify webhook has completed the activation
     const interval = setInterval(function() {
+      pollCount++;
+      if (pollCount > maxPolls) {
+        clearInterval(interval);
+        if (content) {
+          content.innerHTML =
+            '<div class="w-16 h-16 rounded-2xl bg-error-container border border-error/30 flex items-center justify-center text-error mx-auto mb-4">' +
+              '<span class="material-symbols-outlined text-[36px]">warning</span>' +
+            '</div>' +
+            '<h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.timeout_title') ?></h3>' +
+            '<p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.timeout_body') ?></p>' +
+            '<div class="flex gap-3 justify-center">' +
+              '<a href="?page=pricing" class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30"><?= __('pricing.timeout_retry') ?></a>' +
+              '<a href="?page=chat" class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md"><?= __('pricing.timeout_chat') ?></a>' +
+            '</div>';
+        }
+        return;
+      }
       fetch('?page=check-payment-status')
         .then(response => response.json())
         .then(data => {
           if (data.paid) {
             clearInterval(interval);
-            // Redirect straight to chat page!
             window.location.href = '?page=chat';
           }
         })
         .catch(error => {
           console.error("Error checking payment status:", error);
         });
-    }, 1500); // check every 1.5 seconds
+    }, 1500);
   }
 
   function openCheckout(priceId) {

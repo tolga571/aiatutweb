@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => 'Deportes',
     'onboarding.interest_business' => 'Negocios',
     'onboarding.save_continue' => 'Guardar y continuar →',
+    'onboarding.same_lang_error' => 'El idioma nativo y el idioma de destino no pueden ser iguales.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Chat – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => 'Empezar a chatear',
     'chat.write_something' => 'Escribe algo en %s...',
     'chat.trial_expired_placeholder' => 'Tu prueba gratuita ha terminado. Elige un plan para continuar.',
+    'chat.trial_expired_banner' => 'Tu prueba gratuita ha terminado. ¡Elige un plan para seguir aprendiendo!',
     'chat.trial_remaining' => 'Prueba gratuita: %d de 5 mensajes restantes',
     'chat.send' => 'Enviar',
     'chat.you' => 'Tú',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => 'Activando tu cuenta. Por favor, no cierres esta página...',
     'pricing.price_id_error' => 'Error: El ID de precio no está configurado. Verifica tu archivo `.env`.',
     'pricing.checkout_error' => 'No se puede abrir la superposición de pago. Inténtalo de nuevo.',
+    'pricing.already_subscribed_title' => '¡Ya estás suscrito!',
+    'pricing.already_subscribed_body' => 'Ya tienes un plan activo. Vuelve al chat para seguir aprendiendo.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Panel – AiTut',

@@ -97,6 +97,17 @@
         const wasLearned = (card.review_status === 'mastered' || card.review_status === 'review');
         card.review_status = data.status;
         const isLearnedNow = (data.status === 'mastered' || data.status === 'review');
+
+        if (quality === 0) {
+          var cardEl = document.getElementById('grid-card-' + idx);
+          if (cardEl) {
+            cardEl.classList.remove('fc-shake');
+            void cardEl.offsetWidth;
+            cardEl.classList.add('fc-shake');
+            setTimeout(function () { cardEl.classList.remove('fc-shake'); }, 500);
+          }
+          showToast('Noted – come back to this', 'error');
+        }
         
         earnedXp += data.xp;
         var xpEl = document.getElementById('session-xp');
@@ -111,7 +122,6 @@
         updateListItem(idx);
         renderCardItemVisuals(idx);
         
-        // Optionally unflip after review
         setTimeout(function () { 
           const cardInner = document.getElementById('fc-inner-' + idx);
           if (cardInner) cardInner.classList.remove('is-flipped');
@@ -198,12 +208,18 @@
                 <h2 class="text-xl font-bold text-on-surface text-center" dir="ltr">${escHtml(c.translation)}</h2>
               </div>
               
-              <div class="w-full flex items-center justify-center gap-2 mt-auto" onclick="event.stopPropagation()">
-                <button onclick="reviewCardGrid(${i}, 0, event)" class="flex-1 py-1.5 text-[11px] font-bold rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20">
+              <div class="w-full grid grid-cols-2 gap-1.5 mt-auto" onclick="event.stopPropagation()">
+                <button onclick="reviewCardGrid(${i}, 0, event)" class="py-1.5 text-[10px] font-bold rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20">
                   Again
                 </button>
-                <button onclick="reviewCardGrid(${i}, 2, event)" class="flex-1 py-1.5 text-[11px] font-bold rounded bg-green-500/10 hover:bg-green-500/20 text-green-600 transition-colors border border-green-500/20">
-                  Got it!
+                <button onclick="reviewCardGrid(${i}, 1, event)" class="py-1.5 text-[10px] font-bold rounded bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 transition-colors border border-orange-500/20">
+                  Hard
+                </button>
+                <button onclick="reviewCardGrid(${i}, 2, event)" class="py-1.5 text-[10px] font-bold rounded bg-green-500/10 hover:bg-green-500/20 text-green-600 transition-colors border border-green-500/20">
+                  Good
+                </button>
+                <button onclick="reviewCardGrid(${i}, 3, event)" class="py-1.5 text-[10px] font-bold rounded bg-teal-500/10 hover:bg-teal-500/20 text-teal-500 transition-colors border border-teal-500/20">
+                  Easy
                 </button>
               </div>
             </div>

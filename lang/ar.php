@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => 'رياضة',
     'onboarding.interest_business' => 'أعمال',
     'onboarding.save_continue' => 'حفظ ومتابعة ←',
+    'onboarding.same_lang_error' => 'لا يمكن أن تكون اللغة الأم واللغة المستهدفة متماثلتين.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'المحادثة – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => 'ابدأ المحادثة',
     'chat.write_something' => 'اكتب شيئاً بـ %s...',
     'chat.trial_expired_placeholder' => 'انتهت الفترة التجريبية. يرجى اختيار خطة للمتابعة.',
+    'chat.trial_expired_banner' => 'انتهت النسخة التجريبية المجانية. اختر خطة لمواصلة التعلم!',
     'chat.trial_remaining' => 'تجربة مجانية: %d من 5 رسائل متبقية',
     'chat.send' => 'إرسال',
     'chat.you' => 'أنت',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => 'جارٍ تفعيل حسابك. يرجى عدم إغلاق هذه الصفحة...',
     'pricing.price_id_error' => 'خطأ: لم يتم تكوين معرف السعر. يرجى التحقق من إعدادات `.env` الخاصة بك.',
     'pricing.checkout_error' => 'تعذر فتح نافذة الدفع. يرجى المحاولة مرة أخرى.',
+    'pricing.already_subscribed_title' => 'أنت مشترك!',
+    'pricing.already_subscribed_body' => 'لديك بالفعل خطة نشطة. عد إلى الدردشة لمواصلة التعلم.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'لوحة التحكم – AiTut',

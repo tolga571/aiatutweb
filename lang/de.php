@@ -72,6 +72,7 @@ return [
     'onboarding.interest_sports' => 'Sport',
     'onboarding.interest_business' => 'Business',
     'onboarding.save_continue' => 'Speichern und fortfahren →',
+    'onboarding.same_lang_error' => 'Muttersprache und Zielsprache können nicht identisch sein.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Chat – AiTut',
@@ -93,6 +94,7 @@ return [
     'chat.start_chatting' => 'Chat starten',
     'chat.write_something' => 'Schreib etwas auf %s...',
     'chat.trial_expired_placeholder' => 'Deine Testversion ist abgelaufen. Bitte wähle einen Plan, um fortzufahren.',
+    'chat.trial_expired_banner' => 'Deine kostenlose Testversion ist abgelaufen. Wähle einen Plan, um weiterzulernen!',
     'chat.trial_remaining' => 'Kostenlose Testversion: %d von 5 Nachrichten übrig',
     'chat.send' => 'Senden',
     'chat.you' => 'Du',
@@ -229,6 +231,8 @@ return [
     'pricing.payment_modal_body' => 'Dein Konto wird aktiviert. Bitte schließe diese Seite nicht...',
     'pricing.price_id_error' => 'Fehler: Preis-ID ist nicht konfiguriert. Bitte überprüfe deine `.env`-Einstellungen.',
     'pricing.checkout_error' => 'Das Bezahl-Overlay konnte nicht geöffnet werden. Bitte versuche es erneut.',
+    'pricing.already_subscribed_title' => 'Du bist bereits Abonnent!',
+    'pricing.already_subscribed_body' => 'Du hast bereits einen aktiven Plan. Kehre zum Chat zurück, um weiterzulernen.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Dashboard – AiTut',

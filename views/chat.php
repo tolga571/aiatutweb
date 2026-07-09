@@ -14,7 +14,7 @@ $level = max(1, (int) floor($xp / 100) + 1);
 $xpInLevel = $xp % 100;
 $targetFlag = flagImg($currentUser['target_lang'] ?? 'en', 'w-6 h-4');
 $targetLang = strtolower($currentUser['target_lang'] ?? 'en');
-$topics = $chat->getTopics();
+$topics = $chat->getTopics($currentUser['interest_area'] ?? null);
 $langNames = ['en' => 'English', 'de' => 'German', 'fr' => 'French', 'es' => 'Spanish', 'zh' => 'Chinese', 'ja' => 'Japanese', 'ar' => 'Arabic', 'tr' => 'Turkish'];
 $targetLangName = $langNames[$targetLang] ?? strtoupper($targetLang);
 $activeConvId = isset($_GET['conv_id']) ? (int) $_GET['conv_id'] : null;
@@ -166,26 +166,67 @@ $topicDescriptions = [
               <span class="text-[9px] text-outline mt-0.5"><?= $timeAgo ?></span>
             </a>
           <?php endforeach; ?>
+          <div id="conv-search-empty" class="hidden text-center py-6 text-on-surface-variant text-xs">
+            <?= __('chat.search_no_results') ?>
+          </div>
         </div>
       </div>
 
       <!-- Language selector at bottom left -->
-      <div class="mt-auto pt-sm border-t border-outline-variant/10">
-        <div
-          class="flex items-center justify-between bg-primary/10 border border-primary/20 text-primary rounded-xl px-md py-2.5 font-semibold text-xs transition-colors">
+      <div class="mt-auto pt-sm border-t border-outline-variant/10 relative" id="lang-selector">
+        <div id="lang-selector-btn" class="flex items-center justify-between bg-primary/10 border border-primary/20 text-primary rounded-xl px-md py-2.5 font-semibold text-xs transition-colors cursor-pointer hover:bg-primary/20">
           <div class="flex items-center gap-2">
             <?= $targetFlag ?>
             <span><?= __("languages.{$targetLang}") ?></span>
           </div>
-          <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <svg class="w-3.5 h-3.5 shrink-0 transition-transform" id="lang-chevron" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </div>
+        <div id="lang-dropdown" class="hidden absolute bottom-full left-0 w-full mb-1 bg-surface-container border border-outline-variant/30 rounded-xl overflow-hidden shadow-lg z-50">
+          <?php foreach(['en','de','fr','es','zh','ja','ar','tr'] as $l): if($l === $targetLang) continue; ?>
+          <a href="?page=update_lang&lang=<?= $l ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-on-surface hover:bg-surface-variant transition">
+            <?= flagImg($l, 'w-4 h-3') ?>
+            <?= __("languages.{$l}") ?>
+          </a>
+          <?php endforeach; ?>
+        </div>
       </div>
+      <script>
+        (function() {
+          var btn = document.getElementById('lang-selector-btn');
+          var drop = document.getElementById('lang-dropdown');
+          var chevron = document.getElementById('lang-chevron');
+          if (!btn || !drop) return;
+          function closeLang() {
+            drop.classList.add('hidden');
+            if (chevron) chevron.classList.remove('rotate-90');
+          }
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            drop.classList.toggle('hidden');
+            if (chevron) chevron.classList.toggle('rotate-90');
+          });
+          document.addEventListener('click', function(e) {
+            if (!document.getElementById('lang-selector').contains(e.target)) closeLang();
+          });
+        })();
+      </script>
     </aside>
 
     <!-- Center: Chat Interface -->
     <section class="flex-1 flex flex-col relative bg-surface-dim h-full">
+      <?php if ($isTrialExpired): ?>
+      <div class="shrink-0 bg-error-container/90 backdrop-blur-md border-b border-error/30 px-xl py-3 flex items-center justify-between gap-md">
+        <div class="flex items-center gap-2 text-on-error-container text-sm">
+          <span class="material-symbols-outlined text-[18px]">info</span>
+          <span><?= __('chat.trial_expired_banner') ?></span>
+        </div>
+        <a href="?page=pricing" class="bg-error text-on-error text-xs font-bold px-4 py-1.5 rounded-lg hover:opacity-90 transition shrink-0 whitespace-nowrap">
+          <?= __('chat.view_plans') ?>
+        </a>
+      </div>
+      <?php endif; ?>
       <?php if ($activeConvId): ?>
         <!-- Context Header Bar -->
         <div
@@ -246,12 +287,12 @@ $topicDescriptions = [
       <div class="px-xl pb-lg pt-sm shrink-0">
         <div
           class="bg-surface-container border border-outline-variant/20 rounded-2xl flex items-center gap-md px-md py-sm <?= $isTrialExpired ? 'opacity-60' : '' ?>">
-          <!-- Plus Icon on Left -->
-          <button
+          <!-- Clear Input Button -->
+          <button id="btn-clear-input" title="Clear input"
             class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center shrink-0"
             <?= $isTrialExpired ? 'disabled' : '' ?>>
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
@@ -310,9 +351,10 @@ $topicDescriptions = [
           class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
           <span><?= __('chat.blogs_link') ?></span>
         </a>
-        <a href="#"
+        <a href="?page=blog"
           class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
           <span><?= __('chat.documents_link') ?></span>
+          <span class="material-symbols-outlined text-[14px]">description</span>
         </a>
         <a href="?page=chat-tips"
           class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
@@ -418,6 +460,12 @@ $topicDescriptions = [
     });
     sendBtn.addEventListener('click', sendMessage);
 
+    document.getElementById('btn-clear-input')?.addEventListener('click', function () {
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+      inputEl.focus();
+    });
+
     document.querySelectorAll('.topic-chip').forEach(btn => {
       btn.addEventListener('click', function () {
         if (isTrial && trialRemaining <= 0) {
@@ -450,14 +498,18 @@ $topicDescriptions = [
     if (searchInput) {
       searchInput.addEventListener('input', function () {
         const q = this.value.toLowerCase();
+        var visibleCount = 0;
         document.querySelectorAll('#conversations-list a').forEach(link => {
           const text = link.querySelector('span').textContent.toLowerCase();
           if (text.includes(q)) {
             link.classList.remove('hidden');
+            visibleCount++;
           } else {
             link.classList.add('hidden');
           }
         });
+        var emptyEl = document.getElementById('conv-search-empty');
+        if (emptyEl) emptyEl.classList.toggle('hidden', visibleCount > 0 || q === '');
       });
     }
 
@@ -466,12 +518,14 @@ $topicDescriptions = [
     <?php endif; ?>
 
     function loadConversation(convId) {
+      messagesEl.querySelectorAll('.message-row').forEach(el => el.remove());
+      var loadId = appendLoadingMessage();
       fetch('?page=chat&conv_id=' + convId, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
       })
         .then(r => r.json())
         .then(data => {
-          messagesEl.querySelectorAll('.message-row').forEach(el => el.remove());
+          removeLoadingMessage(loadId);
           (data.messages || []).forEach(msg => {
             if (msg.role === 'user') {
               appendMessage('user', msg.content);
@@ -481,6 +535,10 @@ $topicDescriptions = [
           });
           hideEmptyState();
           scrollBottom();
+        })
+        .catch(function () {
+          removeLoadingMessage(loadId);
+          showToast('<?= __('chat.http_error') ?>', 'error');
         });
     }
 
@@ -517,11 +575,15 @@ $topicDescriptions = [
               showTrialExpiredModal();
             }
           } else {
+            var wasNew = !conversationId;
             conversationId = data.conversationId;
             activeTopic = null;
             appendAiMessage(data);
             if (data.isTrial) {
               updateTrialRemaining(data.trialRemaining);
+            }
+            if (wasNew && conversationId) {
+              addConversationLink(conversationId, msg);
             }
           }
         })
@@ -817,6 +879,37 @@ $topicDescriptions = [
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = SPEECH_LANG_MAP[TARGET_LANG] || TARGET_LANG;
       window.speechSynthesis.speak(utterance);
+    }
+
+    function addConversationLink(id, firstMsg) {
+      var list = document.getElementById('conversations-list');
+      if (!list) return;
+      var existing = list.querySelector('[data-conv-id="' + id + '"]');
+      if (existing) return;
+      var a = document.createElement('a');
+      a.href = '?page=chat&conv_id=' + id;
+      a.setAttribute('data-conv-id', id);
+      a.className = 'conversation-link flex flex-col p-sm rounded-lg border bg-secondary-container/40 border-primary/30 text-primary transition-colors';
+      a.innerHTML =
+        '<span class="text-xs font-semibold truncate max-w-[200px]">' + escHtml(firstMsg) + '</span>' +
+        '<span class="text-[9px] text-outline mt-0.5"><?= __('chat.just_now') ?></span>';
+      list.insertBefore(a, list.firstChild);
+      updateUrl(id);
+    }
+
+    function updateUrl(convId) {
+      if (history.pushState) {
+        var url = new URL(window.location);
+        url.searchParams.set('page', 'chat');
+        url.searchParams.set('conv_id', convId);
+        window.history.pushState({}, '', url);
+      }
+    }
+
+    if (isTrial) {
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) window.location.reload();
+      });
     }
   })();
 </script>
