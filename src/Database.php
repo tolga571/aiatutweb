@@ -7,7 +7,6 @@ class Database {
 
     public function __construct(string $dbPath, string $dbUrl = '') {
         if (!empty($dbUrl) && extension_loaded('pdo_pgsql')) {
-            $this->isPostgres = true;
             $host = getenv('PGHOST') ?: '';
             $port = getenv('PGPORT') ?: '5432';
             $dbname = getenv('PGDATABASE') ?: '';
@@ -15,7 +14,7 @@ class Database {
             $pass = getenv('PGPASSWORD') ?: '';
             if (empty($host) || empty($dbname)) {
                 $parts = @parse_url($dbUrl);
-                if ($parts && isset($parts['host'])) {
+                if ($parts && isset($parts['host']) && !str_contains($parts['host'], '{{')) {
                     $host = $parts['host'];
                     $port = $parts['port'] ?? '5432';
                     $dbname = ltrim($parts['path'] ?? '/postgres', '/');
@@ -23,12 +22,20 @@ class Database {
                     $pass = $parts['pass'] ?? '';
                 }
             }
-            $dsn = sprintf(
-                'pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s',
-                $host, $port, $dbname, $user, $pass
-            );
-            $this->pdo = new \PDO($dsn);
-        } else {
+            if (!empty($host) && !empty($dbname)) {
+                $dsn = sprintf(
+                    'pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s',
+                    $host, $port, $dbname, $user, $pass
+                );
+                try {
+                    $this->isPostgres = true;
+                    $this->pdo = new \PDO($dsn);
+                } catch (\PDOException $e) {
+                    error_log('PostgreSQL connection failed: ' . $e->getMessage());
+                }
+            }
+        }
+        if (!isset($this->pdo)) {
             $this->isPostgres = false;
             $dsn = "sqlite:" . $dbPath;
             $this->pdo = new \PDO($dsn);
