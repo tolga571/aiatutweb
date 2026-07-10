@@ -23,10 +23,18 @@
       <?= __('home.subtitle') ?>
     </p>
 
+    <?php
+    $isLoggedIn = isset($auth) && $auth->isLoggedIn();
+    $hasPlan = false;
+    if ($isLoggedIn) {
+        $curr = $auth->currentUser();
+        $hasPlan = (($curr['plan_status'] ?? 'inactive') !== 'inactive' || ($curr['has_paid'] ?? 0) == 1);
+    }
+    ?>
     <div class="flex items-center justify-center gap-4">
-      <a href="<?= (isset($auth) && $auth->isLoggedIn()) ? '?page=chat' : '?page=register' ?>"
+      <a href="<?= $isLoggedIn ? '?page=chat' : '?page=register' ?>"
         class="bg-primary text-on-primary font-semibold px-8 py-3 rounded-xl transition text-body-lg hover:opacity-90">
-        <?= __('home.get_started') ?>
+        <?= $hasPlan ? (__('home.continue_learning') ?? 'Continue Learning') : __('home.get_started') ?>
       </a>
       <a href="?page=blog"
         class="border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface font-semibold px-8 py-3 rounded-xl transition text-body-lg">

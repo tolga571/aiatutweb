@@ -307,6 +307,7 @@ return [
     'home.heading' => 'Herhangi bir dili<br /><span class="text-primary">AI öğretmeninizle</span> öğrenin',
     'home.subtitle' => 'Seviyenize uyum sağlayan kişiselleştirilmiş bir AI ile konuşma pratiği yapın, anında düzeltmeler alın, kelime dağarcığınızı geliştirin.',
     'home.get_started' => 'Ücretsiz başla',
+    'home.continue_learning' => 'Öğrenmeye Devam Et',
     'home.read_blog' => 'Blogu oku',
     'home.feature_1_title' => 'CEFR uyumlu öğretmen',
     'home.feature_1_desc' => 'Kelime ve dil bilgisini A1\'den C2\'ye tam seviyenize göre uyarlar.',
