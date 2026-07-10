@@ -405,8 +405,30 @@ if ($quotaPercent > 75) {
         </a>
       </div>
 
-      <!-- Hidden Vocab Panel wrapper to avoid JavaScript query errors -->
-      <div id="vocab-panel" class="hidden"></div>
+      <!-- Dynamic Vocabulary & Sentences Panel -->
+      <div id="vocab-panel" class="flex-1 flex flex-col gap-md mt-2">
+        <div class="flex items-center gap-2 mb-1 px-1">
+           <span class="material-symbols-outlined text-primary text-[18px]">menu_book</span>
+           <span class="text-xs font-bold text-on-surface uppercase tracking-wider"><?= __('chat.study_session') ?? 'Study Session' ?></span>
+        </div>
+        <!-- Tabs -->
+        <div class="flex bg-surface-container-high rounded-lg p-1 shrink-0 border border-outline-variant/20">
+          <button id="tab-words" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all">Words</button>
+          <button id="tab-sentences" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Sentences</button>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="flex-1 relative min-h-[300px]">
+          <!-- Words List -->
+          <div id="vocab-words-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar transition-opacity duration-300">
+            <div class="text-center text-[10px] text-outline mt-4">New words will appear here...</div>
+          </div>
+          <!-- Sentences List -->
+          <div id="vocab-sentences-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="text-center text-[10px] text-outline mt-4">Sentences will appear here...</div>
+          </div>
+        </div>
+      </div>
     </aside>
   </div>
 </main>
@@ -850,6 +872,47 @@ if ($quotaPercent > 75) {
           </div>
         </div>
       </div>`;
+      
+      // -- Start Sidebar Population --
+      const wordsListEl = document.getElementById('vocab-words-list');
+      const sentencesListEl = document.getElementById('vocab-sentences-list');
+      
+      if (words.length && wordsListEl) {
+        if (wordsListEl.innerHTML.includes('New words will appear here')) {
+          wordsListEl.innerHTML = '';
+        }
+        words.forEach(w => {
+          const pron = w.pronunciation ? `<span class="text-[10px] text-outline ml-1 italic">(${escHtml(w.pronunciation)})</span>` : '';
+          const html = `
+          <div class="bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" onclick="speakText('${escAttr(w.word)}')">
+            <div class="flex justify-between items-start">
+              <strong class="text-primary text-sm">${escHtml(w.word)}</strong>
+              ${pron}
+            </div>
+            <div class="text-xs text-on-surface-variant mt-1">${escHtml(w.definition)}</div>
+          </div>`;
+          wordsListEl.insertAdjacentHTML('afterbegin', html);
+        });
+      }
+
+      if ((content || translation) && sentencesListEl) {
+         if (sentencesListEl.innerHTML.includes('Sentences will appear here')) {
+           sentencesListEl.innerHTML = '';
+         }
+         if (content.length > 10) {
+           const html = `
+           <div class="bg-surface-container p-sm rounded-xl border border-outline-variant/20 group relative">
+             <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText('${escAttr(content)}')">
+               <span class="material-symbols-outlined text-[14px]">volume_up</span>
+             </button>
+             <div class="text-sm text-on-surface pr-6 relative z-0" dir="${textDir}">${escHtml(content)}</div>
+             ${translation ? `<div class="text-xs text-on-surface-variant mt-2 pt-2 border-t border-outline-variant/10 italic relative z-0">"${escHtml(translation)}"</div>` : ''}
+           </div>`;
+           sentencesListEl.insertAdjacentHTML('afterbegin', html);
+         }
+      }
+      // -- End Sidebar Population --
+
       messagesEl.appendChild(row);
 
       row.querySelector('.ai-speak-btn')?.addEventListener('click', function () {
@@ -1039,6 +1102,28 @@ if ($quotaPercent > 75) {
         if (!document.hidden) window.location.reload();
       });
     }
+
+    // Sidebar Tabs Logic
+    const tabWords = document.getElementById('tab-words');
+    const tabSentences = document.getElementById('tab-sentences');
+    const wordsListUI = document.getElementById('vocab-words-list');
+    const sentencesListUI = document.getElementById('vocab-sentences-list');
+    
+    if (tabWords && tabSentences && wordsListUI && sentencesListUI) {
+      tabWords.addEventListener('click', () => {
+        tabWords.className = 'flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all';
+        tabSentences.className = 'flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all';
+        wordsListUI.classList.remove('opacity-0', 'pointer-events-none');
+        sentencesListUI.classList.add('opacity-0', 'pointer-events-none');
+      });
+      tabSentences.addEventListener('click', () => {
+        tabSentences.className = 'flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all';
+        tabWords.className = 'flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all';
+        sentencesListUI.classList.remove('opacity-0', 'pointer-events-none');
+        wordsListUI.classList.add('opacity-0', 'pointer-events-none');
+      });
+    }
+
   })();
 </script>
 
