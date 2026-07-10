@@ -24,7 +24,7 @@ class Chat {
 
     public function __construct(Database $db, array $config) {
         $this->db = $db;
-        $this->tokenManager = new TokenManager($db, $config['daily_token_limit'] ?? 1000);
+        $this->tokenManager = new TokenManager($db);
     }
 
     public function getTopics(?string $interest = null): array {
@@ -121,8 +121,8 @@ WORDS RULES:
 
     public function handleMessage(int $userId, string $message, GeminiClient $gemini, ?int $conversationId = null, ?string $topicId = null): array {
         $remaining = $this->tokenManager->getRemaining($userId);
-        if ($remaining <= 0) {
-            return ['error' => 'Daily message limit reached. Come back tomorrow!'];
+        if ($this->tokenManager->getRemaining($userId) <= 0) {
+            return ['error' => 'Monthly message limit reached. Check your plan limits!'];
         }
 
         $user = $this->db->fetchOne('SELECT * FROM users WHERE id = ?', [$userId]);

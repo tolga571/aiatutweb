@@ -127,9 +127,17 @@ class Database {
         $this->exec("CREATE TABLE IF NOT EXISTS token_usage (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id),
-            used_today INTEGER DEFAULT 0,
-            last_reset DATE
+            used_this_month INTEGER DEFAULT 0,
+            bonus_limit INTEGER DEFAULT 0,
+            last_reset_month TEXT
         )");
+        try {
+            $this->exec("ALTER TABLE token_usage ADD COLUMN used_this_month INTEGER DEFAULT 0");
+            $this->exec("ALTER TABLE token_usage ADD COLUMN bonus_limit INTEGER DEFAULT 0");
+            $this->exec("ALTER TABLE token_usage ADD COLUMN last_reset_month TEXT");
+        } catch (\Exception $e) {
+            // Columns might already exist
+        }
         $this->exec("CREATE TABLE IF NOT EXISTS vocabulary_words (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

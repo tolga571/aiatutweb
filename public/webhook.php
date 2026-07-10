@@ -104,10 +104,32 @@ if (strpos($eventType, 'subscription.') === 0) {
         }
 
         try {
+            // Check old plan status
+            $userRow = $db->fetchOne('SELECT plan_status FROM users WHERE id = ?', [$userId]);
+            $oldPlanStatus = $userRow ? ($userRow['plan_status'] ?? 'inactive') : 'inactive';
+
             $db->execute(
                 'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL WHERE id = ?',
                 [$planStatus, $hasPaid, $userId]
             );
+
+            // Handle Upgrade / Downgrade for Monthly limits
+            $planRanks = ['inactive' => 0, 'trial' => 0, 'starter' => 1, 'pro' => 2, 'active' => 3];
+            $planLimits = ['inactive' => 0, 'trial' => 5, 'starter' => 50, 'pro' => 500, 'active' => 1500];
+            
+            $oldRank = $planRanks[$oldPlanStatus] ?? 0;
+            $newRank = $planRanks[$planStatus] ?? 0;
+
+            if ($newRank > $oldRank) {
+                // Upgrade: Reset bonus
+                $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$userId]);
+                logWebhook($logFile, "UPGRADE: Reset bonus limit for User ID {$userId}");
+            } elseif ($newRank < $oldRank) {
+                // Downgrade: Add old plan's base limit to bonus limit
+                $oldLimit = $planLimits[$oldPlanStatus] ?? 0;
+                $db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$oldLimit, $userId]);
+                logWebhook($logFile, "DOWNGRADE: Added {$oldLimit} to bonus limit for User ID {$userId}");
+            }
 
             logWebhook($logFile, "SUCCESS: Updated User ID {$userId} to Status: {$planStatus}, has_paid: {$hasPaid}");
         } catch (\Exception $e) {
