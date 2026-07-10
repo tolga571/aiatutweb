@@ -244,8 +244,7 @@ switch ($page) {
 
     // ── Pricing ───────────────────────────────────
     case 'pricing':
-        $requireAuth();
-        $currentUser = $auth->currentUser();
+        $currentUser = $auth->isLoggedIn() ? $auth->currentUser() : null;
         require __DIR__ . '/../views/pricing.php';
         break;
 

@@ -33,9 +33,10 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     <?php endif; ?>
 
     <?php
-    $isTrialUser = (($currentUser['plan_status'] ?? '') === 'trial');
-    $isPaidUser = ($currentUser && !$isTrialUser && (($currentUser['plan_status'] ?? '') === 'active' || ($currentUser['has_paid'] ?? 0) == 1));
-    $trialMessagesSent = $isTrialUser ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
+    $isLoggedIn = $currentUser !== null;
+    $isTrialUser = $isLoggedIn && ($currentUser['plan_status'] ?? '') === 'trial';
+    $isPaidUser = $isLoggedIn && !$isTrialUser && (($currentUser['plan_status'] ?? '') === 'active' || ($currentUser['has_paid'] ?? 0) == 1);
+    $trialMessagesSent = $isTrialUser && $isLoggedIn ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
     ?>
 
     <?php if ($isPaidUser): ?>
@@ -300,6 +301,11 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       alert("<?= __('pricing.price_id_error') ?>");
       return;
     }
+
+    <?php if (!$isLoggedIn): ?>
+      window.location.href = '?page=login';
+      return;
+    <?php endif; ?>
 
     try {
       currentCheckout = await Paddle.Checkout.open({
