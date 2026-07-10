@@ -10,9 +10,14 @@ class GeminiClient {
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
+    private string $lastError = '';
 
     public function __construct(string $apiKey) {
         $this->apiKey = $apiKey;
+    }
+
+    public function getLastError(): string {
+        return $this->lastError;
     }
 
     public function chat(string $prompt): string {
@@ -64,17 +69,26 @@ class GeminiClient {
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json),
             ],
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_CONNECTTIMEOUT => 8,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
         $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errno = curl_errno($ch);
         $error = curl_error($ch);
         curl_close($ch);
+
         if ($errno) {
-            throw new \RuntimeException('cURL error: ' . $error);
+            $this->lastError = "cURL error ({$errno}): {$error}";
+            throw new \RuntimeException($this->lastError);
         }
+
+        if ($httpCode !== 200) {
+            $this->lastError = "Gemini API returned HTTP {$httpCode}: " . substr($result, 0, 200);
+            throw new \RuntimeException($this->lastError);
+        }
+
         return $result;
     }
 }

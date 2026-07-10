@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 require __DIR__ . '/../autoload.php';
 $config = require __DIR__ . '/../config.php';
 
@@ -399,7 +401,9 @@ switch ($page) {
                     $result['trialRemaining'] = max(0, 5 - $sent);
                 }
             } catch (\Throwable $e) {
-                $result = ['error' => 'AI unavailable, please try again.'];
+                error_log("Chat error: " . $e->getMessage());
+                http_response_code(503);
+                $result = ['error' => __('chat.http_error')];
             }
 
             header('Content-Type: application/json');
