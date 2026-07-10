@@ -404,6 +404,16 @@ switch ($page) {
             header('Location: ?page=dashboard');
             exit;
         }
+
+        // Compute quota for dashboard
+        $tokenManager = new \App\Src\TokenManager($db);
+        $quotaRemaining = $tokenManager->getRemaining($auth->userId());
+        $dashUser = $auth->currentUser();
+        $dashPlanStatus = $dashUser['plan_status'] ?? 'inactive';
+        $quotaTotal = $tokenManager->getBaseLimit($dashPlanStatus);
+        $tokenUsage = $db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$auth->userId()]);
+        $quotaTotal += ($tokenUsage ? (int)$tokenUsage['bonus_limit'] : 0);
+
         require __DIR__ . '/../views/dashboard.php';
         break;
 
@@ -460,6 +470,15 @@ switch ($page) {
 
         $conversations = $chat->getConversations($auth->userId());
         $currentUser   = $auth->currentUser();
+
+        // Compute quota for initial page load
+        $tokenManager = new \App\Src\TokenManager($db);
+        $quotaRemaining = $tokenManager->getRemaining($auth->userId());
+        $planStatus = $currentUser['plan_status'] ?? 'inactive';
+        $quotaTotal = $tokenManager->getBaseLimit($planStatus);
+        $tokenUsage = $db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$auth->userId()]);
+        $quotaTotal += ($tokenUsage ? (int)$tokenUsage['bonus_limit'] : 0);
+
         require __DIR__ . '/../views/chat.php';
         break;
 

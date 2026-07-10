@@ -74,6 +74,12 @@ return [
     'onboarding.save_continue' => 'Enregistrer et continuer →',
     'onboarding.same_lang_error' => 'La langue maternelle et la langue cible ne peuvent pas être identiques.',
 
+    // ── Dashboard ──────────────────────────────────────────
+    'dash.save_preferences' => 'Enregistrer les préférences',
+    'dash.pref_saved' => 'Préférences enregistrées avec succès.',
+    'dash.quota_title' => 'Votre quota mensuel',
+    'dash.quota_desc' => 'Il vous reste %d messages sur %d sur votre forfait %s.',
+
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Discussion – AiTut',
     'chat.go_to_chat' => 'Aller à la discussion',
@@ -84,6 +90,16 @@ return [
     'chat.new_chat' => 'Nouvelle discussion',
     'chat.search_conv' => 'Rechercher des conversations...',
     'chat.section_recent' => 'Conversations récentes',
+    'chat.quota_title' => 'Quota de messages',
+    'chat.quota_unit' => 'msg',
+    'chat.quota_renews' => 'Se renouvelle tous les mois',
+    'chat.quota_remaining_label' => 'Restant',
+    'chat.upgrade_plan' => 'Mettre à niveau',
+    'chat.plan_free' => 'Gratuit',
+    'chat.plan_trial' => 'Essai',
+    'chat.plan_starter' => 'Starter',
+    'chat.plan_pro' => 'Pro',
+    'chat.plan_premium' => 'Premium',
     'chat.just_now' => 'à l\'instant',
     'chat.mins_ago' => 'il y a quelques minutes',
     'chat.hours_ago' => 'il y a quelques heures',

@@ -74,6 +74,12 @@ return [
     'onboarding.save_continue' => 'Speichern und fortfahren →',
     'onboarding.same_lang_error' => 'Muttersprache und Zielsprache können nicht identisch sein.',
 
+    // ── Dashboard ──────────────────────────────────────────
+    'dash.save_preferences' => 'Einstellungen speichern',
+    'dash.pref_saved' => 'Einstellungen erfolgreich gespeichert.',
+    'dash.quota_title' => 'Dein monatliches Kontingent',
+    'dash.quota_desc' => 'Du hast noch %d von %d Nachrichten in deinem %s-Plan übrig.',
+
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Chat – AiTut',
     'chat.go_to_chat' => 'Zum Chat',
@@ -84,6 +90,16 @@ return [
     'chat.new_chat' => 'Neuer Chat',
     'chat.search_conv' => 'Konversationen durchsuchen...',
     'chat.section_recent' => 'Letzte Konversationen',
+    'chat.quota_title' => 'Nachrichtenkontingent',
+    'chat.quota_unit' => 'Nachr.',
+    'chat.quota_renews' => 'Erneuert sich monatlich',
+    'chat.quota_remaining_label' => 'Verbleibend',
+    'chat.upgrade_plan' => 'Plan aktualisieren',
+    'chat.plan_free' => 'Kostenlos',
+    'chat.plan_trial' => 'Testversion',
+    'chat.plan_starter' => 'Starter',
+    'chat.plan_pro' => 'Pro',
+    'chat.plan_premium' => 'Premium',
     'chat.just_now' => 'gerade eben',
     'chat.mins_ago' => 'Minuten her',
     'chat.hours_ago' => 'Stunden her',

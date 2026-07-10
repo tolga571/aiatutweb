@@ -74,6 +74,12 @@ return [
     'onboarding.save_continue' => '保存并继续 →',
     'onboarding.same_lang_error' => '母语和目标语言不能相同。',
 
+    // ── Dashboard ──────────────────────────────────────────
+    'dash.save_preferences' => '保存偏好设置',
+    'dash.pref_saved' => '偏好设置保存成功。',
+    'dash.quota_title' => '您的每月额度',
+    'dash.quota_desc' => '在您的 %3$s 计划中，%2$d 条消息还剩 %1$d 条。',
+
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => '聊天 – AiTut',
     'chat.go_to_chat' => '进入聊天',
@@ -84,6 +90,16 @@ return [
     'chat.new_chat' => '新建聊天',
     'chat.search_conv' => '搜索对话...',
     'chat.section_recent' => '最近的对话',
+    'chat.quota_title' => '消息额度',
+    'chat.quota_unit' => '条',
+    'chat.quota_renews' => '每月更新',
+    'chat.quota_remaining_label' => '剩余',
+    'chat.upgrade_plan' => '升级计划',
+    'chat.plan_free' => '免费',
+    'chat.plan_trial' => '试用',
+    'chat.plan_starter' => '入门',
+    'chat.plan_pro' => '专业',
+    'chat.plan_premium' => '高级',
     'chat.just_now' => '刚刚',
     'chat.mins_ago' => '分钟前',
     'chat.hours_ago' => '小时前',

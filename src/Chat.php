@@ -253,6 +253,13 @@ WORDS RULES:
         $tokens = (int)ceil((strlen($message) + strlen($content)) / 4);
         $this->tokenManager->addUsage($userId, max(1, $tokens));
 
+        // Compute remaining quota after usage
+        $quotaRemaining = $this->tokenManager->getRemaining($userId);
+        $quotaTotal = $this->tokenManager->getBaseLimit($planStatus);
+        // Add bonus to total for display
+        $usage = $this->db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$userId]);
+        $quotaTotal += ($usage ? (int)$usage['bonus_limit'] : 0);
+
         return [
             'content'             => $content,
             'phonetic'            => $phonetic,
@@ -265,6 +272,8 @@ WORDS RULES:
             'words'               => $words,
             'conversationId'      => $conversationId,
             'xpAwarded'           => 10,
+            'quotaRemaining'      => $quotaRemaining,
+            'quotaTotal'          => $quotaTotal,
         ];
     }
 

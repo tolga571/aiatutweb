@@ -32,6 +32,31 @@ $tips = [
 $tip = $tips[date('N') % count($tips)];
 $targetFlag = flagImg($user['target_lang'] ?? 'en', 'w-5 h-3.5');
 $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
+
+// Quota
+$quotaRemaining = $quotaRemaining ?? 0;
+$quotaTotal = $quotaTotal ?? 0;
+$quotaPercent = $quotaTotal > 0 ? round(($quotaRemaining / $quotaTotal) * 100) : 0;
+if ($quotaPercent > 75) {
+  $quotaBarColor = 'bg-green-500';
+  $quotaTextColor = 'text-green-400';
+} elseif ($quotaPercent > 50) {
+  $quotaBarColor = 'bg-yellow-500';
+  $quotaTextColor = 'text-yellow-400';
+} elseif ($quotaPercent > 25) {
+  $quotaBarColor = 'bg-orange-500';
+  $quotaTextColor = 'text-orange-400';
+} else {
+  $quotaBarColor = 'bg-red-500';
+  $quotaTextColor = 'text-red-400';
+}
+$planLabels = [
+  'trial'   => __('chat.plan_trial') ?? 'Trial',
+  'starter' => __('chat.plan_starter') ?? 'Starter',
+  'pro'     => __('chat.plan_pro') ?? 'Pro',
+  'active'  => __('chat.plan_premium') ?? 'Premium',
+];
+$planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_free') ?? 'Free';
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
@@ -63,6 +88,24 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
         <div class="bg-primary h-2 rounded-full transition-all" style="width:<?= $xpInLevel ?>%"></div>
       </div>
       <div class="text-center text-label-md text-outline mt-1"><?= sprintf(__('dash.total_xp'), $xp) ?></div>
+    </div>
+
+    <!-- Quota Sidebar Widget -->
+    <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-4">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-label-md text-outline font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] <?= $quotaTextColor ?>">bolt</span>
+          <?= __('chat.quota_title') ?? 'Message Quota' ?>
+        </span>
+        <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20"><?= htmlspecialchars($planLabel) ?></span>
+      </div>
+      <div class="w-full bg-surface-container-highest rounded-full h-2 mb-1">
+        <div class="<?= $quotaBarColor ?> h-2 rounded-full transition-all" style="width:<?= $quotaPercent ?>%"></div>
+      </div>
+      <div class="flex justify-between text-label-md text-outline mt-1">
+        <span class="<?= $quotaTextColor ?> font-semibold"><?= $quotaRemaining ?> / <?= $quotaTotal ?></span>
+        <span><?= __('chat.quota_renews') ?? 'Renews monthly' ?></span>
+      </div>
     </div>
 
     <div class="grid grid-cols-2 gap-2">
@@ -122,6 +165,34 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
       <div class="bg-primary/10 border border-primary/20 rounded-2xl p-5">
         <div class="text-label-md text-primary font-semibold uppercase tracking-wide mb-2"><?= __('dash.tip_title') ?></div>
         <p class="text-body-md text-on-surface-variant"><?= htmlspecialchars($tip) ?></p>
+      </div>
+
+      <!-- Quota Overview Card -->
+      <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="font-headline-sm text-headline-sm text-on-surface mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined <?= $quotaTextColor ?>">bolt</span>
+            <?= __('dash.quota_title') ?? 'Your Monthly Quota' ?>
+          </h2>
+          <p class="text-body-md text-on-surface-variant">
+            <?= sprintf(__('dash.quota_desc') ?? 'You have %d messages remaining out of %d on your %s plan.', $quotaRemaining, $quotaTotal, htmlspecialchars($planLabel)) ?>
+          </p>
+        </div>
+        <div class="shrink-0 flex items-center gap-4">
+          <div class="relative w-16 h-16 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90">
+              <circle cx="32" cy="32" r="28" class="stroke-outline-variant/20 fill-transparent" stroke-width="6"></circle>
+              <circle cx="32" cy="32" r="28" class="stroke-current <?= $quotaTextColor ?> fill-transparent" stroke-width="6"
+                stroke-dasharray="175.9" stroke-dashoffset="<?= 175.9 * (1 - $quotaPercent / 100) ?>"></circle>
+            </svg>
+            <span class="absolute text-sm font-bold <?= $quotaTextColor ?>"><?= $quotaPercent ?>%</span>
+          </div>
+          <?php if (($user['plan_status'] ?? '') === 'trial' || ($user['plan_status'] ?? '') === 'inactive'): ?>
+            <a href="?page=pricing" class="bg-primary text-on-primary font-bold text-sm px-4 py-2 rounded-xl hover:opacity-90 transition whitespace-nowrap glow-hover">
+              <?= __('chat.upgrade_plan') ?? 'Upgrade Plan' ?>
+            </a>
+          <?php endif; ?>
+        </div>
       </div>
 
       <a href="?page=chat" class="flex items-center justify-between bg-surface-container border border-outline-variant/20 hover:border-primary/50 rounded-2xl p-5 transition group">

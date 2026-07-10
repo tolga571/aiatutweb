@@ -74,6 +74,12 @@ return [
     'onboarding.save_continue' => '保存して次へ →',
     'onboarding.same_lang_error' => '母国語と学習言語は同じにできません。',
 
+    // ── Dashboard ──────────────────────────────────────────
+    'dash.save_preferences' => '設定を保存',
+    'dash.pref_saved' => '設定が正常に保存されました。',
+    'dash.quota_title' => '今月のクォータ',
+    'dash.quota_desc' => '%3$sプランで、%2$d件中%1$d件のメッセージが残っています。',
+
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'チャット – AiTut',
     'chat.go_to_chat' => 'チャットへ',
@@ -84,6 +90,16 @@ return [
     'chat.new_chat' => '新しいチャット',
     'chat.search_conv' => '会話を検索...',
     'chat.section_recent' => '最近の会話',
+    'chat.quota_title' => 'メッセージクォータ',
+    'chat.quota_unit' => '件',
+    'chat.quota_renews' => '毎月更新',
+    'chat.quota_remaining_label' => '残り',
+    'chat.upgrade_plan' => 'プランをアップグレード',
+    'chat.plan_free' => '無料',
+    'chat.plan_trial' => 'トライアル',
+    'chat.plan_starter' => 'スターター',
+    'chat.plan_pro' => 'プロ',
+    'chat.plan_premium' => 'プレミアム',
     'chat.just_now' => 'たった今',
     'chat.mins_ago' => '分前',
     'chat.hours_ago' => '時間前',

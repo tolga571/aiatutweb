@@ -74,6 +74,12 @@ return [
     'onboarding.save_continue' => 'حفظ ومتابعة ←',
     'onboarding.same_lang_error' => 'لا يمكن أن تكون اللغة الأم واللغة المستهدفة متماثلتين.',
 
+    // ── Dashboard ──────────────────────────────────────────
+    'dash.save_preferences' => 'حفظ التفضيلات',
+    'dash.pref_saved' => 'تم حفظ التفضيلات بنجاح.',
+    'dash.quota_title' => 'حصتك الشهرية',
+    'dash.quota_desc' => 'لديك %1$d رسالة متبقية من أصل %2$d في خطة %3$s الخاصة بك.',
+
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'المحادثة – AiTut',
     'chat.go_to_chat' => 'اذهب إلى المحادثة',
@@ -84,6 +90,16 @@ return [
     'chat.new_chat' => 'محادثة جديدة',
     'chat.search_conv' => 'البحث في المحادثات...',
     'chat.section_recent' => 'المحادثات الأخيرة',
+    'chat.quota_title' => 'حصة الرسائل',
+    'chat.quota_unit' => 'رسالة',
+    'chat.quota_renews' => 'يتجدد شهرياً',
+    'chat.quota_remaining_label' => 'المتبقي',
+    'chat.upgrade_plan' => 'ترقية الخطة',
+    'chat.plan_free' => 'مجاني',
+    'chat.plan_trial' => 'تجربة',
+    'chat.plan_starter' => 'مبتدئ',
+    'chat.plan_pro' => 'برو',
+    'chat.plan_premium' => 'مميز',
     'chat.just_now' => 'الآن',
     'chat.mins_ago' => 'دقائق مضت',
     'chat.hours_ago' => 'ساعات مضت',

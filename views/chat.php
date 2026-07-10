@@ -27,6 +27,33 @@ $topicDescriptions = [
   'daily' => __('chat.topic_daily'),
   'smalltalk' => __('chat.topic_smalltalk'),
 ];
+
+// Quota / remaining rights
+$quotaRemaining = $quotaRemaining ?? 0;
+$quotaTotal = $quotaTotal ?? 0;
+$userPlanStatus = $currentUser['plan_status'] ?? 'inactive';
+$planLabels = [
+  'trial'   => __('chat.plan_trial'),
+  'starter' => __('chat.plan_starter'),
+  'pro'     => __('chat.plan_pro'),
+  'active'  => __('chat.plan_premium'),
+];
+$planLabel = $planLabels[$userPlanStatus] ?? __('chat.plan_free');
+$quotaPercent = $quotaTotal > 0 ? round(($quotaRemaining / $quotaTotal) * 100) : 0;
+// Color coding based on percentage
+if ($quotaPercent > 75) {
+  $quotaBarColor = 'bg-green-500';
+  $quotaTextColor = 'text-green-400';
+} elseif ($quotaPercent > 50) {
+  $quotaBarColor = 'bg-yellow-500';
+  $quotaTextColor = 'text-yellow-400';
+} elseif ($quotaPercent > 25) {
+  $quotaBarColor = 'bg-orange-500';
+  $quotaTextColor = 'text-orange-400';
+} else {
+  $quotaBarColor = 'bg-red-500';
+  $quotaTextColor = 'text-red-400';
+}
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 
@@ -113,6 +140,26 @@ $topicDescriptions = [
               stroke-dasharray="125.6" stroke-dashoffset="<?= 125.6 * (1 - $xpInLevel / 100) ?>"></circle>
           </svg>
           <span class="absolute text-[10px] font-bold text-on-surface"><?= $xpInLevel ?></span>
+        </div>
+      </div>
+
+      <!-- Quota / Remaining Rights Card -->
+      <div id="quota-card" class="bg-surface-container p-md rounded-xl border border-outline-variant/20">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] <?= $quotaTextColor ?>" id="quota-icon">bolt</span>
+            <span class="text-xs font-semibold text-on-surface"><?= __('chat.quota_title') ?></span>
+          </div>
+          <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/20" id="quota-plan-badge"><?= htmlspecialchars($planLabel) ?></span>
+        </div>
+        <div class="w-full bg-surface-container-highest rounded-full h-2 mb-1.5">
+          <div id="quota-bar" class="<?= $quotaBarColor ?> h-2 rounded-full transition-all duration-500 ease-out" style="width:<?= $quotaPercent ?>%"></div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold <?= $quotaTextColor ?>" id="quota-text">
+            <span id="quota-remaining-val"><?= $quotaRemaining ?></span> / <span id="quota-total-val"><?= $quotaTotal ?></span> <?= __('chat.quota_unit') ?>
+          </span>
+          <span class="text-[9px] text-outline"><?= __('chat.quota_renews') ?></span>
         </div>
       </div>
 
@@ -302,11 +349,19 @@ $topicDescriptions = [
           </button>
         </div>
 
-        <!-- Trial remaining count badge -->
-        <div id="trial-remaining-badge"
-          class="mt-2 text-center text-[11px] text-primary font-medium flex items-center justify-center gap-1 <?= $isTrial ? '' : 'hidden' ?>">
-          <span class="material-symbols-outlined text-[14px]">info</span>
-          <span><?= str_replace('%d', '<strong id="trial-remaining-count">' . max(0, $trialLimit - $trialMessagesSent) . '</strong>', __('chat.trial_remaining')) ?></span>
+        <!-- Quota remaining badge (all plans) -->
+        <div id="quota-remaining-badge"
+          class="mt-2 text-center text-[11px] font-medium flex items-center justify-center gap-1.5 <?= $quotaTextColor ?>">
+          <span class="material-symbols-outlined text-[14px]">bolt</span>
+          <span>
+            <?= __('chat.quota_remaining_label') ?>:
+            <strong id="input-quota-remaining"><?= $quotaRemaining ?></strong> / <?= $quotaTotal ?>
+            <?= __('chat.quota_unit') ?>
+          </span>
+          <?php if ($isTrial): ?>
+            <span class="text-outline">·</span>
+            <a href="?page=pricing" class="text-primary hover:underline font-semibold"><?= __('chat.upgrade_plan') ?></a>
+          <?php endif; ?>
         </div>
       </div>
     </section>
@@ -396,6 +451,8 @@ $topicDescriptions = [
   (function () {
     let isTrial = <?= $isTrial ? 'true' : 'false' ?>;
     let trialRemaining = <?= $isTrial ? max(0, $trialLimit - $trialMessagesSent) : 'null' ?>;
+    let quotaRemaining = <?= (int)$quotaRemaining ?>;
+    let quotaTotal = <?= (int)$quotaTotal ?>;
 
     function updateTrialRemaining(remaining) {
       trialRemaining = remaining;
@@ -577,6 +634,10 @@ $topicDescriptions = [
             appendAiMessage(data);
             if (data.isTrial) {
               updateTrialRemaining(data.trialRemaining);
+            }
+            // Update quota display for all plans
+            if (typeof data.quotaRemaining !== 'undefined') {
+              updateQuotaDisplay(data.quotaRemaining, data.quotaTotal || quotaTotal);
             }
             if (wasNew && conversationId) {
               addConversationLink(conversationId, msg);
@@ -844,6 +905,58 @@ $topicDescriptions = [
           toast.remove();
         }, 300);
       }, 4000);
+    }
+
+    function updateQuotaDisplay(remaining, total) {
+      quotaRemaining = remaining;
+      quotaTotal = total;
+      var pct = total > 0 ? Math.round((remaining / total) * 100) : 0;
+
+      // Determine color class
+      var barColor, textColorClass;
+      if (pct > 75) { barColor = 'bg-green-500'; textColorClass = 'text-green-400'; }
+      else if (pct > 50) { barColor = 'bg-yellow-500'; textColorClass = 'text-yellow-400'; }
+      else if (pct > 25) { barColor = 'bg-orange-500'; textColorClass = 'text-orange-400'; }
+      else { barColor = 'bg-red-500'; textColorClass = 'text-red-400'; }
+
+      // Update sidebar quota card
+      var bar = document.getElementById('quota-bar');
+      if (bar) {
+        bar.style.width = pct + '%';
+        bar.className = bar.className.replace(/bg-(green|yellow|orange|red)-500/g, '');
+        bar.classList.add(barColor);
+      }
+      var remVal = document.getElementById('quota-remaining-val');
+      if (remVal) remVal.textContent = remaining;
+      var totVal = document.getElementById('quota-total-val');
+      if (totVal) totVal.textContent = total;
+
+      // Update quota text color in sidebar
+      var quotaTextEl = document.getElementById('quota-text');
+      if (quotaTextEl) {
+        quotaTextEl.className = quotaTextEl.className.replace(/text-(green|yellow|orange|red)-400/g, '');
+        quotaTextEl.classList.add(textColorClass);
+      }
+      var quotaIconEl = document.getElementById('quota-icon');
+      if (quotaIconEl) {
+        quotaIconEl.className = quotaIconEl.className.replace(/text-(green|yellow|orange|red)-400/g, '');
+        quotaIconEl.classList.add(textColorClass);
+      }
+
+      // Update input area badge
+      var inputRemaining = document.getElementById('input-quota-remaining');
+      if (inputRemaining) inputRemaining.textContent = remaining;
+      var inputBadge = document.getElementById('quota-remaining-badge');
+      if (inputBadge) {
+        inputBadge.className = inputBadge.className.replace(/text-(green|yellow|orange|red)-400/g, '');
+        inputBadge.classList.add(textColorClass);
+      }
+
+      // Pulse animation on update
+      if (bar) {
+        bar.classList.add('animate-pulse');
+        setTimeout(function() { bar.classList.remove('animate-pulse'); }, 1000);
+      }
     }
 
     function hideEmptyState() {
