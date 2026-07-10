@@ -21,7 +21,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       <p class="text-body-lg text-on-surface-variant max-w-xl mx-auto"><?= __('pricing.subtitle') ?></p>
     </div>
 
-    <?php if (empty($paddleClientToken)): ?>
+    <?php if (empty($paddleClientToken) && $paddleEnvironment !== 'production'): ?>
       <!-- Configuration warning banner for the developer -->
       <div class="bg-error-container border border-error text-on-error-container p-4 rounded-xl mb-8 max-w-lg mx-auto text-left flex items-start gap-3">
         <span class="material-symbols-outlined text-error text-2xl">warning</span>

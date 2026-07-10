@@ -33,6 +33,7 @@ return [
     'nav.login' => 'Giriş Yap',
     'nav.register' => 'Başla',
     'nav.logged_in_as' => 'Giriş yapan kullanıcı',
+    'nav.learning_language' => 'Öğrenilen Dil',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Tekrar hoş geldiniz',
@@ -57,6 +58,13 @@ return [
     'auth.error_invalid_name' => 'Lütfen adınızı girin (en az 2 karakter).',
     'auth.error_weak_password' => 'Şifre en az 8 karakter uzunluğunda olmalıdır.',
     'auth.registration_failed' => 'Kayıt başarısız. E-posta zaten kullanılıyor olabilir.',
+    'auth.confirm_password' => 'Şifreyi Onayla',
+    'auth.terms_agreement' => 'Şunları kabul ediyorum:',
+    'auth.terms' => 'Hizmet Şartları',
+    'auth.and' => 've',
+    'auth.privacy' => 'Gizlilik Politikası',
+    'auth.error_password_mismatch' => 'Şifreler eşleşmiyor.',
+    'auth.error_terms' => 'Hizmet şartlarını ve gizlilik politikasını kabul etmelisiniz.',
     'auth.message_empty' => 'Mesaj boş olamaz.',
     'auth.ai_unavailable' => 'Yapay zeka kullanılamıyor, lütfen tekrar deneyin.',
     'auth.or_continue_with' => 'Veya şununla devam et',
@@ -82,6 +90,17 @@ return [
     'onboarding.interest_business' => 'İş',
     'onboarding.save_continue' => 'Kaydet ve devam et →',
     'onboarding.same_lang_error' => 'Ana dil ve öğrenilecek dil aynı olamaz.',
+
+    // ── Dashboard ──────────────────────────────────────────────────
+    'dash.day_streak' => 'Günlük Seri',
+    'dash.words_today' => 'Bugün Öğrenilen',
+    'dash.review_time' => 'Hızlı bir tekrar zamanı!',
+    'dash.review_desc' => 'Tekrar edilmeyi bekleyen %d kelimeniz var. Serinizi koruyun!',
+    'dash.preferences' => 'Tercihler',
+    'dash.interface_language' => 'Arayüz Dili',
+    'dash.cefr_level' => 'CEFR Seviyesi',
+    'dash.save_preferences' => 'Tercihleri Kaydet',
+    'dash.pref_saved' => 'Tercihler başarıyla kaydedildi.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Sohbet – AiTut',
@@ -126,6 +145,7 @@ return [
     'chat.trial_expired_title' => 'Ücretsiz Deneme Süreniz Sona Erdi!',
     'chat.trial_expired_body' => 'AiTut\'un akıllı yapay zeka öğretmeniyle pratik yapmaktan keyif aldınız mı? Dil öğrenme yolculuğunuzu kesintisiz sürdürmek için bir plan seçin.',
     'chat.review_chat' => 'Sohbeti İncele',
+    'chat.keep_reading' => 'Okumaya Devam Et',
     'chat.view_plans' => 'Planları Gör',
     'chat.http_error' => 'Sohbet başarısız (HTTP 503)',
     'chat.error_ai_unavailable' => 'AI hizmeti kullanılamıyor. Mesajınız kaydedildi.',

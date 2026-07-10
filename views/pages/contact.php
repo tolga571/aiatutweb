@@ -23,35 +23,18 @@
         </p>
       </div>
 
-      <!-- Form -->
-      <form method="POST" action="mailto:support@aitut.com" class="space-y-5">
-        <div>
-          <label for="name" class="block text-body-md text-on-surface-variant mb-1.5 font-medium"><?= __('contact.name_label') ?></label>
-          <input type="text" id="name" name="name" required 
-            class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
-            placeholder="<?= __('contact.name_placeholder') ?>" />
+      <!-- Contact Link -->
+      <div class="bg-surface-container border border-outline-variant/30 rounded-xl p-6 text-center">
+        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 mx-auto mb-3">
+          <span class="material-symbols-outlined text-primary text-2xl">alternate_email</span>
         </div>
-
-        <div>
-          <label for="email" class="block text-body-md text-on-surface-variant mb-1.5 font-medium"><?= __('contact.email_label') ?></label>
-          <input type="email" id="email" name="email" required 
-            class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
-            placeholder="<?= __('contact.email_placeholder') ?>" />
-        </div>
-
-        <div>
-          <label for="message" class="block text-body-md text-on-surface-variant mb-1.5 font-medium"><?= __('contact.message_label') ?></label>
-          <textarea id="message" name="message" rows="5" required 
-            class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition resize-none"
-            placeholder="<?= __('contact.message_placeholder') ?>"></textarea>
-        </div>
-
-        <button type="submit" 
-          class="w-full bg-primary text-on-primary font-semibold py-3.5 rounded-xl transition duration-300 hover:opacity-90 flex items-center justify-center gap-2 shadow-lg hover:shadow-primary/10">
+        <h3 class="text-body-lg font-semibold text-on-surface mb-1"><?= __('contact.email_us') ?? 'Email Us' ?></h3>
+        <p class="text-body-md text-on-surface-variant mb-4"><?= __('contact.email_desc') ?? 'We typically reply within 24 hours.' ?></p>
+        <a href="mailto:support@aitut.com" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-semibold py-2.5 px-6 rounded-xl transition duration-300 hover:opacity-90 shadow-md">
           <span class="material-symbols-outlined text-[20px]">send</span>
-          <span><?= __('contact.send_btn') ?></span>
-        </button>
-      </form>
+          <span>support@aitut.com</span>
+        </a>
+      </div>
 
     </div>
   </div>

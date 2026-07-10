@@ -48,12 +48,9 @@ $topicDescriptions = [
       class="text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors"><?= __('chat.my_profile') ?></a>
   </div>
   <div class="flex items-center gap-md">
-    <button
-      class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M12 3v2.25m0 13.5V21m8.944-11.25h-2.25M5.056 10.75H2.81m15.356-6.878l-1.591 1.591M6.823 17.177l-1.591 1.591m12.728 0l-1.591-1.591M6.823 4.823L5.232 6.414M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" />
-      </svg>
+    <button onclick="document.getElementById('chat-sidebar').classList.toggle('hidden'); document.getElementById('chat-sidebar').classList.toggle('flex');"
+      class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50">
+      <span class="material-symbols-outlined text-[24px]">menu</span>
     </button>
     <div class="relative inline-block text-left group">
       <button
@@ -92,11 +89,14 @@ $topicDescriptions = [
   <div class="flex flex-1 overflow-hidden h-full w-full">
 
     <!-- Left Sidebar -->
-    <aside
-      class="hidden md:flex w-64 bg-surface-container-low/30 flex-col border-r border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0">
-      <!-- User Email -->
-      <div class="flex items-center gap-sm text-on-surface-variant text-[11px] mb-xs">
+    <aside id="chat-sidebar"
+      class="hidden absolute z-40 md:relative md:flex w-64 h-full bg-surface-container-low/95 backdrop-blur-xl flex-col border-r border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0 shadow-2xl md:shadow-none">
+      <!-- User Email & Mobile Close -->
+      <div class="flex items-center justify-between gap-sm text-on-surface-variant text-[11px] mb-xs">
         <span class="truncate"><?= htmlspecialchars($currentUser['email'] ?? '') ?></span>
+        <button onclick="document.getElementById('chat-sidebar').classList.add('hidden')" class="md:hidden p-1 rounded-full hover:bg-surface-variant/50">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
       </div>
 
       <!-- Your Progress Card -->
@@ -104,7 +104,7 @@ $topicDescriptions = [
         class="bg-surface-container p-md rounded-xl border border-outline-variant/20 flex items-center justify-between gap-sm">
         <div class="flex flex-col">
           <span class="text-xs text-on-surface-variant font-medium"><?= __('chat.your_progress') ?></span>
-          <span class="text-xl font-bold text-primary mt-1"><?= $xpInLevel ?>%</span>
+          <span class="text-sm font-bold text-primary mt-1">Level <?= $level ?> &middot; <?= $xpInLevel ?>/100 XP</span>
         </div>
         <div class="relative w-12 h-12 flex items-center justify-center">
           <svg class="w-full h-full transform -rotate-90">
@@ -112,12 +112,12 @@ $topicDescriptions = [
             <circle cx="24" cy="24" r="20" class="stroke-primary fill-transparent" stroke-width="4"
               stroke-dasharray="125.6" stroke-dashoffset="<?= 125.6 * (1 - $xpInLevel / 100) ?>"></circle>
           </svg>
-          <span class="absolute text-[10px] font-bold text-on-surface"><?= $xpInLevel ?>%</span>
+          <span class="absolute text-[10px] font-bold text-on-surface"><?= $xpInLevel ?></span>
         </div>
       </div>
 
       <!-- New Chat Button -->
-      <a href="?page=chat"
+      <a href="?page=chat&new=1"
         class="flex items-center justify-center gap-2 bg-primary-container hover:bg-primary/20 text-on-primary-container border border-primary/20 rounded-xl py-3 px-md font-semibold text-sm transition-all shadow-md">
         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -351,11 +351,6 @@ $topicDescriptions = [
           class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
           <span><?= __('chat.blogs_link') ?></span>
         </a>
-        <a href="?page=blog"
-          class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
-          <span><?= __('chat.documents_link') ?></span>
-          <span class="material-symbols-outlined text-[14px]">description</span>
-        </a>
         <a href="?page=chat-tips"
           class="text-xs text-on-surface-variant hover:text-primary transition-colors py-2 flex items-center justify-between">
           <span><?= __('chat.instructions_link') ?></span>
@@ -393,7 +388,7 @@ $topicDescriptions = [
       <div class="flex flex-col sm:flex-row gap-3 w-full justify-center">
         <button onclick="document.getElementById('trial-expired-modal').classList.add('hidden')"
           class="w-full sm:w-auto bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30">
-          <?= __('chat.review_chat') ?>
+          <?= __('chat.keep_reading') ?? 'Keep Reading' ?>
         </button>
         <a href="?page=pricing"
           class="w-full sm:w-auto bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 glow-hover">

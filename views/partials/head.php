@@ -115,4 +115,10 @@ tailwind.config = {
 }
 </script>
 </head>
-<body class="bg-surface-dim text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<?php
+$isAppPage = in_array($_GET['page'] ?? 'home', ['chat', 'flashcards', 'dashboard']);
+$bodyClasses = $isAppPage 
+    ? 'bg-surface-dim text-on-surface font-body-md overflow-hidden h-screen flex flex-col' 
+    : 'bg-surface-dim text-on-surface font-body-md min-h-screen flex flex-col';
+?>
+<body class="<?= $bodyClasses ?>">

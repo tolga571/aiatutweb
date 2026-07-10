@@ -46,9 +46,9 @@ Language::load($detectedLang);
 $page = $_GET['page'] ?? 'home';
 
 // Auth-required pages helper
-$requireAuth = function() use ($auth) {
+$requireAuth = function() use ($auth, $page) {
     if (!$auth->isLoggedIn()) {
-        header('Location: ?page=login');
+        header('Location: ?page=login&redirect=' . urlencode($page));
         exit;
     }
 };
@@ -69,7 +69,8 @@ switch ($page) {
             $email = trim($_POST['email'] ?? '');
             $pass  = $_POST['password'] ?? '';
             if ($auth->login($email, $pass)) {
-                header('Location: ?page=dashboard'); exit;
+                $redirect = $_GET['redirect'] ?? 'dashboard';
+                header('Location: ?page=' . urlencode($redirect)); exit;
             }
             $loginError = $auth->lastError ?: __('auth.error_generic');
         }
@@ -84,7 +85,9 @@ switch ($page) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $pass  = $_POST['password'] ?? '';
+            $pass_confirm = $_POST['password_confirm'] ?? '';
             $name  = trim($_POST['name'] ?? '');
+            $terms = isset($_POST['terms']);
             $errors = [];
             if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errors[] = __('auth.error_invalid_email');
@@ -95,10 +98,17 @@ switch ($page) {
             if (strlen($pass) < 8) {
                 $errors[] = __('auth.error_weak_password');
             }
+            if ($pass !== $pass_confirm) {
+                $errors[] = __('auth.error_password_mismatch');
+            }
+            if (!$terms) {
+                $errors[] = __('auth.error_terms');
+            }
             if (empty($errors)) {
                 if ($auth->register($email, $pass, $name)) {
                     $auth->login($email, $pass);
-                    header('Location: ?page=onboarding'); exit;
+                    $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
+                    header('Location: ?page=onboarding' . $redirect); exit;
                 }
                 $errors[] = __('auth.registration_failed');
             }
@@ -197,9 +207,11 @@ switch ($page) {
                     }
                     
                     if ($auth->hasCompletedOnboarding()) {
-                        header('Location: ?page=dashboard');
+                        $redirect = $_GET['redirect'] ?? 'dashboard';
+                        header('Location: ?page=' . urlencode($redirect));
                     } else {
-                        header('Location: ?page=onboarding');
+                        $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
+                        header('Location: ?page=onboarding' . $redirect);
                     }
                     exit;
                 }
@@ -220,7 +232,8 @@ switch ($page) {
     case 'onboarding':
         $requireAuth();
         if ($auth->hasCompletedOnboarding()) {
-            header('Location: ?page=dashboard'); exit;
+            $redirect = $_GET['redirect'] ?? 'dashboard';
+            header('Location: ?page=' . urlencode($redirect)); exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $native = $_POST['native_lang'] ?? 'en';
@@ -236,7 +249,8 @@ switch ($page) {
                     $_POST['learning_goal'] ?? 'conversation',
                     $_POST['interest_area'] ?? 'general'
                 );
-                header('Location: ?page=dashboard'); exit;
+                $redirect = $_GET['redirect'] ?? 'start-trial';
+                header('Location: ?page=' . urlencode($redirect)); exit;
             }
         }
         require __DIR__ . '/../views/onboarding.php';
@@ -292,7 +306,10 @@ switch ($page) {
 
     case 'start-trial':
         $requireAuth();
-        $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
+        $curr = $auth->currentUser();
+        if (($curr['plan_status'] ?? 'inactive') === 'inactive') {
+            $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
+        }
         header('Location: ?page=chat');
         exit;
 
@@ -371,6 +388,14 @@ switch ($page) {
     // ── Dashboard ─────────────────────────────────────────────────
     case 'dashboard':
         $requirePlan();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_preferences'])) {
+            $n_lang = $_POST['native_lang'] ?? 'en';
+            $c_lvl  = $_POST['cefr_level'] ?? 'A1';
+            $db->execute('UPDATE users SET native_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $c_lvl, $auth->userId()]);
+            $_SESSION['pref_saved'] = true;
+            header('Location: ?page=dashboard');
+            exit;
+        }
         require __DIR__ . '/../views/dashboard.php';
         break;
 

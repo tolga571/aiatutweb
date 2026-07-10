@@ -24,7 +24,8 @@
         </div>
       <?php endif; ?>
 
-      <form method="POST" action="?page=login" class="space-y-4">
+      <?php $actionUrl = '?page=login' . (isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : ''); ?>
+      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4">
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.email') ?></label>
           <input type="email" name="email" required autocomplete="email"
@@ -79,7 +80,7 @@
 
       <p class="text-center text-body-md text-outline mt-6">
         <?= __('auth.no_account') ?>
-        <a href="?page=register" class="text-primary hover:text-primary-fixed transition"><?= __('auth.create_one') ?></a>
+        <a href="?page=register<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>" class="text-primary hover:text-primary-fixed transition"><?= __('auth.create_one') ?></a>
       </p>
     </div>
   </div>
@@ -92,7 +93,7 @@ function handleCredentialResponse(response) {
   if (response.credential) {
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '?page=google-login';
+    form.action = '?page=google-login<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>';
     
     const input = document.createElement('input');
     input.type = 'hidden';

@@ -78,11 +78,11 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
         <div class="text-headline-sm font-bold text-on-surface flex items-center justify-center gap-1">
            <?= $streak ?> <span class="material-symbols-outlined text-orange-500 text-[20px]">local_fire_department</span>
         </div>
-        <div class="text-label-md text-outline">Day Streak</div>
+        <div class="text-label-md text-outline"><?= __('dash.day_streak') ?? 'Day Streak' ?></div>
       </div>
       <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-3 text-center">
         <div class="text-headline-sm font-bold text-on-surface"><?= $wordsToday ?></div>
-        <div class="text-label-md text-outline">Words Today</div>
+        <div class="text-label-md text-outline"><?= __('dash.words_today') ?? 'Words Today' ?></div>
       </div>
     </div>
 
@@ -135,8 +135,8 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
       <?php if ($dueCount > 0): ?>
       <a href="?page=flashcards" class="flex items-center justify-between bg-secondary/10 border border-secondary/30 hover:border-secondary/60 rounded-2xl p-5 transition group">
         <div>
-          <div class="font-headline-sm text-headline-sm text-secondary mb-1">Time for a quick review!</div>
-          <div class="text-body-md text-on-surface-variant">You have <?= $dueCount ?> words waiting to be reviewed. Keep your streak alive!</div>
+          <div class="font-headline-sm text-headline-sm text-secondary mb-1"><?= __('dash.review_time') ?? 'Time for a quick review!' ?></div>
+          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.review_desc') ?? 'You have %d words waiting to be reviewed. Keep your streak alive!', $dueCount) ?></div>
         </div>
         <span class="material-symbols-outlined text-secondary text-2xl group-hover:scale-110 transition-transform">style</span>
       </a>
@@ -170,6 +170,37 @@ $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
         </div>
       </div>
       <?php endif; ?>
+
+      <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6">
+        <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('dash.preferences') ?? 'Preferences' ?></h2>
+        <?php if (isset($_SESSION['pref_saved'])): unset($_SESSION['pref_saved']); ?>
+          <div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-lg mb-4 text-sm"><?= __('dash.pref_saved') ?? 'Preferences saved successfully.' ?></div>
+        <?php endif; ?>
+        <form method="POST" action="?page=dashboard" class="space-y-4">
+          <input type="hidden" name="update_preferences" value="1">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.interface_language') ?? 'Interface Language' ?></label>
+              <select name="native_lang" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary transition appearance-none">
+                <?php foreach(['en'=>'English', 'de'=>'Deutsch', 'fr'=>'Français', 'es'=>'Español', 'tr'=>'Türkçe', 'zh'=>'中文', 'ja'=>'日本語', 'ar'=>'العربية'] as $code => $name): ?>
+                  <option value="<?= $code ?>" <?= ($user['native_lang'] ?? 'en') === $code ? 'selected' : '' ?>><?= $name ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div>
+              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.cefr_level') ?? 'CEFR Level' ?></label>
+              <select name="cefr_level" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary transition appearance-none">
+                <?php foreach(['A1','A2','B1','B2','C1','C2'] as $lvl): ?>
+                  <option value="<?= $lvl ?>" <?= ($user['cefr_level'] ?? 'A1') === $lvl ? 'selected' : '' ?>><?= $lvl ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="bg-surface-variant text-on-surface font-semibold py-2 px-4 rounded-lg transition hover:bg-surface-variant/80 text-sm">
+            <?= __('dash.save_preferences') ?? 'Save Preferences' ?>
+          </button>
+        </form>
+      </div>
     </div>
   </main>
 </div>

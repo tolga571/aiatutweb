@@ -33,6 +33,7 @@ return [
     'nav.login' => 'Sign In',
     'nav.register' => 'Register',
     'nav.logged_in_as' => 'Logged in as',
+    'nav.learning_language' => 'Learning Language',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Welcome back',
@@ -57,6 +58,13 @@ return [
     'auth.error_invalid_name' => 'Please enter your name (at least 2 characters).',
     'auth.error_weak_password' => 'Password must be at least 8 characters long.',
     'auth.registration_failed' => 'Registration failed. Email may already be taken.',
+    'auth.confirm_password' => 'Confirm Password',
+    'auth.terms_agreement' => 'I agree to the',
+    'auth.terms' => 'Terms of Service',
+    'auth.and' => 'and',
+    'auth.privacy' => 'Privacy Policy',
+    'auth.error_password_mismatch' => 'Passwords do not match.',
+    'auth.error_terms' => 'You must agree to the terms and privacy policy.',
     'auth.message_empty' => 'Message cannot be empty.',
     'auth.ai_unavailable' => 'AI unavailable, please try again.',
     'auth.or_continue_with' => 'Or continue with',
@@ -82,6 +90,17 @@ return [
     'onboarding.interest_business' => 'Business',
     'onboarding.save_continue' => 'Save and continue →',
     'onboarding.same_lang_error' => 'Native language and target language cannot be the same.',
+
+    // ── Dashboard ──────────────────────────────────────────────────
+    'dash.day_streak' => 'Day Streak',
+    'dash.words_today' => 'Words Today',
+    'dash.review_time' => 'Time for a quick review!',
+    'dash.review_desc' => 'You have %d words waiting to be reviewed. Keep your streak alive!',
+    'dash.preferences' => 'Preferences',
+    'dash.interface_language' => 'Interface Language',
+    'dash.cefr_level' => 'CEFR Level',
+    'dash.save_preferences' => 'Save Preferences',
+    'dash.pref_saved' => 'Preferences saved successfully.',
 
     // ── Chat ────────────────────────────────────────────────
     'chat.page_title' => 'Chat – AiTut',
@@ -126,6 +145,7 @@ return [
     'chat.trial_expired_title' => 'Your Free Trial Has Ended!',
     'chat.trial_expired_body' => 'Did you enjoy practicing with AiTut\'s smart AI tutor? Please choose a plan to continue your language learning journey uninterrupted.',
     'chat.review_chat' => 'Review Chat',
+    'chat.keep_reading' => 'Keep Reading',
     'chat.view_plans' => 'View Plans',
     'chat.http_error' => 'Chat failed (HTTP 503)',
     'chat.error_ai_unavailable' => 'AI service unavailable. Your message has been saved.',

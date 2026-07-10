@@ -33,10 +33,11 @@
         </div>
       <?php endif; ?>
 
-      <form method="POST" action="?page=register" class="space-y-4">
+      <?php $actionUrl = '?page=register' . (isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : ''); ?>
+      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4">
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.full_name') ?></label>
-          <input type="text" name="name" autocomplete="name"
+          <input type="text" name="name" required autocomplete="name"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
             placeholder="John Doe" />
         </div>
@@ -51,6 +52,18 @@
           <input type="password" name="password" required minlength="8" autocomplete="new-password"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
             placeholder="<?= __('auth.password_min') ?>" />
+        </div>
+        <div>
+          <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.confirm_password') ?></label>
+          <input type="password" name="password_confirm" required minlength="8" autocomplete="new-password"
+            class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
+            placeholder="<?= __('auth.password_min') ?>" />
+        </div>
+        <div class="flex items-start gap-3 mt-4 mb-2">
+          <input type="checkbox" name="terms" id="terms" required class="mt-1 shrink-0 w-4 h-4 rounded border-outline-variant/30 text-primary focus:ring-primary bg-surface-container-high">
+          <label for="terms" class="text-xs text-on-surface-variant">
+            <?= __('auth.terms_agreement') ?> <a href="?page=terms-and-conditions" class="text-primary hover:underline" target="_blank"><?= __('auth.terms') ?></a> <?= __('auth.and') ?> <a href="?page=privacy-policy" class="text-primary hover:underline" target="_blank"><?= __('auth.privacy') ?></a>.
+          </label>
         </div>
         <button type="submit"
           class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90">
@@ -94,7 +107,7 @@
 
       <p class="text-center text-body-md text-outline mt-6">
         <?= __('auth.has_account') ?>
-        <a href="?page=login" class="text-primary hover:text-primary-fixed transition"><?= __('auth.sign_in_link') ?></a>
+        <a href="?page=login<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>" class="text-primary hover:text-primary-fixed transition"><?= __('auth.sign_in_link') ?></a>
       </p>
     </div>
   </div>
@@ -107,7 +120,7 @@ function handleCredentialResponse(response) {
   if (response.credential) {
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '?page=google-login';
+    form.action = '?page=google-login<?= isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '' ?>';
     
     const input = document.createElement('input');
     input.type = 'hidden';

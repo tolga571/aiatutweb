@@ -153,9 +153,9 @@
       $navTargetCountry = $navLangMap[$navTargetLang] ?? 'us';
       ?>
       <!-- Language Switcher -->
-      <div class="relative inline-block text-left group" id="nav-lang-switcher">
+      <div class="relative inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?? 'Learning Language' ?>">
         <button
-          class="flex items-center gap-1.5 p-1.5 pr-2.5 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-default">
+          class="flex items-center gap-1.5 p-1.5 pr-2.5 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-pointer">
           <img src="https://flagcdn.com/<?= $navTargetCountry ?>.svg"
             class="w-5 h-3.5 rounded-[2px] object-cover shrink-0" />
           <span class="material-symbols-outlined text-[14px] text-on-surface-variant">expand_more</span>
@@ -177,7 +177,7 @@
 
       <div class="relative inline-block text-left group">
         <button
-          class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-default">
+          class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-pointer">
           <div
             class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center text-sm font-bold shadow-sm overflow-hidden">
             <?php if (!empty($currUser['profile_image'])): ?>
@@ -196,7 +196,7 @@
             class="rounded-md shadow-lg border border-outline-variant/20 bg-surface-container-high ring-1 ring-black ring-opacity-5">
             <div class="py-1" role="menu" aria-orientation="vertical">
               <a href="?page=dashboard" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
-                role="menuitem"><?= __('nav.profile') ?></a>
+                role="menuitem"><?= __('nav.dashboard') ?></a>
               <a href="?page=chat" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
                 role="menuitem"><?= __('nav.chat') ?></a>
               <a href="?page=flashcards" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
@@ -297,6 +297,14 @@
           class="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-on-primary hover:opacity-90 shadow-md shadow-primary/20 transition-all font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">person_add</span>
           <?= __('nav.register') ?>
+        </a>
+      </div>
+    <?php else: ?>
+      <div class="p-4 border-t border-outline-variant/10 space-y-2">
+        <a href="?page=logout"
+          class="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl border border-error/30 text-error hover:bg-error/10 transition-all font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <?= __('nav.logout') ?>
         </a>
       </div>
     <?php endif; ?>
