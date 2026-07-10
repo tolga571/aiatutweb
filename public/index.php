@@ -423,7 +423,7 @@ switch ($page) {
 
     // ── Blog ──────────────────────────────────────────────────────
     case 'blog':
-        $posts = $db->fetchAll('SELECT id,title,slug,created_at FROM posts WHERE published=1 AND category="blog" ORDER BY created_at DESC LIMIT 20');
+        $posts = $db->fetchAll("SELECT id,title,slug,created_at FROM posts WHERE published=1 AND category='blog' ORDER BY created_at DESC LIMIT 20");
         require __DIR__ . '/../views/blog/list.php';
         break;
 

@@ -55,14 +55,14 @@ class Flashcard {
     public function getDueCards(int $userId, string $lang, int $limit = 20): array {
         // Prioritize actual reviews (not new)
         $due = $this->db->fetchAll(
-            'SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
+            "SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                     uf.last_reviewed, uf.correct_count, uf.incorrect_count, uf.status as review_status,
                     uf.id as flashcard_id
              FROM vocabulary_words vw
              JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-             WHERE vw.user_id = ? AND vw.language = ? AND uf.next_review <= ' . $this->db->now() . ' AND (uf.status != "new" OR uf.status IS NULL)
+             WHERE vw.user_id = ? AND vw.language = ? AND uf.next_review <= " . $this->db->now() . " AND (uf.status != 'new' OR uf.status IS NULL)
              ORDER BY uf.next_review ASC
-             LIMIT ?',
+             LIMIT ?",
             [$userId, $lang, $limit]
         );
 
@@ -70,14 +70,14 @@ class Flashcard {
         $newLimit = min(20, $limit - count($due));
         if ($newLimit > 0) {
             $new = $this->db->fetchAll(
-                'SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
+                "SELECT vw.*, uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                         uf.last_reviewed, uf.correct_count, uf.incorrect_count, uf.status as review_status,
                         uf.id as flashcard_id
                  FROM vocabulary_words vw
                  JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-                 WHERE vw.user_id = ? AND vw.language = ? AND uf.status = "new"
+                 WHERE vw.user_id = ? AND vw.language = ? AND uf.status = 'new'
                  ORDER BY vw.id ASC
-                 LIMIT ?',
+                 LIMIT ?",
                 [$userId, $lang, $newLimit]
             );
             $due = array_merge($due, $new);
@@ -91,15 +91,15 @@ class Flashcard {
      */
     public function getChatWords(int $userId, string $lang, int $limit = 50): array {
         return $this->db->fetchAll(
-            'SELECT vw.*, 
-                    COALESCE(uf.status, "new") as review_status,
+            "SELECT vw.*, 
+                    COALESCE(uf.status, 'new') as review_status,
                     uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                     uf.correct_count, uf.incorrect_count, uf.id as flashcard_id
              FROM vocabulary_words vw
              LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-             WHERE vw.user_id = ? AND vw.language = ? AND vw.source = "chat"
+             WHERE vw.user_id = ? AND vw.language = ? AND vw.source = 'chat'
              ORDER BY vw.created_at DESC
-             LIMIT ?',
+             LIMIT ?",
             [$userId, $lang, $limit]
         );
     }
@@ -108,13 +108,13 @@ class Flashcard {
      * Get all cards with optional category/search filters.
      */
     public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60): array {
-        $sql = 'SELECT vw.*, 
-                    COALESCE(uf.status, "new") as review_status,
+        $sql = "SELECT vw.*, 
+                    COALESCE(uf.status, 'new') as review_status,
                     uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                     uf.correct_count, uf.incorrect_count, uf.id as flashcard_id
                 FROM vocabulary_words vw
                 LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-                WHERE vw.user_id = ? AND vw.language = ?';
+                WHERE vw.user_id = ? AND vw.language = ?";
         $params = [$userId, $lang];
 
         if ($category && $category !== 'all') {
@@ -308,28 +308,28 @@ class Flashcard {
         );
 
         $mastered = $this->db->fetchOne(
-            'SELECT COUNT(*) as c FROM user_flashcards uf
+            "SELECT COUNT(*) as c FROM user_flashcards uf
              JOIN vocabulary_words vw ON vw.id = uf.vocab_id
-             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = "mastered"',
+             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = 'mastered'",
             [$userId, $lang]
         );
 
         $learning = $this->db->fetchOne(
-            'SELECT COUNT(*) as c FROM user_flashcards uf
+            "SELECT COUNT(*) as c FROM user_flashcards uf
              JOIN vocabulary_words vw ON vw.id = uf.vocab_id
-             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = "learning"',
+             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = 'learning'",
             [$userId, $lang]
         );
 
         $newCards = $this->db->fetchOne(
-            'SELECT COUNT(*) as c FROM user_flashcards uf
+            "SELECT COUNT(*) as c FROM user_flashcards uf
              JOIN vocabulary_words vw ON vw.id = uf.vocab_id
-             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = "new"',
+             WHERE uf.user_id = ? AND vw.language = ? AND uf.status = 'new'",
             [$userId, $lang]
         );
 
         $chatWords = $this->db->fetchOne(
-            'SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id = ? AND language = ? AND source = "chat"',
+            "SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id = ? AND language = ? AND source = 'chat'",
             [$userId, $lang]
         );
 

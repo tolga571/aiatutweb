@@ -157,10 +157,10 @@ WORDS RULES:
 
         // Recent mistakes context
         $mistakeRows = $this->db->fetchAll(
-            'SELECT correction FROM messages
-             WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id = ?)
-             AND role = "ai" AND correction != "" AND correction IS NOT NULL
-             ORDER BY created_at DESC LIMIT 8',
+              "SELECT correction FROM messages
+              WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id = ?)
+              AND role = 'ai' AND correction != '' AND correction IS NOT NULL
+              ORDER BY created_at DESC LIMIT 8",
             [$userId]
         );
         $recentMistakes = array_filter(array_column($mistakeRows, 'correction'));
@@ -206,12 +206,12 @@ WORDS RULES:
         }
 
         $this->db->execute(
-            'INSERT INTO messages (conversation_id, role, content) VALUES (?, "user", ?)',
+            "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
             [$conversationId, $message]
         );
 
         $this->db->execute(
-            'INSERT INTO messages (conversation_id, role, content, translation, correction, metadata) VALUES (?, "ai", ?, ?, ?, ?)',
+            "INSERT INTO messages (conversation_id, role, content, translation, correction, metadata) VALUES (?, 'ai', ?, ?, ?, ?)",
             [$conversationId, $content, $translation, $correction, $metadata]
         );
 

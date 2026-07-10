@@ -93,7 +93,7 @@ class Auth {
 
     public function getTrialMessagesSent(int $userId): int {
         $row = $this->db->fetchOne(
-            'SELECT COUNT(*) as cnt FROM messages m JOIN conversations c ON m.conversation_id = c.id WHERE c.user_id = ? AND m.role = "user"',
+            "SELECT COUNT(*) as cnt FROM messages m JOIN conversations c ON m.conversation_id = c.id WHERE c.user_id = ? AND m.role = 'user'",
             [$userId]
         );
         return $row ? (int)$row['cnt'] : 0;
