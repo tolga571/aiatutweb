@@ -105,7 +105,7 @@ if (strpos($eventType, 'subscription.') === 0) {
 
         try {
             $db->execute(
-                'UPDATE users SET plan_status = ?, has_paid = ? WHERE id = ?',
+                'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL WHERE id = ?',
                 [$planStatus, $hasPaid, $userId]
             );
 

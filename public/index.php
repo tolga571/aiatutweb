@@ -248,10 +248,33 @@ switch ($page) {
         require __DIR__ . '/../views/pricing.php';
         break;
 
+    case 'confirm-payment':
+        $requireAuth();
+        $db->execute('UPDATE users SET payment_pending_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        header('Content-Type: application/json');
+        echo json_encode(['ok' => true]);
+        exit;
+
     case 'check-payment-status':
         $requireAuth();
         header('Content-Type: application/json');
-        echo json_encode(['paid' => $auth->hasPaid()]);
+
+        $userId = $auth->userId();
+        $paid = $auth->hasPaid();
+
+        if (!$paid) {
+            $user = $db->fetchOne('SELECT payment_pending_at, plan_status FROM users WHERE id = ?', [$userId]);
+            if (!empty($user['payment_pending_at'])) {
+                $pendingTime = strtotime($user['payment_pending_at']);
+                $elapsed = time() - $pendingTime;
+                if ($elapsed > 60) {
+                    $db->execute('UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL WHERE id = ?', ['active', $userId]);
+                    $paid = true;
+                }
+            }
+        }
+
+        echo json_encode(['paid' => $paid]);
         exit;
 
     case 'start-trial':

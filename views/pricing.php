@@ -233,6 +233,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               currentCheckout.close();
               currentCheckout = null;
             }
+            fetch('?page=confirm-payment').catch(function(e) { console.error(e); });
             handleCheckoutSuccess();
           }
         }

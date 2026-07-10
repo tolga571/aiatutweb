@@ -55,6 +55,16 @@ class Database {
         } else {
             $this->initializeSqlite();
         }
+        $this->migrate();
+    }
+
+    private function migrate(): void {
+        try {
+            $colType = $this->isPostgres ? 'TIMESTAMP' : 'DATETIME';
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN payment_pending_at {$colType} DEFAULT NULL");
+        } catch (\Exception $e) {
+            // Column already exists, ignore
+        }
     }
 
     private function initializeSqlite(): void {
@@ -77,6 +87,7 @@ class Database {
             google_id TEXT DEFAULT NULL,
             streak_count INTEGER DEFAULT 0,
             last_activity_date DATE DEFAULT NULL,
+            payment_pending_at DATETIME DEFAULT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );");
         $this->pdo->exec("CREATE TABLE IF NOT EXISTS conversations (
@@ -196,6 +207,7 @@ class Database {
             google_id TEXT DEFAULT NULL,
             streak_count INTEGER DEFAULT 0,
             last_activity_date DATE DEFAULT NULL,
+            payment_pending_at TIMESTAMP DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
         $this->exec("CREATE TABLE IF NOT EXISTS conversations (
