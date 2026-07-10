@@ -255,6 +255,7 @@ WORDS RULES:
 
         // Compute remaining quota after usage
         $quotaRemaining = $this->tokenManager->getRemaining($userId);
+        $planStatus = $user['plan_status'] ?? 'inactive';
         $quotaTotal = $this->tokenManager->getBaseLimit($planStatus);
         // Add bonus to total for display
         $usage = $this->db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$userId]);
