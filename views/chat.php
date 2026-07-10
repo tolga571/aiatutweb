@@ -296,7 +296,7 @@ $topicDescriptions = [
 
           <!-- Send Button on Right -->
           <button id="btn-send"
-            class="bg-surface-container-high hover:bg-secondary-container text-outline hover:text-on-surface font-semibold text-xs px-lg py-2 rounded-xl transition-all shadow-md shrink-0 flex items-center justify-center"
+            class="bg-surface-container-high text-outline font-semibold text-xs px-lg py-2 rounded-xl transition-all shadow-md shrink-0 flex items-center justify-center opacity-50 pointer-events-none"
             <?= $isTrialExpired ? 'disabled' : '' ?>>
             <?= __('chat.send') ?>
           </button>
@@ -441,7 +441,19 @@ $topicDescriptions = [
     inputEl.addEventListener('input', function () {
       this.style.height = 'auto';
       this.style.height = Math.min(this.scrollHeight, 128) + 'px';
+      updateSendButtonState();
     });
+
+    function updateSendButtonState() {
+      const hasText = inputEl.value.trim().length > 0;
+      if (hasText) {
+        sendBtn.classList.remove('opacity-50', 'pointer-events-none', 'bg-surface-container-high', 'text-outline');
+        sendBtn.classList.add('bg-primary', 'text-on-primary', 'hover:opacity-90', 'shadow-lg', 'shadow-primary/30');
+      } else {
+        sendBtn.classList.add('opacity-50', 'pointer-events-none', 'bg-surface-container-high', 'text-outline');
+        sendBtn.classList.remove('bg-primary', 'text-on-primary', 'hover:opacity-90', 'shadow-lg', 'shadow-primary/30');
+      }
+    }
 
     inputEl.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
@@ -580,6 +592,7 @@ $topicDescriptions = [
         .finally(() => {
           isLoading = false;
           sendBtn.disabled = false;
+          updateSendButtonState();
           scrollBottom();
         });
     }

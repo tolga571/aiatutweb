@@ -99,19 +99,19 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
           <ul class="space-y-3 mb-8 text-body-md text-on-surface-variant">
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.starter_feature_1') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.starter_feature_2') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.starter_feature_3') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.starter_feature_4') ?>
             </li>
           </ul>
@@ -142,23 +142,23 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
           <ul class="space-y-3 mb-8 text-body-md text-on-surface-variant">
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.pro_feature_1') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.pro_feature_2') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.pro_feature_3') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.pro_feature_4') ?>
             </li>
             <li class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-body-lg">check</span>
+              <span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span>
               <?= __('pricing.pro_feature_5') ?>
             </li>
           </ul>
@@ -183,10 +183,10 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div class="border-t border-outline/10 my-4"></div>
 
         <ul class="space-y-3 mb-8 text-body-md text-on-surface-variant">
-          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg">check</span> <?= __('pricing.premium_feature_1') ?></li>
-          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg">check</span> <?= __('pricing.premium_feature_2') ?></li>
-          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg">check</span> <?= __('pricing.premium_feature_3') ?></li>
-          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg">check</span> <?= __('pricing.premium_feature_4') ?></li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span> <?= __('pricing.premium_feature_1') ?></li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span> <?= __('pricing.premium_feature_2') ?></li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span> <?= __('pricing.premium_feature_3') ?></li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-body-lg shrink-0">check</span> <?= __('pricing.premium_feature_4') ?></li>
         </ul>
 
         <div>
