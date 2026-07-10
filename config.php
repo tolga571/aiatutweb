@@ -21,4 +21,9 @@ return [
 
     // Google Sign-In Client ID
     'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',
+
+    // Mailtrap Email Sending
+    'mailtrap_api_token'      => getenv('MAILTRAP_API_TOKEN') ?: '',
+    'mail_from_address'       => getenv('MAIL_FROM_ADDRESS') ?: 'noreply@jumplearner.com',
+    'mail_from_name'          => getenv('MAIL_FROM_NAME') ?: 'Jumplearner',
 ];
