@@ -407,9 +407,13 @@ if ($quotaPercent > 75) {
 
       <!-- Dynamic Vocabulary & Sentences Panel -->
       <div id="vocab-panel" class="flex-1 flex flex-col gap-md mt-2">
-        <div class="flex items-center gap-2 mb-1 px-1">
-           <span class="material-symbols-outlined text-primary text-[18px]">menu_book</span>
-           <span class="text-xs font-bold text-on-surface uppercase tracking-wider"><?= __('chat.study_session') ?? 'Study Session' ?></span>
+        <div class="flex items-center gap-2 mb-2 px-1">
+           <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center shadow-md shadow-orange-500/20">
+             <span class="material-symbols-outlined text-white text-[14px]">auto_awesome</span>
+           </div>
+           <span class="text-[11px] font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-400 uppercase tracking-widest drop-shadow-sm">
+             <?php $ss = __('chat.study_session'); echo $ss === 'chat.study_session' ? 'Keşif Hazinesi' : $ss; ?>
+           </span>
         </div>
         <!-- Tabs -->
         <div class="flex bg-surface-container-high rounded-lg p-1 shrink-0 border border-outline-variant/20">
