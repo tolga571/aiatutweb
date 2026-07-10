@@ -671,33 +671,45 @@ if ($quotaPercent > 75) {
       const row = document.createElement('div');
       row.className = 'message-row w-full flex ' + (role === 'user' ? 'justify-end' : 'justify-start');
 
-      const avatar = role === 'user'
-        ? `<div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-md shadow-primary/30"><span class="material-symbols-outlined text-white">person</span></div>`
-        : `<div class="flex-shrink-0 w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/30 shadow-sm"><span class="material-symbols-outlined text-primary">psychology</span></div>`;
-
-      const align = role === 'user' ? 'text-right' : '';
-      const bubbleBg = role === 'user'
-        ? 'bg-gradient-to-br from-primary to-indigo-600 p-lg rounded-2xl rounded-tr-none shadow-lg shadow-primary/20 text-white'
-        : 'glass-panel p-lg rounded-2xl rounded-tl-none border border-outline-variant/20';
-      const direction = role === 'user' ? 'flex-row-reverse' : '';
-      const textColor = role === 'user' ? 'text-white' : 'text-on-surface';
-
-      row.innerHTML = `
-      <div class="flex ${direction} gap-lg max-w-[75%] group">
-        ${avatar}
-        <div class="space-y-sm ${align}">
-          <div class="flex items-center gap-sm ${role === 'user' ? 'justify-end' : ''} opacity-70 group-hover:opacity-100 transition-opacity">
-            <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-            <span class="font-bold text-on-surface">${role === 'user' ? '<?= __('chat.you') ?>' : '<?= __('chat.kai') ?>'}</span>
+      if (role === 'user') {
+        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        row.innerHTML = `
+        <div class="flex flex-row-reverse gap-lg max-w-[75%] group">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/20 mt-1">
+            <span class="material-symbols-outlined text-white text-[20px]">person</span>
           </div>
-          <div class="${bubbleBg} transform transition-all duration-300 hover:scale-[1.01]">
-            <p class="text-body-lg ${textColor}">${escHtml(content)}</p>
+          <div class="space-y-sm flex-1 min-w-0">
+            <div class="flex items-center gap-sm justify-end opacity-70 group-hover:opacity-100 transition-opacity">
+              <span class="text-label-md text-outline">${timeStr}</span>
+              <span class="font-bold text-on-surface"><?= __('chat.you') ?></span>
+            </div>
+            <div class="bg-[#1e1b4b]/50 border border-indigo-500/30 rounded-2xl rounded-tr-none overflow-hidden shadow-xl backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
+              <div class="px-5 py-4">
+                <p class="text-[15px] text-indigo-50 leading-relaxed" dir="auto">${escHtml(content)}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>`;
+        </div>`;
+      } else {
+        const avatar = `<div class="flex-shrink-0 w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/30 shadow-sm"><span class="material-symbols-outlined text-primary">psychology</span></div>`;
+        row.innerHTML = `
+        <div class="flex gap-lg max-w-[75%] group">
+          ${avatar}
+          <div class="space-y-sm">
+            <div class="flex items-center gap-sm opacity-70 group-hover:opacity-100 transition-opacity">
+              <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
+              <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+            <div class="glass-panel p-lg rounded-2xl rounded-tl-none border border-outline-variant/20 transform transition-all duration-300 hover:scale-[1.01]">
+              <p class="text-body-lg text-on-surface">${escHtml(content)}</p>
+            </div>
+          </div>
+        </div>`;
+      }
       messagesEl.appendChild(row);
       scrollBottom();
     }
+
 
     function appendAiMessage(data) {
       const content = data.content || '';
