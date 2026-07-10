@@ -128,6 +128,7 @@ return [
     'chat.review_chat' => 'Review Chat',
     'chat.view_plans' => 'View Plans',
     'chat.http_error' => 'Chat failed (HTTP 503)',
+    'chat.error_ai_unavailable' => 'AI service unavailable. Your message has been saved.',
     'chat.conv_not_found' => 'Conversation not found',
     'chat.load_messages_error' => 'Failed to load messages.',
     'chat.target_language' => 'Target Language',

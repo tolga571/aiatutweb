@@ -128,6 +128,7 @@ return [
     'chat.review_chat' => 'Sohbeti İncele',
     'chat.view_plans' => 'Planları Gör',
     'chat.http_error' => 'Sohbet başarısız (HTTP 503)',
+    'chat.error_ai_unavailable' => 'AI hizmeti kullanılamıyor. Mesajınız kaydedildi.',
     'chat.conv_not_found' => 'Konuşma bulunamadı',
     'chat.load_messages_error' => 'Mesajlar yüklenemedi.',
     'chat.target_language' => 'Hedef Dil',

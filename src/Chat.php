@@ -167,34 +167,7 @@ WORDS RULES:
 
         $systemPrompt = $this->buildSystemPrompt($targetLang, $nativeLang, $cefrLevel, $topicId, $knownWords, array_values($recentMistakes), $goal, $interest);
 
-        $aiRaw = $gemini->chatWithHistory($message, $history, $systemPrompt, $targetLang);
-
-        // Parse JSON response
-        $parsed = json_decode($aiRaw, true);
-        if (!$parsed) {
-            $parsed = ['content' => $aiRaw, 'translation' => '', 'correction' => '', 'corrections' => [], 'words' => []];
-        }
-
-        $content             = $parsed['content']             ?? $aiRaw;
-        $phonetic            = $parsed['phonetic']            ?? '';
-        $literalTranslation  = $parsed['literal_translation'] ?? '';
-        $translation         = $parsed['translation']         ?? '';
-        $grammarSpotlight    = $parsed['grammar_spotlight']   ?? '';
-        $proTip              = $parsed['pro_tip']             ?? '';
-        $correction          = $parsed['correction']          ?? '';
-        $corrections         = is_array($parsed['corrections'] ?? null) ? $parsed['corrections'] : [];
-        $words               = is_array($parsed['words'] ?? null) ? $parsed['words'] : [];
-
-        $metadata = json_encode([
-            'phonetic'            => $phonetic,
-            'literal_translation' => $literalTranslation,
-            'grammar_spotlight'   => $grammarSpotlight,
-            'pro_tip'             => $proTip,
-            'corrections'         => $corrections,
-            'words'               => $words,
-        ], JSON_UNESCAPED_UNICODE);
-
-        // Persist conversation + messages
+        // Persist conversation + user message BEFORE AI call so conversations always save
         if (!$conversationId) {
             $this->db->execute(
                 'INSERT INTO conversations (user_id, topic_id) VALUES (?, ?)',
@@ -209,6 +182,47 @@ WORDS RULES:
             "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
             [$conversationId, $message]
         );
+
+        $content = '';
+        $translation = '';
+        $correction = '';
+        $corrections = [];
+        $words = [];
+        $phonetic = '';
+        $literalTranslation = '';
+        $grammarSpotlight = '';
+        $proTip = '';
+
+        try {
+            $aiRaw = $gemini->chatWithHistory($message, $history, $systemPrompt, $targetLang);
+            $parsed = json_decode($aiRaw, true);
+            if ($parsed) {
+                $content             = $parsed['content']             ?? $aiRaw;
+                $phonetic            = $parsed['phonetic']            ?? '';
+                $literalTranslation  = $parsed['literal_translation'] ?? '';
+                $translation         = $parsed['translation']         ?? '';
+                $grammarSpotlight    = $parsed['grammar_spotlight']   ?? '';
+                $proTip              = $parsed['pro_tip']             ?? '';
+                $correction          = $parsed['correction']          ?? '';
+                $corrections         = is_array($parsed['corrections'] ?? null) ? $parsed['corrections'] : [];
+                $words               = is_array($parsed['words'] ?? null) ? $parsed['words'] : [];
+            } else {
+                $content = $aiRaw;
+            }
+            $aiSaved = true;
+        } catch (\Throwable $e) {
+            $content = __('chat.error_ai_unavailable');
+            $aiSaved = false;
+        }
+
+        $metadata = json_encode([
+            'phonetic'            => $phonetic,
+            'literal_translation' => $literalTranslation,
+            'grammar_spotlight'   => $grammarSpotlight,
+            'pro_tip'             => $proTip,
+            'corrections'         => $corrections,
+            'words'               => $words,
+        ], JSON_UNESCAPED_UNICODE);
 
         $this->db->execute(
             "INSERT INTO messages (conversation_id, role, content, translation, correction, metadata) VALUES (?, 'ai', ?, ?, ?, ?)",

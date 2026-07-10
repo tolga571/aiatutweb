@@ -404,17 +404,11 @@ switch ($page) {
                 exit;
             }
 
-            try {
-                $result = $chat->handleMessage($userId, $msg, $gemini, $convId, $topic);
-                $result['isTrial'] = $isTrial;
-                if ($isTrial) {
-                    $sent = $auth->getTrialMessagesSent($userId);
-                    $result['trialRemaining'] = max(0, 5 - $sent);
-                }
-            } catch (\Throwable $e) {
-                error_log("Chat error: " . $e->getMessage());
-                http_response_code(503);
-                $result = ['error' => __('chat.http_error')];
+            $result = $chat->handleMessage($userId, $msg, $gemini, $convId, $topic);
+            $result['isTrial'] = $isTrial;
+            if ($isTrial) {
+                $sent = $auth->getTrialMessagesSent($userId);
+                $result['trialRemaining'] = max(0, 5 - $sent);
             }
 
             header('Content-Type: application/json');
