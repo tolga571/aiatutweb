@@ -18,10 +18,12 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERV
 $db = new Database($config['db_url']);
 
 // Use database-backed sessions so they survive Railway deploys
-ini_set('session.gc_maxlifetime', 86400 * 30);
-ini_set('session.cookie_lifetime', 86400 * 30);
+// Session stays alive until the user explicitly logs out (10 years ≈ forever)
+$sessionLifetime = 86400 * 365 * 10; // 10 years
+ini_set('session.gc_maxlifetime', $sessionLifetime);
+ini_set('session.cookie_lifetime', $sessionLifetime);
 session_set_cookie_params([
-    'lifetime' => 86400 * 30,
+    'lifetime' => $sessionLifetime,
     'path' => '/',
     'domain' => '',
     'secure' => $isHttps,
