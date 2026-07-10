@@ -248,10 +248,9 @@ WORDS RULES:
             }
         }
 
-        // XP + token usage
+        // XP + message usage
         $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
-        $tokens = (int)ceil((strlen($message) + strlen($content)) / 4);
-        $this->tokenManager->addUsage($userId, max(1, $tokens));
+        $this->tokenManager->addUsage($userId, 1);
 
         // Compute remaining quota after usage
         $quotaRemaining = $this->tokenManager->getRemaining($userId);
