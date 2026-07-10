@@ -6,7 +6,6 @@ class GeminiClient {
     private array $models = [
         'gemini-2.5-flash',
         'gemini-2.0-flash',
-        'gemini-1.5-flash',
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
@@ -69,8 +68,8 @@ class GeminiClient {
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json),
             ],
-            CURLOPT_TIMEOUT => 20,
-            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_TIMEOUT => 12,
+            CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
         $result = curl_exec($ch);

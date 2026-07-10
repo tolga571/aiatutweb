@@ -566,15 +566,17 @@ $topicDescriptions = [
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg, conversationId: conversationId, topicId: topicId })
       })
-        .then(r => r.json())
-        .then(data => {
+        .then(r => r.text().then(text => ({ ok: r.ok, status: r.status, text: text })))
+        .then(function(result) {
           removeLoadingMessage(loadingId);
-          if (data.error) {
+          var data;
+          try { data = JSON.parse(result.text); } catch(e) { data = null; }
+          if (data && data.error) {
             showToast(data.error, 'error');
             if (data.error.includes('<?= __('error.trial_expired') ?>')) {
               showTrialExpiredModal();
             }
-          } else {
+          } else if (data) {
             var wasNew = !conversationId;
             conversationId = data.conversationId;
             activeTopic = null;
@@ -585,9 +587,11 @@ $topicDescriptions = [
             if (wasNew && conversationId) {
               addConversationLink(conversationId, msg);
             }
+          } else {
+            showToast('<?= __('chat.http_error') ?>', 'error');
           }
         })
-        .catch(() => {
+        .catch(function(err) {
           removeLoadingMessage(loadingId);
           showToast('<?= __('chat.http_error') ?>', 'error');
         })
