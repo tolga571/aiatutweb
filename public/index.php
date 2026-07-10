@@ -12,6 +12,17 @@ use App\Src\AdminController;
 use App\Src\Language;
 use App\Src\Flashcard;
 
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+ini_set('session.gc_maxlifetime', 86400 * 30);
+ini_set('session.cookie_lifetime', 86400 * 30);
+session_set_cookie_params([
+    'lifetime' => 86400 * 30,
+    'path' => '/',
+    'domain' => '',
+    'secure' => $isHttps,
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
 session_start();
 
 $db     = new Database($config['db_path'], $config['db_url']);
