@@ -248,9 +248,13 @@ WORDS RULES:
             }
         }
 
-        // XP + message usage
-        $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
-        $this->tokenManager->addUsage($userId, 1);
+        $xpAwarded = 0;
+        if ($aiSaved) {
+            // XP + message usage
+            $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
+            $this->tokenManager->addUsage($userId, 1);
+            $xpAwarded = 10;
+        }
 
         // Compute remaining quota after usage
         $quotaRemaining = $this->tokenManager->getRemaining($userId);
@@ -271,7 +275,7 @@ WORDS RULES:
             'corrections'         => $corrections,
             'words'               => $words,
             'conversationId'      => $conversationId,
-            'xpAwarded'           => 10,
+            'xpAwarded'           => $xpAwarded,
             'quotaRemaining'      => $quotaRemaining,
             'quotaTotal'          => $quotaTotal,
         ];

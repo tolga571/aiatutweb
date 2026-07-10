@@ -6,6 +6,7 @@ class GeminiClient {
     private array $models = [
         'gemini-2.5-flash',
         'gemini-2.0-flash',
+        'gemini-1.5-flash',
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
@@ -54,7 +55,9 @@ class GeminiClient {
             }
         }
 
-        throw new \RuntimeException('Gemini API unavailable: ' . ($lastError?->getMessage() ?? 'unknown error'));
+        $errorMsg = 'Gemini API unavailable: ' . ($lastError?->getMessage() ?? 'unknown error');
+        error_log($errorMsg);
+        throw new \RuntimeException($errorMsg);
     }
 
     private function httpPost(string $url, array $data): string {
