@@ -264,7 +264,7 @@ $topicDescriptions = [
             </div>
             <h2 class="font-headline-md text-headline-sm text-primary mb-1"><?= __('chat.start_chatting') ?></h2>
             <p class="text-body-md text-on-surface-variant">
-              <?= sprintf(__('chat.write_something'), htmlspecialchars($targetLang)) ?></p>
+              <?= sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?></p>
           </div>
 
           <!-- Topics suggestions grid -->
@@ -287,19 +287,11 @@ $topicDescriptions = [
       <div class="px-xl pb-lg pt-sm shrink-0">
         <div
           class="bg-surface-container border border-outline-variant/20 rounded-2xl flex items-center gap-md px-md py-sm <?= $isTrialExpired ? 'opacity-60' : '' ?>">
-          <!-- Clear Input Button -->
-          <button id="btn-clear-input" title="Clear input"
-            class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center shrink-0"
-            <?= $isTrialExpired ? 'disabled' : '' ?>>
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
 
           <!-- Textarea / Input -->
           <textarea id="chat-input"
             class="flex-1 bg-transparent border-none focus:ring-0 text-xs py-1 px-1 resize-none chat-scrollbar min-h-[24px] max-h-32 text-on-surface placeholder-outline focus:outline-none"
-            placeholder="<?= $isTrialExpired ? __('chat.trial_expired_placeholder') : sprintf(__('chat.write_something'), htmlspecialchars($targetLang)) ?>"
+            placeholder="<?= $isTrialExpired ? __('chat.trial_expired_placeholder') : sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?>"
             rows="1" <?= $isTrialExpired ? 'disabled' : '' ?>></textarea>
 
           <!-- Send Button on Right -->
@@ -456,11 +448,7 @@ $topicDescriptions = [
     });
     sendBtn.addEventListener('click', sendMessage);
 
-    document.getElementById('btn-clear-input')?.addEventListener('click', function () {
-      inputEl.value = '';
-      inputEl.style.height = 'auto';
-      inputEl.focus();
-    });
+
 
     document.querySelectorAll('.topic-chip').forEach(btn => {
       btn.addEventListener('click', function () {
