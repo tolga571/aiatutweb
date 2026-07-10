@@ -37,6 +37,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     $isTrialUser = $isLoggedIn && ($currentUser['plan_status'] ?? '') === 'trial';
     $isPaidUser = $isLoggedIn && !$isTrialUser && (($currentUser['plan_status'] ?? '') === 'active' || ($currentUser['has_paid'] ?? 0) == 1);
     $trialMessagesSent = $isTrialUser && $isLoggedIn ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
+    $userPlan = $currentUser['plan_status'] ?? 'inactive';
     ?>
 
     <?php if ($isPaidUser): ?>
@@ -53,7 +54,9 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
         </a>
       </div>
-    <?php else: ?>
+    <?php endif; ?>
+    
+    <?php if (!$isPaidUser): ?>
       <!-- Free Trial Promo Banner -->
       <div class="max-w-2xl mx-auto mb-10 p-6 rounded-2xl border border-primary/30 bg-surface-container-high/60 backdrop-blur-md shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 transition-all hover:border-primary/50">
         <!-- Glow effect -->
@@ -86,6 +89,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           </a>
         <?php endif; ?>
       </div>
+    <?php endif; ?>
 
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
@@ -118,12 +122,18 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         </div>
 
         <div>
-          <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
-            class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
-            <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-            <span><?= __('pricing.starter_btn') ?></span>
-            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
-          </button>
+          <?php if ($userPlan === 'starter'): ?>
+            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            </button>
+          <?php else: ?>
+            <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
+              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
+              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <span><?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.starter_btn') ?></span>
+              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
+            </button>
+          <?php endif; ?>
         </div>
       </div>
 
@@ -165,12 +175,18 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         </div>
 
         <div>
-          <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
-            class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-            <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-            <?= __('pricing.pro_btn') ?>
-            <span class="material-symbols-outlined">bolt</span>
-          </button>
+          <?php if ($userPlan === 'pro'): ?>
+            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            </button>
+          <?php else: ?>
+            <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
+              class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.pro_btn') ?>
+              <span class="material-symbols-outlined">bolt</span>
+            </button>
+          <?php endif; ?>
         </div>
       </div>
 
@@ -190,16 +206,21 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         </ul>
 
         <div>
-          <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
-            class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-            <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-            <?= __('pricing.premium_btn') ?>
-            <span class="material-symbols-outlined">star</span>
-          </button>
+          <?php if ($userPlan === 'active'): ?>
+            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            </button>
+          <?php else: ?>
+            <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
+              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.premium_btn') ?>
+              <span class="material-symbols-outlined">star</span>
+            </button>
+          <?php endif; ?>
         </div>
       </div>
     </div>
-  <?php endif; ?>
   </div>
 </main>
 
