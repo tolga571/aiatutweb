@@ -119,10 +119,10 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
         <div>
           <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
-            class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+            class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
             <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-            <?= __('pricing.starter_btn') ?>
-            <span class="material-symbols-outlined">arrow_forward</span>
+            <span><?= __('pricing.starter_btn') ?></span>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
           </button>
         </div>
       </div>
