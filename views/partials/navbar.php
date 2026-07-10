@@ -7,6 +7,22 @@
       <h1 class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</h1>
       <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
     </a>
+    <?php if (isset($auth) && $auth->isLoggedIn()):
+      $planBadge = $auth->currentUser()['plan_status'] ?? 'inactive';
+      $badgeLabel = match($planBadge) {
+        'trial' => 'Trial',
+        'starter' => 'Starter',
+        'pro' => 'Pro',
+        'active' => 'Active',
+        default => 'Free',
+      };
+      $badgeClass = match($planBadge) {
+        'trial' => 'bg-warning/20 text-warning border-warning/30',
+        'starter', 'pro', 'active' => 'bg-primary/20 text-primary border-primary/30',
+        default => 'bg-surface-variant/50 text-on-surface-variant border-outline-variant/20',
+      }; ?>
+      <span class="ml-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border <?= $badgeClass ?>"><?= $badgeLabel ?></span>
+    <?php endif; ?>
   </div>
 
   <div class="hidden lg:flex items-center justify-center gap-base shrink-0">
