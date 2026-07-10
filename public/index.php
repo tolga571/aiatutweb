@@ -13,6 +13,11 @@ use App\Src\Language;
 use App\Src\Flashcard;
 
 $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+
+// Initialize database first (needed for session handler)
+$db = new Database($config['db_url']);
+
+// Use database-backed sessions so they survive Railway deploys
 ini_set('session.gc_maxlifetime', 86400 * 30);
 ini_set('session.cookie_lifetime', 86400 * 30);
 session_set_cookie_params([
@@ -23,9 +28,10 @@ session_set_cookie_params([
     'httponly' => true,
     'samesite' => 'Lax',
 ]);
+$sessionHandler = new \App\Src\DatabaseSessionHandler($db->getPdo());
+session_set_save_handler($sessionHandler, true);
 session_start();
 
-$db     = new Database($config['db_url']);
 $auth   = new Auth($db);
 $chat   = new Chat($db, $config);
 $gemini = new GeminiClient($config['gemini_api_key']);

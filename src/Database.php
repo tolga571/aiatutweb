@@ -159,6 +159,12 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, vocab_id)
         )");
+        $this->exec("CREATE TABLE IF NOT EXISTS sessions (
+            id TEXT PRIMARY KEY,
+            data TEXT NOT NULL DEFAULT '',
+            expires_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)");
         $this->migrate();
     }
 
