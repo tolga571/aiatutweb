@@ -15,8 +15,19 @@ $secretKey = $config['paddle_webhook_secret'];
 // Log file for webhooks
 $logFile = __DIR__ . '/../data/paddle_webhook.log';
 
+// Helper to log errors
+function logWebhook($logFile, $message, $detailed = '') {
+    file_put_contents(
+        $logFile,
+        "[" . date('Y-m-d H:i:s') . "] {$message} {$detailed}\n",
+        FILE_APPEND
+    );
+}
+
 // 1. Basic validation
 if (empty($payload) || empty($signature) || empty($secretKey)) {
+    logWebhook($logFile, "VALIDATION FAILED: Missing payload, signature, or webhook secret key.",
+        "payload_length=" . strlen($payload) . " signature_present=" . (empty($signature) ? 'no' : 'yes') . " secret_present=" . (empty($secretKey) ? 'no' : 'yes'));
     http_response_code(400);
     echo "Bad Request: Missing payload, signature, or webhook secret key.";
     exit;
@@ -24,6 +35,7 @@ if (empty($payload) || empty($signature) || empty($secretKey)) {
 
 // 2. Parse ts and h1 from signature header
 if (!preg_match('/^ts=(\d+);h1=(.+)$/', $signature, $matches)) {
+    logWebhook($logFile, "VALIDATION FAILED: Invalid signature format.", "signature=" . substr($signature, 0, 80));
     http_response_code(400);
     echo "Bad Request: Invalid signature format.";
     exit;
@@ -34,6 +46,7 @@ $h1 = $matches[2];
 
 // 3. Verify timestamp is within 5 minutes to prevent replay attacks
 if (abs(time() - $ts) > 300) {
+    logWebhook($logFile, "VALIDATION FAILED: Timestamp too old or clock drift.", "ts={$ts} server_time=" . time());
     http_response_code(400);
     echo "Bad Request: Signature timestamp verification failed (clock drift or replay attack).";
     exit;
@@ -44,6 +57,7 @@ $computed = hash_hmac('sha256', "{$ts}:{$payload}", $secretKey);
 
 // 5. Compare signatures securely
 if (!hash_equals($computed, $h1)) {
+    logWebhook($logFile, "VALIDATION FAILED: Signature mismatch.", "computed={$computed} h1={$h1}");
     http_response_code(401);
     echo "Unauthorized: Signature verification failed.";
     exit;
@@ -60,12 +74,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 $eventType = $event['event_type'] ?? '';
 $data = $event['data'] ?? [];
 
-// Log raw payload for troubleshooting
-file_put_contents(
-    $logFile,
-    "[" . date('Y-m-d H:i:s') . "] RECEIVED: Event Type: {$eventType} | Raw: {$payload}\n",
-    FILE_APPEND
-);
+logWebhook($logFile, "RECEIVED: Event Type: {$eventType} | Raw:", substr($payload, 0, 500));
 
 // 7. Handle subscription events
 if (strpos($eventType, 'subscription.') === 0) {
@@ -100,34 +109,18 @@ if (strpos($eventType, 'subscription.') === 0) {
                 [$planStatus, $hasPaid, $userId]
             );
 
-            file_put_contents(
-                $logFile,
-                "[" . date('Y-m-d H:i:s') . "] SUCCESS: Updated User ID {$userId} to Status: {$planStatus}, has_paid: {$hasPaid}\n",
-                FILE_APPEND
-            );
+            logWebhook($logFile, "SUCCESS: Updated User ID {$userId} to Status: {$planStatus}, has_paid: {$hasPaid}");
         } catch (\Exception $e) {
-            file_put_contents(
-                $logFile,
-                "[" . date('Y-m-d H:i:s') . "] DATABASE ERROR: " . $e->getMessage() . "\n",
-                FILE_APPEND
-            );
+            logWebhook($logFile, "DATABASE ERROR: " . $e->getMessage());
             http_response_code(500);
             echo "Internal Server Error: Database update failed.";
             exit;
         }
     } else {
-        file_put_contents(
-            $logFile,
-            "[" . date('Y-m-d H:i:s') . "] IGNORED: No user_id found in custom_data.\n",
-            FILE_APPEND
-        );
+        logWebhook($logFile, "IGNORED: No user_id found in custom_data.");
     }
 } else {
-    file_put_contents(
-        $logFile,
-        "[" . date('Y-m-d H:i:s') . "] IGNORED: Event type '{$eventType}' is not subscription related.\n",
-        FILE_APPEND
-    );
+    logWebhook($logFile, "IGNORED: Event type '{$eventType}' is not subscription related.");
 }
 
 // Respond with 200 OK to acknowledge receipt

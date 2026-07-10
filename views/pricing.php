@@ -216,6 +216,8 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 </div>
 
 <script>
+  let currentCheckout = null;
+
   // Initialize Paddle.js
   <?php if (!empty($paddleClientToken)): ?>
     try {
@@ -226,6 +228,10 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         token: "<?= htmlspecialchars($paddleClientToken) ?>",
         eventCallback: function(event) {
           if (event.name === 'checkout.completed') {
+            if (currentCheckout) {
+              currentCheckout.close();
+              currentCheckout = null;
+            }
             handleCheckoutSuccess();
           }
         }
@@ -236,7 +242,6 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
   <?php endif; ?>
 
   function handleCheckoutSuccess() {
-    // Show the processing overlay
     const modal = document.getElementById('payment-loading-modal');
     const content = document.getElementById('payment-loading-content');
     if (modal) {
@@ -244,33 +249,31 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     }
 
     var pollCount = 0;
-    const maxPolls = 20; // 20 * 1.5s = 30 seconds
+    const maxPolls = 60;
+    var timeoutShown = false;
 
-    // Start polling the server to verify webhook has completed the activation
     const interval = setInterval(function() {
       pollCount++;
-      if (pollCount > maxPolls) {
-        clearInterval(interval);
-        if (content) {
-          content.innerHTML =
-            '<div class="w-16 h-16 rounded-2xl bg-error-container border border-error/30 flex items-center justify-center text-error mx-auto mb-4">' +
-              '<span class="material-symbols-outlined text-[36px]">warning</span>' +
-            '</div>' +
-            '<h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.timeout_title') ?></h3>' +
-            '<p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.timeout_body') ?></p>' +
-            '<div class="flex gap-3 justify-center">' +
-              '<a href="?page=pricing" class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30"><?= __('pricing.timeout_retry') ?></a>' +
-              '<a href="?page=chat" class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md"><?= __('pricing.timeout_chat') ?></a>' +
-            '</div>';
-        }
-        return;
-      }
       fetch('?page=check-payment-status')
         .then(response => response.json())
         .then(data => {
           if (data.paid) {
             clearInterval(interval);
             window.location.href = '?page=chat';
+          } else if (pollCount > maxPolls && !timeoutShown) {
+            timeoutShown = true;
+            if (content) {
+              content.innerHTML =
+                '<div class="w-16 h-16 rounded-2xl bg-error-container border border-error/30 flex items-center justify-center text-error mx-auto mb-4">' +
+                  '<span class="material-symbols-outlined text-[36px]">warning</span>' +
+                '</div>' +
+                '<h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.timeout_title') ?></h3>' +
+                '<p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.timeout_body') ?></p>' +
+                '<div class="flex gap-3 justify-center">' +
+                  '<button onclick="checkAgain()" class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30"><?= __('pricing.timeout_retry') ?></button>' +
+                  '<a href="?page=chat" class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md"><?= __('pricing.timeout_chat') ?></a>' +
+                '</div>';
+            }
           }
         })
         .catch(error => {
@@ -279,14 +282,27 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     }, 1500);
   }
 
-  function openCheckout(priceId) {
+  function checkAgain() {
+    fetch('?page=check-payment-status')
+      .then(response => response.json())
+      .then(data => {
+        if (data.paid) {
+          window.location.href = '?page=chat';
+        } else {
+          location.reload();
+        }
+      })
+      .catch(() => location.reload());
+  }
+
+  async function openCheckout(priceId) {
     if (!priceId) {
       alert("<?= __('pricing.price_id_error') ?>");
       return;
     }
 
     try {
-      Paddle.Checkout.open({
+      currentCheckout = await Paddle.Checkout.open({
         items: [{
           priceId: priceId,
           quantity: 1
