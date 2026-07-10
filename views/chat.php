@@ -440,6 +440,7 @@ $topicDescriptions = [
     let conversationId = <?= $activeConvId ? $activeConvId : 'null' ?>;
     let activeTopic = null;
     let isLoading = false;
+    let loadingCounter = 0;
     const TARGET_LANG = '<?= $targetLang ?>';
     const RTL_LANGS = ['ar', 'he', 'fa', 'ur'];
     const SPEECH_LANG_MAP = { en: 'en-US', de: 'de-DE', fr: 'fr-FR', es: 'es-ES', zh: 'zh-CN', ja: 'ja-JP', ar: 'ar-SA', tr: 'tr-TR' };
@@ -513,9 +514,7 @@ $topicDescriptions = [
       });
     }
 
-    <?php if ($activeConvId): ?>
-      loadConversation(<?= $activeConvId ?>);
-    <?php endif; ?>
+    // loadConversation call moved below function definitions to avoid TDZ error
 
     function loadConversation(convId) {
       messagesEl.querySelectorAll('.message-row').forEach(el => el.remove());
@@ -791,7 +790,7 @@ $topicDescriptions = [
       scrollBottom();
     }
 
-    let loadingCounter = 0;
+    // loadingCounter is declared at the top of the script scope
     function appendLoadingMessage() {
       const id = 'loading-' + (++loadingCounter);
       const row = document.createElement('div');
@@ -909,6 +908,10 @@ $topicDescriptions = [
         window.history.pushState({}, '', url);
       }
     }
+
+    <?php if ($activeConvId): ?>
+      loadConversation(<?= $activeConvId ?>);
+    <?php endif; ?>
 
     if (isTrial) {
       document.addEventListener('visibilitychange', function () {
