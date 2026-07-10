@@ -5,7 +5,7 @@ $config = require __DIR__ . '/../config.php';
 use App\Src\Database;
 use App\Src\Flashcard;
 
-$db = new Database($config['db_path']);
+$db = new Database($config['db_url']);
 $fc = new Flashcard($db);
 
 echo "=== Testing getCards (target: tr, native: en) ===\n";

@@ -7,7 +7,7 @@ $config = require __DIR__ . '/../config.php';
 
 use App\Src\Database;
 
-$db = new Database($config['db_path']);
+$db = new Database($config['db_url']);
 $pdo = $db->getPdo();
 
 $email = 'admin@example.com'; // valid email for login form (type="email")

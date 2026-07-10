@@ -5,7 +5,7 @@ $config = require __DIR__ . '/../config.php';
 use App\Src\Database;
 
 // Open connection to database
-$db = new Database($config['db_path'], $config['db_url']);
+$db = new Database($config['db_url']);
 
 // Get raw request payload and signature header
 $payload = file_get_contents('php://input');

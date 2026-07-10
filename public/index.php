@@ -25,7 +25,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-$db     = new Database($config['db_path'], $config['db_url']);
+$db     = new Database($config['db_url']);
 $auth   = new Auth($db);
 $chat   = new Chat($db, $config);
 $gemini = new GeminiClient($config['gemini_api_key']);

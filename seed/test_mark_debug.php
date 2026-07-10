@@ -4,7 +4,7 @@ $config = require __DIR__ . '/../config.php';
 
 use App\Src\Database;
 
-$db = new Database($config['db_path']);
+$db = new Database($config['db_url']);
 $pdo = $db->getPdo();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

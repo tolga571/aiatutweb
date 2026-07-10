@@ -4,7 +4,7 @@ $config = require __DIR__ . '/../config.php';
 
 use App\Src\Database;
 
-$db = new Database($config['db_path'], $config['db_url']);
+$db = new Database($config['db_url']);
 
 $email = $argv[1] ?? 'admin@example.com';
 $passwordPlain = $argv[2] ?? '12345678';
