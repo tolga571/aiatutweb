@@ -5,7 +5,7 @@ class GeminiClient {
     private array $apiKeys;
     private array $models = [
         'gemini-2.5-flash',
-        'gemini-2.5-flash-lite',
+        'gemini-2.5-pro',
         'gemini-2.0-flash',
     ];
 
@@ -78,7 +78,7 @@ class GeminiClient {
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json),
             ],
-            CURLOPT_TIMEOUT => 12,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
