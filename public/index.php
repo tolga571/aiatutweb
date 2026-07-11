@@ -36,7 +36,7 @@ session_start();
 
 $auth   = new Auth($db);
 $chat   = new Chat($db, $config);
-$gemini = new GeminiClient($config['gemini_api_key']);
+$gemini = new GeminiClient($config['gemini_api_key'], $config['gemini_api_key_backup']);
 $adminCtrl = new AdminController($db);
 $flashcard = new Flashcard($db);
 

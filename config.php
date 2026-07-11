@@ -4,8 +4,9 @@ $dbUrl = getenv('DATABASE_URL') ?: getenv('DATABASE_PUBLIC_URL');
 return [
     'db_url'    => $dbUrl,
 
-    // Gemini API key – set in .env
+    // Gemini API keys – set in .env (primary + optional backup)
     'gemini_api_key' => getenv('GEMINI_API_KEY') ?: '',
+    'gemini_api_key_backup' => getenv('GEMINI_API_KEY_BACKUP') ?: '',
     'daily_token_limit' => 1000,
     'payment_required' => true,
 

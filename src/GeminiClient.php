@@ -2,7 +2,7 @@
 namespace App\Src;
 
 class GeminiClient {
-    private string $apiKey;
+    private array $apiKeys;
     private array $models = [
         'gemini-2.5-flash',
         'gemini-2.0-flash',
@@ -12,8 +12,12 @@ class GeminiClient {
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     private string $lastError = '';
 
-    public function __construct(string $apiKey) {
-        $this->apiKey = $apiKey;
+    public function __construct(string $primaryKey, string $backupKey = '') {
+        $keys = [$primaryKey];
+        if ($backupKey) {
+            $keys[] = $backupKey;
+        }
+        $this->apiKeys = $keys;
     }
 
     public function getLastError(): string {
@@ -43,15 +47,17 @@ class GeminiClient {
         $payload['generationConfig'] = ['responseMimeType' => 'application/json'];
 
         $lastError = null;
-        foreach ($this->models as $model) {
-            try {
-                $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($this->apiKey);
-                $response = $this->httpPost($url, $payload);
-                $data = json_decode($response, true);
-                $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
-                if ($text) return $text;
-            } catch (\Exception $e) {
-                $lastError = $e;
+        foreach ($this->apiKeys as $key) {
+            foreach ($this->models as $model) {
+                try {
+                    $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
+                    $response = $this->httpPost($url, $payload);
+                    $data = json_decode($response, true);
+                    $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                    if ($text) return $text;
+                } catch (\Exception $e) {
+                    $lastError = $e;
+                }
             }
         }
 
