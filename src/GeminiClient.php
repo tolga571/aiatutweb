@@ -5,8 +5,8 @@ class GeminiClient {
     private array $apiKeys;
     private array $models = [
         'gemini-2.5-flash',
+        'gemini-2.5-flash-lite',
         'gemini-2.0-flash',
-        'gemini-1.5-flash',
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
@@ -46,8 +46,9 @@ class GeminiClient {
         }
         $payload['generationConfig'] = ['responseMimeType' => 'application/json'];
 
-        $lastError = null;
-        foreach ($this->apiKeys as $key) {
+        $errors = [];
+        foreach ($this->apiKeys as $ki => $key) {
+            $keyLabel = 'key' . ($ki + 1);
             foreach ($this->models as $model) {
                 try {
                     $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
@@ -56,12 +57,12 @@ class GeminiClient {
                     $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
                     if ($text) return $text;
                 } catch (\Exception $e) {
-                    $lastError = $e;
+                    $errors[] = "{$keyLabel}/{$model}: " . $e->getMessage();
                 }
             }
         }
 
-        $errorMsg = 'Gemini API unavailable: ' . ($lastError?->getMessage() ?? 'unknown error');
+        $errorMsg = 'Gemini API unavailable: ' . implode(' | ', $errors);
         error_log($errorMsg);
         throw new \RuntimeException($errorMsg);
     }
