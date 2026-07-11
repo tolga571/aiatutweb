@@ -87,6 +87,9 @@ You MUST return ONLY a valid JSON object. No markdown fences, no extra text:
   \"corrections\": [
     { \"original\": \"<exact mistake>\", \"corrected\": \"<corrected form in {$targetLang}>\", \"pronunciation\": \"<how to pronounce corrected form>\", \"rule\": \"<short rule in {$nativeLang}; any {$targetLang} terms as word (pronunciation)>\" }
   ],
+  \"segmented\": [
+    { \"text\": \"<each individual word from content>\", \"pronunciation\": \"<romanization or IPA — REQUIRED>\", \"translation\": \"<brief word-level translation in {$nativeLang}>\" }
+  ],
   \"words\": [
     { \"word\": \"<key {$targetLang} word>\", \"pronunciation\": \"<romanization or IPA — REQUIRED>\", \"definition\": \"<brief definition in {$nativeLang}>\" }
   ]
@@ -116,7 +119,16 @@ CORRECTION RULES:
 WORDS RULES:
 - Extract 2-4 useful vocabulary words from your reply
 - Each word: single word or short phrase, definition 3-8 words in {$nativeLang}
-- pronunciation is REQUIRED — never omit it";
+- pronunciation is REQUIRED — never omit it
+
+SEGMENTED RULES:
+- Split your entire {$targetLang} content into individual words/tokens
+- For Chinese/Japanese: split by word boundaries (not characters)
+- For Arabic: split by word boundaries
+- For space-separated languages (en/de/fr/es/tr): split by spaces + punctuation
+- Punctuation marks should be separate tokens with empty pronunciation and the punctuation itself as translation
+- pronunciation is REQUIRED for every non-punctuation token — never omit it
+- translation should be the word-level meaning in {$nativeLang}";
     }
 
     public function handleMessage(int $userId, string $message, GeminiClient $gemini, ?int $conversationId = null, ?string $topicId = null): array {
@@ -188,6 +200,7 @@ WORDS RULES:
         $correction = '';
         $corrections = [];
         $words = [];
+        $segmented = [];
         $phonetic = '';
         $literalTranslation = '';
         $grammarSpotlight = '';
@@ -206,6 +219,7 @@ WORDS RULES:
                 $correction          = $parsed['correction']          ?? '';
                 $corrections         = is_array($parsed['corrections'] ?? null) ? $parsed['corrections'] : [];
                 $words               = is_array($parsed['words'] ?? null) ? $parsed['words'] : [];
+                $segmented           = is_array($parsed['segmented'] ?? null) ? $parsed['segmented'] : [];
             } else {
                 $content = $aiRaw;
             }
@@ -222,6 +236,7 @@ WORDS RULES:
             'pro_tip'             => $proTip,
             'corrections'         => $corrections,
             'words'               => $words,
+            'segmented'           => $segmented,
         ], JSON_UNESCAPED_UNICODE);
 
         $this->db->execute(
@@ -274,6 +289,7 @@ WORDS RULES:
             'correction'          => $correction,
             'corrections'         => $corrections,
             'words'               => $words,
+            'segmented'           => $segmented,
             'conversationId'      => $conversationId,
             'xpAwarded'           => $xpAwarded,
             'quotaRemaining'      => $quotaRemaining,
@@ -299,6 +315,9 @@ WORDS RULES:
         }
         if (!empty($meta['words']) && is_array($meta['words'])) {
             $msg['words'] = $meta['words'];
+        }
+        if (!empty($meta['segmented']) && is_array($meta['segmented'])) {
+            $msg['segmented'] = $meta['segmented'];
         }
         return $msg;
     }

@@ -737,12 +737,27 @@ if ($quotaPercent > 75) {
     }
 
 
+    function renderTokens(tokens, textDir) {
+      if (!tokens || !tokens.length) return '';
+      return tokens.map(t => {
+        const text = escHtml(t.text || '');
+        const pron = t.pronunciation ? `<span class="seg-pron">${escHtml(t.pronunciation)}</span>` : '';
+        const trans = t.translation ? `<span class="seg-trans">${escHtml(t.translation)}</span>` : '';
+        return `<span class="seg-token" dir="auto">` +
+          `<span class="seg-text">${text}</span>` +
+          pron +
+          trans +
+        `</span>`;
+      }).join('');
+    }
+
     function appendAiMessage(data) {
       const content = data.content || '';
       const translation = data.translation || '';
       const correction = data.correction || '';
       const corrections = data.corrections || [];
       const words = data.words || [];
+      const segmented = data.segmented || [];
       const phonetic = data.phonetic || '';
       const literalTranslation = data.literal_translation || '';
       const grammarSpotlight = data.grammar_spotlight || '';
@@ -751,6 +766,13 @@ if ($quotaPercent > 75) {
       const textDir = isRtl ? 'rtl' : 'ltr';
       const textAlign = isRtl ? 'text-right' : 'text-left';
       const cardId = 'ai-card-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+
+      let contentHtml;
+      if (segmented.length > 0) {
+        contentHtml = `<div class="seg-group ${textAlign}" dir="${textDir}">${renderTokens(segmented, textDir)}</div>`;
+      } else {
+        contentHtml = `<p class="text-2xl sm:text-3xl ${textAlign} font-medium leading-relaxed mb-4" dir="${textDir}">${escHtml(content)}</p>`;
+      }
 
       let correctionsHtml = '';
       if (corrections.length) {
@@ -866,7 +888,7 @@ if ($quotaPercent > 75) {
                   </svg>
                 </button>
               </div>
-              <p class="text-2xl sm:text-3xl ${textAlign} font-medium leading-relaxed mb-4" dir="${textDir}">${escHtml(content)}</p>
+              ${contentHtml}
               ${metaGrid}
             </div>
             ${naturalTranslationBlock}
