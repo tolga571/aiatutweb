@@ -159,7 +159,7 @@ SEGMENTED RULES:
             $conv = $this->db->fetchOne('SELECT id FROM conversations WHERE id = ? AND user_id = ?', [$conversationId, $userId]);
             if ($conv) {
                 $history = $this->db->fetchAll(
-                    'SELECT role, content, translation FROM messages WHERE conversation_id = ? ORDER BY id ASC LIMIT 20',
+                    'SELECT role, content, translation FROM messages WHERE conversation_id = ? ORDER BY id ASC LIMIT 11',
                     [$conversationId]
                 );
             }
