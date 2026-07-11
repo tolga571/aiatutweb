@@ -137,6 +137,11 @@ SEGMENTED RULES:
             return ['error' => 'Monthly message limit reached. Check your plan limits!'];
         }
 
+        // Cap user message to prevent token abuse
+        if (mb_strlen($message) > 2000) {
+            $message = mb_substr($message, 0, 2000) . '...';
+        }
+
         $user = $this->db->fetchOne('SELECT * FROM users WHERE id = ?', [$userId]);
         if (!$user) {
             return ['error' => 'User not found.'];

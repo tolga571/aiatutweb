@@ -44,7 +44,10 @@ class GeminiClient {
         if ($systemPrompt) {
             $payload['systemInstruction'] = ['parts' => [['text' => $systemPrompt]]];
         }
-        $payload['generationConfig'] = ['responseMimeType' => 'application/json'];
+        $payload['generationConfig'] = [
+            'responseMimeType' => 'application/json',
+            'maxOutputTokens' => 500,
+        ];
 
         $errors = [];
         foreach ($this->apiKeys as $ki => $key) {
