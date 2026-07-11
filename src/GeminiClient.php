@@ -50,14 +50,23 @@ class GeminiClient {
         foreach ($this->apiKeys as $ki => $key) {
             $keyLabel = 'key' . ($ki + 1);
             foreach ($this->models as $model) {
-                try {
-                    $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
-                    $response = $this->httpPost($url, $payload);
-                    $data = json_decode($response, true);
-                    $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
-                    if ($text) return $text;
-                } catch (\Exception $e) {
-                    $errors[] = "{$keyLabel}/{$model}: " . $e->getMessage();
+                $maxRetries = 2;
+                for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                    try {
+                        $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
+                        $response = $this->httpPost($url, $payload);
+                        $data = json_decode($response, true);
+                        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                        if ($text) return $text;
+                    } catch (\Exception $e) {
+                        $errMsg = $e->getMessage();
+                        if ($attempt < $maxRetries && (str_contains($errMsg, 'HTTP 503') || str_contains($errMsg, 'cURL error (28)'))) {
+                            usleep(2000000); // 2 seconds
+                            continue;
+                        }
+                        $errors[] = "{$keyLabel}/{$model}: {$errMsg}";
+                        break;
+                    }
                 }
             }
         }
