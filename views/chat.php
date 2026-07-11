@@ -649,7 +649,12 @@ if ($quotaPercent > 75) {
           var data;
           try { data = JSON.parse(result.text); } catch(e) { data = null; }
           if (data && data.error) {
-            showToast(data.error, 'error');
+            var errMsg = data.error;
+            if (data.details) {
+              errMsg += ' (' + data.details + ')';
+              console.error('AI Error Details:', data.details);
+            }
+            showToast(errMsg, 'error');
             if (data.error.includes('<?= __('error.trial_expired') ?>')) {
               showTrialExpiredModal();
             }
