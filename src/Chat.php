@@ -179,22 +179,6 @@ SEGMENTED RULES:
 
         $systemPrompt = $this->buildSystemPrompt($targetLang, $nativeLang, $cefrLevel, $topicId, $knownWords, array_values($recentMistakes), $goal, $interest);
 
-        // Persist conversation + user message BEFORE AI call so conversations always save
-        if (!$conversationId) {
-            $this->db->execute(
-                'INSERT INTO conversations (user_id, topic_id) VALUES (?, ?)',
-                [$userId, $topicId]
-            );
-            $conversationId = $this->db->lastInsertId('conversations');
-        } else {
-            $this->db->execute('UPDATE conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = ?', [$conversationId]);
-        }
-
-        $this->db->execute(
-            "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
-            [$conversationId, $message]
-        );
-
         $content = '';
         $translation = '';
         $correction = '';
@@ -223,78 +207,93 @@ SEGMENTED RULES:
             } else {
                 $content = $aiRaw;
             }
-            $aiSaved = true;
-        } catch (\Throwable $e) {
-            $content = __('chat.error_ai_unavailable');
-            $aiSaved = false;
-        }
 
-        $metadata = json_encode([
-            'phonetic'            => $phonetic,
-            'literal_translation' => $literalTranslation,
-            'grammar_spotlight'   => $grammarSpotlight,
-            'pro_tip'             => $proTip,
-            'corrections'         => $corrections,
-            'words'               => $words,
-            'segmented'           => $segmented,
-        ], JSON_UNESCAPED_UNICODE);
-
-        $this->db->execute(
-            "INSERT INTO messages (conversation_id, role, content, translation, correction, metadata) VALUES (?, 'ai', ?, ?, ?, ?)",
-            [$conversationId, $content, $translation, $correction, $metadata]
-        );
-
-        // Save new vocabulary words and create flashcards
-        foreach ($words as $w) {
-            if (!empty($w['word']) && !empty($w['definition'])) {
-                $exists = $this->db->fetchOne(
-                    'SELECT id FROM vocabulary_words WHERE user_id = ? AND word = ? AND language = ?',
-                    [$userId, $w['word'], $targetLang]
+            // Only persist if AI succeeded
+            if (!$conversationId) {
+                $this->db->execute(
+                    'INSERT INTO conversations (user_id, topic_id) VALUES (?, ?)',
+                    [$userId, $topicId]
                 );
-                if (!$exists) {
-                    $this->db->execute(
-                        'INSERT INTO vocabulary_words (user_id, word, translation, pronunciation, example, category, language, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [$userId, $w['word'], $w['definition'], $w['pronunciation'] ?? '', $content, 'chat', $targetLang, 'chat']
+                $conversationId = $this->db->lastInsertId('conversations');
+            } else {
+                $this->db->execute('UPDATE conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = ?', [$conversationId]);
+            }
+            $this->db->execute(
+                "INSERT INTO messages (conversation_id, role, content) VALUES (?, 'user', ?)",
+                [$conversationId, $message]
+            );
+
+            $metadata = json_encode([
+                'phonetic'            => $phonetic,
+                'literal_translation' => $literalTranslation,
+                'grammar_spotlight'   => $grammarSpotlight,
+                'pro_tip'             => $proTip,
+                'corrections'         => $corrections,
+                'words'               => $words,
+                'segmented'           => $segmented,
+            ], JSON_UNESCAPED_UNICODE);
+
+            $this->db->execute(
+                "INSERT INTO messages (conversation_id, role, content, translation, correction, metadata) VALUES (?, 'ai', ?, ?, ?, ?)",
+                [$conversationId, $content, $translation, $correction, $metadata]
+            );
+
+            // Save new vocabulary words and create flashcards
+            foreach ($words as $w) {
+                if (!empty($w['word']) && !empty($w['definition'])) {
+                    $exists = $this->db->fetchOne(
+                        'SELECT id FROM vocabulary_words WHERE user_id = ? AND word = ? AND language = ?',
+                        [$userId, $w['word'], $targetLang]
                     );
-                    $vocabId = $this->db->lastInsertId('vocabulary_words');
-                    
-                    $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
+                    if (!$exists) {
+                        $this->db->execute(
+                            'INSERT INTO vocabulary_words (user_id, word, translation, pronunciation, example, category, language, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                            [$userId, $w['word'], $w['definition'], $w['pronunciation'] ?? '', $content, 'chat', $targetLang, 'chat']
+                        );
+                        $vocabId = $this->db->lastInsertId('vocabulary_words');
+                        
+                        $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
+                    }
                 }
             }
-        }
 
-        $xpAwarded = 0;
-        if ($aiSaved) {
             // XP + message usage
             $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
             $this->tokenManager->addUsage($userId, 1);
+
             $xpAwarded = 10;
+
+            // Compute remaining quota after usage
+            $quotaRemaining = $this->tokenManager->getRemaining($userId);
+            $planStatus = $user['plan_status'] ?? 'inactive';
+            $quotaTotal = $this->tokenManager->getBaseLimit($planStatus);
+            $usage = $this->db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$userId]);
+            $quotaTotal += ($usage ? (int)$usage['bonus_limit'] : 0);
+
+            return [
+                'content'             => $content,
+                'phonetic'            => $phonetic,
+                'literal_translation' => $literalTranslation,
+                'translation'         => $translation,
+                'grammar_spotlight'   => $grammarSpotlight,
+                'pro_tip'             => $proTip,
+                'correction'          => $correction,
+                'corrections'         => $corrections,
+                'words'               => $words,
+                'segmented'           => $segmented,
+                'conversationId'      => $conversationId,
+                'xpAwarded'           => $xpAwarded,
+                'quotaRemaining'      => $quotaRemaining,
+                'quotaTotal'          => $quotaTotal,
+            ];
+        } catch (\Throwable $e) {
+            $errorMsg = $e->getMessage();
+            error_log("Gemini AI error for user {$userId}: {$errorMsg}");
+            return [
+                'error'   => __('chat.error_ai_unavailable'),
+                'details' => $errorMsg,
+            ];
         }
-
-        // Compute remaining quota after usage
-        $quotaRemaining = $this->tokenManager->getRemaining($userId);
-        $planStatus = $user['plan_status'] ?? 'inactive';
-        $quotaTotal = $this->tokenManager->getBaseLimit($planStatus);
-        // Add bonus to total for display
-        $usage = $this->db->fetchOne('SELECT bonus_limit FROM token_usage WHERE user_id = ?', [$userId]);
-        $quotaTotal += ($usage ? (int)$usage['bonus_limit'] : 0);
-
-        return [
-            'content'             => $content,
-            'phonetic'            => $phonetic,
-            'literal_translation' => $literalTranslation,
-            'translation'         => $translation,
-            'grammar_spotlight'   => $grammarSpotlight,
-            'pro_tip'             => $proTip,
-            'correction'          => $correction,
-            'corrections'         => $corrections,
-            'words'               => $words,
-            'segmented'           => $segmented,
-            'conversationId'      => $conversationId,
-            'xpAwarded'           => $xpAwarded,
-            'quotaRemaining'      => $quotaRemaining,
-            'quotaTotal'          => $quotaTotal,
-        ];
     }
 
     private function enrichMessage(array $msg): array {
