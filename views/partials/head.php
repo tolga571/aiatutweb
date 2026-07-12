@@ -33,7 +33,7 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #3f465c; border-radius: 10px; }
   .seg-group {
-    display: inline; line-height: 2.8; margin-bottom: 2.5rem;
+    display: inline; line-height: 2.8; margin-bottom: 1rem;
   }
   .seg-token {
     display: inline-flex; flex-direction: column; align-items: center;
