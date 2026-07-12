@@ -12,13 +12,13 @@
   transform: translateY(-1px);
 }
 .alphabet-card .char {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 700;
   line-height: 1.2;
   color: #b4c5ff;
 }
 .alphabet-card .char-rtl {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 .alphabet-card .letter-name {
   font-size: 0.8rem;
