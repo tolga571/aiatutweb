@@ -55,11 +55,20 @@ require __DIR__ . '/../partials/navbar.php';
             <?php foreach ($alphabet['letters'] as $letter): ?>
             <div class="alphabet-card">
               <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1"><?= __('alphabet.form_isolated') ?></div>
-              <div class="char char-rtl text-2xl"><?= htmlspecialchars($letter['forms']['isolated']) ?></div>
-              <div class="flex justify-center gap-2 mt-2 text-xs text-gray-400">
-                <span><?= __('alphabet.form_final') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['final']) ?></strong></span>
-                <span><?= __('alphabet.form_medial') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['medial']) ?></strong></span>
-                <span><?= __('alphabet.form_initial') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['initial']) ?></strong></span>
+              <div class="char char-rtl text-xl"><?= htmlspecialchars($letter['forms']['isolated']) ?></div>
+              <div class="grid grid-cols-3 gap-1 mt-2">
+                <div class="text-center">
+                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['final']) ?></div>
+                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_final') ?></div>
+                </div>
+                <div class="text-center">
+                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['medial']) ?></div>
+                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_medial') ?></div>
+                </div>
+                <div class="text-center">
+                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['initial']) ?></div>
+                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_initial') ?></div>
+                </div>
               </div>
               <div class="text-[10px] text-gray-500 mt-1"><?= htmlspecialchars($letter['name']) ?></div>
             </div>
