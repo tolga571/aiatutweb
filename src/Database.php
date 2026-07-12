@@ -189,6 +189,18 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN payment_pending_at TIMESTAMP DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN paddle_subscription_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN paddle_customer_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN cancel_requested_at TIMESTAMP DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

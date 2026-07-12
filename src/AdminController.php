@@ -125,7 +125,7 @@ class AdminController {
     // ------------------- Payments -------------------
     public function listPayments(): void {
         $this->requireAdmin();
-        $payments = $this->db->fetchAll('SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at FROM users u WHERE u.has_paid = 1');
+        $payments = $this->db->fetchAll('SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at, u.paddle_subscription_id, u.cancel_requested_at FROM users u WHERE u.has_paid = 1');
         require __DIR__ . '/../views/admin/payments.php';
     }
 

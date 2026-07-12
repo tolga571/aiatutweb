@@ -17,6 +17,10 @@ return [
 
     'paddle_client_token'     => getenv('PADDLE_CLIENT_TOKEN'),
     'paddle_environment'      => getenv('PADDLE_ENVIRONMENT') ?: 'sandbox',
+    // Server-side Paddle API key (Developer Tools > Authentication in the Paddle
+    // dashboard). Required for in-app subscription cancellation and plan changes;
+    // without it those actions fall back to a manual support request.
+    'paddle_api_key'          => getenv('PADDLE_API_KEY') ?: '',
 
     // Google Sign-In Client ID
     'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',

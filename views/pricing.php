@@ -57,10 +57,24 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         </span>
         <h3 class="text-2xl font-bold text-on-surface mb-2"><?= __('pricing.already_subscribed_title') ?></h3>
         <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.already_subscribed_body') ?></p>
-        <a href="?page=chat" class="inline-flex items-center gap-2 bg-primary text-on-primary hover:opacity-90 font-semibold text-sm px-xl py-3 rounded-xl transition-all shadow-md glow-hover">
-          <?= __('pricing.go_to_chat') ?>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </a>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a href="?page=chat" class="inline-flex items-center gap-2 bg-primary text-on-primary hover:opacity-90 font-semibold text-sm px-xl py-3 rounded-xl transition-all shadow-md glow-hover">
+            <?= __('pricing.go_to_chat') ?>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+          <?php if (!empty($currentUser['cancel_requested_at'])): ?>
+            <span class="inline-flex items-center gap-2 text-xs text-on-surface-variant border border-outline-variant/30 rounded-xl px-4 py-3">
+              <span class="material-symbols-outlined text-[16px]">schedule</span>
+              <?= __('pricing.cancel_pending') ?>
+            </span>
+          <?php else: ?>
+            <button type="button" id="cancel-sub-btn" onclick="requestCancelSubscription()"
+              class="inline-flex items-center gap-2 border border-error/30 text-error hover:bg-error/10 font-semibold text-sm px-xl py-3 rounded-xl transition-all">
+              <span class="material-symbols-outlined text-[16px]">cancel</span>
+              <?= __('pricing.cancel_subscription') ?>
+            </button>
+          <?php endif; ?>
+        </div>
       </div>
     <?php endif; ?>
     
@@ -140,11 +154,17 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
+          <?php elseif ($isPaidUser): ?>
+            <button onclick="changePlan('starter')"
+              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
+              <span><?= __('pricing.upgrade') ?? 'Switch Plan' ?></span>
+              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
+            </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
               <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-              <span><?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.starter_btn') ?></span>
+              <span><?= __('pricing.starter_btn') ?></span>
               <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
             </button>
           <?php endif; ?>
@@ -198,11 +218,17 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
+          <?php elseif ($isPaidUser): ?>
+            <button onclick="changePlan('pro')"
+              class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+              <?= __('pricing.upgrade') ?? 'Switch Plan' ?>
+              <span class="material-symbols-outlined">bolt</span>
+            </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
               class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
               <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-              <?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.pro_btn') ?>
+              <?= __('pricing.pro_btn') ?>
               <span class="material-symbols-outlined">bolt</span>
             </button>
           <?php endif; ?>
@@ -235,11 +261,17 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
+          <?php elseif ($isPaidUser): ?>
+            <button onclick="changePlan('active')"
+              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+              <?= __('pricing.upgrade') ?? 'Switch Plan' ?>
+              <span class="material-symbols-outlined">star</span>
+            </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
               <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
-              <?= $isPaidUser ? (__('pricing.upgrade') ?? 'Switch Plan') : __('pricing.premium_btn') ?>
+              <?= __('pricing.premium_btn') ?>
               <span class="material-symbols-outlined">star</span>
             </button>
           <?php endif; ?>
@@ -374,6 +406,53 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     } catch (error) {
       console.error("Error opening checkout:", error);
       alert("<?= __('pricing.checkout_error') ?>");
+    }
+  }
+
+  const CSRF_TOKEN = <?= json_encode(csrf_token()) ?>;
+
+  async function changePlan(planKey) {
+    if (!confirm(<?= json_encode(__('pricing.confirm_change')) ?>)) return;
+    try {
+      const res = await fetch('?page=change-subscription-plan', {
+        method: 'POST',
+        body: new URLSearchParams({ plan: planKey, csrf_token: CSRF_TOKEN }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        window.location.href = '?page=pricing';
+      } else if (data.error === 'manual_required') {
+        alert(<?= json_encode(__('pricing.manual_change_required')) ?>);
+      } else {
+        alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+      }
+    } catch (error) {
+      console.error('Error changing plan:', error);
+      alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+    }
+  }
+
+  async function requestCancelSubscription() {
+    if (!confirm(<?= json_encode(__('pricing.confirm_cancel')) ?>)) return;
+    const btn = document.getElementById('cancel-sub-btn');
+    if (btn) btn.disabled = true;
+    try {
+      const res = await fetch('?page=cancel-subscription', {
+        method: 'POST',
+        body: new URLSearchParams({ csrf_token: CSRF_TOKEN }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        alert(data.method === 'api' ? <?= json_encode(__('pricing.cancel_success_api')) ?> : <?= json_encode(__('pricing.cancel_success_manual')) ?>);
+        window.location.href = '?page=pricing';
+      } else {
+        alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+        if (btn) btn.disabled = false;
+      }
+    } catch (error) {
+      console.error('Error requesting cancellation:', error);
+      alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+      if (btn) btn.disabled = false;
     }
   }
 </script>

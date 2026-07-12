@@ -255,6 +255,13 @@ return [
     'pricing.already_subscribed_title' => '您已订阅！',
     'pricing.already_subscribed_body' => '您已拥有有效套餐。返回聊天页面继续学习。',
     'pricing.current_plan' => '当前套餐',
+    'pricing.cancel_subscription' => '取消订阅',
+    'pricing.cancel_pending' => '已提交取消请求 — 生效前您仍可正常使用',
+    'pricing.confirm_change' => '切换到此套餐？差价将自动按比例计算。',
+    'pricing.manual_change_required' => '暂时无法自动切换您的套餐。请联系 support@aitut.com，我们会为您处理。',
+    'pricing.confirm_cancel' => '确定取消订阅吗？在当前计费周期结束前您仍可使用。',
+    'pricing.cancel_success_api' => '您的订阅将在当前计费周期结束时取消。',
+    'pricing.cancel_success_manual' => '我们已收到您的取消请求，团队会尽快通过邮件确认。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => '仪表盘 – AiTut',

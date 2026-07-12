@@ -108,9 +108,17 @@ if (strpos($eventType, 'subscription.') === 0) {
             $userRow = $db->fetchOne('SELECT plan_status FROM users WHERE id = ?', [$userId]);
             $oldPlanStatus = $userRow ? ($userRow['plan_status'] ?? 'inactive') : 'inactive';
 
+            // Keep the Paddle subscription/customer IDs on file so the app can
+            // later call the Paddle API to cancel or change this subscription
+            // in place, instead of opening a brand-new checkout.
+            $subscriptionId = $data['id'] ?? null;
+            $customerId = $data['customer_id'] ?? null;
+
             $db->execute(
-                'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL WHERE id = ?',
-                [$planStatus, $hasPaid, $userId]
+                'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL,
+                 paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
+                 WHERE id = ?',
+                [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
             );
 
             // Handle Upgrade / Downgrade for Monthly limits

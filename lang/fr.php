@@ -255,6 +255,13 @@ return [
     'pricing.already_subscribed_title' => 'Vous êtes abonné!',
     'pricing.already_subscribed_body' => 'Vous avez déjà un plan actif. Retournez au chat pour continuer à apprendre.',
     'pricing.current_plan' => 'Forfait actuel',
+    'pricing.cancel_subscription' => 'Annuler l\'abonnement',
+    'pricing.cancel_pending' => 'Annulation demandée — vous gardez l\'accès jusqu\'à sa prise d\'effet',
+    'pricing.confirm_change' => 'Passer à ce forfait ? La différence de prix est calculée au prorata automatiquement.',
+    'pricing.manual_change_required' => 'Nous ne pouvons pas encore changer votre forfait automatiquement. Contactez support@aitut.com, nous le ferons pour vous.',
+    'pricing.confirm_cancel' => 'Annuler votre abonnement ? Vous garderez l\'accès jusqu\'à la fin de votre période de facturation actuelle.',
+    'pricing.cancel_success_api' => 'Votre abonnement sera annulé à la fin de votre période de facturation actuelle.',
+    'pricing.cancel_success_manual' => 'Nous avons bien reçu votre demande d\'annulation. Notre équipe la confirmera bientôt par e-mail.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Tableau de bord – AiTut',

@@ -255,6 +255,13 @@ return [
     'pricing.already_subscribed_title' => 'أنت مشترك!',
     'pricing.already_subscribed_body' => 'لديك بالفعل خطة نشطة. عد إلى الدردشة لمواصلة التعلم.',
     'pricing.current_plan' => 'الخطة الحالية',
+    'pricing.cancel_subscription' => 'إلغاء الاشتراك',
+    'pricing.cancel_pending' => 'تم استلام طلب الإلغاء — يستمر وصولك حتى يصبح ساري المفعول',
+    'pricing.confirm_change' => 'التبديل إلى هذه الخطة؟ سيتم احتساب فرق السعر تلقائيًا بالتناسب.',
+    'pricing.manual_change_required' => 'لا يمكننا تبديل خطتك تلقائيًا بعد. يرجى التواصل مع support@aitut.com وسنقوم بذلك نيابة عنك.',
+    'pricing.confirm_cancel' => 'إلغاء اشتراكك؟ ستحتفظ بالوصول حتى نهاية فترة الفوترة الحالية.',
+    'pricing.cancel_success_api' => 'تم جدولة إلغاء اشتراكك في نهاية فترة الفوترة الحالية.',
+    'pricing.cancel_success_manual' => 'تم استلام طلب الإلغاء الخاص بك. سيؤكده فريقنا قريبًا عبر البريد الإلكتروني.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'لوحة التحكم – AiTut',

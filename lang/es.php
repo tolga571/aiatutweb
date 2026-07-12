@@ -255,6 +255,13 @@ return [
     'pricing.already_subscribed_title' => '¡Ya estás suscrito!',
     'pricing.already_subscribed_body' => 'Ya tienes un plan activo. Vuelve al chat para seguir aprendiendo.',
     'pricing.current_plan' => 'Plan actual',
+    'pricing.cancel_subscription' => 'Cancelar suscripción',
+    'pricing.cancel_pending' => 'Cancelación solicitada — conservas el acceso hasta que se haga efectiva',
+    'pricing.confirm_change' => '¿Cambiar a este plan? La diferencia de precio se prorratea automáticamente.',
+    'pricing.manual_change_required' => 'Todavía no podemos cambiar tu plan automáticamente. Contacta a support@aitut.com y lo haremos por ti.',
+    'pricing.confirm_cancel' => '¿Cancelar tu suscripción? Conservarás el acceso hasta el final de tu período de facturación actual.',
+    'pricing.cancel_success_api' => 'Tu suscripción se cancelará al final de tu período de facturación actual.',
+    'pricing.cancel_success_manual' => 'Hemos recibido tu solicitud de cancelación. Nuestro equipo la confirmará pronto por correo.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Panel – AiTut',

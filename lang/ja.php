@@ -255,6 +255,13 @@ return [
     'pricing.already_subscribed_title' => '登録済みです！',
     'pricing.already_subscribed_body' => '既に有効なプランがあります。チャットに戻って学習を続けてください。',
     'pricing.current_plan' => '現在のプラン',
+    'pricing.cancel_subscription' => 'サブスクリプションを解約',
+    'pricing.cancel_pending' => '解約をリクエストしました — 反映されるまでアクセスは継続します',
+    'pricing.confirm_change' => 'このプランに切り替えますか？差額は自動的に日割り計算されます。',
+    'pricing.manual_change_required' => 'まだ自動でプランを変更できません。support@aitut.com までご連絡いただければ対応いたします。',
+    'pricing.confirm_cancel' => 'サブスクリプションを解約しますか？現在の請求期間の終了までアクセスは継続します。',
+    'pricing.cancel_success_api' => 'サブスクリプションは現在の請求期間の終了時に解約される予定です。',
+    'pricing.cancel_success_manual' => '解約リクエストを受け付けました。まもなくメールでご案内いたします。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'ダッシュボード – AiTut',

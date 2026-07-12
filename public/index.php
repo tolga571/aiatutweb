@@ -39,6 +39,7 @@ $chat   = new Chat($db, $config);
 $gemini = new GeminiClient($config['gemini_api_key'], $config['gemini_api_key_backup']);
 $adminCtrl = new AdminController($db);
 $flashcard = new Flashcard($db);
+$paddleClient = new \App\Src\PaddleClient($config['paddle_api_key'] ?? '', $config['paddle_environment'] ?? 'sandbox');
 
 // Initialize language system
 $detectedLang = 'en';
@@ -329,6 +330,99 @@ switch ($page) {
             $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
         }
         header('Location: ?page=chat');
+        exit;
+
+    // ── Subscription management ─────────────────────────────────────
+    case 'cancel-subscription':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $cancelUser = $auth->currentUser();
+        if (!$auth->hasPaid() || ($cancelUser['plan_status'] ?? '') === 'trial') {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'no_active_subscription']);
+            exit;
+        }
+        $subId = $cancelUser['paddle_subscription_id'] ?? null;
+        if ($subId && $paddleClient->isConfigured()) {
+            $success = $paddleClient->cancelSubscription($subId, 'next_billing_period');
+            if ($success) {
+                $db->execute('UPDATE users SET cancel_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+                echo json_encode(['ok' => true, 'method' => 'api']);
+            } else {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
+            }
+            exit;
+        }
+        // No subscription ID on file yet (subscription predates this feature)
+        // or no API key configured: record the request so support can finish
+        // it manually instead of silently doing nothing.
+        $db->execute('UPDATE users SET cancel_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        if (!empty($config['mailtrap_api_token'])) {
+            $mailer = new \App\Src\Mailer($config);
+            $mailer->send(
+                $config['mail_from_address'],
+                'Manual cancellation request',
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($cancelUser['email'] ?? '') . ') requested to cancel their subscription, but no Paddle subscription ID / API key is on file for automatic cancellation. Please cancel manually in the Paddle dashboard.</p>'
+            );
+        }
+        echo json_encode(['ok' => true, 'method' => 'manual']);
+        exit;
+
+    case 'change-subscription-plan':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $planKey = $_POST['plan'] ?? '';
+        $planPriceMap = [
+            'starter' => $config['paddle_starter_price_id'] ?? '',
+            'pro' => $config['paddle_pro_price_id'] ?? '',
+            'active' => $config['paddle_premium_price_id'] ?? '',
+        ];
+        if (!isset($planPriceMap[$planKey]) || $planPriceMap[$planKey] === '') {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'invalid_plan']);
+            exit;
+        }
+        $changeUser = $auth->currentUser();
+        $subId = $changeUser['paddle_subscription_id'] ?? null;
+        if (!$auth->hasPaid() || ($changeUser['plan_status'] ?? '') === 'trial' || !$subId || !$paddleClient->isConfigured()) {
+            // Can't safely swap the existing subscription in place — refuse
+            // rather than fall back to opening a second checkout, which is
+            // what caused double-billing before this fix.
+            echo json_encode(['ok' => false, 'error' => 'manual_required']);
+            exit;
+        }
+        $success = $paddleClient->updateSubscriptionPrice($subId, $planPriceMap[$planKey]);
+        if (!$success) {
+            http_response_code(502);
+            echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
+            exit;
+        }
+        // Optimistically reflect the change; the next webhook call will
+        // reconcile plan_status/has_paid from Paddle's own event data.
+        $oldPlanStatus = $changeUser['plan_status'] ?? 'inactive';
+        $planRanks = ['inactive' => 0, 'trial' => 0, 'starter' => 1, 'pro' => 2, 'active' => 3];
+        $planLimits = ['inactive' => 0, 'trial' => 5, 'starter' => 50, 'pro' => 500, 'active' => 1500];
+        $oldRank = $planRanks[$oldPlanStatus] ?? 0;
+        $newRank = $planRanks[$planKey] ?? 0;
+        if ($newRank > $oldRank) {
+            $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
+        } elseif ($newRank < $oldRank) {
+            $oldLimit = $planLimits[$oldPlanStatus] ?? 0;
+            $db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$oldLimit, $auth->userId()]);
+        }
+        $db->execute('UPDATE users SET plan_status = ?, has_paid = 1 WHERE id = ?', [$planKey, $auth->userId()]);
+        echo json_encode(['ok' => true]);
         exit;
 
     case 'flashcards':
