@@ -33,7 +33,7 @@ require __DIR__ . '/../partials/navbar.php';
           <?php foreach ($alphabet['letters'] as $letter): ?>
             <div class="alphabet-card">
               <?php if (isset($letter['upper'])): ?>
-                <div class="char"><?= htmlspecialchars($letter['upper']) ?><span class="text-gray-500 text-sm ml-0.5"><?= htmlspecialchars($letter['lower']) ?></span></div>
+                <div class="char"><?= htmlspecialchars($letter['upper']) ?><span class="text-gray-500 text-lg ml-1"><?= htmlspecialchars($letter['lower']) ?></span></div>
               <?php else: ?>
                 <div class="char char-rtl"><?= htmlspecialchars($letter['char']) ?></div>
               <?php endif; ?>
