@@ -34,6 +34,8 @@ return [
     'nav.register' => 'Register',
     'nav.logged_in_as' => 'Logged in as',
     'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => 'Alphabet',
+    'nav.alphabet_desc' => 'Learn the letters of your target language',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Welcome back',
@@ -549,6 +551,27 @@ return [
     'error.trial_expired' => 'Your trial has expired. Please choose a plan to continue.',
     'error.trial_expired_js' => 'Your trial has expired. Please choose a plan to continue.',
     'error.generic' => 'Something went wrong. Please try again.',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => 'Alphabet – AiTut',
+    'alphabet.subtitle_default' => 'Learn the letters and sounds of your target language.',
+    'alphabet.subtitle_tr' => 'Türkçe\'nin 29 harfini öğrenin.',
+    'alphabet.subtitle_en' => 'Learn the 26 letters of the English alphabet.',
+    'alphabet.subtitle_de' => 'Lernen Sie die 30 Buchstaben des deutschen Alphabets.',
+    'alphabet.subtitle_fr' => 'Apprenez les 26 lettres de l\'alphabet français.',
+    'alphabet.subtitle_es' => 'Aprende las 27 letras del alfabeto español.',
+    'alphabet.subtitle_ar' => 'تعلم الحروف العربية الـ 28.',
+    'alphabet.subtitle_zh' => 'Learn Pinyin, the phonetic system of Chinese.',
+    'alphabet.subtitle_ja' => 'Learn Hiragana, Katakana, and Romaji.',
+    'alphabet.tones' => 'Tones',
+    'alphabet.initials' => 'Initials (声母)',
+    'alphabet.finals' => 'Finals (韵母)',
+    'alphabet.tone1' => 'high level',
+    'alphabet.tone2' => 'rising',
+    'alphabet.tone3' => 'falling-rising',
+    'alphabet.tone4' => 'falling',
+    'alphabet.tone5' => 'neutral',
+    'alphabet.listen' => 'Listen',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Learn more',

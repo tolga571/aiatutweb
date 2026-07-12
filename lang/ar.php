@@ -33,6 +33,9 @@ return [
     'nav.login' => 'تسجيل الدخول',
     'nav.register' => 'ابدأ الآن',
     'nav.logged_in_as' => 'مسجل الدخول باسم',
+    'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => 'الأبجدية',
+    'nav.alphabet_desc' => 'تعلم حروف لغتك المستهدفة',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'مرحباً بعودتك',
@@ -506,6 +509,27 @@ return [
     'error.trial_expired' => 'انتهت صلاحية الفترة التجريبية. يرجى اختيار خطة للمتابعة.',
     'error.trial_expired_js' => 'انتهت صلاحية الفترة التجريبية. يرجى اختيار خطة للمتابعة.',
     'error.generic' => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => 'الأبجدية – AiTut',
+    'alphabet.subtitle_default' => 'تعلم حروف وأصوات لغتك المستهدفة.',
+    'alphabet.subtitle_tr' => 'تعلم الحروف التركية الـ 29.',
+    'alphabet.subtitle_en' => 'تعلم الحروف الإنجليزية الـ 26.',
+    'alphabet.subtitle_de' => 'تعلم الحروف الألمانية الـ 30.',
+    'alphabet.subtitle_fr' => 'تعلم الحروف الفرنسية الـ 26.',
+    'alphabet.subtitle_es' => 'تعلم الحروف الإسبانية الـ 27.',
+    'alphabet.subtitle_ar' => 'تعلم الحروف العربية الـ 28.',
+    'alphabet.subtitle_zh' => 'تعلم نظام بينين الصوتي للصينية.',
+    'alphabet.subtitle_ja' => 'تعلم الهيراغانا والكاتاكانا والروماجي.',
+    'alphabet.tones' => 'النغمات',
+    'alphabet.initials' => 'الحروف الأولى (声母)',
+    'alphabet.finals' => 'الحروف الأخيرة (韵母)',
+    'alphabet.tone1' => 'عالٍ مستو',
+    'alphabet.tone2' => 'صاعد',
+    'alphabet.tone3' => 'هابط صاعد',
+    'alphabet.tone4' => 'هابط',
+    'alphabet.tone5' => 'محايد',
+    'alphabet.listen' => 'استمع',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'اعرف المزيد',

@@ -33,6 +33,9 @@ return [
     'nav.login' => 'ログイン',
     'nav.register' => 'はじめる',
     'nav.logged_in_as' => 'ログイン中',
+    'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => '文字',
+    'nav.alphabet_desc' => '目標言語の文字を学ぶ',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'おかえりなさい',
@@ -506,6 +509,27 @@ return [
     'error.trial_expired' => '体験期間が終了しました。プランを選択して続けてください。',
     'error.trial_expired_js' => '体験期間が終了しました。プランを選択して続けてください。',
     'error.generic' => '問題が発生しました。もう一度お試しください。',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => '文字 – AiTut',
+    'alphabet.subtitle_default' => '目標言語の文字と音を学びましょう。',
+    'alphabet.subtitle_tr' => 'トルコ語の29文字を学びましょう。',
+    'alphabet.subtitle_en' => '英語の26文字を学びましょう。',
+    'alphabet.subtitle_de' => 'ドイツ語の30文字を学びましょう。',
+    'alphabet.subtitle_fr' => 'フランス語の26文字を学びましょう。',
+    'alphabet.subtitle_es' => 'スペイン語の27文字を学びましょう。',
+    'alphabet.subtitle_ar' => 'アラビア語の28文字を学びましょう。',
+    'alphabet.subtitle_zh' => '中国語の発音システム「ピンイン」を学びましょう。',
+    'alphabet.subtitle_ja' => 'ひらがな、カタカナ、ローマ字を学びましょう。',
+    'alphabet.tones' => '声調',
+    'alphabet.initials' => '声母 (Initials)',
+    'alphabet.finals' => '韵母 (Finals)',
+    'alphabet.tone1' => '高平調',
+    'alphabet.tone2' => '上昇調',
+    'alphabet.tone3' => '下降上昇調',
+    'alphabet.tone4' => '下降調',
+    'alphabet.tone5' => '軽声',
+    'alphabet.listen' => '聞く',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'もっと詳しく',

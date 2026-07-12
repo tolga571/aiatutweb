@@ -33,6 +33,9 @@ return [
     'nav.login' => 'Connexion',
     'nav.register' => 'Commencer',
     'nav.logged_in_as' => 'Connecté en tant que',
+    'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => 'Alphabet',
+    'nav.alphabet_desc' => 'Apprends les lettres de ta langue cible',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Bon retour',
@@ -506,6 +509,27 @@ return [
     'error.trial_expired' => 'Votre essai a expiré. Veuillez choisir un forfait pour continuer.',
     'error.trial_expired_js' => 'Votre essai a expiré. Veuillez choisir un forfait pour continuer.',
     'error.generic' => 'Quelque chose s\'est mal passé. Veuillez réessayer.',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => 'Alphabet – AiTut',
+    'alphabet.subtitle_default' => 'Apprends les lettres et les sons de ta langue cible.',
+    'alphabet.subtitle_tr' => 'Apprends les 29 lettres de l\'alphabet turc.',
+    'alphabet.subtitle_en' => 'Apprends les 26 lettres de l\'alphabet anglais.',
+    'alphabet.subtitle_de' => 'Apprends les 30 lettres de l\'alphabet allemand.',
+    'alphabet.subtitle_fr' => 'Apprends les 26 lettres de l\'alphabet français.',
+    'alphabet.subtitle_es' => 'Apprends les 27 lettres de l\'alphabet espagnol.',
+    'alphabet.subtitle_ar' => 'Apprends les 28 lettres arabes.',
+    'alphabet.subtitle_zh' => 'Apprends le Pinyin, le système phonétique du chinois.',
+    'alphabet.subtitle_ja' => 'Apprends le Hiragana, le Katakana et le Romaji.',
+    'alphabet.tones' => 'Tons',
+    'alphabet.initials' => 'Initiales (声母)',
+    'alphabet.finals' => 'Finales (韵母)',
+    'alphabet.tone1' => 'haut niveau',
+    'alphabet.tone2' => 'montant',
+    'alphabet.tone3' => 'descendant-montant',
+    'alphabet.tone4' => 'descendant',
+    'alphabet.tone5' => 'neutre',
+    'alphabet.listen' => 'Écouter',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'En savoir plus',

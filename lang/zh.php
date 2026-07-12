@@ -33,6 +33,9 @@ return [
     'nav.login' => '登录',
     'nav.register' => '开始使用',
     'nav.logged_in_as' => '当前登录为',
+    'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => '字母表',
+    'nav.alphabet_desc' => '学习目标语言的字母',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => '欢迎回来',
@@ -506,6 +509,27 @@ return [
     'error.trial_expired' => '您的试用已过期。请选择一个套餐继续。',
     'error.trial_expired_js' => '您的试用已过期。请选择一个套餐继续。',
     'error.generic' => '出现问题，请重试。',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => '字母表 – AiTut',
+    'alphabet.subtitle_default' => '学习目标语言的字母和发音。',
+    'alphabet.subtitle_tr' => '学习土耳其语29个字母。',
+    'alphabet.subtitle_en' => '学习英语26个字母。',
+    'alphabet.subtitle_de' => '学习德语30个字母。',
+    'alphabet.subtitle_fr' => '学习法语26个字母。',
+    'alphabet.subtitle_es' => '学习西班牙语27个字母。',
+    'alphabet.subtitle_ar' => '学习28个阿拉伯语字母。',
+    'alphabet.subtitle_zh' => '学习汉语拼音系统。',
+    'alphabet.subtitle_ja' => '学习平假名、片假名和罗马字。',
+    'alphabet.tones' => '声调',
+    'alphabet.initials' => '声母',
+    'alphabet.finals' => '韵母',
+    'alphabet.tone1' => '高平调',
+    'alphabet.tone2' => '升调',
+    'alphabet.tone3' => '降升调',
+    'alphabet.tone4' => '降调',
+    'alphabet.tone5' => '轻声',
+    'alphabet.listen' => '听',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => '了解更多',

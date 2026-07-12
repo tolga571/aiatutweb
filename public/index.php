@@ -546,7 +546,8 @@ switch ($page) {
     case 'about':
     case 'contact':
     case 'faq':
-        $allowed = ['chat-tips','privacy-policy','terms-and-conditions','refund-policy','license-agreement','cookie-policy','about','contact','faq'];
+    case 'alphabet':
+        $allowed = ['chat-tips','privacy-policy','terms-and-conditions','refund-policy','license-agreement','cookie-policy','about','contact','faq','alphabet'];
         if (in_array($page, $allowed, true)) {
             require __DIR__ . '/../views/pages/' . $page . '.php';
         }

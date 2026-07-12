@@ -68,6 +68,13 @@
                   <span class="pages-menu-desc"><?= __('nav.instructions_desc') ?></span>
                 </span>
               </a>
+              <a href="?page=alphabet" class="pages-menu-item">
+                <span class="material-symbols-outlined pages-menu-icon">abc</span>
+                <span>
+                  <span class="pages-menu-title"><?= __('nav.alphabet') ?></span>
+                  <span class="pages-menu-desc"><?= __('nav.alphabet_desc') ?></span>
+                </span>
+              </a>
             </div>
           </div>
           <div>

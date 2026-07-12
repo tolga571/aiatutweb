@@ -33,6 +33,9 @@ return [
     'nav.login' => 'Anmelden',
     'nav.register' => 'Loslegen',
     'nav.logged_in_as' => 'Angemeldet als',
+    'nav.learning_language' => 'Learning Language',
+    'nav.alphabet' => 'Alphabet',
+    'nav.alphabet_desc' => 'Lerne die Buchstaben deiner Zielsprache',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Willkommen zurück',
@@ -506,6 +509,27 @@ return [
     'error.trial_expired' => 'Deine Testversion ist abgelaufen. Bitte wähle einen Plan, um fortzufahren.',
     'error.trial_expired_js' => 'Deine Testversion ist abgelaufen. Bitte wähle einen Plan, um fortzufahren.',
     'error.generic' => 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => 'Alphabet – AiTut',
+    'alphabet.subtitle_default' => 'Lerne die Buchstaben und Laute deiner Zielsprache.',
+    'alphabet.subtitle_tr' => 'Lerne die 29 Buchstaben des türkischen Alphabets.',
+    'alphabet.subtitle_en' => 'Lerne die 26 Buchstaben des englischen Alphabets.',
+    'alphabet.subtitle_de' => 'Lerne die 30 Buchstaben des deutschen Alphabets.',
+    'alphabet.subtitle_fr' => 'Lerne die 26 Buchstaben des französischen Alphabets.',
+    'alphabet.subtitle_es' => 'Lerne die 27 Buchstaben des spanischen Alphabets.',
+    'alphabet.subtitle_ar' => 'Lerne die 28 arabischen Buchstaben.',
+    'alphabet.subtitle_zh' => 'Lerne Pinyin, das phonetische System des Chinesischen.',
+    'alphabet.subtitle_ja' => 'Lerne Hiragana, Katakana und Romaji.',
+    'alphabet.tones' => 'Töne',
+    'alphabet.initials' => 'Initiale (声母)',
+    'alphabet.finals' => 'Finale (韵母)',
+    'alphabet.tone1' => 'hoch',
+    'alphabet.tone2' => 'steigend',
+    'alphabet.tone3' => 'fallend-steigend',
+    'alphabet.tone4' => 'fallend',
+    'alphabet.tone5' => 'neutral',
+    'alphabet.listen' => 'Anhören',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Mehr erfahren',

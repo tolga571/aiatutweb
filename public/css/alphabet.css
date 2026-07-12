@@ -1,0 +1,195 @@
+.alphabet-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s;
+}
+.alphabet-card:hover {
+  border-color: rgba(180, 197, 255, 0.4);
+  box-shadow: 0 0 15px rgba(180, 197, 255, 0.1);
+  transform: translateY(-1px);
+}
+.alphabet-card .char {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #b4c5ff;
+}
+.alphabet-card .char-rtl {
+  font-size: 2.5rem;
+}
+.alphabet-card .letter-name {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 0.25rem;
+}
+.alphabet-card .pron {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+.alphabet-card .example {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+.alphabet-card .ex-trans {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+.alphabet-card .speak-btn {
+  margin-top: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: rgba(71, 85, 105, 0.3);
+  color: #94a3b8;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alphabet-card .speak-btn:hover {
+  background: rgba(180, 197, 255, 0.2);
+  color: #b4c5ff;
+}
+
+.gojuon-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+.gojuon-row {
+  display: grid;
+  grid-template-columns: 8rem repeat(5, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+.gojuon-row .row-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+  text-align: right;
+  padding-right: 0.5rem;
+}
+.gojuon-cell {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.4rem;
+  text-align: center;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.gojuon-cell:hover {
+  border-color: rgba(180, 197, 255, 0.3);
+  background: rgba(30, 41, 59, 0.8);
+}
+.gojuon-cell .char {
+  font-size: 1.5rem;
+  color: #b4c5ff;
+  display: block;
+  line-height: 1.3;
+}
+.gojuon-cell .romaji {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.initial-grid, .final-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+.initial-card, .final-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  text-align: center;
+  transition: all 0.15s;
+}
+.initial-card:hover, .final-card:hover {
+  border-color: rgba(180, 197, 255, 0.3);
+}
+.initial-card .pinyin, .final-card .pinyin {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #b4c5ff;
+}
+.initial-card .pron, .final-card .pron {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.tone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
+}
+.tone-badge .tone-mark {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fbbf24;
+  min-width: 2rem;
+  text-align: center;
+}
+.tone-badge .tone-label {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.alphabet-tab-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alphabet-tab-btn:hover {
+  color: #cbd5e1;
+  background: rgba(71, 85, 105, 0.2);
+}
+.alphabet-tab-btn.active {
+  color: #b4c5ff;
+  background: rgba(180, 197, 255, 0.1);
+  border-color: rgba(180, 197, 255, 0.2);
+}
+.alphabet-tab-panel {
+  display: none;
+}
+.alphabet-tab-panel.active {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .gojuon-row {
+    grid-template-columns: 5rem repeat(5, 1fr);
+    gap: 0.3rem;
+  }
+  .gojuon-row .row-label {
+    font-size: 0.65rem;
+  }
+  .gojuon-cell .char {
+    font-size: 1.1rem;
+  }
+  .initial-grid, .final-grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+}

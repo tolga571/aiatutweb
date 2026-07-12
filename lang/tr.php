@@ -34,6 +34,8 @@ return [
     'nav.register' => 'Başla',
     'nav.logged_in_as' => 'Giriş yapan kullanıcı',
     'nav.learning_language' => 'Öğrenilen Dil',
+    'nav.alphabet' => 'Alfabe',
+    'nav.alphabet_desc' => 'Hedef dilinin harflerini öğren',
 
     // ── Auth ────────────────────────────────────────────────
     'auth.welcome_back' => 'Tekrar hoş geldiniz',
@@ -549,6 +551,27 @@ return [
     'error.trial_expired' => 'Deneme süreniz sona erdi. Devam etmek için bir plan seçin.',
     'error.trial_expired_js' => 'Deneme süreniz sona erdi. Devam etmek için bir plan seçin.',
     'error.generic' => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.',
+
+    // ── Alphabet ────────────────────────────────────────────
+    'alphabet.page_title' => 'Alfabe – AiTut',
+    'alphabet.subtitle_default' => 'Hedef dilinin harflerini ve seslerini öğrenin.',
+    'alphabet.subtitle_tr' => 'Türkçe\'nin 29 harfini öğrenin.',
+    'alphabet.subtitle_en' => 'İngiliz alfabesinin 26 harfini öğrenin.',
+    'alphabet.subtitle_de' => 'Alman alfabesinin 30 harfini öğrenin.',
+    'alphabet.subtitle_fr' => 'Fransız alfabesinin 26 harfini öğrenin.',
+    'alphabet.subtitle_es' => 'İspanyol alfabesinin 27 harfini öğrenin.',
+    'alphabet.subtitle_ar' => '28 Arap harfini öğrenin.',
+    'alphabet.subtitle_zh' => 'Çince\'nin fonetik sistemi Pinyin\'i öğrenin.',
+    'alphabet.subtitle_ja' => 'Hiragana, Katakana ve Romaji öğrenin.',
+    'alphabet.tones' => 'Tonlar',
+    'alphabet.initials' => 'Baş Harfler (声母)',
+    'alphabet.finals' => 'Son Harfler (韵母)',
+    'alphabet.tone1' => 'yüksek düz',
+    'alphabet.tone2' => 'yükselen',
+    'alphabet.tone3' => 'alçalıp yükselen',
+    'alphabet.tone4' => 'alçalan',
+    'alphabet.tone5' => 'nötr',
+    'alphabet.listen' => 'Dinle',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Daha fazla bilgi',
