@@ -33,20 +33,20 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #3f465c; border-radius: 10px; }
   .seg-group {
-    display: inline; line-height: 2.8; margin-bottom: 1rem;
+    display: inline; line-height: 2.2; margin-bottom: 1rem;
   }
   .seg-token {
     display: inline-flex; flex-direction: column; align-items: center;
     margin: 0 3px; vertical-align: top; line-height: 1.3;
   }
   .seg-text {
-    font-size: 1.5rem; font-weight: 500; line-height: 1.4;
+    font-size: 1.75rem; font-weight: 500; line-height: 1.3;
   }
   .seg-pron {
-    font-size: 0.7rem; color: #94a3b8; font-style: italic; line-height: 1.2;
+    font-size: 0.85rem; color: #94a3b8; font-style: italic; line-height: 1.2;
   }
   .seg-trans {
-    font-size: 0.6rem; color: #64748b; line-height: 1.2;
+    font-size: 0.8rem; color: #64748b; line-height: 1.2;
   }
 </style>
 <script>
