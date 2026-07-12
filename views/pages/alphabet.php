@@ -6,14 +6,26 @@ $isLoggedIn = $auth->isLoggedIn() ?? false;
 // Target language: explicit ?target= wins (works for guests too), otherwise the
 // logged-in user's own target language, otherwise English.
 $accountTargetLang = 'en';
+$nativeLang = null;
 if ($isLoggedIn) {
     $u = $auth->currentUser();
     $accountTargetLang = $u['target_lang'] ?? 'en';
+    $nativeLang = $u['native_lang'] ?? null;
 }
 $requestedLang = $_GET['target'] ?? null;
 $targetLang = ($requestedLang && isset($alphabets[$requestedLang])) ? $requestedLang : $accountTargetLang;
 if (!isset($alphabets[$targetLang])) {
     $targetLang = 'en';
+}
+
+// Language the example-word gloss should be shown in: the learner's own
+// native language when we have it, otherwise English. If the native
+// language is the one being studied (e.g. a guest just browsing), no
+// gloss is needed at all since the word is already understood.
+if ($nativeLang === $targetLang) {
+    $glossLang = null;
+} else {
+    $glossLang = $nativeLang ?: 'en';
 }
 
 $alphabet = $alphabets[$targetLang] ?? $alphabets['en'];
@@ -77,8 +89,14 @@ require __DIR__ . '/../partials/navbar.php';
               <div class="letter-name"><?= htmlspecialchars($letter['name']) ?></div>
               <div class="pron"><?= htmlspecialchars($letter['pron']) ?></div>
               <div class="example"><?= htmlspecialchars($letter['example'] ?? '') ?></div>
-              <?php if (!empty($letter['example_en'])): ?>
-                <div class="ex-trans"><?= htmlspecialchars($letter['example_en']) ?></div>
+              <?php
+                $gloss = null;
+                if ($glossLang && !empty($letter['example_trans'])) {
+                    $gloss = $letter['example_trans'][$glossLang] ?? $letter['example_trans']['en'] ?? null;
+                }
+              ?>
+              <?php if ($gloss): ?>
+                <div class="ex-trans"><?= htmlspecialchars($gloss) ?></div>
               <?php endif; ?>
               <div class="card-actions">
                 <button type="button" class="speak-btn" data-say="<?= htmlspecialchars($letter['example'] ?? $letter['char']) ?>" title="<?= __('alphabet.listen') ?>" aria-label="<?= __('alphabet.listen') ?>">
