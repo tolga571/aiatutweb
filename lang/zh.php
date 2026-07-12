@@ -536,6 +536,12 @@ return [
     'alphabet.form_final' => '结尾',
     'alphabet.form_medial' => '中间',
     'alphabet.form_initial' => '开头',
+    'alphabet.choose_language' => '选择语言',
+    'alphabet.mark_learned' => '标记为已学习',
+    'alphabet.progress_loading' => '正在加载进度…',
+    'alphabet.progress_label' => '已学习 {count} / {total} 个字母',
+    'alphabet.progress_signin_cta' => '登录以保存你的学习进度',
+    'alphabet.no_voice' => '你的浏览器没有该语言的语音支持。',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => '了解更多',

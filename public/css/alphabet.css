@@ -44,8 +44,15 @@
   font-size: 0.7rem;
   color: #64748b;
 }
-.alphabet-card .speak-btn {
+.alphabet-card .card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   margin-top: 0.4rem;
+}
+.alphabet-card .speak-btn,
+.alphabet-card .learn-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,6 +68,95 @@
 .alphabet-card .speak-btn:hover {
   background: rgba(180, 197, 255, 0.2);
   color: #b4c5ff;
+}
+.alphabet-card .learn-btn:hover {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+}
+.alphabet-card .learn-btn.is-learned {
+  background: rgba(74, 222, 128, 0.25);
+  color: #4ade80;
+}
+.alphabet-card .speak-btn:focus-visible,
+.alphabet-card .learn-btn:focus-visible {
+  outline: 2px solid #b4c5ff;
+  outline-offset: 2px;
+}
+
+/* Language selector */
+.alphabet-lang-select select {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  border-radius: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+.alphabet-lang-select select:focus-visible {
+  outline: 2px solid #b4c5ff;
+  outline-offset: 1px;
+}
+
+/* Progress bar */
+.alphabet-progress-wrap {
+  margin-bottom: 1.5rem;
+}
+.alphabet-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: rgba(71, 85, 105, 0.3);
+  overflow: hidden;
+}
+.alphabet-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #b4c5ff);
+  transition: width 0.3s ease;
+}
+.alphabet-progress-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.4rem;
+}
+.alphabet-progress-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #b4c5ff;
+  background: rgba(180, 197, 255, 0.1);
+  border: 1px solid rgba(180, 197, 255, 0.25);
+  border-radius: 0.65rem;
+  padding: 0.5rem 0.9rem;
+  text-decoration: none;
+}
+.alphabet-progress-cta:hover {
+  background: rgba(180, 197, 255, 0.18);
+}
+
+/* Toast for TTS fallback */
+.tts-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(0.5rem);
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+  max-width: min(90vw, 22rem);
+  text-align: center;
+}
+.tts-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .gojuon-grid {
@@ -88,6 +184,8 @@
   text-align: center;
   transition: all 0.15s;
   cursor: pointer;
+  font: inherit;
+  appearance: none;
 }
 .gojuon-cell:hover {
   border-color: rgba(180, 197, 255, 0.3);
@@ -118,9 +216,17 @@
   padding: 0.75rem;
   text-align: center;
   transition: all 0.15s;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  appearance: none;
 }
 .initial-card:hover, .final-card:hover {
   border-color: rgba(180, 197, 255, 0.3);
+}
+.initial-card:focus-visible, .final-card:focus-visible, .gojuon-cell:focus-visible {
+  outline: 2px solid #b4c5ff;
+  outline-offset: 2px;
 }
 .initial-card .pinyin, .final-card .pinyin {
   font-size: 1.3rem;
@@ -181,7 +287,33 @@
   display: block;
 }
 
+.alphabet-card .letter-name,
+.alphabet-card .pron,
+.alphabet-card .example,
+.alphabet-card .ex-trans {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 @media (max-width: 640px) {
+  .alphabet-card {
+    padding: 0.75rem 0.5rem;
+  }
+  .alphabet-card .char {
+    font-size: 3.5rem;
+  }
+  .alphabet-card .char-rtl {
+    font-size: 4rem;
+  }
+  .alphabet-card .letter-name {
+    font-size: 0.75rem;
+  }
+  .alphabet-card .pron {
+    font-size: 0.7rem;
+  }
+  .alphabet-card .example {
+    font-size: 0.8rem;
+  }
   .gojuon-row {
     grid-template-columns: 5rem repeat(5, 1fr);
     gap: 0.3rem;

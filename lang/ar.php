@@ -536,6 +536,12 @@ return [
     'alphabet.form_final' => 'آخر',
     'alphabet.form_medial' => 'وسط',
     'alphabet.form_initial' => 'أول',
+    'alphabet.choose_language' => 'اختر لغة',
+    'alphabet.mark_learned' => 'وضع علامة كمُتعلَّم',
+    'alphabet.progress_loading' => 'جارٍ تحميل التقدم…',
+    'alphabet.progress_label' => 'تم تعلّم {count} / {total} حرفًا',
+    'alphabet.progress_signin_cta' => 'سجّل الدخول لحفظ تقدّمك',
+    'alphabet.no_voice' => 'لا يتوفر صوت لهذه اللغة في متصفحك.',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'اعرف المزيد',

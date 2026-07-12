@@ -167,6 +167,14 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, vocab_id)
         )");
+        $this->exec("CREATE TABLE IF NOT EXISTS alphabet_progress (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            lang TEXT NOT NULL,
+            letter_key TEXT NOT NULL,
+            learned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id, lang, letter_key)
+        )");
         $this->exec("CREATE TABLE IF NOT EXISTS sessions (
             id TEXT PRIMARY KEY,
             data TEXT NOT NULL DEFAULT '',

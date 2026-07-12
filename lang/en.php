@@ -578,6 +578,12 @@ return [
     'alphabet.form_final' => 'End',
     'alphabet.form_medial' => 'Middle',
     'alphabet.form_initial' => 'Start',
+    'alphabet.choose_language' => 'Choose a language',
+    'alphabet.mark_learned' => 'Mark as learned',
+    'alphabet.progress_loading' => 'Loading progress…',
+    'alphabet.progress_label' => '{count} / {total} letters learned',
+    'alphabet.progress_signin_cta' => 'Sign in to track your progress',
+    'alphabet.no_voice' => 'Audio isn\'t available for this language in your browser.',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Learn more',

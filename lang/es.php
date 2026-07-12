@@ -536,6 +536,12 @@ return [
     'alphabet.form_final' => 'Final',
     'alphabet.form_medial' => 'Media',
     'alphabet.form_initial' => 'Inicial',
+    'alphabet.choose_language' => 'Elige un idioma',
+    'alphabet.mark_learned' => 'Marcar como aprendida',
+    'alphabet.progress_loading' => 'Cargando progreso…',
+    'alphabet.progress_label' => '{count} / {total} letras aprendidas',
+    'alphabet.progress_signin_cta' => 'Inicia sesión para guardar tu progreso',
+    'alphabet.no_voice' => 'Tu navegador no tiene voz disponible para este idioma.',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Saber más',

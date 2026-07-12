@@ -536,6 +536,12 @@ return [
     'alphabet.form_final' => '語尾形',
     'alphabet.form_medial' => '語中形',
     'alphabet.form_initial' => '語頭形',
+    'alphabet.choose_language' => '言語を選択',
+    'alphabet.mark_learned' => '学習済みにする',
+    'alphabet.progress_loading' => '進捗を読み込み中…',
+    'alphabet.progress_label' => '{count} / {total} 文字を学習済み',
+    'alphabet.progress_signin_cta' => 'サインインして進捗を記録',
+    'alphabet.no_voice' => 'お使いのブラウザにはこの言語の音声がありません。',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'もっと詳しく',

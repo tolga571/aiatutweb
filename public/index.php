@@ -553,6 +553,40 @@ switch ($page) {
         $adminCtrl->exportCsv($_GET['type'] ?? '');
         break;
 
+    // ── Alphabet progress (AJAX) ────────────────────────────────────
+    case 'alphabet-progress':
+        $requireAuth();
+        header('Content-Type: application/json');
+        $lang = $_GET['lang'] ?? 'en';
+        $rows = $db->fetchAll('SELECT letter_key FROM alphabet_progress WHERE user_id = ? AND lang = ?', [$auth->userId(), $lang]);
+        echo json_encode(['learned' => array_column($rows, 'letter_key')]);
+        exit;
+
+    case 'alphabet-toggle':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['error' => 'invalid_request']);
+            exit;
+        }
+        $lang = $_POST['lang'] ?? 'en';
+        $letterKey = trim($_POST['letter_key'] ?? '');
+        if ($letterKey === '') {
+            http_response_code(400);
+            echo json_encode(['error' => 'missing_letter_key']);
+            exit;
+        }
+        $existing = $db->fetchOne('SELECT id FROM alphabet_progress WHERE user_id = ? AND lang = ? AND letter_key = ?', [$auth->userId(), $lang, $letterKey]);
+        if ($existing) {
+            $db->execute('DELETE FROM alphabet_progress WHERE id = ?', [$existing['id']]);
+            echo json_encode(['learned' => false]);
+        } else {
+            $db->execute('INSERT INTO alphabet_progress (user_id, lang, letter_key) VALUES (?, ?, ?)', [$auth->userId(), $lang, $letterKey]);
+            echo json_encode(['learned' => true]);
+        }
+        exit;
+
     // ── Static pages ──────────────────────────────────────────────
     case 'chat-tips':
     case 'privacy-policy':

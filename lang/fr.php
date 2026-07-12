@@ -536,6 +536,12 @@ return [
     'alphabet.form_final' => 'Finale',
     'alphabet.form_medial' => 'Médiane',
     'alphabet.form_initial' => 'Initiale',
+    'alphabet.choose_language' => 'Choisir une langue',
+    'alphabet.mark_learned' => 'Marquer comme appris',
+    'alphabet.progress_loading' => 'Chargement de la progression…',
+    'alphabet.progress_label' => '{count} / {total} lettres apprises',
+    'alphabet.progress_signin_cta' => 'Connectez-vous pour suivre votre progression',
+    'alphabet.no_voice' => 'Aucune voix disponible pour cette langue dans votre navigateur.',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'En savoir plus',

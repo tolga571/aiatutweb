@@ -578,6 +578,12 @@ return [
     'alphabet.form_final' => 'Sonda',
     'alphabet.form_medial' => 'Ortada',
     'alphabet.form_initial' => 'Başta',
+    'alphabet.choose_language' => 'Dil seçin',
+    'alphabet.mark_learned' => 'Öğrendim olarak işaretle',
+    'alphabet.progress_loading' => 'İlerleme yükleniyor…',
+    'alphabet.progress_label' => '{count} / {total} harf öğrenildi',
+    'alphabet.progress_signin_cta' => 'İlerlemenizi kaydetmek için giriş yapın',
+    'alphabet.no_voice' => 'Tarayıcınızda bu dil için ses desteği bulunmuyor.',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Daha fazla bilgi',
