@@ -250,8 +250,11 @@ return [
     'pricing.payment_modal_body' => 'جارٍ تفعيل حسابك. يرجى عدم إغلاق هذه الصفحة...',
     'pricing.price_id_error' => 'خطأ: لم يتم تكوين معرف السعر. يرجى التحقق من إعدادات `.env` الخاصة بك.',
     'pricing.checkout_error' => 'تعذر فتح نافذة الدفع. يرجى المحاولة مرة أخرى.',
+    'pricing.status_active' => 'الخطة نشطة',
+    'pricing.status_active_plan' => 'خطة %s نشطة',
     'pricing.already_subscribed_title' => 'أنت مشترك!',
     'pricing.already_subscribed_body' => 'لديك بالفعل خطة نشطة. عد إلى الدردشة لمواصلة التعلم.',
+    'pricing.current_plan' => 'الخطة الحالية',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'لوحة التحكم – AiTut',

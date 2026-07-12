@@ -250,8 +250,11 @@ return [
     'pricing.payment_modal_body' => 'Dein Konto wird aktiviert. Bitte schließe diese Seite nicht...',
     'pricing.price_id_error' => 'Fehler: Preis-ID ist nicht konfiguriert. Bitte überprüfe deine `.env`-Einstellungen.',
     'pricing.checkout_error' => 'Das Bezahl-Overlay konnte nicht geöffnet werden. Bitte versuche es erneut.',
+    'pricing.status_active' => 'Plan aktiv',
+    'pricing.status_active_plan' => '%s aktiv',
     'pricing.already_subscribed_title' => 'Du bist bereits Abonnent!',
     'pricing.already_subscribed_body' => 'Du hast bereits einen aktiven Plan. Kehre zum Chat zurück, um weiterzulernen.',
+    'pricing.current_plan' => 'Aktueller Plan',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Dashboard – AiTut',

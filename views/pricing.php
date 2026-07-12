@@ -38,6 +38,12 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     $isPaidUser = $isLoggedIn && !$isTrialUser && (($currentUser['plan_status'] ?? '') === 'active' || ($currentUser['has_paid'] ?? 0) == 1);
     $trialMessagesSent = $isTrialUser && $isLoggedIn ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
     $userPlan = $currentUser['plan_status'] ?? 'inactive';
+    $planLabels = [
+        'starter' => __('pricing.starter_title'),
+        'pro' => __('pricing.pro_title'),
+        'active' => __('pricing.premium_title'),
+    ];
+    $currentPlanLabel = $planLabels[$userPlan] ?? '';
     ?>
 
     <?php if ($isPaidUser): ?>
@@ -46,7 +52,9 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-4">
           <span class="material-symbols-outlined text-[36px]">workspace_premium</span>
         </div>
-        <span class="inline-block bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3"><?= __('pricing.status_active') ?></span>
+        <span class="inline-block bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+          <?= $currentPlanLabel ? sprintf(__('pricing.status_active_plan'), $currentPlanLabel) : __('pricing.status_active') ?>
+        </span>
         <h3 class="text-2xl font-bold text-on-surface mb-2"><?= __('pricing.already_subscribed_title') ?></h3>
         <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.already_subscribed_body') ?></p>
         <a href="?page=chat" class="inline-flex items-center gap-2 bg-primary text-on-primary hover:opacity-90 font-semibold text-sm px-xl py-3 rounded-xl transition-all shadow-md glow-hover">
@@ -93,7 +101,13 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] border border-outline/20 relative">
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+        <?php if ($userPlan === 'starter'): ?>
+          <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>
+            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+          </div>
+        <?php endif; ?>
         <div>
           <div class="text-outline text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.starter_title') ?></div>
           <div class="text-4xl font-bold text-on-surface mb-1"><?= __('pricing.starter_monthly') ?></div>
@@ -138,9 +152,14 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       </div>
 
       <!-- Pro Plan Card (Popular) -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] border border-primary/40 relative overflow-hidden">
-        <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md">
-          <?= __('pricing.recommended') ?>
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative overflow-hidden <?= $userPlan === 'pro' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-primary/40' ?>">
+        <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
+          <?php if ($userPlan === 'pro'): ?>
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>
+            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+          <?php else: ?>
+            <?= __('pricing.recommended') ?>
+          <?php endif; ?>
         </div>
 
         <div>
@@ -191,7 +210,13 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       </div>
 
       <!-- Premium Plan Card -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] border border-outline/20 relative">
+      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'active' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+        <?php if ($userPlan === 'active'): ?>
+          <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>
+            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+          </div>
+        <?php endif; ?>
         <div class="text-primary text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.premium_title') ?></div>
         <div class="text-4xl font-bold text-on-surface mb-1"><?= __('pricing.premium_monthly') ?></div>
         <p class="text-outline text-body-md mb-6"><?= __('pricing.premium_desc') ?></p>

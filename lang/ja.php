@@ -250,8 +250,11 @@ return [
     'pricing.payment_modal_body' => 'アカウントを有効化しています。このページを閉じないでください...',
     'pricing.price_id_error' => 'エラー：Price IDが設定されていません。`.env`設定を確認してください。',
     'pricing.checkout_error' => 'チェックアウトオーバーレイを開けません。もう一度お試しください。',
+    'pricing.status_active' => 'プラン有効',
+    'pricing.status_active_plan' => '%s プラン有効',
     'pricing.already_subscribed_title' => '登録済みです！',
     'pricing.already_subscribed_body' => '既に有効なプランがあります。チャットに戻って学習を続けてください。',
+    'pricing.current_plan' => '現在のプラン',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'ダッシュボード – AiTut',

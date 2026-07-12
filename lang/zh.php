@@ -250,8 +250,11 @@ return [
     'pricing.payment_modal_body' => '正在激活您的账号。请勿关闭此页面...',
     'pricing.price_id_error' => '错误：未配置价格ID。请检查您的`.env`设置。',
     'pricing.checkout_error' => '无法打开结账覆盖层。请重试。',
+    'pricing.status_active' => '套餐已激活',
+    'pricing.status_active_plan' => '%s 套餐已激活',
     'pricing.already_subscribed_title' => '您已订阅！',
     'pricing.already_subscribed_body' => '您已拥有有效套餐。返回聊天页面继续学习。',
+    'pricing.current_plan' => '当前套餐',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => '仪表盘 – AiTut',

@@ -13,7 +13,7 @@
         'trial' => 'Trial',
         'starter' => 'Starter',
         'pro' => 'Pro',
-        'active' => 'Active',
+        'active' => 'Premium',
         default => 'Free',
       };
       $badgeClass = match($planBadge) {

@@ -250,8 +250,11 @@ return [
     'pricing.payment_modal_body' => 'Activando tu cuenta. Por favor, no cierres esta página...',
     'pricing.price_id_error' => 'Error: El ID de precio no está configurado. Verifica tu archivo `.env`.',
     'pricing.checkout_error' => 'No se puede abrir la superposición de pago. Inténtalo de nuevo.',
+    'pricing.status_active' => 'Plan activo',
+    'pricing.status_active_plan' => 'Plan %s activo',
     'pricing.already_subscribed_title' => '¡Ya estás suscrito!',
     'pricing.already_subscribed_body' => 'Ya tienes un plan activo. Vuelve al chat para seguir aprendiendo.',
+    'pricing.current_plan' => 'Plan actual',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Panel – AiTut',

@@ -281,6 +281,7 @@ return [
     'pricing.price_id_error' => 'Hata: Fiyat Kimliği yapılandırılmamış. Lütfen `.env` ayarlarınızı kontrol edin.',
     'pricing.checkout_error' => 'Ödeme ekranı açılamıyor. Lütfen tekrar deneyin.',
     'pricing.status_active' => 'Plan Aktif',
+    'pricing.status_active_plan' => '%s Planı Aktif',
     'pricing.already_subscribed_title' => 'Zaten Abonesiniz!',
     'pricing.already_subscribed_body' => 'Aktif bir paketiniz bulunuyor. Mevcut planınızı aşağıdan yükseltebilir veya öğrenmeye devam etmek için sohbet sayfasına dönebilirsiniz.',
     'pricing.current_plan' => 'Mevcut Plan',

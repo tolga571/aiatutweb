@@ -281,6 +281,7 @@ return [
     'pricing.price_id_error' => 'Error: Price ID is not configured. Please check your `.env` settings.',
     'pricing.checkout_error' => 'Unable to open checkout overlay. Please try again.',
     'pricing.status_active' => 'Plan Active',
+    'pricing.status_active_plan' => '%s Plan Active',
     'pricing.already_subscribed_title' => 'You are subscribed!',
     'pricing.already_subscribed_body' => 'You have an active package. You can upgrade your plan below or return to the chat page to continue learning.',
     'pricing.current_plan' => 'Current Plan',
