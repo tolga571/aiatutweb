@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/Monat</span>',
     'pricing.premium_desc' => 'Rundum-Zugang für Power-User',
     'pricing.premium_feature_1' => '1500 KI-Konversationen / Monat',
-    'pricing.premium_feature_2' => 'Unbegrenztes CEFR-adaptives Tutoring',
+    'pricing.premium_feature_2' => 'CEFR-adaptives Tutoring der höchsten Stufe',
     'pricing.premium_feature_3' => 'Vollständige Wortschatz- & Grammatiksuite',
     'pricing.premium_feature_4' => 'Prioritäts-Support & früher Zugang zu Funktionen',
     'pricing.premium_btn' => 'Premium wählen',

@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/mois</span>',
     'pricing.premium_desc' => 'Accès tout-en-un pour les utilisateurs avancés',
     'pricing.premium_feature_1' => '1500 conversations IA / mois',
-    'pricing.premium_feature_2' => 'Tutorat adaptatif CECR illimité',
+    'pricing.premium_feature_2' => 'Tutorat adaptatif CECR de plus haut niveau',
     'pricing.premium_feature_3' => 'Suite complète de vocabulaire & grammaire',
     'pricing.premium_feature_4' => 'Assistance prioritaire & accès anticipé aux fonctionnalités',
     'pricing.premium_btn' => 'Choisir Premium',

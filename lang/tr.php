@@ -271,7 +271,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/ay</span>',
     'pricing.premium_desc' => 'Güç kullanıcıları için her şey dahil',
     'pricing.premium_feature_1' => 'Ayda 1500 AI konuşması',
-    'pricing.premium_feature_2' => 'Sınırsız CEFR uyumlu ders',
+    'pricing.premium_feature_2' => 'En üst düzey CEFR uyumlu ders',
     'pricing.premium_feature_3' => 'Tam kelime ve dil bilgisi paketi',
     'pricing.premium_feature_4' => 'Öncelikli destek ve erken özellik erişimi',
     'pricing.premium_btn' => 'Premium\'u Seç',

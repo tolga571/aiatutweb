@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/شهر</span>',
     'pricing.premium_desc' => 'وصول شامل للمستخدمين المتميزين',
     'pricing.premium_feature_1' => '1500 محادثة AI / شهرياً',
-    'pricing.premium_feature_2' => 'تدريس غير محدود متكيف مع CEFR',
+    'pricing.premium_feature_2' => 'أعلى مستوى من التدريس المتكيف مع CEFR',
     'pricing.premium_feature_3' => 'حزمة مفردات وقواعد كاملة',
     'pricing.premium_feature_4' => 'دعم أولوي ووصول مبكر للميزات',
     'pricing.premium_btn' => 'اختر الممتازة',

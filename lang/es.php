@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/mes</span>',
     'pricing.premium_desc' => 'Acceso completo para usuarios avanzados',
     'pricing.premium_feature_1' => '1500 conversaciones con IA / mes',
-    'pricing.premium_feature_2' => 'Tutoría adaptativa MCER ilimitada',
+    'pricing.premium_feature_2' => 'Tutoría adaptativa MCER de nivel superior',
     'pricing.premium_feature_3' => 'Suite completa de vocabulario y gramática',
     'pricing.premium_feature_4' => 'Soporte prioritario y acceso anticipado a funciones',
     'pricing.premium_btn' => 'Elegir Premium',

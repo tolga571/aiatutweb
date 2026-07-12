@@ -20,6 +20,7 @@ class Auth {
             $this->lastError = __('auth.error_wrong_password');
             return false;
         }
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         
         $today = date('Y-m-d');

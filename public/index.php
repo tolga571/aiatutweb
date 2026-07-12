@@ -18,8 +18,8 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERV
 $db = new Database($config['db_url']);
 
 // Use database-backed sessions so they survive Railway deploys
-// Session stays alive until the user explicitly logs out (10 years ≈ forever)
-$sessionLifetime = 86400 * 365 * 10; // 10 years
+// Session stays alive for 90 days of inactivity, refreshed on each visit
+$sessionLifetime = 86400 * 90; // 90 days
 ini_set('session.gc_maxlifetime', $sessionLifetime);
 ini_set('session.cookie_lifetime', $sessionLifetime);
 session_set_cookie_params([
@@ -74,13 +74,17 @@ switch ($page) {
             unset($_SESSION['login_error']);
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
-            $pass  = $_POST['password'] ?? '';
-            if ($auth->login($email, $pass)) {
-                $redirect = $_GET['redirect'] ?? 'dashboard';
-                header('Location: ?page=' . urlencode($redirect)); exit;
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $loginError = __('auth.error_generic');
+            } else {
+                $email = trim($_POST['email'] ?? '');
+                $pass  = $_POST['password'] ?? '';
+                if ($auth->login($email, $pass)) {
+                    $redirect = $_GET['redirect'] ?? 'dashboard';
+                    header('Location: ?page=' . urlencode($redirect)); exit;
+                }
+                $loginError = $auth->lastError ?: __('auth.error_generic');
             }
-            $loginError = $auth->lastError ?: __('auth.error_generic');
         }
         require __DIR__ . '/../views/login.php';
         break;
@@ -97,6 +101,9 @@ switch ($page) {
             $name  = trim($_POST['name'] ?? '');
             $terms = isset($_POST['terms']);
             $errors = [];
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $errors[] = __('auth.error_generic');
+            }
             if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errors[] = __('auth.error_invalid_email');
             }
@@ -192,6 +199,7 @@ switch ($page) {
                     }
                     
                     // Log user in
+                    session_regenerate_id(true);
                     $_SESSION['user_id'] = $user['id'];
                     
                     // Update streak / activity date
@@ -246,7 +254,9 @@ switch ($page) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $native = $_POST['native_lang'] ?? 'en';
             $target = $_POST['target_lang'] ?? 'en';
-            if ($native === $target) {
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $onboardingError = __('auth.error_generic');
+            } elseif ($native === $target) {
                 $onboardingError = __('onboarding.same_lang_error');
             } else {
                 $auth->saveOnboarding(
@@ -399,8 +409,15 @@ switch ($page) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_preferences'])) {
             $n_lang = $_POST['native_lang'] ?? 'en';
             $c_lvl  = $_POST['cefr_level'] ?? 'A1';
-            $db->execute('UPDATE users SET native_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $c_lvl, $auth->userId()]);
-            $_SESSION['pref_saved'] = true;
+            $dashCurrentUser = $auth->currentUser();
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $_SESSION['pref_error'] = __('auth.error_generic');
+            } elseif ($n_lang === ($dashCurrentUser['target_lang'] ?? '')) {
+                $_SESSION['pref_error'] = __('onboarding.same_lang_error');
+            } else {
+                $db->execute('UPDATE users SET native_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $c_lvl, $auth->userId()]);
+                $_SESSION['pref_saved'] = true;
+            }
             header('Location: ?page=dashboard');
             exit;
         }

@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/月</span>',
     'pricing.premium_desc' => '面向高级用户的全能访问',
     'pricing.premium_feature_1' => '每月1500次AI对话',
-    'pricing.premium_feature_2' => '无限CEFR自适应辅导',
+    'pricing.premium_feature_2' => '最高级别的CEFR自适应辅导',
     'pricing.premium_feature_3' => '完整词汇与语法套件',
     'pricing.premium_feature_4' => '优先支持与早期功能访问',
     'pricing.premium_btn' => '选择高级',

@@ -23,6 +23,7 @@
         <span id="onboarding-error-text"><?= htmlspecialchars($onboardingError ?? '') ?></span>
       </div>
       <form method="POST" action="?page=onboarding" class="space-y-5" id="onboarding-form">
+        <?= csrf_field() ?>
         <?php
         // Native & target languages: all 8 languages
         $nativeLangOptions = [

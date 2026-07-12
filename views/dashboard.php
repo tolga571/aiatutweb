@@ -247,7 +247,11 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         <?php if (isset($_SESSION['pref_saved'])): unset($_SESSION['pref_saved']); ?>
           <div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-lg mb-4 text-sm"><?= __('dash.pref_saved') ?? 'Preferences saved successfully.' ?></div>
         <?php endif; ?>
+        <?php if (isset($_SESSION['pref_error'])): $prefError = $_SESSION['pref_error']; unset($_SESSION['pref_error']); ?>
+          <div class="bg-error-container/30 border border-error/30 text-error px-4 py-2 rounded-lg mb-4 text-sm"><?= htmlspecialchars($prefError) ?></div>
+        <?php endif; ?>
         <form method="POST" action="?page=dashboard" class="space-y-4">
+          <?= csrf_field() ?>
           <input type="hidden" name="update_preferences" value="1">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

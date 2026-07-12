@@ -241,7 +241,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/月</span>',
     'pricing.premium_desc' => 'パワーユーザーのためのオールインワンアクセス',
     'pricing.premium_feature_1' => '月1500のAI会話',
-    'pricing.premium_feature_2' => '無制限のCEFR適応型チュータリング',
+    'pricing.premium_feature_2' => '最上位クラスのCEFR適応型チュータリング',
     'pricing.premium_feature_3' => '完全な語彙と文法スイート',
     'pricing.premium_feature_4' => '優先サポートと早期機能アクセス',
     'pricing.premium_btn' => 'プレミアムを選択',

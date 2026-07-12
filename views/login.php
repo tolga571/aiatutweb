@@ -26,6 +26,7 @@
 
       <?php $actionUrl = '?page=login' . (isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : ''); ?>
       <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4">
+        <?= csrf_field() ?>
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.email') ?></label>
           <input type="email" name="email" required autocomplete="email"

@@ -271,7 +271,7 @@ return [
     'pricing.premium_monthly' => '$150<span class="text-xl text-outline">/mo</span>',
     'pricing.premium_desc' => 'All‑in‑one access for power users',
     'pricing.premium_feature_1' => '1500 AI conversations / month',
-    'pricing.premium_feature_2' => 'Unlimited CEFR‑adaptive tutoring',
+    'pricing.premium_feature_2' => 'Highest-tier CEFR‑adaptive tutoring',
     'pricing.premium_feature_3' => 'Full vocabulary & grammar suite',
     'pricing.premium_feature_4' => 'Priority support & early feature access',
     'pricing.premium_btn' => 'Choose Premium',
