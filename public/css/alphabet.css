@@ -21,15 +21,18 @@
   font-size: 6.5rem;
 }
 .alphabet-card .letter-name {
+  border-top: 1px solid rgba(71, 85, 105, 0.3);
+  padding-top: 0.3rem;
   font-size: 0.85rem;
-  color: #94a3b8;
-  margin-top: 0.2rem;
+  color: #cbd5e1;
+  font-weight: 600;
+  margin-top: 0.4rem;
 }
 .alphabet-card .pron {
   font-size: 0.8rem;
-  color: #64748b;
+  color: #94a3b8;
   font-style: italic;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
 }
 .alphabet-card .example {
   font-size: 0.95rem;
