@@ -832,7 +832,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const metaGrid = (phonetic || literalTranslation) ? `
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         ${phoneticBlock}
         ${literalBlock}
       </div>` : '';
