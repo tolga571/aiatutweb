@@ -530,6 +530,12 @@ return [
     'alphabet.tone4' => 'هابط',
     'alphabet.tone5' => 'محايد',
     'alphabet.listen' => 'استمع',
+    'alphabet.letter_forms' => 'أشكال الحروف',
+    'alphabet.forms_desc' => 'تتغير أشكال الحروف العربية حسب موقعها في الكلمة.',
+    'alphabet.form_isolated' => 'منفصل',
+    'alphabet.form_final' => 'آخر',
+    'alphabet.form_medial' => 'وسط',
+    'alphabet.form_initial' => 'أول',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'اعرف المزيد',

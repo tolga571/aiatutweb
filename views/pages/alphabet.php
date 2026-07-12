@@ -40,15 +40,33 @@ require __DIR__ . '/../partials/navbar.php';
               <div class="letter-name"><?= htmlspecialchars($letter['name']) ?></div>
               <div class="pron"><?= htmlspecialchars($letter['pron']) ?></div>
               <div class="example"><?= htmlspecialchars($letter['example'] ?? '') ?></div>
-              <?php if (!empty($letter['ex_trans'])): ?>
-                <div class="ex-trans"><?= htmlspecialchars($letter['ex_trans']) ?></div>
-              <?php endif; ?>
               <button type="button" class="speak-btn" onclick="speakAlphabet('<?= htmlspecialchars($letter['example'] ?? $letter['char']) ?>')" title="<?= __('alphabet.listen') ?>">
                 <span class="material-symbols-outlined text-sm">volume_up</span>
               </button>
             </div>
           <?php endforeach; ?>
         </div>
+
+        <?php if (!empty($alphabet['has_forms']) && !empty($alphabet['letters'][0]['forms'])): ?>
+        <div class="mt-8 border-t border-gray-700/30 pt-8">
+          <h2 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4"><?= __('alphabet.letter_forms') ?></h2>
+          <p class="text-xs text-gray-500 mb-4"><?= __('alphabet.forms_desc') ?></p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" dir="rtl">
+            <?php foreach ($alphabet['letters'] as $letter): ?>
+            <div class="alphabet-card">
+              <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1"><?= __('alphabet.form_isolated') ?></div>
+              <div class="char char-rtl text-2xl"><?= htmlspecialchars($letter['forms']['isolated']) ?></div>
+              <div class="flex justify-center gap-2 mt-2 text-xs text-gray-400">
+                <span><?= __('alphabet.form_final') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['final']) ?></strong></span>
+                <span><?= __('alphabet.form_medial') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['medial']) ?></strong></span>
+                <span><?= __('alphabet.form_initial') ?> <strong class="text-gray-200"><?= htmlspecialchars($letter['forms']['initial']) ?></strong></span>
+              </div>
+              <div class="text-[10px] text-gray-500 mt-1"><?= htmlspecialchars($letter['name']) ?></div>
+            </div>
+          <?php endforeach; ?>
+          </div>
+        </div>
+        <?php endif; ?>
       <?php endif; ?>
 
       <!-- Pinyin -->

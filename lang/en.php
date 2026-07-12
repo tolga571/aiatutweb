@@ -572,6 +572,12 @@ return [
     'alphabet.tone4' => 'falling',
     'alphabet.tone5' => 'neutral',
     'alphabet.listen' => 'Listen',
+    'alphabet.letter_forms' => 'Letter Forms',
+    'alphabet.forms_desc' => 'Arabic letters change shape depending on their position in a word.',
+    'alphabet.form_isolated' => 'Isolated',
+    'alphabet.form_final' => 'End',
+    'alphabet.form_medial' => 'Middle',
+    'alphabet.form_initial' => 'Start',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Learn more',

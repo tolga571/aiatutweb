@@ -530,6 +530,12 @@ return [
     'alphabet.tone4' => 'descendant',
     'alphabet.tone5' => 'neutre',
     'alphabet.listen' => 'Écouter',
+    'alphabet.letter_forms' => 'Formes des Lettres',
+    'alphabet.forms_desc' => 'Les lettres arabes changent de forme selon leur position dans le mot.',
+    'alphabet.form_isolated' => 'Isolée',
+    'alphabet.form_final' => 'Finale',
+    'alphabet.form_medial' => 'Médiane',
+    'alphabet.form_initial' => 'Initiale',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'En savoir plus',

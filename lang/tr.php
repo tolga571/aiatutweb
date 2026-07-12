@@ -572,6 +572,12 @@ return [
     'alphabet.tone4' => 'alçalan',
     'alphabet.tone5' => 'nötr',
     'alphabet.listen' => 'Dinle',
+    'alphabet.letter_forms' => 'Harf Formları',
+    'alphabet.forms_desc' => 'Arap harfleri kelimedeki konumuna göre şekil değiştirir.',
+    'alphabet.form_isolated' => 'Yalın',
+    'alphabet.form_final' => 'Sonda',
+    'alphabet.form_medial' => 'Ortada',
+    'alphabet.form_initial' => 'Başta',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'Daha fazla bilgi',

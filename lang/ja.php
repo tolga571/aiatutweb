@@ -530,6 +530,12 @@ return [
     'alphabet.tone4' => '下降調',
     'alphabet.tone5' => '軽声',
     'alphabet.listen' => '聞く',
+    'alphabet.letter_forms' => '文字の形',
+    'alphabet.forms_desc' => 'アラビア文字は単語の中の位置によって形が変わります。',
+    'alphabet.form_isolated' => '独立形',
+    'alphabet.form_final' => '語尾形',
+    'alphabet.form_medial' => '語中形',
+    'alphabet.form_initial' => '語頭形',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => 'もっと詳しく',

@@ -530,6 +530,12 @@ return [
     'alphabet.tone4' => '降调',
     'alphabet.tone5' => '轻声',
     'alphabet.listen' => '听',
+    'alphabet.letter_forms' => '字母形式',
+    'alphabet.forms_desc' => '阿拉伯字母根据在单词中的位置改变形状。',
+    'alphabet.form_isolated' => '独立',
+    'alphabet.form_final' => '结尾',
+    'alphabet.form_medial' => '中间',
+    'alphabet.form_initial' => '开头',
 
     // ── Common ──────────────────────────────────────────────
     'common.learn_more' => '了解更多',
