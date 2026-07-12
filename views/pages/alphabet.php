@@ -55,19 +55,19 @@ require __DIR__ . '/../partials/navbar.php';
             <?php foreach ($alphabet['letters'] as $letter): ?>
             <div class="alphabet-card">
               <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1"><?= __('alphabet.form_isolated') ?></div>
-              <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['isolated']) ?></div>
+              <div class="text-3xl font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['isolated']) ?></div>
               <div class="grid grid-cols-3 gap-1 mt-2">
-                <div class="flex flex-col items-center justify-center min-h-[2.5rem]">
-                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['final']) ?></div>
-                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_final') ?></div>
+                <div class="flex flex-col items-center justify-center min-h-[3rem]">
+                  <div class="text-2xl font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['final']) ?></div>
+                  <div class="text-xs text-gray-500 mt-0.5"><?= __('alphabet.form_final') ?></div>
                 </div>
-                <div class="flex flex-col items-center justify-center min-h-[2.5rem]">
-                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['medial']) ?></div>
-                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_medial') ?></div>
+                <div class="flex flex-col items-center justify-center min-h-[3rem]">
+                  <div class="text-2xl font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['medial']) ?></div>
+                  <div class="text-xs text-gray-500 mt-0.5"><?= __('alphabet.form_medial') ?></div>
                 </div>
-                <div class="flex flex-col items-center justify-center min-h-[2.5rem]">
-                  <div class="text-lg font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['initial']) ?></div>
-                  <div class="text-[9px] text-gray-500 mt-0.5"><?= __('alphabet.form_initial') ?></div>
+                <div class="flex flex-col items-center justify-center min-h-[3rem]">
+                  <div class="text-2xl font-semibold text-gray-200 leading-tight"><?= htmlspecialchars($letter['forms']['initial']) ?></div>
+                  <div class="text-xs text-gray-500 mt-0.5"><?= __('alphabet.form_initial') ?></div>
                 </div>
               </div>
               <div class="text-[10px] text-gray-500 mt-1"><?= htmlspecialchars($letter['name']) ?></div>
