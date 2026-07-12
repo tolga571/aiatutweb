@@ -411,14 +411,12 @@ switch ($page) {
         // Optimistically reflect the change; the next webhook call will
         // reconcile plan_status/has_paid from Paddle's own event data.
         $oldPlanStatus = $changeUser['plan_status'] ?? 'inactive';
-        $planRanks = ['inactive' => 0, 'trial' => 0, 'starter' => 1, 'pro' => 2, 'active' => 3];
-        $planLimits = ['inactive' => 0, 'trial' => 5, 'starter' => 50, 'pro' => 500, 'active' => 1500];
-        $oldRank = $planRanks[$oldPlanStatus] ?? 0;
-        $newRank = $planRanks[$planKey] ?? 0;
+        $oldRank = \App\Src\TokenManager::planRank($oldPlanStatus);
+        $newRank = \App\Src\TokenManager::planRank($planKey);
         if ($newRank > $oldRank) {
             $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
         } elseif ($newRank < $oldRank) {
-            $oldLimit = $planLimits[$oldPlanStatus] ?? 0;
+            $oldLimit = (new \App\Src\TokenManager($db))->getBaseLimit($oldPlanStatus);
             $db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$oldLimit, $auth->userId()]);
         }
         $db->execute('UPDATE users SET plan_status = ?, has_paid = 1 WHERE id = ?', [$planKey, $auth->userId()]);

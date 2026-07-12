@@ -32,6 +32,19 @@ class TokenManager {
         }
     }
 
+    /**
+     * Relative tier of a plan, used to tell an upgrade from a downgrade.
+     * 'active' is the internal plan_status value for the Premium plan.
+     */
+    public static function planRank(string $planStatus): int {
+        switch ($planStatus) {
+            case 'starter': return 1;
+            case 'pro': return 2;
+            case 'active': return 3;
+            default: return 0;
+        }
+    }
+
     public function getRemaining(int $userId): int {
         $this->ensureUserRow($userId);
         $this->resetIfNewMonth($userId);

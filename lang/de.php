@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => 'Abo kündigen? Du behältst den Zugang bis zum Ende deines aktuellen Abrechnungszeitraums.',
     'pricing.cancel_success_api' => 'Dein Abo wird zum Ende des aktuellen Abrechnungszeitraums gekündigt.',
     'pricing.cancel_success_manual' => 'Wir haben deine Kündigung erhalten. Unser Team bestätigt sie in Kürze per E-Mail.',
+    'pricing.action_upgrade' => 'Upgrade',
+    'pricing.action_downgrade' => 'Downgrade',
+    'pricing.confirm_upgrade_title' => 'Plan upgraden?',
+    'pricing.confirm_upgrade_body' => 'Du wechselst zum %s-Plan. Der Preisunterschied wird sofort berechnet.',
+    'pricing.confirm_downgrade_title' => 'Plan downgraden?',
+    'pricing.confirm_downgrade_body' => 'Du wechselst zum %s-Plan. Das gilt ab deinem nächsten Abrechnungsdatum.',
+    'pricing.confirm_cancel_title' => 'Abo kündigen?',
+    'pricing.modal_confirm' => 'Bestätigen',
+    'pricing.modal_go_back' => 'Zurück',
+    'pricing.processing' => 'Wird verarbeitet…',
+    'pricing.cancel_error' => 'Wir konnten dein Abo nicht kündigen. Bitte versuche es erneut oder kontaktiere den Support.',
+    'pricing.change_error' => 'Wir konnten deinen Plan nicht wechseln. Bitte versuche es erneut oder kontaktiere den Support.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Dashboard – AiTut',

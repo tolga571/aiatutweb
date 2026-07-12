@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => 'サブスクリプションを解約しますか？現在の請求期間の終了までアクセスは継続します。',
     'pricing.cancel_success_api' => 'サブスクリプションは現在の請求期間の終了時に解約される予定です。',
     'pricing.cancel_success_manual' => '解約リクエストを受け付けました。まもなくメールでご案内いたします。',
+    'pricing.action_upgrade' => 'アップグレード',
+    'pricing.action_downgrade' => 'ダウングレード',
+    'pricing.confirm_upgrade_title' => 'プランをアップグレードしますか？',
+    'pricing.confirm_upgrade_body' => '%s プランに切り替えます。差額は即座に請求されます。',
+    'pricing.confirm_downgrade_title' => 'プランをダウングレードしますか？',
+    'pricing.confirm_downgrade_body' => '%s プランに切り替えます。次回請求日から適用されます。',
+    'pricing.confirm_cancel_title' => 'サブスクリプションを解約しますか？',
+    'pricing.modal_confirm' => '確認',
+    'pricing.modal_go_back' => '戻る',
+    'pricing.processing' => '処理中…',
+    'pricing.cancel_error' => '解約できませんでした。再試行するか、サポートにお問い合わせください。',
+    'pricing.change_error' => 'プランを変更できませんでした。再試行するか、サポートにお問い合わせください。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'ダッシュボード – AiTut',

@@ -44,6 +44,14 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         'active' => __('pricing.premium_title'),
     ];
     $currentPlanLabel = $planLabels[$userPlan] ?? '';
+    $currentPlanRank = \App\Src\TokenManager::planRank($userPlan);
+    // Per-card button label/tone: only meaningful once the user already has a
+    // paid plan, so we know whether switching to a given card is an upgrade
+    // or a downgrade rather than always saying the same generic "Switch Plan".
+    $planDirection = function (string $planKey) use ($currentPlanRank) {
+        $rank = \App\Src\TokenManager::planRank($planKey);
+        return $rank > $currentPlanRank ? 'upgrade' : 'downgrade';
+    };
     ?>
 
     <?php if ($isPaidUser): ?>
@@ -154,11 +162,11 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
-          <?php elseif ($isPaidUser): ?>
-            <button onclick="changePlan('starter')"
+          <?php elseif ($isPaidUser): $dir = $planDirection('starter'); ?>
+            <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>)"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
-              <span><?= __('pricing.upgrade') ?? 'Switch Plan' ?></span>
-              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
+              <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
+              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
@@ -218,11 +226,11 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
-          <?php elseif ($isPaidUser): ?>
-            <button onclick="changePlan('pro')"
+          <?php elseif ($isPaidUser): $dir = $planDirection('pro'); ?>
+            <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>)"
               class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
-              <?= __('pricing.upgrade') ?? 'Switch Plan' ?>
-              <span class="material-symbols-outlined">bolt</span>
+              <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+              <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
@@ -261,11 +269,11 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
               <?= __('pricing.current_plan') ?? 'Current Plan' ?>
             </button>
-          <?php elseif ($isPaidUser): ?>
-            <button onclick="changePlan('active')"
+          <?php elseif ($isPaidUser): $dir = $planDirection('active'); ?>
+            <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>)"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
-              <?= __('pricing.upgrade') ?? 'Switch Plan' ?>
-              <span class="material-symbols-outlined">star</span>
+              <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+              <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
@@ -290,6 +298,27 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       </div>
       <h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.payment_modal_title') ?></h3>
       <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.payment_modal_body') ?></p>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm / result modal for plan-change and cancellation actions -->
+<div id="action-modal" class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center z-[100] hidden">
+  <div class="glass-panel max-w-sm w-full p-8 rounded-2xl border border-primary/30 text-center shadow-2xl">
+    <div id="action-modal-icon" class="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-4">
+      <span class="material-symbols-outlined text-[30px]">help</span>
+    </div>
+    <h3 id="action-modal-title" class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"></h3>
+    <p id="action-modal-body" class="text-body-md text-on-surface-variant mb-6"></p>
+    <div id="action-modal-buttons" class="flex gap-3 justify-center">
+      <button type="button" id="action-modal-secondary" onclick="closeActionModal()"
+        class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30">
+        <?= __('pricing.modal_go_back') ?>
+      </button>
+      <button type="button" id="action-modal-primary"
+        class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md">
+        <?= __('pricing.modal_confirm') ?>
+      </button>
     </div>
   </div>
 </div>
@@ -410,9 +439,97 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
   }
 
   const CSRF_TOKEN = <?= json_encode(csrf_token()) ?>;
+  const I18N = {
+    processing: <?= json_encode(__('pricing.processing')) ?>,
+    modalConfirm: <?= json_encode(__('pricing.modal_confirm')) ?>,
+    modalGoBack: <?= json_encode(__('pricing.modal_go_back')) ?>,
+    manualChangeRequired: <?= json_encode(__('pricing.manual_change_required')) ?>,
+    changeError: <?= json_encode(__('pricing.change_error')) ?>,
+    cancelError: <?= json_encode(__('pricing.cancel_error')) ?>,
+    cancelSuccessApi: <?= json_encode(__('pricing.cancel_success_api')) ?>,
+    cancelSuccessManual: <?= json_encode(__('pricing.cancel_success_manual')) ?>,
+  };
 
-  async function changePlan(planKey) {
-    if (!confirm(<?= json_encode(__('pricing.confirm_change')) ?>)) return;
+  // ── Generic confirm / result modal (replaces browser confirm()/alert()) ──
+  const actionModal = document.getElementById('action-modal');
+  const actionModalIcon = document.getElementById('action-modal-icon');
+  const actionModalTitle = document.getElementById('action-modal-title');
+  const actionModalBody = document.getElementById('action-modal-body');
+  const actionModalButtons = document.getElementById('action-modal-buttons');
+  const actionModalPrimary = document.getElementById('action-modal-primary');
+  const actionModalSecondary = document.getElementById('action-modal-secondary');
+
+  function closeActionModal() {
+    actionModal.classList.add('hidden');
+  }
+
+  function setModalIcon(name, tone) {
+    const toneClasses = {
+      primary: 'bg-primary/10 border-primary/20 text-primary',
+      error: 'bg-error-container border-error/30 text-error',
+      success: 'bg-primary/10 border-primary/20 text-primary',
+      info: 'bg-secondary-container border-outline-variant/30 text-on-surface',
+    };
+    actionModalIcon.className = 'w-14 h-14 rounded-2xl border flex items-center justify-center mx-auto mb-4 ' + (toneClasses[tone] || toneClasses.primary);
+    actionModalIcon.innerHTML = '<span class="material-symbols-outlined text-[30px]">' + name + '</span>';
+  }
+
+  // Shows a Yes/No confirmation. Resolves true if the user confirmed.
+  function askConfirm(title, body, confirmLabel) {
+    return new Promise((resolve) => {
+      setModalIcon('help', 'primary');
+      actionModalTitle.textContent = title;
+      actionModalBody.textContent = body;
+      actionModalButtons.classList.remove('hidden');
+      actionModalSecondary.classList.remove('hidden');
+      actionModalPrimary.textContent = confirmLabel || I18N.modalConfirm;
+      actionModalPrimary.disabled = false;
+      actionModal.classList.remove('hidden');
+
+      const cleanup = () => {
+        actionModalPrimary.onclick = null;
+        actionModalSecondary.onclick = null;
+      };
+      actionModalPrimary.onclick = () => { cleanup(); closeActionModal(); resolve(true); };
+      actionModalSecondary.onclick = () => { cleanup(); closeActionModal(); resolve(false); };
+    });
+  }
+
+  function showModalProcessing() {
+    setModalIcon('sync', 'primary');
+    actionModalTitle.textContent = I18N.processing;
+    actionModalBody.textContent = '';
+    actionModalButtons.classList.add('hidden');
+    actionModal.classList.remove('hidden');
+  }
+
+  function showModalResult(tone, title, body) {
+    const icons = { error: 'error', success: 'check_circle', info: 'info' };
+    setModalIcon(icons[tone] || 'check_circle', tone);
+    actionModalTitle.textContent = title;
+    actionModalBody.textContent = body;
+    actionModalButtons.classList.remove('hidden');
+    actionModalSecondary.classList.add('hidden');
+    actionModalPrimary.textContent = I18N.modalConfirm;
+    actionModalPrimary.onclick = () => closeActionModal();
+    actionModal.classList.remove('hidden');
+  }
+
+  async function changePlan(planKey, direction, planLabel) {
+    const isUpgrade = direction === 'upgrade';
+    const title = isUpgrade
+      ? <?= json_encode(__('pricing.confirm_upgrade_title')) ?>
+      : <?= json_encode(__('pricing.confirm_downgrade_title')) ?>;
+    const bodyTemplate = isUpgrade
+      ? <?= json_encode(__('pricing.confirm_upgrade_body')) ?>
+      : <?= json_encode(__('pricing.confirm_downgrade_body')) ?>;
+    const body = bodyTemplate.replace('%s', planLabel);
+    const confirmLabel = isUpgrade ? <?= json_encode(__('pricing.action_upgrade')) ?> : <?= json_encode(__('pricing.action_downgrade')) ?>;
+
+    const confirmed = await askConfirm(title, body, confirmLabel);
+    if (!confirmed) return;
+
+    showModalProcessing();
     try {
       const res = await fetch('?page=change-subscription-plan', {
         method: 'POST',
@@ -422,20 +539,27 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       if (data.ok) {
         window.location.href = '?page=pricing';
       } else if (data.error === 'manual_required') {
-        alert(<?= json_encode(__('pricing.manual_change_required')) ?>);
+        showModalResult('info', I18N.modalConfirm, I18N.manualChangeRequired);
       } else {
-        alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+        showModalResult('error', I18N.modalConfirm, I18N.changeError);
       }
     } catch (error) {
       console.error('Error changing plan:', error);
-      alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+      showModalResult('error', I18N.modalConfirm, I18N.changeError);
     }
   }
 
   async function requestCancelSubscription() {
-    if (!confirm(<?= json_encode(__('pricing.confirm_cancel')) ?>)) return;
+    const confirmed = await askConfirm(
+      <?= json_encode(__('pricing.confirm_cancel_title')) ?>,
+      <?= json_encode(__('pricing.confirm_cancel')) ?>,
+      <?= json_encode(__('pricing.cancel_subscription')) ?>
+    );
+    if (!confirmed) return;
+
     const btn = document.getElementById('cancel-sub-btn');
     if (btn) btn.disabled = true;
+    showModalProcessing();
     try {
       const res = await fetch('?page=cancel-subscription', {
         method: 'POST',
@@ -443,15 +567,16 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       });
       const data = await res.json();
       if (data.ok) {
-        alert(data.method === 'api' ? <?= json_encode(__('pricing.cancel_success_api')) ?> : <?= json_encode(__('pricing.cancel_success_manual')) ?>);
-        window.location.href = '?page=pricing';
+        const msg = data.method === 'api' ? I18N.cancelSuccessApi : I18N.cancelSuccessManual;
+        showModalResult('success', I18N.modalConfirm, msg);
+        actionModalPrimary.onclick = () => { window.location.href = '?page=pricing'; };
       } else {
-        alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+        showModalResult('error', I18N.modalConfirm, I18N.cancelError);
         if (btn) btn.disabled = false;
       }
     } catch (error) {
       console.error('Error requesting cancellation:', error);
-      alert(<?= json_encode(__('pricing.checkout_error')) ?>);
+      showModalResult('error', I18N.modalConfirm, I18N.cancelError);
       if (btn) btn.disabled = false;
     }
   }

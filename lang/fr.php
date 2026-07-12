@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => 'Annuler votre abonnement ? Vous garderez l\'accès jusqu\'à la fin de votre période de facturation actuelle.',
     'pricing.cancel_success_api' => 'Votre abonnement sera annulé à la fin de votre période de facturation actuelle.',
     'pricing.cancel_success_manual' => 'Nous avons bien reçu votre demande d\'annulation. Notre équipe la confirmera bientôt par e-mail.',
+    'pricing.action_upgrade' => 'Passer à un forfait supérieur',
+    'pricing.action_downgrade' => 'Passer à un forfait inférieur',
+    'pricing.confirm_upgrade_title' => 'Passer à un forfait supérieur ?',
+    'pricing.confirm_upgrade_body' => 'Vous allez passer au forfait %s. La différence de prix est facturée immédiatement.',
+    'pricing.confirm_downgrade_title' => 'Passer à un forfait inférieur ?',
+    'pricing.confirm_downgrade_body' => 'Vous allez passer au forfait %s. Cela prendra effet à votre prochaine date de facturation.',
+    'pricing.confirm_cancel_title' => 'Annuler votre abonnement ?',
+    'pricing.modal_confirm' => 'Confirmer',
+    'pricing.modal_go_back' => 'Retour',
+    'pricing.processing' => 'Traitement en cours…',
+    'pricing.cancel_error' => 'Nous n\'avons pas pu annuler votre abonnement. Réessayez ou contactez le support.',
+    'pricing.change_error' => 'Nous n\'avons pas pu changer votre forfait. Réessayez ou contactez le support.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Tableau de bord – AiTut',

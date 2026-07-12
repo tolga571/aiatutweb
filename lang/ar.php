@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => 'إلغاء اشتراكك؟ ستحتفظ بالوصول حتى نهاية فترة الفوترة الحالية.',
     'pricing.cancel_success_api' => 'تم جدولة إلغاء اشتراكك في نهاية فترة الفوترة الحالية.',
     'pricing.cancel_success_manual' => 'تم استلام طلب الإلغاء الخاص بك. سيؤكده فريقنا قريبًا عبر البريد الإلكتروني.',
+    'pricing.action_upgrade' => 'ترقية',
+    'pricing.action_downgrade' => 'خفض',
+    'pricing.confirm_upgrade_title' => 'ترقية خطتك؟',
+    'pricing.confirm_upgrade_body' => 'أنت على وشك التبديل إلى خطة %s. سيتم تحصيل فرق السعر فورًا.',
+    'pricing.confirm_downgrade_title' => 'خفض خطتك؟',
+    'pricing.confirm_downgrade_body' => 'أنت على وشك التبديل إلى خطة %s. سيصبح هذا ساري المفعول في تاريخ الفوترة التالي.',
+    'pricing.confirm_cancel_title' => 'إلغاء اشتراكك؟',
+    'pricing.modal_confirm' => 'تأكيد',
+    'pricing.modal_go_back' => 'رجوع',
+    'pricing.processing' => 'جارٍ المعالجة…',
+    'pricing.cancel_error' => 'تعذّر إلغاء اشتراكك. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.',
+    'pricing.change_error' => 'تعذّر تبديل خطتك. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'لوحة التحكم – AiTut',

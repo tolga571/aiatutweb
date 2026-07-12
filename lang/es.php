@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => '¿Cancelar tu suscripción? Conservarás el acceso hasta el final de tu período de facturación actual.',
     'pricing.cancel_success_api' => 'Tu suscripción se cancelará al final de tu período de facturación actual.',
     'pricing.cancel_success_manual' => 'Hemos recibido tu solicitud de cancelación. Nuestro equipo la confirmará pronto por correo.',
+    'pricing.action_upgrade' => 'Mejorar plan',
+    'pricing.action_downgrade' => 'Bajar de plan',
+    'pricing.confirm_upgrade_title' => '¿Mejorar tu plan?',
+    'pricing.confirm_upgrade_body' => 'Vas a cambiar al plan %s. La diferencia de precio se cobra de inmediato.',
+    'pricing.confirm_downgrade_title' => '¿Bajar de plan?',
+    'pricing.confirm_downgrade_body' => 'Vas a cambiar al plan %s. Esto será efectivo en tu próxima fecha de facturación.',
+    'pricing.confirm_cancel_title' => '¿Cancelar tu suscripción?',
+    'pricing.modal_confirm' => 'Confirmar',
+    'pricing.modal_go_back' => 'Volver',
+    'pricing.processing' => 'Procesando…',
+    'pricing.cancel_error' => 'No pudimos cancelar tu suscripción. Inténtalo de nuevo o contacta con soporte.',
+    'pricing.change_error' => 'No pudimos cambiar tu plan. Inténtalo de nuevo o contacta con soporte.',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => 'Panel – AiTut',

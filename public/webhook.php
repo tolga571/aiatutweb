@@ -114,19 +114,33 @@ if (strpos($eventType, 'subscription.') === 0) {
             $subscriptionId = $data['id'] ?? null;
             $customerId = $data['customer_id'] ?? null;
 
-            $db->execute(
-                'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL,
-                 paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
-                 WHERE id = ?',
-                [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
-            );
+            // A subscription that's scheduled to cancel at period end is still
+            // 'active' in Paddle's eyes (with a scheduled_change) until that
+            // date arrives, so this handler runs again for it before then.
+            // Only clear our own cancel_requested_at flag once there is no
+            // scheduled cancellation left pending (either it was resumed, or
+            // it fully ended) — otherwise the "Cancel Subscription" button
+            // would reappear immediately after a successful cancellation.
+            $hasScheduledChange = !empty($data['scheduled_change']);
+            if ($hasScheduledChange) {
+                $db->execute(
+                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL,
+                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
+                     WHERE id = ?',
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
+                );
+            } else {
+                $db->execute(
+                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL,
+                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
+                     WHERE id = ?',
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
+                );
+            }
 
             // Handle Upgrade / Downgrade for Monthly limits
-            $planRanks = ['inactive' => 0, 'trial' => 0, 'starter' => 1, 'pro' => 2, 'active' => 3];
-            $planLimits = ['inactive' => 0, 'trial' => 5, 'starter' => 50, 'pro' => 500, 'active' => 1500];
-            
-            $oldRank = $planRanks[$oldPlanStatus] ?? 0;
-            $newRank = $planRanks[$planStatus] ?? 0;
+            $oldRank = \App\Src\TokenManager::planRank($oldPlanStatus);
+            $newRank = \App\Src\TokenManager::planRank($planStatus);
 
             if ($newRank > $oldRank) {
                 // Upgrade: Reset bonus
@@ -134,7 +148,7 @@ if (strpos($eventType, 'subscription.') === 0) {
                 logWebhook($logFile, "UPGRADE: Reset bonus limit for User ID {$userId}");
             } elseif ($newRank < $oldRank) {
                 // Downgrade: Add old plan's base limit to bonus limit
-                $oldLimit = $planLimits[$oldPlanStatus] ?? 0;
+                $oldLimit = (new \App\Src\TokenManager($db))->getBaseLimit($oldPlanStatus);
                 $db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$oldLimit, $userId]);
                 logWebhook($logFile, "DOWNGRADE: Added {$oldLimit} to bonus limit for User ID {$userId}");
             }

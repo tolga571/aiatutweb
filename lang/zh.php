@@ -262,6 +262,18 @@ return [
     'pricing.confirm_cancel' => '确定取消订阅吗？在当前计费周期结束前您仍可使用。',
     'pricing.cancel_success_api' => '您的订阅将在当前计费周期结束时取消。',
     'pricing.cancel_success_manual' => '我们已收到您的取消请求，团队会尽快通过邮件确认。',
+    'pricing.action_upgrade' => '升级',
+    'pricing.action_downgrade' => '降级',
+    'pricing.confirm_upgrade_title' => '升级您的套餐？',
+    'pricing.confirm_upgrade_body' => '您即将切换到 %s 套餐，差价将立即收取。',
+    'pricing.confirm_downgrade_title' => '降级您的套餐？',
+    'pricing.confirm_downgrade_body' => '您即将切换到 %s 套餐，此更改将在下一个计费日生效。',
+    'pricing.confirm_cancel_title' => '确定取消订阅吗？',
+    'pricing.modal_confirm' => '确认',
+    'pricing.modal_go_back' => '返回',
+    'pricing.processing' => '处理中…',
+    'pricing.cancel_error' => '无法取消您的订阅，请重试或联系客服。',
+    'pricing.change_error' => '无法切换您的套餐，请重试或联系客服。',
 
     // ── Dashboard ───────────────────────────────────────────
     'dash.page_title' => '仪表盘 – AiTut',
