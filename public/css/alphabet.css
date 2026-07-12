@@ -12,29 +12,29 @@
   transform: translateY(-1px);
 }
 .alphabet-card .char {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   line-height: 1.2;
   color: #b4c5ff;
 }
 .alphabet-card .char-rtl {
-  font-size: 3rem;
+  font-size: 3.5rem;
 }
 .alphabet-card .letter-name {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   color: #94a3b8;
-  margin-top: 0.25rem;
-}
-.alphabet-card .pron {
-  font-size: 0.75rem;
-  color: #64748b;
-  font-style: italic;
   margin-top: 0.15rem;
 }
+.alphabet-card .pron {
+  font-size: 0.6rem;
+  color: #64748b;
+  font-style: italic;
+  margin-top: 0.1rem;
+}
 .alphabet-card .example {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #cbd5e1;
-  margin-top: 0.35rem;
+  margin-top: 0.25rem;
   font-weight: 500;
 }
 .alphabet-card .ex-trans {
