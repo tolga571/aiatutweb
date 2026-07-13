@@ -201,6 +201,13 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN cancel_requested_at TIMESTAMP DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // 'api' = a real Paddle cancellation is scheduled and can be
+            // undone via the API; 'manual' = only a support request was
+            // recorded, nothing to undo automatically.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN cancel_method TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

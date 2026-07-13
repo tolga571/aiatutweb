@@ -53,6 +53,26 @@ class PaddleClient
     }
 
     /**
+     * Removes a pending scheduled change (e.g. an end-of-period
+     * cancellation) so the subscription keeps renewing normally. Lets a
+     * user who cancelled and changed their mind get back to an active
+     * subscription without support having to do it by hand.
+     */
+    public function resumeSubscription(string $subscriptionId): bool
+    {
+        try {
+            $response = $this->http->patch("/subscriptions/{$subscriptionId}", [
+                'headers' => $this->headers(),
+                'json' => ['scheduled_change' => null],
+            ]);
+            return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;
+        } catch (GuzzleException $e) {
+            error_log('Paddle resumeSubscription error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Swaps a subscription to a different price (upgrade/downgrade) in
      * place, so the customer ends up with a single subscription instead of
      * an extra one stacked on top of the old plan. Paddle prorates the

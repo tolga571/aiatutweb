@@ -131,7 +131,7 @@ if (strpos($eventType, 'subscription.') === 0) {
                 );
             } else {
                 $db->execute(
-                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL,
+                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL, cancel_method = NULL,
                      paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
                      WHERE id = ?',
                     [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]

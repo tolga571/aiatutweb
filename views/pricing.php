@@ -73,8 +73,13 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <?php if (!empty($currentUser['cancel_requested_at'])): ?>
             <span class="inline-flex items-center gap-2 text-xs text-on-surface-variant border border-outline-variant/30 rounded-xl px-4 py-3">
               <span class="material-symbols-outlined text-[16px]">schedule</span>
-              <?= __('pricing.cancel_pending') ?>
+              <?= ($currentUser['cancel_method'] ?? '') === 'api' ? __('pricing.cancel_pending_api') : __('pricing.cancel_pending_manual') ?>
             </span>
+            <button type="button" id="resume-sub-btn" onclick="resumeSubscription()"
+              class="inline-flex items-center gap-2 border border-primary/30 text-primary hover:bg-primary/10 font-semibold text-sm px-xl py-3 rounded-xl transition-all">
+              <span class="material-symbols-outlined text-[16px]">undo</span>
+              <?= __('pricing.resume_subscription') ?>
+            </button>
           <?php else: ?>
             <button type="button" id="cancel-sub-btn" onclick="requestCancelSubscription()"
               class="inline-flex items-center gap-2 border border-error/30 text-error hover:bg-error/10 font-semibold text-sm px-xl py-3 rounded-xl transition-all">
@@ -448,6 +453,12 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     cancelError: <?= json_encode(__('pricing.cancel_error')) ?>,
     cancelSuccessApi: <?= json_encode(__('pricing.cancel_success_api')) ?>,
     cancelSuccessManual: <?= json_encode(__('pricing.cancel_success_manual')) ?>,
+    cancellationPending: <?= json_encode(__('pricing.cancellation_pending_error')) ?>,
+    resumeError: <?= json_encode(__('pricing.resume_error')) ?>,
+    resumeSuccess: <?= json_encode(__('pricing.resume_success')) ?>,
+    confirmResumeTitle: <?= json_encode(__('pricing.confirm_resume_title')) ?>,
+    confirmResumeBody: <?= json_encode(__('pricing.confirm_resume_body')) ?>,
+    resumeSubscriptionLabel: <?= json_encode(__('pricing.resume_subscription')) ?>,
   };
 
   // ── Generic confirm / result modal (replaces browser confirm()/alert()) ──
@@ -540,12 +551,41 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         window.location.href = '?page=pricing';
       } else if (data.error === 'manual_required') {
         showModalResult('info', I18N.modalConfirm, I18N.manualChangeRequired);
+      } else if (data.error === 'cancellation_pending') {
+        showModalResult('info', I18N.modalConfirm, I18N.cancellationPending);
       } else {
         showModalResult('error', I18N.modalConfirm, I18N.changeError);
       }
     } catch (error) {
       console.error('Error changing plan:', error);
       showModalResult('error', I18N.modalConfirm, I18N.changeError);
+    }
+  }
+
+  async function resumeSubscription() {
+    const confirmed = await askConfirm(I18N.confirmResumeTitle, I18N.confirmResumeBody, I18N.resumeSubscriptionLabel);
+    if (!confirmed) return;
+
+    const btn = document.getElementById('resume-sub-btn');
+    if (btn) btn.disabled = true;
+    showModalProcessing();
+    try {
+      const res = await fetch('?page=resume-subscription', {
+        method: 'POST',
+        body: new URLSearchParams({ csrf_token: CSRF_TOKEN }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showModalResult('success', I18N.modalConfirm, I18N.resumeSuccess);
+        actionModalPrimary.onclick = () => { window.location.href = '?page=pricing'; };
+      } else {
+        showModalResult('error', I18N.modalConfirm, I18N.resumeError);
+        if (btn) btn.disabled = false;
+      }
+    } catch (error) {
+      console.error('Error resuming subscription:', error);
+      showModalResult('error', I18N.modalConfirm, I18N.resumeError);
+      if (btn) btn.disabled = false;
     }
   }
 

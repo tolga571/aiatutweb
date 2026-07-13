@@ -9,7 +9,7 @@ ob_start();
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($payments as $pay): $needsAction = !empty($pay['cancel_requested_at']) && empty($pay['paddle_subscription_id']); ?>
+        <?php foreach ($payments as $pay): $needsAction = !empty($pay['cancel_requested_at']) && ($pay['cancel_method'] ?? '') === 'manual'; ?>
         <tr style="border-bottom:1px solid #444;<?= $needsAction ? 'background:#4a2e00;' : '' ?>">
             <td><?php echo htmlspecialchars($pay['id']); ?></td>
             <td><?php echo htmlspecialchars($pay['email']); ?></td>
@@ -22,7 +22,7 @@ ob_start();
                     <?php if ($needsAction): ?>
                         <strong style="color:#ffb84d;">Manual action needed</strong>
                     <?php else: ?>
-                        Requested <?php echo htmlspecialchars($pay['cancel_requested_at']); ?>
+                        Scheduled (API) — requested <?php echo htmlspecialchars($pay['cancel_requested_at']); ?>
                     <?php endif; ?>
                 <?php else: ?>
                     —

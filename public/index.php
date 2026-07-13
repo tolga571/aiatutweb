@@ -351,7 +351,7 @@ switch ($page) {
         if ($subId && $paddleClient->isConfigured()) {
             $success = $paddleClient->cancelSubscription($subId, 'next_billing_period');
             if ($success) {
-                $db->execute('UPDATE users SET cancel_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+                $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
                 http_response_code(502);
@@ -362,7 +362,7 @@ switch ($page) {
         // No subscription ID on file yet (subscription predates this feature)
         // or no API key configured: record the request so support can finish
         // it manually instead of silently doing nothing.
-        $db->execute('UPDATE users SET cancel_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'manual' WHERE id = ?", [$auth->userId()]);
         if (!empty($config['mailtrap_api_token'])) {
             $mailer = new \App\Src\Mailer($config);
             $mailer->send(
@@ -372,6 +372,36 @@ switch ($page) {
             );
         }
         echo json_encode(['ok' => true, 'method' => 'manual']);
+        exit;
+
+    case 'resume-subscription':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $resumeUser = $auth->currentUser();
+        if (empty($resumeUser['cancel_requested_at'])) {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'nothing_to_resume']);
+            exit;
+        }
+        if (($resumeUser['cancel_method'] ?? '') === 'api') {
+            $subId = $resumeUser['paddle_subscription_id'] ?? null;
+            if (!$subId || !$paddleClient->isConfigured() || !$paddleClient->resumeSubscription($subId)) {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
+                exit;
+            }
+        }
+        // For a 'manual' request there was never a real Paddle-side schedule
+        // to undo — clearing our own flag is enough. If it was actually
+        // already processed by support, the next webhook call is what
+        // reflects reality anyway.
+        $db->execute('UPDATE users SET cancel_requested_at = NULL, cancel_method = NULL WHERE id = ?', [$auth->userId()]);
+        echo json_encode(['ok' => true]);
         exit;
 
     case 'change-subscription-plan':
@@ -395,6 +425,13 @@ switch ($page) {
         }
         $changeUser = $auth->currentUser();
         $subId = $changeUser['paddle_subscription_id'] ?? null;
+        if (!empty($changeUser['cancel_requested_at'])) {
+            // Paddle won't apply a price change on top of a subscription
+            // that already has a pending cancellation scheduled — resuming
+            // it first avoids a confusing Paddle API failure.
+            echo json_encode(['ok' => false, 'error' => 'cancellation_pending']);
+            exit;
+        }
         if (!$auth->hasPaid() || ($changeUser['plan_status'] ?? '') === 'trial' || !$subId || !$paddleClient->isConfigured()) {
             // Can't safely swap the existing subscription in place — refuse
             // rather than fall back to opening a second checkout, which is
