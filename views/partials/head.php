@@ -48,6 +48,54 @@
   .seg-trans {
     font-size: 0.8rem; color: #64748b; line-height: 1.2;
   }
+
+  /* Message entrance + progressive reveal animations */
+  .message-row {
+    animation: msg-row-in .35s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes msg-row-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal-block {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .reveal-block.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .seg-token {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .seg-token.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .typing-caret::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 2px;
+    background: currentColor;
+    vertical-align: -0.15em;
+    animation: caret-blink .85s step-end infinite;
+  }
+  @keyframes caret-blink {
+    50% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .message-row, .reveal-block, .seg-token, .typing-caret::after {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 <script>
 tailwind.config = {

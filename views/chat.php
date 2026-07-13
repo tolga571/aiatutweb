@@ -330,6 +330,12 @@ if ($quotaPercent > 75) {
         </div>
       </div>
 
+      <!-- Scroll to latest message button (shown when user has scrolled away from bottom) -->
+      <button id="scroll-to-bottom-btn" type="button" aria-label="Scroll to latest message"
+        class="hidden absolute bottom-28 left-1/2 -translate-x-1/2 z-30 items-center justify-center w-9 h-9 bg-primary text-on-primary rounded-full shadow-lg shadow-primary/30 hover:opacity-90 transition-all">
+        <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+      </button>
+
       <!-- Input Area -->
       <div class="px-xl pb-lg pt-sm shrink-0">
         <div
@@ -497,7 +503,7 @@ if ($quotaPercent > 75) {
         if (sendBtn) {
           sendBtn.disabled = true;
         }
-        setTimeout(showTrialExpiredModal, 1500);
+        setTimeout(showTrialExpiredModal, 2200);
       }
     }
 
@@ -520,6 +526,8 @@ if ($quotaPercent > 75) {
     const sendBtn = document.getElementById('btn-send');
     const emptyStateWrapper = document.getElementById('empty-state-wrapper');
     const vocabPanel = document.getElementById('vocab-panel');
+    const scrollToBottomBtn = document.getElementById('scroll-to-bottom-btn');
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     inputEl.addEventListener('input', function () {
       this.style.height = 'auto';
@@ -607,11 +615,11 @@ if ($quotaPercent > 75) {
             if (msg.role === 'user') {
               appendMessage('user', msg.content);
             } else {
-              appendAiMessage(msg);
+              appendAiMessage(msg, false);
             }
           });
           hideEmptyState();
-          scrollBottom();
+          scrollBottom(true);
         })
         .catch(function () {
           removeLoadingMessage(loadId);
@@ -738,7 +746,7 @@ if ($quotaPercent > 75) {
         </div>`;
       }
       messagesEl.appendChild(row);
-      scrollBottom();
+      scrollBottom(true);
     }
 
 
@@ -756,7 +764,9 @@ if ($quotaPercent > 75) {
       }).join('');
     }
 
-    function appendAiMessage(data) {
+    function appendAiMessage(data, animate) {
+      if (animate === undefined) animate = true;
+      if (prefersReducedMotion) animate = false;
       const content = data.content || '';
       const translation = data.translation || '';
       const correction = data.correction || '';
@@ -774,9 +784,9 @@ if ($quotaPercent > 75) {
 
       let contentHtml;
       if (segmented.length > 0) {
-        contentHtml = `<div class="seg-group ${textAlign}" dir="${textDir}">${renderTokens(segmented, textDir)}</div>`;
+        contentHtml = `<div id="${cardId}-content" class="seg-group ${textAlign}" dir="${textDir}">${renderTokens(segmented, textDir)}</div>`;
       } else {
-        contentHtml = `<p class="text-2xl sm:text-3xl ${textAlign} font-medium leading-relaxed mb-4" dir="${textDir}">${escHtml(content)}</p>`;
+        contentHtml = `<p id="${cardId}-content" class="text-2xl sm:text-3xl ${textAlign} font-medium leading-relaxed mb-4" dir="${textDir}"></p>`;
       }
 
       let correctionsHtml = '';
@@ -791,13 +801,13 @@ if ($quotaPercent > 75) {
         </div>`;
         }).join('');
         correctionsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5">
+        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
           <div class="space-y-1">${chips}</div>
         </div>`;
       } else if (correction) {
         correctionsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5">
+        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
           <div class="bg-gray-800/50 rounded-lg px-3 py-2 text-xs text-amber-200/80 border border-gray-700/30">${escHtml(correction)}</div>
         </div>`;
@@ -813,7 +823,7 @@ if ($quotaPercent > 75) {
         </span>`;
         }).join('');
         wordsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50">
+        <div class="px-6 py-4 border-t border-gray-700/50 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.key_vocabulary') ?></p>
           <div class="flex flex-wrap">${chips}</div>
         </div>`;
@@ -832,7 +842,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const metaGrid = (phonetic || literalTranslation) ? `
-      <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40">
+      <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40 reveal-block">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
           <div class="md:border-r md:border-gray-700/30 md:pr-5">
             ${phoneticBlock}
@@ -844,7 +854,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const naturalTranslationBlock = translation ? `
-      <div class="px-6 py-4 bg-indigo-500/5 border-b border-gray-700/50">
+      <div class="px-6 py-4 bg-indigo-500/5 border-b border-gray-700/50 reveal-block">
         <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= __('chat.natural_translation') ?></p>
         <p class="text-lg text-gray-100 font-medium italic">"${escHtml(translation)}"</p>
       </div>` : '';
@@ -872,7 +882,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const learningGrid = (grammarSpotlight || proTip) ? `
-      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-block">
         ${grammarBlock}
         ${proTipBlock}
       </div>` : '';
@@ -956,7 +966,65 @@ if ($quotaPercent > 75) {
         speakText(this.dataset.text);
       });
 
-      scrollBottom();
+      if (animate) {
+        scrollBottom(true);
+        animateAiCard(row, { segmented: segmented, content: content, cardId: cardId });
+      } else {
+        const textEl = document.getElementById(cardId + '-content');
+        if (textEl && !(segmented && segmented.length > 0)) {
+          textEl.textContent = content;
+        }
+        row.querySelectorAll('.seg-token, .reveal-block').forEach(el => el.classList.add('is-visible'));
+        scrollBottom(true);
+      }
+    }
+
+    // Reveals an AI card progressively: types out the main sentence (or
+    // staggers in its tokens), then fades in the supporting sections.
+    function animateAiCard(row, opts) {
+      const segmented = opts.segmented;
+      const content = opts.content || '';
+      const cardId = opts.cardId;
+      const revealBlocks = Array.from(row.querySelectorAll('.reveal-block'));
+
+      function revealBlocksStaggered(startDelay) {
+        revealBlocks.forEach((el, i) => {
+          setTimeout(function () {
+            el.classList.add('is-visible');
+            scrollBottom();
+          }, startDelay + i * 90);
+        });
+      }
+
+      if (segmented && segmented.length > 0) {
+        const tokens = row.querySelectorAll('#' + cardId + '-content .seg-token');
+        const stagger = Math.min(70, Math.max(20, 320 / Math.max(tokens.length, 1)));
+        tokens.forEach((tok, i) => {
+          setTimeout(function () {
+            tok.classList.add('is-visible');
+            scrollBottom();
+          }, i * stagger);
+        });
+        revealBlocksStaggered(tokens.length * stagger + 120);
+      } else {
+        const textEl = document.getElementById(cardId + '-content');
+        if (!textEl) { revealBlocksStaggered(0); return; }
+        const duration = Math.min(1400, Math.max(280, content.length * 16));
+        const interval = Math.min(40, Math.max(8, duration / Math.max(content.length, 1)));
+        textEl.classList.add('typing-caret');
+        let i = 0;
+        (function step() {
+          if (i >= content.length) {
+            textEl.classList.remove('typing-caret');
+            revealBlocksStaggered(80);
+            return;
+          }
+          textEl.textContent += content[i];
+          i++;
+          scrollBottom();
+          setTimeout(step, interval);
+        })();
+      }
     }
 
     // loadingCounter is declared at the top of the script scope
@@ -979,7 +1047,7 @@ if ($quotaPercent > 75) {
         </div>
       </div>`;
       messagesEl.appendChild(row);
-      scrollBottom();
+      scrollBottom(true);
       return id;
     }
 
@@ -1075,8 +1143,35 @@ if ($quotaPercent > 75) {
       if (emptyStateWrapper) emptyStateWrapper.classList.add('hidden');
     }
 
-    function scrollBottom() {
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+    function isNearBottom() {
+      return messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 140;
+    }
+
+    function updateScrollToBottomVisibility() {
+      if (!scrollToBottomBtn) return;
+      if (isNearBottom()) {
+        scrollToBottomBtn.classList.add('hidden');
+        scrollToBottomBtn.classList.remove('flex');
+      } else {
+        scrollToBottomBtn.classList.remove('hidden');
+        scrollToBottomBtn.classList.add('flex');
+      }
+    }
+
+    function scrollBottom(force) {
+      if (force || isNearBottom()) {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+      updateScrollToBottomVisibility();
+    }
+
+    if (messagesEl) {
+      messagesEl.addEventListener('scroll', updateScrollToBottomVisibility);
+    }
+    if (scrollToBottomBtn) {
+      scrollToBottomBtn.addEventListener('click', function () {
+        scrollBottom(true);
+      });
     }
 
     function escHtml(str) {
