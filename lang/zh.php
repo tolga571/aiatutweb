@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => '回顾聊天',
     'chat.view_plans' => '查看套餐',
     'chat.http_error' => '聊天失败（HTTP 503）',
+    'chat.error_ai_unavailable' => 'AI 服务不可用。您的消息已保存。',
+    'chat.error_rate_limited' => '我们的 AI 导师现在有点忙，请稍后再试。',
     'chat.conv_not_found' => '未找到对话',
     'chat.load_messages_error' => '加载消息失败。',
     'chat.target_language' => '目标语言',

@@ -300,9 +300,9 @@ SEGMENTED RULES:
         } catch (\Throwable $e) {
             $errorMsg = $e->getMessage();
             error_log("Gemini AI error for user {$userId}: {$errorMsg}");
+            $isRateLimited = (bool) preg_match('/HTTP 429|RESOURCE_EXHAUSTED|rate.?limit/i', $errorMsg);
             return [
-                'error'   => __('chat.error_ai_unavailable'),
-                'details' => $errorMsg,
+                'error' => $isRateLimited ? __('chat.error_rate_limited') : __('chat.error_ai_unavailable'),
             ];
         }
     }

@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => 'مراجعة المحادثة',
     'chat.view_plans' => 'عرض الخطط',
     'chat.http_error' => 'فشلت المحادثة (HTTP 503)',
+    'chat.error_ai_unavailable' => 'خدمة الذكاء الاصطناعي غير متاحة. تم حفظ رسالتك.',
+    'chat.error_rate_limited' => 'معلم الذكاء الاصطناعي مشغول قليلاً الآن. يرجى المحاولة مرة أخرى بعد لحظات.',
     'chat.conv_not_found' => 'المحادثة غير موجودة',
     'chat.load_messages_error' => 'فشل تحميل الرسائل.',
     'chat.target_language' => 'اللغة المستهدفة',

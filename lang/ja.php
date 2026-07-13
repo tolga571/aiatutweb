@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => 'チャットを復習',
     'chat.view_plans' => 'プランを見る',
     'chat.http_error' => 'チャットに失敗しました（HTTP 503）',
+    'chat.error_ai_unavailable' => 'AIサービスが利用できません。メッセージは保存されました。',
+    'chat.error_rate_limited' => 'AIチューターは只今少し混み合っています。しばらくしてからもう一度お試しください。',
     'chat.conv_not_found' => '会話が見つかりません',
     'chat.load_messages_error' => 'メッセージの読み込みに失敗しました。',
     'chat.target_language' => '目標言語',

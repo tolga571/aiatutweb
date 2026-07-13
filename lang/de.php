@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => 'Chat überprüfen',
     'chat.view_plans' => 'Pläne ansehen',
     'chat.http_error' => 'Chat fehlgeschlagen (HTTP 503)',
+    'chat.error_ai_unavailable' => 'KI-Dienst nicht verfügbar. Deine Nachricht wurde gespeichert.',
+    'chat.error_rate_limited' => 'Unser KI-Tutor ist gerade etwas ausgelastet. Bitte versuche es gleich noch einmal.',
     'chat.conv_not_found' => 'Konversation nicht gefunden',
     'chat.load_messages_error' => 'Nachrichten konnten nicht geladen werden.',
     'chat.target_language' => 'Zielsprache',

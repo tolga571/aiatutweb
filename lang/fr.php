@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => 'Réviser la discussion',
     'chat.view_plans' => 'Voir les forfaits',
     'chat.http_error' => 'Échec de la discussion (HTTP 503)',
+    'chat.error_ai_unavailable' => 'Service IA indisponible. Votre message a été enregistré.',
+    'chat.error_rate_limited' => 'Notre tuteur IA est un peu occupé en ce moment. Veuillez réessayer dans un instant.',
     'chat.conv_not_found' => 'Conversation introuvable',
     'chat.load_messages_error' => 'Échec du chargement des messages.',
     'chat.target_language' => 'Langue cible',

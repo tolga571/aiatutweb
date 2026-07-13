@@ -162,6 +162,8 @@ return [
     'chat.review_chat' => 'Revisar Chat',
     'chat.view_plans' => 'Ver Planes',
     'chat.http_error' => 'Chat fallido (HTTP 503)',
+    'chat.error_ai_unavailable' => 'Servicio de IA no disponible. Tu mensaje ha sido guardado.',
+    'chat.error_rate_limited' => 'Nuestro tutor de IA está un poco ocupado ahora mismo. Por favor, inténtalo de nuevo en un momento.',
     'chat.conv_not_found' => 'Conversación no encontrada',
     'chat.load_messages_error' => 'Error al cargar los mensajes.',
     'chat.target_language' => 'Idioma objetivo',
