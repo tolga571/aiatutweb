@@ -2,7 +2,7 @@
   class="relative w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-lg h-14 grid grid-cols-[1fr_auto_1fr] items-center z-50 shrink-0">
   <link rel="stylesheet" href="/css/navbar.css">
   <script src="/js/navbar.js" defer></script>
-  <div class="flex items-center min-w-0">
+  <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex flex-col shrink-0">
       <h1 class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</h1>
       <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
@@ -25,7 +25,7 @@
     <?php endif; ?>
   </div>
 
-  <div class="hidden lg:flex items-center justify-center gap-base shrink-0">
+  <div class="hidden lg:flex items-center justify-center gap-base shrink-0 col-start-2">
     <a href="?page=home"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
       <span class="material-symbols-outlined text-[18px]">home</span>
@@ -150,7 +150,7 @@
     </a>
   </div>
 
-  <div class="flex items-center justify-end gap-md min-w-0 justify-self-end">
+  <div class="flex items-center justify-end gap-md min-w-0 justify-self-end col-start-3">
     <?php if (isset($auth) && $auth->isLoggedIn()):
       $currUser = $auth->currentUser();
       $plan = $currUser['plan_status'] ?? 'inactive';
