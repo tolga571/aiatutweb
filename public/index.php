@@ -383,12 +383,19 @@ switch ($page) {
             exit;
         }
         $resumeUser = $auth->currentUser();
-        if (empty($resumeUser['cancel_requested_at'])) {
+        $hasPendingCancel = !empty($resumeUser['cancel_requested_at']);
+        $hasPendingChange = !empty($resumeUser['pending_plan_change']);
+        if (!$hasPendingCancel && !$hasPendingChange) {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'nothing_to_resume']);
             exit;
         }
-        if (($resumeUser['cancel_method'] ?? '') === 'api') {
+        // A pending downgrade and a manually-recorded cancellation request
+        // both undo the same way: a downgrade is always a real Paddle
+        // scheduled_change, and a cancellation only needs a real API call
+        // when cancel_method is 'api'.
+        $needsApiCall = $hasPendingChange || ($resumeUser['cancel_method'] ?? '') === 'api';
+        if ($needsApiCall) {
             $subId = $resumeUser['paddle_subscription_id'] ?? null;
             if (!$subId || !$paddleClient->isConfigured() || !$paddleClient->resumeSubscription($subId)) {
                 http_response_code(502);
@@ -396,11 +403,11 @@ switch ($page) {
                 exit;
             }
         }
-        // For a 'manual' request there was never a real Paddle-side schedule
-        // to undo — clearing our own flag is enough. If it was actually
-        // already processed by support, the next webhook call is what
-        // reflects reality anyway.
-        $db->execute('UPDATE users SET cancel_requested_at = NULL, cancel_method = NULL WHERE id = ?', [$auth->userId()]);
+        // For a 'manual' cancellation request there was never a real
+        // Paddle-side schedule to undo — clearing our own flag is enough.
+        // If it was actually already processed by support, the next
+        // webhook call is what reflects reality anyway.
+        $db->execute('UPDATE users SET cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL WHERE id = ?', [$auth->userId()]);
         echo json_encode(['ok' => true]);
         exit;
 
@@ -432,6 +439,12 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => 'cancellation_pending']);
             exit;
         }
+        if (!empty($changeUser['pending_plan_change'])) {
+            // A previous downgrade is already scheduled for next billing
+            // period — avoid stacking a second scheduled change.
+            echo json_encode(['ok' => false, 'error' => 'change_pending']);
+            exit;
+        }
         if (!$auth->hasPaid() || ($changeUser['plan_status'] ?? '') === 'trial' || !$subId || !$paddleClient->isConfigured()) {
             // Can't safely swap the existing subscription in place — refuse
             // rather than fall back to opening a second checkout, which is
@@ -439,24 +452,68 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => 'manual_required']);
             exit;
         }
-        $success = $paddleClient->updateSubscriptionPrice($subId, $planPriceMap[$planKey]);
+        $oldPlanStatus = $changeUser['plan_status'] ?? 'inactive';
+        $oldRank = \App\Src\TokenManager::planRank($oldPlanStatus);
+        $newRank = \App\Src\TokenManager::planRank($planKey);
+        $isUpgrade = $newRank > $oldRank;
+
+        $success = $paddleClient->updateSubscriptionPrice($subId, $planPriceMap[$planKey], $isUpgrade);
         if (!$success) {
             http_response_code(502);
             echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
             exit;
         }
-        // Optimistically reflect the change; the next webhook call will
-        // reconcile plan_status/has_paid from Paddle's own event data.
-        $oldPlanStatus = $changeUser['plan_status'] ?? 'inactive';
-        $oldRank = \App\Src\TokenManager::planRank($oldPlanStatus);
-        $newRank = \App\Src\TokenManager::planRank($planKey);
-        if ($newRank > $oldRank) {
+
+        if ($isUpgrade) {
+            // Upgrades apply immediately (Paddle charges the prorated
+            // difference right now), so reflect it right away; the next
+            // webhook call will reconcile from Paddle's own event data.
             $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
-        } elseif ($newRank < $oldRank) {
-            $oldLimit = (new \App\Src\TokenManager($db))->getBaseLimit($oldPlanStatus);
-            $db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$oldLimit, $auth->userId()]);
+            $db->execute('UPDATE users SET plan_status = ?, has_paid = 1 WHERE id = ?', [$planKey, $auth->userId()]);
+            echo json_encode(['ok' => true]);
+        } else {
+            // Downgrades are deferred to the next billing period (standard
+            // practice — no immediate prorated credit). The user keeps
+            // their current plan/quota until then; plan_status and the
+            // token bonus only change once Paddle's webhook confirms the
+            // new price actually took effect.
+            $db->execute('UPDATE users SET pending_plan_change = ? WHERE id = ?', [$planKey, $auth->userId()]);
+            echo json_encode(['ok' => true, 'deferred' => true]);
         }
-        $db->execute('UPDATE users SET plan_status = ?, has_paid = 1 WHERE id = ?', [$planKey, $auth->userId()]);
+        exit;
+
+    case 'request-refund':
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $refundUser = $auth->currentUser();
+        if (!$auth->hasPaid() || ($refundUser['plan_status'] ?? '') === 'trial') {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'no_active_subscription']);
+            exit;
+        }
+        if (!empty($refundUser['refund_requested_at'])) {
+            echo json_encode(['ok' => true, 'already_requested' => true]);
+            exit;
+        }
+        // Actually moving the money still goes through Paddle's dashboard —
+        // Paddle is the merchant of record and handles refund compliance —
+        // but the request itself is now tracked in-app and routed to
+        // support immediately, instead of only existing as an email no one
+        // in the product can see the status of.
+        $db->execute('UPDATE users SET refund_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        if (!empty($config['mailtrap_api_token'])) {
+            $mailer = new \App\Src\Mailer($config);
+            $mailer->send(
+                $config['mail_from_address'],
+                'Refund request',
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($refundUser['email'] ?? '') . '), plan: ' . htmlspecialchars($refundUser['plan_status'] ?? '') . ', requested a refund. Check the payment date in the Paddle dashboard against the 14-day policy and process there.</p>'
+            );
+        }
         echo json_encode(['ok' => true]);
         exit;
 

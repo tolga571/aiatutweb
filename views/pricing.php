@@ -52,6 +52,10 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         $rank = \App\Src\TokenManager::planRank($planKey);
         return $rank > $currentPlanRank ? 'upgrade' : 'downgrade';
     };
+    $hasCancelPending = !empty($currentUser['cancel_requested_at']);
+    $hasChangePending = !empty($currentUser['pending_plan_change']);
+    $nextBilledLabel = !empty($currentUser['next_billed_at']) ? date('j M Y', strtotime($currentUser['next_billed_at'])) : '';
+    $pendingChangeLabel = $hasChangePending ? ($planLabels[$currentUser['pending_plan_change']] ?? $currentUser['pending_plan_change']) : '';
     ?>
 
     <?php if ($isPaidUser): ?>
@@ -64,17 +68,26 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <?= $currentPlanLabel ? sprintf(__('pricing.status_active_plan'), $currentPlanLabel) : __('pricing.status_active') ?>
         </span>
         <h3 class="text-2xl font-bold text-on-surface mb-2"><?= __('pricing.already_subscribed_title') ?></h3>
-        <p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.already_subscribed_body') ?></p>
+        <p class="text-body-md text-on-surface-variant mb-3"><?= __('pricing.already_subscribed_body') ?></p>
+
+        <?php if ($hasChangePending && $nextBilledLabel): ?>
+          <p class="text-body-md text-primary font-semibold mb-6"><?= sprintf(__('pricing.change_pending_notice'), $pendingChangeLabel, $nextBilledLabel) ?></p>
+        <?php elseif ($hasCancelPending): ?>
+          <p class="text-body-md text-error font-semibold mb-6">
+            <?= ($currentUser['cancel_method'] ?? '') === 'api' ? __('pricing.cancel_pending_api') : __('pricing.cancel_pending_manual') ?>
+          </p>
+        <?php elseif ($nextBilledLabel): ?>
+          <p class="text-body-md text-on-surface-variant mb-6"><?= sprintf(__('pricing.renews_on'), $nextBilledLabel) ?></p>
+        <?php else: ?>
+          <div class="mb-2"></div>
+        <?php endif; ?>
+
         <div class="flex flex-wrap items-center justify-center gap-3">
           <a href="?page=chat" class="inline-flex items-center gap-2 bg-primary text-on-primary hover:opacity-90 font-semibold text-sm px-xl py-3 rounded-xl transition-all shadow-md glow-hover">
             <?= __('pricing.go_to_chat') ?>
             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
-          <?php if (!empty($currentUser['cancel_requested_at'])): ?>
-            <span class="inline-flex items-center gap-2 text-xs text-on-surface-variant border border-outline-variant/30 rounded-xl px-4 py-3">
-              <span class="material-symbols-outlined text-[16px]">schedule</span>
-              <?= ($currentUser['cancel_method'] ?? '') === 'api' ? __('pricing.cancel_pending_api') : __('pricing.cancel_pending_manual') ?>
-            </span>
+          <?php if ($hasCancelPending || $hasChangePending): ?>
             <button type="button" id="resume-sub-btn" onclick="resumeSubscription()"
               class="inline-flex items-center gap-2 border border-primary/30 text-primary hover:bg-primary/10 font-semibold text-sm px-xl py-3 rounded-xl transition-all">
               <span class="material-symbols-outlined text-[16px]">undo</span>
@@ -86,6 +99,16 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               <span class="material-symbols-outlined text-[16px]">cancel</span>
               <?= __('pricing.cancel_subscription') ?>
             </button>
+          <?php endif; ?>
+          <?php if (empty($currentUser['refund_requested_at'])): ?>
+            <button type="button" id="refund-btn" onclick="requestRefund()"
+              class="inline-flex items-center gap-2 text-xs text-on-surface-variant hover:text-on-surface underline underline-offset-2 px-2 py-3">
+              <?= __('pricing.request_refund') ?>
+            </button>
+          <?php else: ?>
+            <span class="inline-flex items-center gap-2 text-xs text-on-surface-variant px-2 py-3">
+              <?= __('pricing.refund_requested_note') ?>
+            </span>
           <?php endif; ?>
         </div>
       </div>
@@ -459,6 +482,14 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     confirmResumeTitle: <?= json_encode(__('pricing.confirm_resume_title')) ?>,
     confirmResumeBody: <?= json_encode(__('pricing.confirm_resume_body')) ?>,
     resumeSubscriptionLabel: <?= json_encode(__('pricing.resume_subscription')) ?>,
+    changePending: <?= json_encode(__('pricing.change_pending_error')) ?>,
+    changeDeferredTitle: <?= json_encode(__('pricing.change_deferred_title')) ?>,
+    changeDeferredBody: <?= json_encode(__('pricing.change_deferred_body')) ?>,
+    confirmRefundTitle: <?= json_encode(__('pricing.confirm_refund_title')) ?>,
+    confirmRefundBody: <?= json_encode(__('pricing.confirm_refund_body')) ?>,
+    requestRefundLabel: <?= json_encode(__('pricing.request_refund')) ?>,
+    refundSuccess: <?= json_encode(__('pricing.refund_success')) ?>,
+    refundError: <?= json_encode(__('pricing.refund_error')) ?>,
   };
 
   // ── Generic confirm / result modal (replaces browser confirm()/alert()) ──
@@ -547,12 +578,17 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         body: new URLSearchParams({ plan: planKey, csrf_token: CSRF_TOKEN }),
       });
       const data = await res.json();
-      if (data.ok) {
+      if (data.ok && data.deferred) {
+        showModalResult('success', I18N.changeDeferredTitle, I18N.changeDeferredBody.replace('%s', planLabel));
+        actionModalPrimary.onclick = () => { window.location.href = '?page=pricing'; };
+      } else if (data.ok) {
         window.location.href = '?page=pricing';
       } else if (data.error === 'manual_required') {
         showModalResult('info', I18N.modalConfirm, I18N.manualChangeRequired);
       } else if (data.error === 'cancellation_pending') {
         showModalResult('info', I18N.modalConfirm, I18N.cancellationPending);
+      } else if (data.error === 'change_pending') {
+        showModalResult('info', I18N.modalConfirm, I18N.changePending);
       } else {
         showModalResult('error', I18N.modalConfirm, I18N.changeError);
       }
@@ -585,6 +621,33 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     } catch (error) {
       console.error('Error resuming subscription:', error);
       showModalResult('error', I18N.modalConfirm, I18N.resumeError);
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  async function requestRefund() {
+    const confirmed = await askConfirm(I18N.confirmRefundTitle, I18N.confirmRefundBody, I18N.requestRefundLabel);
+    if (!confirmed) return;
+
+    const btn = document.getElementById('refund-btn');
+    if (btn) btn.disabled = true;
+    showModalProcessing();
+    try {
+      const res = await fetch('?page=request-refund', {
+        method: 'POST',
+        body: new URLSearchParams({ csrf_token: CSRF_TOKEN }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showModalResult('success', I18N.modalConfirm, I18N.refundSuccess);
+        actionModalPrimary.onclick = () => { window.location.href = '?page=pricing'; };
+      } else {
+        showModalResult('error', I18N.modalConfirm, I18N.refundError);
+        if (btn) btn.disabled = false;
+      }
+    } catch (error) {
+      console.error('Error requesting refund:', error);
+      showModalResult('error', I18N.modalConfirm, I18N.refundError);
       if (btn) btn.disabled = false;
     }
   }

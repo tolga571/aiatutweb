@@ -75,10 +75,16 @@ class PaddleClient
     /**
      * Swaps a subscription to a different price (upgrade/downgrade) in
      * place, so the customer ends up with a single subscription instead of
-     * an extra one stacked on top of the old plan. Paddle prorates the
-     * difference automatically.
+     * an extra one stacked on top of the old plan.
+     *
+     * Follows standard subscription-billing convention: upgrades apply
+     * immediately with a prorated charge for the difference (the customer
+     * gets the higher tier right away), while downgrades are deferred to
+     * the next billing period (the customer keeps what they already paid
+     * for until then, and simply pays less starting next cycle) rather
+     * than issuing an immediate prorated credit.
      */
-    public function updateSubscriptionPrice(string $subscriptionId, string $priceId): bool
+    public function updateSubscriptionPrice(string $subscriptionId, string $priceId, bool $isUpgrade): bool
     {
         try {
             $response = $this->http->patch("/subscriptions/{$subscriptionId}", [
@@ -87,7 +93,7 @@ class PaddleClient
                     'items' => [
                         ['price_id' => $priceId, 'quantity' => 1],
                     ],
-                    'proration_billing_mode' => 'prorated_immediately',
+                    'proration_billing_mode' => $isUpgrade ? 'prorated_immediately' : 'prorated_next_billing_period',
                 ],
             ]);
             return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;

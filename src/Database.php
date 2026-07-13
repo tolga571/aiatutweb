@@ -208,6 +208,24 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN cancel_method TEXT DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // Next renewal date reported by Paddle, shown to the user so
+            // they know when they'll next be billed (or when a scheduled
+            // change/cancellation actually takes effect).
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN next_billed_at TIMESTAMP DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            // Set when a downgrade has been scheduled with Paddle for the
+            // next billing period (standard practice: downgrades apply at
+            // renewal rather than issuing an immediate prorated credit).
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN pending_plan_change TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN refund_requested_at TIMESTAMP DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

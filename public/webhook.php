@@ -113,28 +113,33 @@ if (strpos($eventType, 'subscription.') === 0) {
             // in place, instead of opening a brand-new checkout.
             $subscriptionId = $data['id'] ?? null;
             $customerId = $data['customer_id'] ?? null;
+            $nextBilledAt = $data['next_billed_at'] ?? null;
 
-            // A subscription that's scheduled to cancel at period end is still
-            // 'active' in Paddle's eyes (with a scheduled_change) until that
-            // date arrives, so this handler runs again for it before then.
-            // Only clear our own cancel_requested_at flag once there is no
-            // scheduled cancellation left pending (either it was resumed, or
-            // it fully ended) — otherwise the "Cancel Subscription" button
-            // would reappear immediately after a successful cancellation.
+            // A subscription that's scheduled to cancel (or change price) at
+            // period end is still 'active' in Paddle's eyes (with a
+            // scheduled_change) until that date arrives, so this handler
+            // runs again for it before then. Only clear our own
+            // cancel_requested_at / pending_plan_change flags once there is
+            // no scheduled change left pending (either it was resumed, or it
+            // fully took effect) — otherwise the "Cancel Subscription"
+            // button, or the pending-downgrade notice, would reappear/vanish
+            // incorrectly right after the user actually completed the action.
             $hasScheduledChange = !empty($data['scheduled_change']);
             if ($hasScheduledChange) {
                 $db->execute(
                     'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL,
-                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
+                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
+                     next_billed_at = COALESCE(?, next_billed_at)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $userId]
                 );
             } else {
                 $db->execute(
-                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL, cancel_method = NULL,
-                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id)
+                    'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL,
+                     paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
+                     next_billed_at = COALESCE(?, next_billed_at)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $userId]
                 );
             }
 
