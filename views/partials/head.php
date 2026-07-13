@@ -40,7 +40,7 @@
     margin: 0 3px; vertical-align: top; line-height: 1.3;
   }
   .seg-text {
-    font-size: 1.75rem; font-weight: 500; line-height: 1.3;
+    font-size: clamp(1.25rem, 6vw, 1.75rem); font-weight: 500; line-height: 1.3;
   }
   .seg-pron {
     font-size: 0.85rem; color: #94a3b8; font-style: italic; line-height: 1.2;

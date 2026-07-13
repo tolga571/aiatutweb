@@ -35,15 +35,22 @@ $firstCard = $cards[0] ?? null;
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
+  <div id="fc-sidebar-backdrop" onclick="fcCloseSidebar()" class="hidden fixed inset-0 bg-black/40 z-30"></div>
+
   <div class="flex flex-1 overflow-hidden h-full w-full">
 
     <!-- Sidebar: Word List -->
-    <aside class="hidden lg:flex w-72 bg-surface-container-low/30 flex-col border-r border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0">
+    <aside id="fc-sidebar" class="hidden absolute z-40 lg:relative lg:flex w-72 h-full bg-surface-container-low/95 backdrop-blur-xl lg:bg-surface-container-low/30 lg:backdrop-blur-none flex-col border-r border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0 shadow-2xl lg:shadow-none">
       <div class="flex flex-col gap-xs mb-xs">
-        <h3 class="font-bold text-sm text-on-surface flex items-center gap-2">
-          <span class="material-symbols-outlined text-[20px] text-primary">list</span>
-          <?= __('fc.word_list') ?>
-        </h3>
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-primary">list</span>
+            <?= __('fc.word_list') ?>
+          </h3>
+          <button onclick="fcCloseSidebar()" class="lg:hidden p-1 rounded-full hover:bg-surface-variant/50">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
         <p class="text-[11px] text-on-surface-variant"><?= __('fc.select_word') ?></p>
       </div>
 
@@ -83,11 +90,14 @@ $firstCard = $cards[0] ?? null;
       <div class="w-full max-w-6xl flex flex-col gap-6 shrink-0 pt-2">
         <!-- Top Bar -->
         <div class="flex items-center justify-between gap-md">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <button onclick="fcToggleSidebar()" class="lg:hidden shrink-0 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 rounded-full hover:bg-surface-container-high/50 border border-outline-variant/20" aria-label="<?= __('fc.word_list') ?>">
+              <span class="material-symbols-outlined text-[18px]">list</span>
+            </button>
             <?= $targetFlag ?>
-            <span class="text-xs font-semibold text-on-surface-variant"><?= sprintf(__('fc.words_in'), $targetLangName) ?></span>
+            <span class="text-xs font-semibold text-on-surface-variant truncate"><?= sprintf(__('fc.words_in'), $targetLangName) ?></span>
           </div>
-          <div class="flex items-center gap-2 text-label-md text-primary font-bold">
+          <div class="flex items-center gap-2 text-label-md text-primary font-bold shrink-0">
             <span class="material-symbols-outlined text-[16px] text-yellow-500 animate-pulse">workspace_premium</span>
             <span id="session-xp"><?= sprintf(__('fc.xp_earned'), 0) ?></span>
           </div>
@@ -134,6 +144,26 @@ $firstCard = $cards[0] ?? null;
 </main>
 
 <div id="toast-container" class="fixed bottom-lg right-lg flex flex-col gap-sm z-50 pointer-events-none"></div>
+
+<script>
+  function fcOpenSidebar() {
+    var el = document.getElementById('fc-sidebar');
+    var bd = document.getElementById('fc-sidebar-backdrop');
+    if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
+    if (bd) bd.classList.remove('hidden');
+  }
+  function fcCloseSidebar() {
+    var el = document.getElementById('fc-sidebar');
+    var bd = document.getElementById('fc-sidebar-backdrop');
+    if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    if (bd) bd.classList.add('hidden');
+  }
+  function fcToggleSidebar() {
+    var el = document.getElementById('fc-sidebar');
+    if (!el) return;
+    if (el.classList.contains('hidden')) { fcOpenSidebar(); } else { fcCloseSidebar(); }
+  }
+</script>
 
 <!-- Config -->
 <script>

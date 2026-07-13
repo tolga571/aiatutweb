@@ -51,6 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (langDrop && !langDrop.classList.contains('hidden') && langSwitcher && !langSwitcher.contains(e.target)) {
       langDrop.classList.add('hidden');
     }
+    // Close profile switcher specifically
+    const profileSwitcher = document.getElementById('nav-profile-switcher');
+    const profileDrop = document.getElementById('nav-profile-dropdown');
+    if (profileDrop && !profileDrop.classList.contains('hidden') && profileSwitcher && !profileSwitcher.contains(e.target)) {
+      profileDrop.classList.add('hidden');
+    }
   });
 
   // Lang switcher toggle (click-based for mobile compatibility)
@@ -60,6 +66,16 @@ document.addEventListener('DOMContentLoaded', function () {
     navLangSwitcher.querySelector('button')?.addEventListener('click', function (e) {
       e.stopPropagation();
       navLangDrop.classList.toggle('hidden');
+    });
+  }
+
+  // Profile switcher toggle (click-based — group-hover doesn't work on touch)
+  const navProfileSwitcher = document.getElementById('nav-profile-switcher');
+  const navProfileDrop = document.getElementById('nav-profile-dropdown');
+  if (navProfileSwitcher && navProfileDrop) {
+    navProfileSwitcher.querySelector('button')?.addEventListener('click', function (e) {
+      e.stopPropagation();
+      navProfileDrop.classList.toggle('hidden');
     });
   }
 });

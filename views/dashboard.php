@@ -169,8 +169,9 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
           <p class="text-body-md text-on-surface-variant"><?= __('dash.keep_momentum') ?></p>
         </div>
         <button onclick="document.getElementById('dash-sidebar').classList.toggle('hidden'); document.getElementById('dash-sidebar').classList.toggle('flex');"
-          class="md:hidden shrink-0 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50 border border-outline-variant/20">
-          <span class="material-symbols-outlined text-[22px]">menu</span>
+          class="md:hidden shrink-0 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50 border border-outline-variant/20"
+          aria-label="<?= __('chat.your_progress') ?>">
+          <span class="material-symbols-outlined text-[22px]">insights</span>
         </button>
       </div>
 

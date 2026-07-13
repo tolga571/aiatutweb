@@ -182,7 +182,7 @@
         </div>
       </div>
 
-      <div class="relative inline-block text-left group">
+      <div class="relative inline-block text-left" id="nav-profile-switcher">
         <button
           class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-pointer">
           <div
@@ -198,7 +198,7 @@
           </span>
           <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
         </button>
-        <div class="origin-top-right absolute right-0 pt-2 w-48 z-50 hidden group-hover:block">
+        <div id="nav-profile-dropdown" class="origin-top-right absolute right-0 pt-2 w-48 z-50 hidden">
           <div
             class="rounded-md shadow-lg border border-outline-variant/20 bg-surface-container-high ring-1 ring-black ring-opacity-5">
             <div class="py-1" role="menu" aria-orientation="vertical">

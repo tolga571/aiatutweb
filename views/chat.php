@@ -59,8 +59,8 @@ if ($quotaPercent > 75) {
 
 <!-- Refined Compact Top Navigation -->
 <nav
-  class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-xl h-14 flex items-center justify-between z-50 shrink-0">
-  <a href="?page=home" class="flex items-center gap-sm group">
+  class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-md sm:px-xl h-14 flex items-center justify-between z-50 shrink-0">
+  <a href="?page=home" class="flex items-center gap-sm group shrink-0">
     <div
       class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md group-hover:opacity-80 transition-opacity">
       A
@@ -74,29 +74,29 @@ if ($quotaPercent > 75) {
     <a href="?page=dashboard"
       class="text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors"><?= __('chat.my_profile') ?></a>
   </div>
-  <div class="flex items-center gap-md">
-    <button onclick="document.getElementById('chat-sidebar').classList.toggle('hidden'); document.getElementById('chat-sidebar').classList.toggle('flex');"
-      class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50">
-      <span class="material-symbols-outlined text-[24px]">menu</span>
+  <div class="flex items-center gap-xs sm:gap-md shrink-0">
+    <button onclick="toggleDrawer('chat-sidebar')"
+      class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 sm:p-2 rounded-full hover:bg-surface-container-high/50">
+      <span class="material-symbols-outlined text-[20px] sm:text-[24px]">menu</span>
     </button>
-    <button onclick="document.getElementById('study-panel').classList.toggle('hidden'); document.getElementById('study-panel').classList.toggle('flex');"
-      class="xl:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50"
+    <button onclick="toggleDrawer('study-panel')"
+      class="xl:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 sm:p-2 rounded-full hover:bg-surface-container-high/50"
       aria-label="<?= __('chat.study_session') ?>">
-      <span class="material-symbols-outlined text-[24px]">auto_awesome</span>
+      <span class="material-symbols-outlined text-[20px] sm:text-[24px]">auto_awesome</span>
     </button>
     <div class="relative inline-block text-left group">
       <button
-        class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-default">
+        class="flex items-center gap-1.5 sm:gap-2 hover:bg-surface-variant/50 p-1 pr-2 sm:pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-default">
         <div
-          class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center text-sm font-bold shadow-sm">
+          class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center text-sm font-bold shadow-sm shrink-0">
           <?= $userInitial ?>
         </div>
         <span class="text-sm font-medium text-on-surface hidden sm:block">
           <?= htmlspecialchars($currentUser['name'] ?? explode('@', $currentUser['email'] ?? 'User')[0]) ?>
         </span>
-        <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+        <span class="material-symbols-outlined text-[16px] text-on-surface-variant hidden sm:inline-block">expand_more</span>
       </button>
-      <!-- Dropdown -->
+      <!-- Dropdown (works via hover on desktop; mobile has the same links in the left drawer) -->
       <div class="origin-top-right absolute right-0 pt-2 w-48 z-50 hidden group-hover:block">
         <div
           class="rounded-md shadow-lg border border-outline-variant/20 bg-surface-container-high ring-1 ring-black ring-opacity-5">
@@ -116,8 +116,42 @@ if ($quotaPercent > 75) {
   </div>
 </nav>
 
+<!-- Drawer helpers: chat-sidebar and study-panel are mutually exclusive on
+     mobile/tablet, and share a tap-to-close backdrop instead of stacking
+     on top of each other with no way to dismiss but their own X button. -->
+<script>
+  function openDrawer(id) {
+    closeDrawers();
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('hidden');
+    el.classList.add('flex');
+    var bd = document.getElementById('drawer-backdrop');
+    if (bd) bd.classList.remove('hidden');
+  }
+  function closeDrawers() {
+    ['chat-sidebar', 'study-panel'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    });
+    var bd = document.getElementById('drawer-backdrop');
+    if (bd) bd.classList.add('hidden');
+  }
+  function toggleDrawer(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('hidden')) {
+      openDrawer(id);
+    } else {
+      closeDrawers();
+    }
+  }
+</script>
+
 <!-- Main Content Canvas -->
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
+  <div id="drawer-backdrop" onclick="closeDrawers()" class="hidden fixed inset-0 bg-black/40 z-30"></div>
+
   <div class="flex flex-1 overflow-hidden h-full w-full">
 
     <!-- Left Sidebar -->
@@ -126,9 +160,29 @@ if ($quotaPercent > 75) {
       <!-- User Email & Mobile Close -->
       <div class="flex items-center justify-between gap-sm text-on-surface-variant text-[11px] mb-xs">
         <span class="truncate"><?= htmlspecialchars($currentUser['email'] ?? '') ?></span>
-        <button onclick="document.getElementById('chat-sidebar').classList.add('hidden')" class="md:hidden p-1 rounded-full hover:bg-surface-variant/50">
+        <button onclick="closeDrawers()" class="md:hidden p-1 rounded-full hover:bg-surface-variant/50">
           <span class="material-symbols-outlined text-[16px]">close</span>
         </button>
+      </div>
+
+      <!-- Account links: mobile-only equivalent of the hover-only avatar
+           menu in the top nav, which touch devices can't rely on. -->
+      <div class="flex flex-col gap-xs md:hidden">
+        <a href="?page=dashboard"
+          class="flex items-center gap-2 px-sm py-2 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-colors">
+          <span class="material-symbols-outlined text-[16px]">person</span>
+          <?= __('chat.profile') ?>
+        </a>
+        <a href="?page=chat-tips"
+          class="flex items-center gap-2 px-sm py-2 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-colors">
+          <span class="material-symbols-outlined text-[16px]">menu_book</span>
+          <?= __('chat.instructions_link') ?>
+        </a>
+        <a href="?page=logout"
+          class="flex items-center gap-2 px-sm py-2 rounded-lg text-xs text-error hover:bg-error/10 transition-colors">
+          <span class="material-symbols-outlined text-[16px]">logout</span>
+          <?= __('chat.logout') ?>
+        </a>
       </div>
 
       <!-- Your Progress Card -->
@@ -269,12 +323,12 @@ if ($quotaPercent > 75) {
     <!-- Center: Chat Interface -->
     <section class="flex-1 flex flex-col relative bg-surface-dim h-full">
       <?php if ($isTrialExpired): ?>
-      <div class="shrink-0 bg-error-container/90 backdrop-blur-md border-b border-error/30 px-xl py-3 flex items-center justify-between gap-md">
+      <div class="shrink-0 bg-error-container/90 backdrop-blur-md border-b border-error/30 px-md sm:px-xl py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-md">
         <div class="flex items-center gap-2 text-on-error-container text-sm">
-          <span class="material-symbols-outlined text-[18px]">info</span>
+          <span class="material-symbols-outlined text-[18px] shrink-0">info</span>
           <span><?= __('chat.trial_expired_banner') ?></span>
         </div>
-        <a href="?page=pricing" class="bg-error text-on-error text-xs font-bold px-4 py-1.5 rounded-lg hover:opacity-90 transition shrink-0 whitespace-nowrap">
+        <a href="?page=pricing" class="bg-error text-on-error text-xs font-bold px-4 py-1.5 rounded-lg hover:opacity-90 transition shrink-0 whitespace-nowrap self-start sm:self-auto">
           <?= __('chat.view_plans') ?>
         </a>
       </div>
@@ -282,13 +336,13 @@ if ($quotaPercent > 75) {
       <?php if ($activeConvId): ?>
         <!-- Context Header Bar -->
         <div
-          class="flex justify-between items-center h-14 px-xl bg-surface-dim/40 backdrop-blur-md z-40 border-b border-outline-variant/10 shrink-0">
-          <div class="flex items-center gap-md">
-            <span class="font-headline-sm text-headline-sm text-primary"><?= __('chat.professor_kai') ?></span>
+          class="flex justify-between items-center h-14 px-md sm:px-xl bg-surface-dim/40 backdrop-blur-md z-40 border-b border-outline-variant/10 shrink-0 gap-sm">
+          <div class="flex items-center gap-sm sm:gap-md min-w-0">
+            <span class="font-headline-sm text-headline-sm text-primary truncate"><?= __('chat.professor_kai') ?></span>
             <span
-              class="px-sm py-0.5 bg-tertiary-container/30 text-tertiary rounded-full text-label-md border border-tertiary/20"><?= htmlspecialchars($targetLangName) ?></span>
+              class="px-sm py-0.5 bg-tertiary-container/30 text-tertiary rounded-full text-label-md border border-tertiary/20 shrink-0 truncate max-w-[120px]"><?= htmlspecialchars($targetLangName) ?></span>
           </div>
-          <div class="flex items-center gap-sm text-on-surface-variant text-label-md">
+          <div class="hidden sm:flex items-center gap-sm text-on-surface-variant text-label-md shrink-0">
             <svg class="w-4 h-4 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -388,7 +442,7 @@ if ($quotaPercent > 75) {
       <!-- Mobile/tablet close -->
       <div class="flex items-center justify-between xl:hidden mb-xs">
         <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider"><?= __('chat.study_session') ?></span>
-        <button onclick="document.getElementById('study-panel').classList.add('hidden')" class="p-1 rounded-full hover:bg-surface-variant/50">
+        <button onclick="closeDrawers()" class="p-1 rounded-full hover:bg-surface-variant/50">
           <span class="material-symbols-outlined text-[16px]">close</span>
         </button>
       </div>
