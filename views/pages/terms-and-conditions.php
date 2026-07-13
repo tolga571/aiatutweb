@@ -20,7 +20,7 @@
       <div class="text-body-md text-on-surface-variant leading-relaxed space-y-6">
         <div>
           <p>
-            Welcome to AiTut. By accessing or using our website and services, you agree to comply with and be bound by the following terms and conditions.
+            <?= __('terms.intro') ?>
           </p>
         </div>
 
@@ -29,31 +29,31 @@
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.s1_title') ?></h2>
           <p>
-            By using AiTut, you agree to use the service for personal, non-commercial language learning purposes only. You may not share access to your account or use the service for third-party instruction without explicit permission.
+            <?= __('terms.s1_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.s2_title') ?></h2>
-          <p class="mb-2">You may not attempt to:</p>
+          <p class="mb-2"><?= __('terms.s2_intro') ?></p>
           <ul class="list-disc list-inside space-y-1 ml-4">
-            <li>Reverse-engineer, decompile, or copy the codebase or underlying AI mechanisms of AiTut.</li>
-            <li>Scrape, automate data retrieval, or systematically download chat histories or vocabulary logs.</li>
-            <li>Misuse or overload the AI endpoints or network protocols in a way that degrades performance.</li>
+            <li><?= __('terms.s2_1') ?></li>
+            <li><?= __('terms.s2_2') ?></li>
+            <li><?= __('terms.s2_3') ?></li>
           </ul>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.s3_title') ?></h2>
           <p>
-            AiTut reserves the right to suspend or terminate accounts that violate these terms, attempt fraudulent payment activities, or act in a malicious manner towards the platform infrastructure.
+            <?= __('terms.s3_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.s4_title') ?></h2>
           <p>
-            We may revise these terms from time to time. The most current version will always be posted on our website. By continuing to use the service after changes become effective, you agree to be bound by the updated terms.
+            <?= __('terms.s4_body') ?>
           </p>
         </div>
       </div>

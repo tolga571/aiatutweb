@@ -20,7 +20,7 @@
       <div class="text-body-md text-on-surface-variant leading-relaxed space-y-6">
         <div>
           <p>
-            At AiTut, we respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, process, and protect your information when you use our service.
+            <?= __('privacy.intro') ?>
           </p>
         </div>
 
@@ -28,41 +28,41 @@
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s1_title') ?></h2>
-          <p class="mb-3">We collect information to provide a personalized language learning experience:</p>
+          <p class="mb-3"><?= __('privacy.s1_intro') ?></p>
           <ul class="list-disc list-inside space-y-2 ml-4">
-            <li><strong>Account Information:</strong> Name, email address, password, and registration date.</li>
-            <li><strong>Learning Preferences:</strong> Native language, target language, proficiency level (CEFR), and learning goals.</li>
-            <li><strong>Chat Logs:</strong> The text messages exchanged with our AI tutor to track your progress and generate feedback.</li>
-            <li><strong>Payment & Billing:</strong> Transaction identifiers and plan status processed securely via our payment gateway (Paddle). We do not store raw credit card details.</li>
+            <li><?= __('privacy.s1_1') ?></li>
+            <li><?= __('privacy.s1_2') ?></li>
+            <li><?= __('privacy.s1_3') ?></li>
+            <li><?= __('privacy.s1_4') ?></li>
           </ul>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s2_title') ?></h2>
-          <p class="mb-3">Your data is processed for the following purposes:</p>
+          <p class="mb-3"><?= __('privacy.s2_intro') ?></p>
           <ul class="list-disc list-inside space-y-2 ml-4">
-            <li>To operate and maintain your personalized AI tutor sessions.</li>
-            <li>To generate grammar corrections, vocabulary cards, and learning progress statistics.</li>
-            <li>To manage your active plan and process payments securely via Paddle.</li>
-            <li>To send you transactional notifications, security alerts, and support responses.</li>
+            <li><?= __('privacy.s2_1') ?></li>
+            <li><?= __('privacy.s2_2') ?></li>
+            <li><?= __('privacy.s2_3') ?></li>
+            <li><?= __('privacy.s2_4') ?></li>
           </ul>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s3_title') ?></h2>
           <p>
-            We do not sell or rent your personal data to third parties. We share data only with trusted subprocessors necessary to deliver our services, such as:
+            <?= __('privacy.s3_intro') ?>
           </p>
           <ul class="list-disc list-inside space-y-2 ml-4 mt-2">
-            <li><strong>Google Gemini API:</strong> Message prompts are sent to Gemini to generate tutor replies (excluding your direct account credentials).</li>
-            <li><strong>Paddle:</strong> Payment details are processed entirely by Paddle to handle subscriptions, billing, and compliance.</li>
+            <li><?= __('privacy.s3_1') ?></li>
+            <li><?= __('privacy.s3_2') ?></li>
           </ul>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s4_title') ?></h2>
           <p>
-            We deploy secure database procedures and encryption to safeguard your information. Our service adheres to the General Data Protection Regulation (GDPR) standards. You have the right to request access, correction, or deletion of your personal data at any time by contacting support.
+            <?= __('privacy.s4_body') ?>
           </p>
         </div>
       </div>

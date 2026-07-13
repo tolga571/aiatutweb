@@ -20,7 +20,7 @@
       <div class="text-body-md text-on-surface-variant leading-relaxed space-y-6">
         <div>
           <p>
-            We want you to be fully satisfied with your language learning journey. This document outlines the refund conditions for our subscription plans.
+            <?= __('refund.intro') ?>
           </p>
         </div>
 
@@ -29,21 +29,21 @@
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('refund.s1_title') ?></h2>
           <p>
-            If you are unsatisfied with AiTut within <strong>14 days</strong> of your first payment, contact support for a full refund.
+            <?= __('refund.s1_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('refund.s2_title') ?></h2>
           <p>
-            After 14 days, refunds are handled on a case-by-case basis depending on technical issues, account usage, and platform compliance.
+            <?= __('refund.s2_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('refund.s3_title') ?></h2>
           <p>
-            To submit a request, please contact us via our <a href="?page=contact" class="text-primary hover:underline font-medium">Contact Page</a> or write an email to support@aitut.com containing your registration email address and purchase details.
+            <?= __('refund.s3_body') ?>
           </p>
         </div>
       </div>

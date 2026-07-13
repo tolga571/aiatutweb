@@ -54,8 +54,33 @@ class Auth {
             );
             return true;
         } catch (\PDOException $e) {
+            $this->lastError = ($e->getCode() === '23505' || str_contains($e->getMessage(), 'duplicate key'))
+                ? __('auth.error_email_taken')
+                : __('auth.registration_failed');
             return false;
         }
+    }
+
+    /**
+     * True if the given IP has made $limit or more attempts of $type within
+     * the last $windowSeconds. Used to throttle login/register abuse.
+     */
+    public function tooManyAttempts(string $ip, string $type, int $limit, int $windowSeconds): bool {
+        $row = $this->db->fetchOne(
+            "SELECT COUNT(*) as cnt FROM login_attempts WHERE ip = ? AND type = ? AND attempted_at > CURRENT_TIMESTAMP - INTERVAL '" . (int)$windowSeconds . " seconds'",
+            [$ip, $type]
+        );
+        return $row && (int)$row['cnt'] >= $limit;
+    }
+
+    public function recordAttempt(string $ip, string $type): void {
+        $this->db->execute('INSERT INTO login_attempts (ip, type) VALUES (?, ?)', [$ip, $type]);
+        // Opportunistic cleanup so the table doesn't grow unbounded.
+        $this->db->execute("DELETE FROM login_attempts WHERE attempted_at < CURRENT_TIMESTAMP - INTERVAL '1 day'");
+    }
+
+    public function clearAttempts(string $ip, string $type): void {
+        $this->db->execute('DELETE FROM login_attempts WHERE ip = ? AND type = ?', [$ip, $type]);
     }
 
     public function logout(): void {

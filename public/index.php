@@ -75,15 +75,20 @@ switch ($page) {
             unset($_SESSION['login_error']);
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+            $clientIp = client_ip();
+            if ($auth->tooManyAttempts($clientIp, 'login', 8, 900)) {
+                $loginError = __('auth.error_too_many_attempts');
+            } elseif (!csrf_verify($_POST['csrf_token'] ?? null)) {
                 $loginError = __('auth.error_generic');
             } else {
                 $email = trim($_POST['email'] ?? '');
                 $pass  = $_POST['password'] ?? '';
                 if ($auth->login($email, $pass)) {
+                    $auth->clearAttempts($clientIp, 'login');
                     $redirect = $_GET['redirect'] ?? 'dashboard';
                     header('Location: ?page=' . urlencode($redirect)); exit;
                 }
+                $auth->recordAttempt($clientIp, 'login');
                 $loginError = $auth->lastError ?: __('auth.error_generic');
             }
         }
@@ -96,37 +101,44 @@ switch ($page) {
             unset($_SESSION['register_error']);
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
-            $pass  = $_POST['password'] ?? '';
-            $pass_confirm = $_POST['password_confirm'] ?? '';
-            $name  = trim($_POST['name'] ?? '');
-            $terms = isset($_POST['terms']);
+            $clientIp = client_ip();
             $errors = [];
-            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
-                $errors[] = __('auth.error_generic');
-            }
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = __('auth.error_invalid_email');
-            }
-            if (empty($name) || mb_strlen($name) < 2) {
-                $errors[] = __('auth.error_invalid_name');
-            }
-            if (strlen($pass) < 8) {
-                $errors[] = __('auth.error_weak_password');
-            }
-            if ($pass !== $pass_confirm) {
-                $errors[] = __('auth.error_password_mismatch');
-            }
-            if (!$terms) {
-                $errors[] = __('auth.error_terms');
-            }
-            if (empty($errors)) {
-                if ($auth->register($email, $pass, $name)) {
-                    $auth->login($email, $pass);
-                    $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
-                    header('Location: ?page=onboarding' . $redirect); exit;
+            if ($auth->tooManyAttempts($clientIp, 'register', 5, 3600)) {
+                $errors[] = __('auth.error_too_many_attempts');
+            } else {
+                $auth->recordAttempt($clientIp, 'register');
+                $email = trim($_POST['email'] ?? '');
+                $pass  = $_POST['password'] ?? '';
+                $pass_confirm = $_POST['password_confirm'] ?? '';
+                $name  = trim($_POST['name'] ?? '');
+                $terms = isset($_POST['terms']);
+                if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                    $errors[] = __('auth.error_generic');
                 }
-                $errors[] = __('auth.registration_failed');
+                if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errors[] = __('auth.error_invalid_email');
+                }
+                if (empty($name) || mb_strlen($name) < 2) {
+                    $errors[] = __('auth.error_invalid_name');
+                }
+                if (strlen($pass) < 8) {
+                    $errors[] = __('auth.error_weak_password');
+                }
+                if ($pass !== $pass_confirm) {
+                    $errors[] = __('auth.error_password_mismatch');
+                }
+                if (!$terms) {
+                    $errors[] = __('auth.error_terms');
+                }
+                if (empty($errors)) {
+                    if ($auth->register($email, $pass, $name)) {
+                        $auth->clearAttempts($clientIp, 'register');
+                        $auth->login($email, $pass);
+                        $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
+                        header('Location: ?page=onboarding' . $redirect); exit;
+                    }
+                    $errors[] = $auth->lastError ?: __('auth.registration_failed');
+                }
             }
             $registerError = $errors;
         }
@@ -296,7 +308,21 @@ switch ($page) {
 
     case 'confirm-payment':
         $requireAuth();
-        $db->execute('UPDATE users SET payment_pending_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        // The price ID the user actually checked out for, so that if the
+        // Paddle webhook is slow, the timeout fallback below can grant the
+        // plan that was really purchased instead of guessing.
+        $priceId = $_GET['price_id'] ?? '';
+        $purchasePlanMap = [
+            $config['paddle_starter_price_id'] ?? '' => 'starter',
+            $config['paddle_pro_price_id'] ?? ''     => 'pro',
+            $config['paddle_premium_price_id'] ?? '' => 'active',
+        ];
+        unset($purchasePlanMap['']);
+        $purchasePlan = $purchasePlanMap[$priceId] ?? null;
+        $db->execute(
+            'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ? WHERE id = ?',
+            [$purchasePlan, $auth->userId()]
+        );
         header('Content-Type: application/json');
         echo json_encode(['ok' => true]);
         exit;
@@ -309,13 +335,24 @@ switch ($page) {
         $paid = $auth->hasPaid();
 
         if (!$paid) {
-            $user = $db->fetchOne('SELECT payment_pending_at, plan_status FROM users WHERE id = ?', [$userId]);
+            $user = $db->fetchOne('SELECT payment_pending_at, pending_purchase_plan, plan_status FROM users WHERE id = ?', [$userId]);
             if (!empty($user['payment_pending_at'])) {
                 $pendingTime = strtotime($user['payment_pending_at']);
                 $elapsed = time() - $pendingTime;
                 if ($elapsed > 60) {
-                    $db->execute('UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL WHERE id = ?', ['active', $userId]);
-                    $paid = true;
+                    if (!empty($user['pending_purchase_plan'])) {
+                        // We know which plan was actually purchased —
+                        // grant it while we wait for the webhook to catch up.
+                        $db->execute(
+                            'UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL, pending_purchase_plan = NULL WHERE id = ?',
+                            [$user['pending_purchase_plan'], $userId]
+                        );
+                        $paid = true;
+                    }
+                    // If we don't know the plan (e.g. price_id didn't match
+                    // any configured plan), don't guess — keep polling and
+                    // let the webhook resolve it, or the client's own
+                    // timeout UI offer a retry/support path.
                 }
             }
         }
@@ -345,6 +382,13 @@ switch ($page) {
         if (!$auth->hasPaid() || ($cancelUser['plan_status'] ?? '') === 'trial') {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'no_active_subscription']);
+            exit;
+        }
+        if (!empty($cancelUser['pending_plan_change'])) {
+            // A downgrade is already scheduled for next billing period —
+            // cancelling on top of that would leave Paddle and our own
+            // pending_plan_change flag out of sync. Resume first.
+            echo json_encode(['ok' => false, 'error' => 'change_pending']);
             exit;
         }
         $subId = $cancelUser['paddle_subscription_id'] ?? null;

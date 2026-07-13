@@ -28,8 +28,8 @@
         <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 mx-auto mb-3">
           <span class="material-symbols-outlined text-primary text-2xl">alternate_email</span>
         </div>
-        <h3 class="text-body-lg font-semibold text-on-surface mb-1"><?= __('contact.email_us') ?? 'Email Us' ?></h3>
-        <p class="text-body-md text-on-surface-variant mb-4"><?= __('contact.email_desc') ?? 'We typically reply within 24 hours.' ?></p>
+        <h3 class="text-body-lg font-semibold text-on-surface mb-1"><?= __('contact.email_us') ?></h3>
+        <p class="text-body-md text-on-surface-variant mb-4"><?= __('contact.email_desc') ?></p>
         <a href="mailto:support@aitut.com" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-semibold py-2.5 px-6 rounded-xl transition duration-300 hover:opacity-90 shadow-md">
           <span class="material-symbols-outlined text-[20px]">send</span>
           <span>support@aitut.com</span>

@@ -1,14 +1,14 @@
-<?php $pageTitle = 'Blog – AiTut'; ?>
+<?php $pageTitle = __('blog.heading') . ' – AiTut'; ?>
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 
 <main class="flex-1 overflow-y-auto p-xl">
   <div class="max-w-3xl mx-auto">
-    <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Blog</h1>
-    <p class="text-body-md text-on-surface-variant mb-8">Language learning tips, guides, and updates.</p>
+    <h1 class="font-headline-md text-headline-md text-on-surface mb-2"><?= __('blog.heading') ?></h1>
+    <p class="text-body-md text-on-surface-variant mb-8"><?= __('blog.subtitle') ?></p>
 
     <?php if (empty($posts)): ?>
-      <div class="text-center text-outline py-20">No posts yet.</div>
+      <div class="text-center text-outline py-20"><?= __('blog.no_posts') ?></div>
     <?php else: ?>
       <div class="space-y-4">
         <?php foreach ($posts as $post): ?>
@@ -23,5 +23,6 @@
   </div>
 </main>
 
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>

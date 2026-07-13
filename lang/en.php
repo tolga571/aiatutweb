@@ -60,6 +60,8 @@ return [
     'auth.error_invalid_name' => 'Please enter your name (at least 2 characters).',
     'auth.error_weak_password' => 'Password must be at least 8 characters long.',
     'auth.registration_failed' => 'Registration failed. Email may already be taken.',
+    'auth.error_email_taken' => 'This email is already registered. Try signing in instead.',
+    'auth.error_too_many_attempts' => 'Too many attempts. Please wait a while and try again.',
     'auth.confirm_password' => 'Confirm Password',
     'auth.terms_agreement' => 'I agree to the',
     'auth.terms' => 'Terms of Service',
@@ -284,7 +286,7 @@ return [
     'pricing.recommended' => 'Recommended',
     'pricing.payment_modal_title' => 'Payment Completed',
     'pricing.payment_modal_body' => 'Activating your account. Please do not close this page...',
-    'pricing.price_id_error' => 'Error: Price ID is not configured. Please check your `.env` settings.',
+    'pricing.price_id_error' => 'Something went wrong loading this plan. Please try again or contact support.',
     'pricing.checkout_error' => 'Unable to open checkout overlay. Please try again.',
     'pricing.status_active' => 'Plan Active',
     'pricing.status_active_plan' => '%s Plan Active',
@@ -415,6 +417,13 @@ return [
     'footer.about' => 'About',
     'footer.contact' => 'Contact',
     'footer.faq' => 'FAQ',
+    'footer.cookie_banner_text' => 'We use cookies to improve your experience. By continuing to visit this site you agree to our use of cookies.',
+    'footer.cookie_learn_more' => 'Learn more',
+    'footer.cookie_accept' => 'Accept',
+    'blog.heading' => 'Blog',
+    'blog.subtitle' => 'Language learning tips, guides, and updates.',
+    'blog.no_posts' => 'No posts yet.',
+    'blog.back_to_blog' => 'Back to blog',
 
     // ── About Page ──────────────────────────────────────────
     'about.page_title' => 'About – AiTut',
@@ -444,6 +453,8 @@ return [
     'contact.email_placeholder' => 'you@example.com',
     'contact.message_placeholder' => 'How can we help you?',
     'contact.send_btn' => 'Send Message',
+    'contact.email_us' => 'Email Us',
+    'contact.email_desc' => 'We typically reply within 24 hours.',
 
     // ── FAQ Page ────────────────────────────────────────────
     'faq.page_title' => 'FAQ – AiTut',

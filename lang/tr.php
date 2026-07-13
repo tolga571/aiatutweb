@@ -60,6 +60,8 @@ return [
     'auth.error_invalid_name' => 'Lütfen adınızı girin (en az 2 karakter).',
     'auth.error_weak_password' => 'Şifre en az 8 karakter uzunluğunda olmalıdır.',
     'auth.registration_failed' => 'Kayıt başarısız. E-posta zaten kullanılıyor olabilir.',
+    'auth.error_email_taken' => 'Bu e-posta zaten kayıtlı. Giriş yapmayı deneyin.',
+    'auth.error_too_many_attempts' => 'Çok fazla deneme yapıldı. Lütfen bir süre bekleyip tekrar deneyin.',
     'auth.confirm_password' => 'Şifreyi Onayla',
     'auth.terms_agreement' => 'Şunları kabul ediyorum:',
     'auth.terms' => 'Hizmet Şartları',
@@ -284,7 +286,7 @@ return [
     'pricing.recommended' => 'Önerilen',
     'pricing.payment_modal_title' => 'Ödeme Tamamlandı',
     'pricing.payment_modal_body' => 'Hesabınız etkinleştiriliyor. Lütfen bu sayfayı kapatmayın...',
-    'pricing.price_id_error' => 'Hata: Fiyat Kimliği yapılandırılmamış. Lütfen `.env` ayarlarınızı kontrol edin.',
+    'pricing.price_id_error' => 'Bu planı yüklerken bir sorun oluştu. Lütfen tekrar deneyin veya bizimle iletişime geçin.',
     'pricing.checkout_error' => 'Ödeme ekranı açılamıyor. Lütfen tekrar deneyin.',
     'pricing.status_active' => 'Plan Aktif',
     'pricing.status_active_plan' => '%s Planı Aktif',
@@ -415,6 +417,13 @@ return [
     'footer.about' => 'Hakkında',
     'footer.contact' => 'İletişim',
     'footer.faq' => 'SSS',
+    'footer.cookie_banner_text' => 'Deneyiminizi iyileştirmek için çerezler kullanıyoruz. Bu siteyi ziyaret etmeye devam ederek çerez kullanımımızı kabul etmiş olursunuz.',
+    'footer.cookie_learn_more' => 'Daha fazla bilgi',
+    'footer.cookie_accept' => 'Kabul Et',
+    'blog.heading' => 'Blog',
+    'blog.subtitle' => 'Dil öğrenme ipuçları, rehberler ve güncellemeler.',
+    'blog.no_posts' => 'Henüz gönderi yok.',
+    'blog.back_to_blog' => 'Bloga dön',
 
     // ── About Page ──────────────────────────────────────────
     'about.page_title' => 'Hakkında – AiTut',
@@ -444,6 +453,8 @@ return [
     'contact.email_placeholder' => 'ornek@mail.com',
     'contact.message_placeholder' => 'Size nasıl yardımcı olabiliriz?',
     'contact.send_btn' => 'Mesaj Gönder',
+    'contact.email_us' => 'Bize E-posta Gönderin',
+    'contact.email_desc' => 'Genellikle 24 saat içinde yanıt veriyoruz.',
 
     // ── FAQ Page ────────────────────────────────────────────
     'faq.page_title' => 'SSS – AiTut',

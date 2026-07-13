@@ -25,7 +25,7 @@
       <?php endif; ?>
 
       <?php $actionUrl = '?page=login' . (isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : ''); ?>
-      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4">
+      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4" id="login-form">
         <?= csrf_field() ?>
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.email') ?></label>
@@ -39,11 +39,17 @@
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
             placeholder="••••••••" />
         </div>
-        <button type="submit"
-          class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90">
+        <button type="submit" id="login-submit-btn"
+          class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed">
           <?= __('auth.sign_in') ?>
         </button>
       </form>
+      <script>
+        document.getElementById('login-form')?.addEventListener('submit', function () {
+          var btn = document.getElementById('login-submit-btn');
+          if (btn) { btn.disabled = true; }
+        });
+      </script>
 
       <?php $googleClientId = $config['google_client_id'] ?? ''; ?>
       <?php if (!empty($googleClientId)): ?>

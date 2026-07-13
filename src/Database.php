@@ -181,6 +181,13 @@ class Database {
             expires_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)");
+        $this->exec("CREATE TABLE IF NOT EXISTS login_attempts (
+            id SERIAL PRIMARY KEY,
+            ip TEXT NOT NULL,
+            type TEXT NOT NULL,
+            attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
         $this->migrate();
     }
 
@@ -224,6 +231,15 @@ class Database {
         }
         try {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN refund_requested_at TIMESTAMP DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            // Which plan the user actually started checkout for, recorded
+            // client-side right after Paddle confirms the purchase. Used so
+            // the payment_pending_at timeout fallback (when the webhook is
+            // slow to arrive) can grant the plan that was really bought
+            // instead of guessing.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN pending_purchase_plan TEXT DEFAULT NULL");
         } catch (\Exception $e) {
         }
     }

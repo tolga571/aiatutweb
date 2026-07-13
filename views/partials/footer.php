@@ -23,11 +23,11 @@
 <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-surface-container-high border-t border-outline-variant/20 p-4 z-50 transform translate-y-full transition-transform duration-300">
   <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
     <div class="text-sm text-on-surface-variant flex-1">
-      We use cookies to improve your experience. By continuing to visit this site you agree to our use of cookies.
-      <a href="?page=cookie-policy" class="text-primary hover:underline ml-1">Learn more</a>
+      <?= __('footer.cookie_banner_text') ?>
+      <a href="?page=cookie-policy" class="text-primary hover:underline ml-1"><?= __('footer.cookie_learn_more') ?></a>
     </div>
     <div class="flex gap-2">
-      <button onclick="acceptCookies()" class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition">Accept</button>
+      <button onclick="acceptCookies()" class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition"><?= __('footer.cookie_accept') ?></button>
     </div>
   </div>
 </div>

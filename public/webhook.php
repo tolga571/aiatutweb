@@ -93,13 +93,21 @@ if (strpos($eventType, 'subscription.') === 0) {
             $priceId = $data['items'][0]['price']['id'] ?? '';
             $starterPriceId = $config['paddle_starter_price_id'] ?? '';
             $proPriceId = $config['paddle_pro_price_id'] ?? '';
+            $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
             if ($priceId === $proPriceId) {
                 $planStatus = 'pro';
             } elseif ($priceId === $starterPriceId) {
                 $planStatus = 'starter';
-            } else {
+            } elseif ($priceId === $premiumPriceId) {
                 $planStatus = 'active';
+            } else {
+                // Unrecognized price ID — don't silently grant the top tier.
+                // Default to the lowest paid tier and log it loudly so a
+                // misconfigured PADDLE_*_PRICE_ID gets caught instead of
+                // quietly over-granting access.
+                $planStatus = 'starter';
+                logWebhook($logFile, "WARNING: Unrecognized price_id '{$priceId}' for User ID {$userId} — defaulting to 'starter', verify PADDLE_*_PRICE_ID config.");
             }
         }
 

@@ -29,7 +29,7 @@ $tips = [
   __('dash.tip_4'),
   __('dash.tip_5'),
 ];
-$tip = $tips[date('N') % count($tips)];
+$tip = $tips[date('z') % count($tips)];
 $targetFlag = flagImg($user['target_lang'] ?? 'en', 'w-5 h-3.5');
 $userInitial = strtoupper(substr($user['name'] ?? $user['email'], 0, 1));
 
@@ -51,23 +51,29 @@ if ($quotaPercent > 75) {
   $quotaTextColor = 'text-red-400';
 }
 $planLabels = [
-  'trial'   => __('chat.plan_trial') ?? 'Trial',
-  'starter' => __('chat.plan_starter') ?? 'Starter',
-  'pro'     => __('chat.plan_pro') ?? 'Pro',
-  'active'  => __('chat.plan_premium') ?? 'Premium',
+  'trial'   => __('chat.plan_trial'),
+  'starter' => __('chat.plan_starter'),
+  'pro'     => __('chat.plan_pro'),
+  'active'  => __('chat.plan_premium'),
 ];
-$planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_free') ?? 'Free';
+$planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_free');
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<div class="flex h-[calc(100vh-56px)] overflow-hidden">
+<div class="flex h-[calc(100vh-56px)] overflow-hidden relative">
 
   <!-- Sidebar -->
-  <aside class="w-64 border-r border-outline-variant/10 flex flex-col p-4 gap-4 overflow-y-auto shrink-0 bg-surface-container-low/30">
+  <aside id="dash-sidebar" class="hidden absolute z-40 md:relative md:flex w-64 h-full border-r border-outline-variant/10 flex-col p-4 gap-4 overflow-y-auto shrink-0 bg-surface-container-low/95 backdrop-blur-xl md:bg-surface-container-low/30 md:backdrop-blur-none shadow-2xl md:shadow-none">
+    <div class="flex items-center justify-between md:hidden mb-1">
+      <span class="text-label-md text-outline font-semibold uppercase tracking-wide"><?= __('dash.preferences') ?></span>
+      <button onclick="document.getElementById('dash-sidebar').classList.add('hidden')" class="p-1 rounded-full hover:bg-surface-variant/50">
+        <span class="material-symbols-outlined text-[16px]">close</span>
+      </button>
+    </div>
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container border border-primary/20 shrink-0">
-        <span class="material-symbols-outlined">person</span>
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container border border-primary/20 shrink-0 font-bold text-sm">
+        <?= htmlspecialchars($userInitial) ?>
       </div>
       <div class="min-w-0">
         <div class="text-body-md font-medium text-on-surface truncate"><?= htmlspecialchars($user['name'] ?? '') ?></div>
@@ -95,7 +101,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       <div class="flex justify-between items-center mb-1">
         <span class="text-label-md text-outline font-semibold flex items-center gap-1">
           <span class="material-symbols-outlined text-[14px] <?= $quotaTextColor ?>">bolt</span>
-          <?= __('chat.quota_title') ?? 'Message Quota' ?>
+          <?= __('chat.quota_title') ?>
         </span>
         <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20"><?= htmlspecialchars($planLabel) ?></span>
       </div>
@@ -104,7 +110,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       </div>
       <div class="flex justify-between text-label-md text-outline mt-1">
         <span class="<?= $quotaTextColor ?> font-semibold"><?= $quotaRemaining ?> / <?= $quotaTotal ?></span>
-        <span><?= __('chat.quota_renews') ?? 'Renews monthly' ?></span>
+        <span><?= __('chat.quota_renews') ?></span>
       </div>
     </div>
 
@@ -121,11 +127,11 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         <div class="text-headline-sm font-bold text-on-surface flex items-center justify-center gap-1">
            <?= $streak ?> <span class="material-symbols-outlined text-orange-500 text-[20px]">local_fire_department</span>
         </div>
-        <div class="text-label-md text-outline"><?= __('dash.day_streak') ?? 'Day Streak' ?></div>
+        <div class="text-label-md text-outline"><?= __('dash.day_streak') ?></div>
       </div>
       <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-3 text-center">
         <div class="text-headline-sm font-bold text-on-surface"><?= $wordsToday ?></div>
-        <div class="text-label-md text-outline"><?= __('dash.words_today') ?? 'Words Today' ?></div>
+        <div class="text-label-md text-outline"><?= __('dash.words_today') ?></div>
       </div>
     </div>
 
@@ -155,11 +161,17 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
   <!-- Main content -->
   <main class="flex-1 overflow-y-auto p-6">
     <div class="max-w-3xl mx-auto space-y-6">
-      <div>
-        <h1 class="font-headline-md text-headline-md text-on-surface mb-1">
-          <?= sprintf(__('dash.greeting'), htmlspecialchars($user['name'] ?? explode('@', $user['email'])[0])) ?>
-        </h1>
-        <p class="text-body-md text-on-surface-variant"><?= __('dash.keep_momentum') ?></p>
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h1 class="font-headline-md text-headline-md text-on-surface mb-1">
+            <?= sprintf(__('dash.greeting'), htmlspecialchars($user['name'] ?? explode('@', $user['email'])[0])) ?>
+          </h1>
+          <p class="text-body-md text-on-surface-variant"><?= __('dash.keep_momentum') ?></p>
+        </div>
+        <button onclick="document.getElementById('dash-sidebar').classList.toggle('hidden'); document.getElementById('dash-sidebar').classList.toggle('flex');"
+          class="md:hidden shrink-0 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50 border border-outline-variant/20">
+          <span class="material-symbols-outlined text-[22px]">menu</span>
+        </button>
       </div>
 
       <div class="bg-primary/10 border border-primary/20 rounded-2xl p-5">
@@ -172,10 +184,10 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         <div>
           <h2 class="font-headline-sm text-headline-sm text-on-surface mb-1 flex items-center gap-2">
             <span class="material-symbols-outlined <?= $quotaTextColor ?>">bolt</span>
-            <?= __('dash.quota_title') ?? 'Your Monthly Quota' ?>
+            <?= __('dash.quota_title') ?>
           </h2>
           <p class="text-body-md text-on-surface-variant">
-            <?= sprintf(__('dash.quota_desc') ?? 'You have %d messages remaining out of %d on your %s plan.', $quotaRemaining, $quotaTotal, htmlspecialchars($planLabel)) ?>
+            <?= sprintf(__('dash.quota_desc'), $quotaRemaining, $quotaTotal, htmlspecialchars($planLabel)) ?>
           </p>
         </div>
         <div class="shrink-0 flex items-center gap-4">
@@ -189,7 +201,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
           </div>
           <?php if (($user['plan_status'] ?? '') === 'trial' || ($user['plan_status'] ?? '') === 'inactive'): ?>
             <a href="?page=pricing" class="bg-primary text-on-primary font-bold text-sm px-4 py-2 rounded-xl hover:opacity-90 transition whitespace-nowrap glow-hover">
-              <?= __('chat.upgrade_plan') ?? 'Upgrade Plan' ?>
+              <?= __('chat.upgrade_plan') ?>
             </a>
           <?php endif; ?>
         </div>
@@ -206,14 +218,14 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       <?php if ($dueCount > 0): ?>
       <a href="?page=flashcards" class="flex items-center justify-between bg-secondary/10 border border-secondary/30 hover:border-secondary/60 rounded-2xl p-5 transition group">
         <div>
-          <div class="font-headline-sm text-headline-sm text-secondary mb-1"><?= __('dash.review_time') ?? 'Time for a quick review!' ?></div>
-          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.review_desc') ?? 'You have %d words waiting to be reviewed. Keep your streak alive!', $dueCount) ?></div>
+          <div class="font-headline-sm text-headline-sm text-secondary mb-1"><?= __('dash.review_time') ?></div>
+          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.review_desc'), $dueCount) ?></div>
         </div>
         <span class="material-symbols-outlined text-secondary text-2xl group-hover:scale-110 transition-transform">style</span>
       </a>
       <?php endif; ?>
 
-      <?php if ($masteredCount >= 50 && ($user['cefr_level'] ?? 'A1') === 'A1'): ?>
+      <?php if ($masteredCount >= 50 && ($user['cefr_level'] ?? 'A1') !== 'C2'): ?>
       <a href="?page=chat" class="block bg-tertiary/10 border border-tertiary/30 hover:border-tertiary/60 rounded-2xl p-5 transition group">
         <div class="font-headline-sm text-headline-sm text-tertiary mb-1"><?= __('dash.level_up_title') ?></div>
         <p class="text-body-md text-on-surface-variant mb-3"><?= sprintf(__('dash.level_up_body'), $masteredCount) ?></p>
@@ -243,9 +255,9 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       <?php endif; ?>
 
       <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6">
-        <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('dash.preferences') ?? 'Preferences' ?></h2>
+        <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('dash.preferences') ?></h2>
         <?php if (isset($_SESSION['pref_saved'])): unset($_SESSION['pref_saved']); ?>
-          <div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-lg mb-4 text-sm"><?= __('dash.pref_saved') ?? 'Preferences saved successfully.' ?></div>
+          <div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-lg mb-4 text-sm"><?= __('dash.pref_saved') ?></div>
         <?php endif; ?>
         <?php if (isset($_SESSION['pref_error'])): $prefError = $_SESSION['pref_error']; unset($_SESSION['pref_error']); ?>
           <div class="bg-error-container/30 border border-error/30 text-error px-4 py-2 rounded-lg mb-4 text-sm"><?= htmlspecialchars($prefError) ?></div>
@@ -255,7 +267,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
           <input type="hidden" name="update_preferences" value="1">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.interface_language') ?? 'Interface Language' ?></label>
+              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.interface_language') ?></label>
               <select name="native_lang" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary transition appearance-none">
                 <?php foreach(['en'=>'English', 'de'=>'Deutsch', 'fr'=>'Français', 'es'=>'Español', 'tr'=>'Türkçe', 'zh'=>'中文', 'ja'=>'日本語', 'ar'=>'العربية'] as $code => $name): ?>
                   <option value="<?= $code ?>" <?= ($user['native_lang'] ?? 'en') === $code ? 'selected' : '' ?>><?= $name ?></option>
@@ -263,7 +275,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
               </select>
             </div>
             <div>
-              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.cefr_level') ?? 'CEFR Level' ?></label>
+              <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.cefr_level') ?></label>
               <select name="cefr_level" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary transition appearance-none">
                 <?php foreach(['A1','A2','B1','B2','C1','C2'] as $lvl): ?>
                   <option value="<?= $lvl ?>" <?= ($user['cefr_level'] ?? 'A1') === $lvl ? 'selected' : '' ?>><?= $lvl ?></option>
@@ -272,7 +284,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
             </div>
           </div>
           <button type="submit" class="bg-surface-variant text-on-surface font-semibold py-2 px-4 rounded-lg transition hover:bg-surface-variant/80 text-sm">
-            <?= __('dash.save_preferences') ?? 'Save Preferences' ?>
+            <?= __('dash.save_preferences') ?>
           </button>
         </form>
       </div>

@@ -155,7 +155,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <?php if ($userPlan === 'starter'): ?>
           <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
-            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            <?= __('pricing.current_plan') ?>
           </div>
         <?php endif; ?>
         <div>
@@ -188,7 +188,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div>
           <?php if ($userPlan === 'starter'): ?>
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+              <?= __('pricing.current_plan') ?>
             </button>
           <?php elseif ($isPaidUser): $dir = $planDirection('starter'); ?>
             <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>)"
@@ -199,7 +199,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
-              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <?= (empty($paddleClientToken) || empty($starterPriceId)) ? 'disabled' : '' ?>>
               <span><?= __('pricing.starter_btn') ?></span>
               <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
             </button>
@@ -212,7 +212,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
           <?php if ($userPlan === 'pro'): ?>
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
-            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            <?= __('pricing.current_plan') ?>
           <?php else: ?>
             <?= __('pricing.recommended') ?>
           <?php endif; ?>
@@ -252,7 +252,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div>
           <?php if ($userPlan === 'pro'): ?>
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+              <?= __('pricing.current_plan') ?>
             </button>
           <?php elseif ($isPaidUser): $dir = $planDirection('pro'); ?>
             <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>)"
@@ -263,7 +263,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
               class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <?= (empty($paddleClientToken) || empty($proPriceId)) ? 'disabled' : '' ?>>
               <?= __('pricing.pro_btn') ?>
               <span class="material-symbols-outlined">bolt</span>
             </button>
@@ -276,7 +276,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <?php if ($userPlan === 'active'): ?>
           <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
-            <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+            <?= __('pricing.current_plan') ?>
           </div>
         <?php endif; ?>
         <div class="text-primary text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.premium_title') ?></div>
@@ -295,7 +295,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <div>
           <?php if ($userPlan === 'active'): ?>
             <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?? 'Current Plan' ?>
+              <?= __('pricing.current_plan') ?>
             </button>
           <?php elseif ($isPaidUser): $dir = $planDirection('active'); ?>
             <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>)"
@@ -306,7 +306,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           <?php else: ?>
             <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-              <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+              <?= (empty($paddleClientToken) || empty($premiumPriceId)) ? 'disabled' : '' ?>>
               <?= __('pricing.premium_btn') ?>
               <span class="material-symbols-outlined">star</span>
             </button>
@@ -353,6 +353,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
 <script>
   let currentCheckout = null;
+  let currentCheckoutPriceId = null;
 
   // Initialize Paddle.js
   <?php if (!empty($paddleClientToken)): ?>
@@ -368,7 +369,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               currentCheckout.close();
               currentCheckout = null;
             }
-            fetch('?page=confirm-payment').catch(function(e) { console.error(e); });
+            fetch('?page=confirm-payment&price_id=' + encodeURIComponent(currentCheckoutPriceId || '')).catch(function(e) { console.error(e); });
             handleCheckoutSuccess();
           }
         }
@@ -444,6 +445,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     <?php endif; ?>
 
     try {
+      currentCheckoutPriceId = priceId;
       currentCheckout = await Paddle.Checkout.open({
         items: [{
           priceId: priceId,
@@ -673,6 +675,9 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         const msg = data.method === 'api' ? I18N.cancelSuccessApi : I18N.cancelSuccessManual;
         showModalResult('success', I18N.modalConfirm, msg);
         actionModalPrimary.onclick = () => { window.location.href = '?page=pricing'; };
+      } else if (data.error === 'change_pending') {
+        showModalResult('info', I18N.modalConfirm, I18N.changePending);
+        if (btn) btn.disabled = false;
       } else {
         showModalResult('error', I18N.modalConfirm, I18N.cancelError);
         if (btn) btn.disabled = false;

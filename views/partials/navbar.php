@@ -160,7 +160,7 @@
       $navTargetCountry = $navLangMap[$navTargetLang] ?? 'us';
       ?>
       <!-- Language Switcher -->
-      <div class="relative inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?? 'Learning Language' ?>">
+      <div class="relative inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?>">
         <button
           class="flex items-center gap-1.5 p-1.5 pr-2.5 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-pointer">
           <img src="https://flagcdn.com/<?= $navTargetCountry ?>.svg"
@@ -290,6 +290,34 @@
         class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">dashboard</span>
         <?= __('nav.dashboard') ?>
+      </a>
+
+      <div class="border-t border-outline-variant/10 my-2"></div>
+      <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-outline"><?= __('nav.section_legal') ?></p>
+      <a href="?page=privacy-policy"
+        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">shield</span>
+        <?= __('nav.privacy_policy') ?>
+      </a>
+      <a href="?page=terms-and-conditions"
+        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">gavel</span>
+        <?= __('nav.terms_conditions') ?>
+      </a>
+      <a href="?page=refund-policy"
+        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">replay</span>
+        <?= __('nav.refund_policy') ?>
+      </a>
+      <a href="?page=cookie-policy"
+        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">cookie</span>
+        <?= __('nav.cookie_policy') ?>
+      </a>
+      <a href="?page=license-agreement"
+        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">contract</span>
+        <?= __('nav.license_agreement') ?>
       </a>
     </div>
 

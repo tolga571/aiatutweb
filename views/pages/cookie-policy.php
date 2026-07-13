@@ -20,7 +20,7 @@
       <div class="text-body-md text-on-surface-variant leading-relaxed space-y-6">
         <div>
           <p>
-            Our website uses cookies to enhance your user experience, analyze traffic, and personalize content. By continuing to browse our website, you agree to our use of cookies.
+            <?= __('cookie.intro') ?>
           </p>
         </div>
 
@@ -29,26 +29,26 @@
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('cookie.s1_title') ?></h2>
           <p>
-            Cookies are small text files that are stored on your computer or device when you visit a website. They help the site remember your preferences, active login session, and details for a smoother experience.
+            <?= __('cookie.s1_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('cookie.s2_title') ?></h2>
           <ul class="list-disc list-inside space-y-2 ml-4">
-            <li><strong>Essential Cookies:</strong> Required to keep you logged in to your account and store temporary session settings.</li>
-            <li><strong>Preference Cookies:</strong> Used to remember your learning choices, native and target languages, and level.</li>
-            <li><strong>Third-Party Cookies:</strong> Set by components like Paddle to handle payment checkouts and secure transaction validation.</li>
+            <li><?= __('cookie.s2_1') ?></li>
+            <li><?= __('cookie.s2_2') ?></li>
+            <li><?= __('cookie.s2_3') ?></li>
           </ul>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('cookie.s3_title') ?></h2>
           <p>
-            You can restrict or block cookies using your browser settings. However, disabling essential cookies may prevent you from logging in or using the interactive tutoring features of AiTut.
+            <?= __('cookie.s3_body') ?>
           </p>
           <p class="mt-2">
-            For detailed information about how we protect your personal data, please refer to our <a href="?page=privacy-policy" class="text-primary hover:underline font-medium">Privacy Policy</a>.
+            <?= __('cookie.privacy_link') ?>
           </p>
         </div>
       </div>

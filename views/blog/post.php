@@ -6,7 +6,7 @@
   <div class="max-w-2xl mx-auto">
     <a href="?page=blog" class="text-label-md text-outline hover:text-on-surface transition mb-6 inline-flex items-center gap-1">
       <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-      Back to blog
+      <?= __('blog.back_to_blog') ?>
     </a>
 
     <article class="mt-4">
@@ -19,5 +19,6 @@
   </div>
 </main>
 
+<?php require __DIR__ . '/../partials/footer.php'; ?>
 </body>
 </html>

@@ -34,7 +34,7 @@
       <?php endif; ?>
 
       <?php $actionUrl = '?page=register' . (isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : ''); ?>
-      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4">
+      <form method="POST" action="<?= htmlspecialchars($actionUrl) ?>" class="space-y-4" id="register-form">
         <?= csrf_field() ?>
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.full_name') ?></label>
@@ -66,11 +66,17 @@
             <?= __('auth.terms_agreement') ?> <a href="?page=terms-and-conditions" class="text-primary hover:underline" target="_blank"><?= __('auth.terms') ?></a> <?= __('auth.and') ?> <a href="?page=privacy-policy" class="text-primary hover:underline" target="_blank"><?= __('auth.privacy') ?></a>.
           </label>
         </div>
-        <button type="submit"
-          class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90">
+        <button type="submit" id="register-submit-btn"
+          class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed">
           <?= __('auth.create_account_btn') ?>
         </button>
       </form>
+      <script>
+        document.getElementById('register-form')?.addEventListener('submit', function () {
+          var btn = document.getElementById('register-submit-btn');
+          if (btn) { btn.disabled = true; }
+        });
+      </script>
 
       <?php $googleClientId = $config['google_client_id'] ?? ''; ?>
       <?php if (!empty($googleClientId)): ?>

@@ -108,10 +108,15 @@ class Flashcard {
      * Get all cards with optional category/search filters.
      */
     public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60): array {
-        $sql = "SELECT vw.*, 
+        // Cards actually due for spaced-repetition review are sorted to the
+        // front so the deck reflects what the user should practice today,
+        // not just alphabetical/category order.
+        $sql = "SELECT vw.*,
                     COALESCE(uf.status, 'new') as review_status,
                     uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
-                    uf.correct_count, uf.incorrect_count, uf.id as flashcard_id
+                    uf.correct_count, uf.incorrect_count, uf.id as flashcard_id,
+                    CASE WHEN uf.next_review IS NOT NULL AND uf.next_review <= " . $this->db->now() . "
+                         AND COALESCE(uf.status, 'new') != 'new' THEN 0 ELSE 1 END as due_priority
                 FROM vocabulary_words vw
                 LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
                 WHERE vw.user_id = ? AND vw.language = ?";
@@ -127,7 +132,7 @@ class Flashcard {
             $params[] = "%{$search}%";
         }
 
-        $sql .= ' ORDER BY vw.category ASC, vw.id ASC LIMIT ?';
+        $sql .= ' ORDER BY due_priority ASC, vw.category ASC, vw.id ASC LIMIT ?';
         $params[] = $limit;
 
         return $this->db->fetchAll($sql, $params);

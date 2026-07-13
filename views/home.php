@@ -31,18 +31,18 @@
         $hasPlan = (($curr['plan_status'] ?? 'inactive') !== 'inactive' || ($curr['has_paid'] ?? 0) == 1);
     }
     ?>
-    <div class="flex items-center justify-center gap-4">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <a href="<?= $isLoggedIn ? '?page=chat' : '?page=register' ?>"
-        class="bg-primary text-on-primary font-semibold px-8 py-3 rounded-xl transition text-body-lg hover:opacity-90">
-        <?= $hasPlan ? (__('home.continue_learning') ?? 'Continue Learning') : __('home.get_started') ?>
+        class="w-full sm:w-auto text-center bg-primary text-on-primary font-semibold px-8 py-3 rounded-xl transition text-body-lg hover:opacity-90">
+        <?= $hasPlan ? __('home.continue_learning') : __('home.get_started') ?>
       </a>
       <a href="?page=blog"
-        class="border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface font-semibold px-8 py-3 rounded-xl transition text-body-lg">
+        class="w-full sm:w-auto text-center border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface font-semibold px-8 py-3 rounded-xl transition text-body-lg">
         <?= __('home.read_blog') ?>
       </a>
     </div>
 
-    <div class="grid grid-cols-3 gap-4 mt-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16">
       <div class="bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
         <div class="text-2xl mb-3">
           <span class="material-symbols-outlined text-primary text-3xl">track_changes</span>

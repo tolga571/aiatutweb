@@ -20,7 +20,7 @@
       <div class="text-body-md text-on-surface-variant leading-relaxed space-y-6">
         <div>
           <p>
-            This End User License Agreement governs your use of the AiTut application and services. By accessing the service, you agree to these terms.
+            <?= __('license.intro') ?>
           </p>
         </div>
 
@@ -29,21 +29,21 @@
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('license.s1_title') ?></h2>
           <p>
-            AiTut grants you a personal, non-transferable, non-exclusive, revocable license to access and use the service for individual, personal language learning purposes only.
+            <?= __('license.s1_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('license.s2_title') ?></h2>
           <p>
-            This license does not grant rights to redistribute, copy, sublicense, lease, translate, modify, or commercially exploit the service or any part of the website layout and tutoring model outputs.
+            <?= __('license.s2_body') ?>
           </p>
         </div>
 
         <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('license.s3_title') ?></h2>
           <p>
-            This license is active until terminated. It will automatically terminate if you fail to comply with any of the terms outlined in this agreement or in our general Terms & Conditions.
+            <?= __('license.s3_body') ?>
           </p>
         </div>
       </div>

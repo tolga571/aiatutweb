@@ -63,11 +63,11 @@
             <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('onboarding.target_lang') ?></label>
             <div class="relative">
               <div id="target-display" class="flex items-center gap-2 w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface cursor-pointer hover:border-primary/50 transition" onclick="toggleDropdown('target')">
-                <img id="target-flag" src="https://flagcdn.com/us.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
-                <span id="target-label">English</span>
+                <img id="target-flag" src="https://flagcdn.com/es.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
+                <span id="target-label">Spanish</span>
                 <svg class="ml-auto w-4 h-4 text-outline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
-              <input type="hidden" name="target_lang" id="target-val" value="en" />
+              <input type="hidden" name="target_lang" id="target-val" value="es" />
               <div id="target-dropdown" class="hidden absolute z-20 mt-1 w-full bg-surface-container border border-outline-variant/30 rounded-xl shadow-xl overflow-hidden">
                 <?php foreach ($targetLangOptions as $code => [$name, $country]): ?>
                   <div class="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-variant cursor-pointer text-body-md text-on-surface transition"
@@ -89,6 +89,19 @@
           el.classList.toggle('hidden');
         }
         function selectLang(id, code, country, name) {
+          const otherId = id === 'native' ? 'target' : 'native';
+          const otherVal = document.getElementById(otherId + '-val').value;
+          if (otherVal === code) {
+            // Picking the language already selected on the other side would
+            // block submission (native/target can't match) — swap instead
+            // of just erroring, so both stay valid.
+            const prevCountry = document.getElementById(id + '-flag').src.split('/').pop().replace('.svg', '');
+            const prevLabel = document.getElementById(id + '-label').textContent;
+            const prevCode = document.getElementById(id + '-val').value;
+            document.getElementById(otherId + '-flag').src = 'https://flagcdn.com/' + prevCountry + '.svg';
+            document.getElementById(otherId + '-label').textContent = prevLabel;
+            document.getElementById(otherId + '-val').value = prevCode;
+          }
           document.getElementById(id + '-flag').src = 'https://flagcdn.com/' + country + '.svg';
           document.getElementById(id + '-label').textContent = name;
           document.getElementById(id + '-val').value = code;

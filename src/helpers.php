@@ -40,3 +40,20 @@ function csrf_verify(?string $submitted): bool
     }
     return hash_equals($_SESSION['csrf_token'], $submitted);
 }
+
+/**
+ * Best-effort client IP, honoring the X-Forwarded-For header set by
+ * Railway's proxy (falls back to REMOTE_ADDR when absent/local).
+ */
+function client_ip(): string
+{
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+    if ($forwarded !== '') {
+        $parts = explode(',', $forwarded);
+        $ip = trim($parts[0]);
+        if (filter_var($ip, FILTER_VALIDATE_IP)) {
+            return $ip;
+        }
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+}
