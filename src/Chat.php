@@ -153,13 +153,19 @@ SEGMENTED RULES:
         $goal        = $user['learning_goal'] ?? 'conversation';
         $interest    = $user['interest_area'] ?? 'general';
 
-        // Load conversation history (last 20 messages)
+        // Load conversation history: the most recent 11 messages, oldest
+        // first so the model sees them in chronological order. (Grabbing
+        // the tail end of a long conversation needs DESC+LIMIT then a
+        // re-sort — plain ASC+LIMIT would return the oldest messages instead.)
         $history = [];
         if ($conversationId) {
             $conv = $this->db->fetchOne('SELECT id FROM conversations WHERE id = ? AND user_id = ?', [$conversationId, $userId]);
             if ($conv) {
                 $history = $this->db->fetchAll(
-                    'SELECT role, content, translation FROM messages WHERE conversation_id = ? ORDER BY id ASC LIMIT 11',
+                    'SELECT role, content, translation FROM (
+                        SELECT role, content, translation, id FROM messages
+                        WHERE conversation_id = ? ORDER BY id DESC LIMIT 11
+                    ) recent ORDER BY id ASC',
                     [$conversationId]
                 );
             }
