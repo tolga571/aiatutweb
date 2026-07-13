@@ -79,6 +79,11 @@ if ($quotaPercent > 75) {
       class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50">
       <span class="material-symbols-outlined text-[24px]">menu</span>
     </button>
+    <button onclick="document.getElementById('study-panel').classList.toggle('hidden'); document.getElementById('study-panel').classList.toggle('flex');"
+      class="xl:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high/50"
+      aria-label="<?= __('chat.study_session') ?>">
+      <span class="material-symbols-outlined text-[24px]">auto_awesome</span>
+    </button>
     <div class="relative inline-block text-left group">
       <button
         class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-default">
@@ -331,7 +336,7 @@ if ($quotaPercent > 75) {
       </div>
 
       <!-- Scroll to latest message button (shown when user has scrolled away from bottom) -->
-      <button id="scroll-to-bottom-btn" type="button" aria-label="Scroll to latest message"
+      <button id="scroll-to-bottom-btn" type="button" aria-label="<?= __('chat.scroll_to_latest') ?>"
         class="hidden absolute bottom-28 left-1/2 -translate-x-1/2 z-30 items-center justify-center w-9 h-9 bg-primary text-on-primary rounded-full shadow-lg shadow-primary/30 hover:opacity-90 transition-all">
         <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
       </button>
@@ -355,6 +360,11 @@ if ($quotaPercent > 75) {
           </button>
         </div>
 
+        <!-- Enter/Shift+Enter hint (desktop only) -->
+        <div class="hidden sm:block mt-1.5 text-center text-[10px] text-outline">
+          <?= __('chat.enter_hint') ?>
+        </div>
+
         <!-- Quota remaining badge (all plans) -->
         <div id="quota-remaining-badge"
           class="mt-2 text-center text-[11px] font-medium flex items-center justify-center gap-1.5 <?= $quotaTextColor ?>">
@@ -373,8 +383,16 @@ if ($quotaPercent > 75) {
     </section>
 
     <!-- Right: Contextual Panel -->
-    <aside
-      class="hidden xl:flex w-[300px] bg-surface-container-low/30 flex-col border-l border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0">
+    <aside id="study-panel"
+      class="hidden absolute right-0 z-40 xl:relative xl:flex w-[300px] h-full bg-surface-container-low/95 backdrop-blur-xl flex-col border-l border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0 shadow-2xl xl:shadow-none xl:bg-surface-container-low/30 xl:backdrop-blur-none">
+      <!-- Mobile/tablet close -->
+      <div class="flex items-center justify-between xl:hidden mb-xs">
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider"><?= __('chat.study_session') ?></span>
+        <button onclick="document.getElementById('study-panel').classList.add('hidden')" class="p-1 rounded-full hover:bg-surface-variant/50">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>
+
       <!-- Quick Start Prompts -->
       <div class="flex flex-col gap-sm">
         <?php foreach ([
@@ -418,7 +436,7 @@ if ($quotaPercent > 75) {
              <span class="material-symbols-outlined text-white text-[14px]">auto_awesome</span>
            </div>
            <span class="text-[11px] font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-400 uppercase tracking-widest drop-shadow-sm">
-             <?php $ss = __('chat.study_session'); echo $ss === 'chat.study_session' ? 'Keşif Hazinesi' : $ss; ?>
+             <?= __('chat.study_session') ?>
            </span>
         </div>
         <!-- Tabs -->
@@ -442,6 +460,9 @@ if ($quotaPercent > 75) {
     </aside>
   </div>
 </main>
+
+<!-- Screen-reader live region: announces a completed AI reply without spamming per-character updates -->
+<div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
 <!-- Floating Toast Container -->
 <div id="toast-container" class="fixed bottom-lg right-lg flex flex-col gap-sm z-50 pointer-events-none"></div>
@@ -467,7 +488,7 @@ if ($quotaPercent > 75) {
       <div class="flex flex-col sm:flex-row gap-3 w-full justify-center">
         <button onclick="document.getElementById('trial-expired-modal').classList.add('hidden')"
           class="w-full sm:w-auto bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30">
-          <?= __('chat.keep_reading') ?? 'Keep Reading' ?>
+          <?= __('chat.keep_reading') ?>
         </button>
         <a href="?page=pricing"
           class="w-full sm:w-auto bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 glow-hover">
@@ -518,6 +539,8 @@ if ($quotaPercent > 75) {
     let isLoading = false;
     let loadingCounter = 0;
     const TARGET_LANG = '<?= $targetLang ?>';
+    const UI_LANG = '<?= App\Src\Language::currentLang() ?>';
+    const KAI_LABEL = '<?= addslashes(__('chat.kai')) ?>';
     const RTL_LANGS = ['ar', 'he', 'fa', 'ur'];
     const SPEECH_LANG_MAP = { en: 'en-US', de: 'de-DE', fr: 'fr-FR', es: 'es-ES', zh: 'zh-CN', ja: 'ja-JP', ar: 'ar-SA', tr: 'tr-TR' };
 
@@ -547,7 +570,10 @@ if ($quotaPercent > 75) {
     }
 
     inputEl.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+        e.preventDefault();
+        sendMessage();
+      }
     });
     sendBtn.addEventListener('click', sendMessage);
 
@@ -562,9 +588,9 @@ if ($quotaPercent > 75) {
         activeTopic = this.dataset.topic;
         appendDateSeparator();
         const title = this.querySelector('div:first-child').textContent.trim();
-        appendMessage('user', '📍 Topic: ' + title);
+        const topicRow = appendMessage('user', '📍 <?= addslashes(__('chat.topic_label')) ?>: ' + title);
         hideEmptyState();
-        sendToAI('Let\'s practice: ' + title, activeTopic);
+        sendToAI('Let\'s practice: ' + title, activeTopic, topicRow);
       });
     });
 
@@ -615,7 +641,7 @@ if ($quotaPercent > 75) {
             if (msg.role === 'user') {
               appendMessage('user', msg.content);
             } else {
-              appendAiMessage(msg, false);
+              appendAiMessage(msg, false, true);
             }
           });
           hideEmptyState();
@@ -636,12 +662,12 @@ if ($quotaPercent > 75) {
       if (!msg || isLoading) return;
       inputEl.value = '';
       inputEl.style.height = 'auto';
-      appendMessage('user', msg);
+      const userRow = appendMessage('user', msg);
       hideEmptyState();
-      sendToAI(msg, activeTopic);
+      sendToAI(msg, activeTopic, userRow);
     }
 
-    function sendToAI(msg, topicId) {
+    function sendToAI(msg, topicId, userRow) {
       isLoading = true;
       sendBtn.disabled = true;
       const loadingId = appendLoadingMessage();
@@ -663,6 +689,7 @@ if ($quotaPercent > 75) {
               console.error('AI Error Details:', data.details);
             }
             showToast(errMsg, 'error');
+            markMessageFailed(userRow, msg, topicId);
             if (data.error.includes('<?= __('error.trial_expired') ?>')) {
               showTrialExpiredModal();
             }
@@ -670,6 +697,7 @@ if ($quotaPercent > 75) {
             var wasNew = !conversationId;
             conversationId = data.conversationId;
             activeTopic = null;
+            clearMessageFailed(userRow);
             appendAiMessage(data);
             if (data.isTrial) {
               updateTrialRemaining(data.trialRemaining);
@@ -683,11 +711,13 @@ if ($quotaPercent > 75) {
             }
           } else {
             showToast('<?= __('chat.http_error') ?>', 'error');
+            markMessageFailed(userRow, msg, topicId);
           }
         })
         .catch(function(err) {
           removeLoadingMessage(loadingId);
           showToast('<?= __('chat.http_error') ?>', 'error');
+          markMessageFailed(userRow, msg, topicId);
         })
         .finally(() => {
           isLoading = false;
@@ -701,7 +731,7 @@ if ($quotaPercent > 75) {
       const div = document.createElement('div');
       div.className = 'message-row flex justify-center';
       const now = new Date();
-      const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      const dateStr = now.toLocaleDateString(UI_LANG, { weekday: 'long', month: 'long', day: 'numeric' });
       div.innerHTML = `<span class="text-label-md text-on-surface-variant bg-surface-container px-lg py-xs rounded-full"><?= __('chat.today') ?>, ${dateStr}</span>`;
       messagesEl.appendChild(div);
     }
@@ -722,11 +752,12 @@ if ($quotaPercent > 75) {
               <span class="text-label-md text-outline">${timeStr}</span>
               <span class="font-bold text-on-surface"><?= __('chat.you') ?></span>
             </div>
-            <div class="bg-[#1e1b4b]/50 border border-indigo-500/30 rounded-2xl rounded-tr-none overflow-hidden shadow-xl backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
+            <div class="user-bubble bg-[#1e1b4b]/50 border border-indigo-500/30 rounded-2xl rounded-tr-none overflow-hidden shadow-xl backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
               <div class="px-5 py-4">
                 <p class="text-[15px] text-indigo-50 leading-relaxed" dir="auto">${escHtml(content)}</p>
               </div>
             </div>
+            <div class="msg-status-slot flex justify-end"></div>
           </div>
         </div>`;
       } else {
@@ -747,6 +778,44 @@ if ($quotaPercent > 75) {
       }
       messagesEl.appendChild(row);
       scrollBottom(true);
+      return row;
+    }
+
+    function markMessageFailed(row, msg, topicId) {
+      if (!row) return;
+      const bubble = row.querySelector('.user-bubble');
+      if (bubble) {
+        bubble.classList.add('border-red-500/60');
+        bubble.classList.remove('border-indigo-500/30');
+      }
+      const slot = row.querySelector('.msg-status-slot');
+      if (!slot) return;
+      slot.innerHTML = `
+        <button type="button" class="retry-send-btn flex items-center gap-1 text-[11px] text-red-400 hover:text-red-300 transition-colors mt-1">
+          <span class="material-symbols-outlined text-[13px]">error</span>
+          <span><?= __('chat.send_failed') ?></span>
+          <span class="text-outline">·</span>
+          <span class="underline"><?= __('chat.retry_send') ?></span>
+        </button>`;
+      const btn = slot.querySelector('.retry-send-btn');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          if (isLoading) return;
+          clearMessageFailed(row);
+          sendToAI(msg, topicId, row);
+        });
+      }
+    }
+
+    function clearMessageFailed(row) {
+      if (!row) return;
+      const bubble = row.querySelector('.user-bubble');
+      if (bubble) {
+        bubble.classList.remove('border-red-500/60');
+        bubble.classList.add('border-indigo-500/30');
+      }
+      const slot = row.querySelector('.msg-status-slot');
+      if (slot) slot.innerHTML = '';
     }
 
 
@@ -764,7 +833,7 @@ if ($quotaPercent > 75) {
       }).join('');
     }
 
-    function appendAiMessage(data, animate) {
+    function appendAiMessage(data, animate, isHistory) {
       if (animate === undefined) animate = true;
       if (prefersReducedMotion) animate = false;
       const content = data.content || '';
@@ -931,12 +1000,13 @@ if ($quotaPercent > 75) {
         words.forEach(w => {
           const pron = w.pronunciation ? `<span class="text-[10px] text-outline ml-1 italic">(${escHtml(w.pronunciation)})</span>` : '';
           const html = `
-          <div class="bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" onclick="speakText('${escAttr(w.word)}')">
-            <div class="flex justify-between items-start">
+          <div class="relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" onclick="speakText('${escAttr(w.word)}')">
+            <span class="material-symbols-outlined absolute top-2 right-2 text-[14px] text-outline group-hover:text-primary transition-colors">volume_up</span>
+            <div class="flex justify-between items-start pr-5">
               <strong class="text-primary text-sm">${escHtml(w.word)}</strong>
               ${pron}
             </div>
-            <div class="text-xs text-on-surface-variant mt-1">${escHtml(w.definition)}</div>
+            <div class="text-xs text-on-surface-variant mt-1 pr-5">${escHtml(w.definition)}</div>
           </div>`;
           wordsListEl.insertAdjacentHTML('afterbegin', html);
         });
@@ -976,6 +1046,7 @@ if ($quotaPercent > 75) {
         }
         row.querySelectorAll('.seg-token, .reveal-block').forEach(el => el.classList.add('is-visible'));
         scrollBottom(true);
+        if (!isHistory) announceToScreenReader(KAI_LABEL + ': ' + content);
       }
     }
 
@@ -1005,6 +1076,7 @@ if ($quotaPercent > 75) {
             scrollBottom();
           }, i * stagger);
         });
+        setTimeout(function () { announceToScreenReader(KAI_LABEL + ': ' + content); }, tokens.length * stagger);
         revealBlocksStaggered(tokens.length * stagger + 120);
       } else {
         const textEl = document.getElementById(cardId + '-content');
@@ -1016,6 +1088,7 @@ if ($quotaPercent > 75) {
         (function step() {
           if (i >= content.length) {
             textEl.classList.remove('typing-caret');
+            announceToScreenReader(KAI_LABEL + ': ' + content);
             revealBlocksStaggered(80);
             return;
           }
@@ -1034,15 +1107,29 @@ if ($quotaPercent > 75) {
       row.id = id;
       row.className = 'message-row w-full flex justify-start';
       row.innerHTML = `
-      <div class="flex gap-lg max-w-[75%]">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20">
+      <div class="flex gap-lg w-full max-w-2xl">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20 mt-1">
           <span class="material-symbols-outlined text-on-primary-container">psychology</span>
         </div>
-        <div class="glass-panel p-lg rounded-2xl rounded-tl-none">
-          <div class="flex gap-1 items-center h-5">
-            <div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:0ms"></div>
-            <div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:150ms"></div>
-            <div class="w-2 h-2 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:300ms"></div>
+        <div class="space-y-sm flex-1 min-w-0">
+          <div class="flex items-center gap-sm opacity-70">
+            <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
+            <span class="flex gap-1 items-center">
+              <span class="w-1 h-1 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:0ms"></span>
+              <span class="w-1 h-1 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:150ms"></span>
+              <span class="w-1 h-1 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:300ms"></span>
+            </span>
+          </div>
+          <div class="bg-[#1e293b]/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40 space-y-3 animate-pulse">
+              <div class="h-2.5 w-20 bg-gray-700/50 rounded"></div>
+              <div class="h-7 w-3/4 bg-gray-700/50 rounded"></div>
+              <div class="h-7 w-1/2 bg-gray-700/50 rounded"></div>
+            </div>
+            <div class="p-6 flex gap-4 animate-pulse">
+              <div class="h-2.5 w-16 bg-gray-700/40 rounded"></div>
+              <div class="h-2.5 w-24 bg-gray-700/40 rounded"></div>
+            </div>
           </div>
         </div>
       </div>`;
@@ -1137,6 +1224,13 @@ if ($quotaPercent > 75) {
         bar.classList.add('animate-pulse');
         setTimeout(function() { bar.classList.remove('animate-pulse'); }, 1000);
       }
+    }
+
+    function announceToScreenReader(text) {
+      const el = document.getElementById('sr-announcer');
+      if (!el || !text) return;
+      el.textContent = '';
+      setTimeout(function () { el.textContent = text; }, 50);
     }
 
     function hideEmptyState() {
