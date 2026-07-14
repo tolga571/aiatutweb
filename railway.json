@@ -3,7 +3,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "php -S 0.0.0.0:$PORT -t public",
+    "startCommand": "./frankenphp run --config Caddyfile",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }

@@ -1,3 +1,15 @@
 [php]
 version = "8.2"
 extensions = ["pdo", "pdo_pgsql"]
+
+# Downloads the official FrankenPHP static (mostly-static/gnu) binary during
+# build so the deploy image can run it directly with no Dockerfile. Verified
+# locally that this build (v1.12.4, linux-x86_64-gnu) has pdo_pgsql, session,
+# curl and opcache compiled in and only requires glibc >= 2.17.
+[phases.frankenphp]
+dependsOn = ["install"]
+aptPkgs = ["curl", "ca-certificates"]
+cmds = [
+    "curl -fsSL -o frankenphp https://github.com/php/frankenphp/releases/download/v1.12.4/frankenphp-linux-x86_64-gnu",
+    "chmod +x frankenphp"
+]
