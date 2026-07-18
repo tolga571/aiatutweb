@@ -47,6 +47,11 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     // yearly subscriber sees their real "current plan" state on load,
     // instead of always defaulting to monthly.
     $initialInterval = $isPaidUser && $userBillingInterval === 'year' ? 'year' : 'month';
+    // Applied to each card's "Current Plan" ribbon so it only shows in the
+    // view that matches the user's actual billing interval — otherwise a
+    // monthly subscriber toggling to Yearly would see "Current Plan" next
+    // to an "Upgrade" button, which contradicts itself.
+    $currentBadgeIntervalClass = $userBillingInterval === 'year' ? 'price-yearly hidden' : 'price-monthly';
     $planLabels = [
         'starter' => __('pricing.starter_title'),
         'pro' => __('pricing.pro_title'),
@@ -183,9 +188,9 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
 
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+      <div id="card-starter" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
         <?php if ($userPlan === 'starter'): ?>
-          <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
+          <div id="badge-starter" class="<?= $currentBadgeIntervalClass ?> absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
             <?= __('pricing.current_plan') ?>
           </div>
@@ -269,15 +274,25 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
 
       <!-- Pro Plan Card (Popular) -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative overflow-hidden <?= $userPlan === 'pro' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-primary/40' ?>">
-        <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
-          <?php if ($userPlan === 'pro'): ?>
+      <div id="card-pro" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative overflow-hidden <?= $userPlan === 'pro' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-primary/40' ?>">
+        <div id="badge-pro" class="price-monthly absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
+          <?php if ($userPlan === 'pro' && $userBillingInterval === 'month'): ?>
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
             <?= __('pricing.current_plan') ?>
           <?php else: ?>
             <?= __('pricing.recommended') ?>
           <?php endif; ?>
         </div>
+        <?php if ($proYearlyPriceId !== ''): ?>
+        <div class="price-yearly hidden absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
+          <?php if ($userPlan === 'pro' && $userBillingInterval === 'year'): ?>
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>
+            <?= __('pricing.current_plan') ?>
+          <?php else: ?>
+            <?= __('pricing.recommended') ?>
+          <?php endif; ?>
+        </div>
+        <?php endif; ?>
 
         <div>
           <div class="text-primary text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.pro_title') ?></div>
@@ -362,9 +377,9 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
 
       <!-- Premium Plan Card -->
-      <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'active' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+      <div id="card-active" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'active' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
         <?php if ($userPlan === 'active'): ?>
-          <div class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
+          <div id="badge-active" class="<?= $currentBadgeIntervalClass ?> absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
             <?= __('pricing.current_plan') ?>
           </div>
@@ -479,6 +494,18 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   // baked in server-side; this just shows/hides the right one.
   let billingInterval = 'month';
 
+  // Which tier the user is actually subscribed to, and on which interval —
+  // used to keep each card's highlighted border in sync with the toggle,
+  // so it doesn't stay lit up for a tier/interval combo that isn't the
+  // user's real current plan.
+  const USER_PLAN = <?= json_encode($userPlan) ?>;
+  const USER_INTERVAL = <?= json_encode($userBillingInterval) ?>;
+  const CARD_BORDER = {
+    'card-starter': { tier: 'starter', current: ['border-2', 'border-primary', 'ring-2', 'ring-primary/30'], normal: ['border', 'border-outline/20'] },
+    'card-pro': { tier: 'pro', current: ['border-2', 'border-primary', 'ring-2', 'ring-primary/30'], normal: ['border', 'border-primary/40'] },
+    'card-active': { tier: 'active', current: ['border-2', 'border-primary', 'ring-2', 'ring-primary/30'], normal: ['border', 'border-outline/20'] },
+  };
+
   function setBillingInterval(interval) {
     billingInterval = interval === 'year' ? 'year' : 'month';
     document.querySelectorAll('.price-monthly').forEach(function(el) { el.classList.toggle('hidden', billingInterval !== 'month'); });
@@ -493,6 +520,15 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       btn.classList.toggle('text-on-primary', active);
       btn.classList.toggle('bg-surface-container-high', !active);
       btn.classList.toggle('text-on-surface-variant', !active);
+    });
+
+    Object.keys(CARD_BORDER).forEach(function(cardId) {
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      const cfg = CARD_BORDER[cardId];
+      const isCurrent = USER_PLAN === cfg.tier && USER_INTERVAL === billingInterval;
+      cfg.current.forEach(function(c) { card.classList.toggle(c, isCurrent); });
+      cfg.normal.forEach(function(c) { card.classList.toggle(c, !isCurrent); });
     });
   }
 
