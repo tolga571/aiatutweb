@@ -313,9 +313,12 @@ switch ($page) {
         // plan that was really purchased instead of guessing.
         $priceId = $_GET['price_id'] ?? '';
         $purchasePlanMap = [
-            $config['paddle_starter_price_id'] ?? '' => 'starter',
-            $config['paddle_pro_price_id'] ?? ''     => 'pro',
-            $config['paddle_premium_price_id'] ?? '' => 'active',
+            $config['paddle_starter_price_id'] ?? ''        => 'starter',
+            $config['paddle_starter_yearly_price_id'] ?? '' => 'starter',
+            $config['paddle_pro_price_id'] ?? ''             => 'pro',
+            $config['paddle_pro_yearly_price_id'] ?? ''      => 'pro',
+            $config['paddle_premium_price_id'] ?? ''         => 'active',
+            $config['paddle_premium_yearly_price_id'] ?? ''  => 'active',
         ];
         unset($purchasePlanMap['']);
         $purchasePlan = $purchasePlanMap[$priceId] ?? null;
@@ -464,12 +467,22 @@ switch ($page) {
             exit;
         }
         $planKey = $_POST['plan'] ?? '';
+        // Which Price to switch to: each plan can have a monthly and a
+        // yearly Price in Paddle. Defaults to 'month' so existing callers
+        // that don't send an interval keep working unchanged.
+        $interval = $_POST['interval'] ?? 'month';
+        if (!in_array($interval, ['month', 'year'], true)) {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'invalid_interval']);
+            exit;
+        }
         $planPriceMap = [
-            'starter' => $config['paddle_starter_price_id'] ?? '',
-            'pro' => $config['paddle_pro_price_id'] ?? '',
-            'active' => $config['paddle_premium_price_id'] ?? '',
+            'starter' => ['month' => $config['paddle_starter_price_id'] ?? '', 'year' => $config['paddle_starter_yearly_price_id'] ?? ''],
+            'pro' => ['month' => $config['paddle_pro_price_id'] ?? '', 'year' => $config['paddle_pro_yearly_price_id'] ?? ''],
+            'active' => ['month' => $config['paddle_premium_price_id'] ?? '', 'year' => $config['paddle_premium_yearly_price_id'] ?? ''],
         ];
-        if (!isset($planPriceMap[$planKey]) || $planPriceMap[$planKey] === '') {
+        $targetPriceId = $planPriceMap[$planKey][$interval] ?? '';
+        if ($targetPriceId === '') {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'invalid_plan']);
             exit;
@@ -501,7 +514,7 @@ switch ($page) {
         $newRank = \App\Src\TokenManager::planRank($planKey);
         $isUpgrade = $newRank > $oldRank;
 
-        $success = $paddleClient->updateSubscriptionPrice($subId, $planPriceMap[$planKey], $isUpgrade);
+        $success = $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
         if (!$success) {
             http_response_code(502);
             echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);

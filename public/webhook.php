@@ -3,6 +3,7 @@ require __DIR__ . '/../autoload.php';
 $config = require __DIR__ . '/../config.php';
 
 use App\Src\Database;
+use App\Src\PaddleIpAllowlist;
 
 // Open connection to database
 $db = new Database($config['db_url']);
@@ -22,6 +23,21 @@ function logWebhook($logFile, $message, $detailed = '') {
         "[" . date('Y-m-d H:i:s') . "] {$message} {$detailed}\n",
         FILE_APPEND
     );
+}
+
+// 0. In live mode, reject anything not sourced from Paddle's published live
+// IP ranges (https://api.paddle.com/ips), fetched and cached rather than
+// hardcoded since that list can change. Sandbox is left unrestricted so
+// local/staging testing against the sandbox webhook keeps working.
+if (($config['paddle_environment'] ?? 'sandbox') === 'production') {
+    $requestIp = client_ip();
+    $ipCacheFile = __DIR__ . '/../data/paddle_live_ips.json';
+    if (!PaddleIpAllowlist::isAllowed($requestIp, $ipCacheFile)) {
+        logWebhook($logFile, "REJECTED: Request IP not in Paddle's live allowlist.", "ip={$requestIp}");
+        http_response_code(403);
+        echo "Forbidden: Source IP not allowed.";
+        exit;
+    }
 }
 
 // 1. Basic validation
@@ -89,17 +105,19 @@ if (strpos($eventType, 'subscription.') === 0) {
         $planStatus = $status;
 
         if ($hasPaid) {
-            // Check the price ID to determine the specific plan tier
+            // Check the price ID to determine the specific plan tier. Each
+            // tier can have both a monthly and a yearly Price in Paddle
+            // (same product, same plan_status/quota) — match against either.
             $priceId = $data['items'][0]['price']['id'] ?? '';
-            $starterPriceId = $config['paddle_starter_price_id'] ?? '';
-            $proPriceId = $config['paddle_pro_price_id'] ?? '';
-            $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
+            $starterPriceIds = array_filter([$config['paddle_starter_price_id'] ?? '', $config['paddle_starter_yearly_price_id'] ?? '']);
+            $proPriceIds = array_filter([$config['paddle_pro_price_id'] ?? '', $config['paddle_pro_yearly_price_id'] ?? '']);
+            $premiumPriceIds = array_filter([$config['paddle_premium_price_id'] ?? '', $config['paddle_premium_yearly_price_id'] ?? '']);
 
-            if ($priceId === $proPriceId) {
+            if (in_array($priceId, $proPriceIds, true)) {
                 $planStatus = 'pro';
-            } elseif ($priceId === $starterPriceId) {
+            } elseif (in_array($priceId, $starterPriceIds, true)) {
                 $planStatus = 'starter';
-            } elseif ($priceId === $premiumPriceId) {
+            } elseif (in_array($priceId, $premiumPriceIds, true)) {
                 $planStatus = 'active';
             } else {
                 // Unrecognized price ID — don't silently grant the top tier.

@@ -9,6 +9,10 @@ $paddleEnvironment = $config['paddle_environment'] ?? 'sandbox';
 $starterPriceId = $config['paddle_starter_price_id'] ?? '';
 $proPriceId = $config['paddle_pro_price_id'] ?? '';
 $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
+$starterYearlyPriceId = $config['paddle_starter_yearly_price_id'] ?? '';
+$proYearlyPriceId = $config['paddle_pro_yearly_price_id'] ?? '';
+$premiumYearlyPriceId = $config['paddle_premium_yearly_price_id'] ?? '';
+$hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $premiumYearlyPriceId !== '';
 ?>
 
 <!-- Load Paddle.js -->
@@ -149,6 +153,20 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
       </div>
     <?php endif; ?>
 
+      <?php if ($hasYearlyOption): ?>
+      <div class="flex items-center justify-center gap-2 mb-8">
+        <button type="button" id="interval-toggle-monthly" onclick="setBillingInterval('month')"
+          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all bg-primary text-on-primary">
+          <?= __('pricing.toggle_monthly') ?>
+        </button>
+        <button type="button" id="interval-toggle-yearly" onclick="setBillingInterval('year')"
+          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all bg-surface-container-high text-on-surface-variant flex items-center gap-2">
+          <?= __('pricing.toggle_yearly') ?>
+          <span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold"><?= __('pricing.toggle_save_badge') ?></span>
+        </button>
+      </div>
+      <?php endif; ?>
+
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
       <div class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
@@ -160,7 +178,12 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
         <?php endif; ?>
         <div>
           <div class="text-outline text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.starter_title') ?></div>
-          <div class="text-4xl font-bold text-on-surface mb-1"><?= __('pricing.starter_monthly') ?></div>
+          <div class="text-4xl font-bold text-on-surface mb-1">
+            <span class="price-monthly"><?= __('pricing.starter_monthly') ?></span>
+            <?php if ($starterYearlyPriceId !== ''): ?>
+              <span class="price-yearly hidden"><?= __('pricing.starter_yearly') ?></span>
+            <?php endif; ?>
+          </div>
           <p class="text-outline text-body-md mb-6"><?= __('pricing.starter_desc') ?></p>
 
           <div class="border-t border-outline/10 my-4"></div>
@@ -197,7 +220,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
-            <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
+            <button onclick="openCheckout(planPriceId('starter'))"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
               <?= (empty($paddleClientToken) || empty($starterPriceId)) ? 'disabled' : '' ?>>
               <span><?= __('pricing.starter_btn') ?></span>
@@ -220,7 +243,12 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 
         <div>
           <div class="text-primary text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.pro_title') ?></div>
-          <div class="text-4xl font-bold text-on-surface mb-1"><?= __('pricing.pro_monthly') ?></div>
+          <div class="text-4xl font-bold text-on-surface mb-1">
+            <span class="price-monthly"><?= __('pricing.pro_monthly') ?></span>
+            <?php if ($proYearlyPriceId !== ''): ?>
+              <span class="price-yearly hidden"><?= __('pricing.pro_yearly') ?></span>
+            <?php endif; ?>
+          </div>
           <p class="text-outline text-body-md mb-6"><?= __('pricing.pro_desc') ?></p>
 
           <div class="border-t border-outline/10 my-4"></div>
@@ -261,7 +289,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
-            <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
+            <button onclick="openCheckout(planPriceId('pro'))"
               class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
               <?= (empty($paddleClientToken) || empty($proPriceId)) ? 'disabled' : '' ?>>
               <?= __('pricing.pro_btn') ?>
@@ -280,7 +308,12 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
           </div>
         <?php endif; ?>
         <div class="text-primary text-label-md font-semibold mb-2 uppercase tracking-wide"><?= __('pricing.premium_title') ?></div>
-        <div class="text-4xl font-bold text-on-surface mb-1"><?= __('pricing.premium_monthly') ?></div>
+        <div class="text-4xl font-bold text-on-surface mb-1">
+          <span class="price-monthly"><?= __('pricing.premium_monthly') ?></span>
+          <?php if ($premiumYearlyPriceId !== ''): ?>
+            <span class="price-yearly hidden"><?= __('pricing.premium_yearly') ?></span>
+          <?php endif; ?>
+        </div>
         <p class="text-outline text-body-md mb-6"><?= __('pricing.premium_desc') ?></p>
 
         <div class="border-t border-outline/10 my-4"></div>
@@ -304,7 +337,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
               <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
             </button>
           <?php else: ?>
-            <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
+            <button onclick="openCheckout(planPriceId('active'))"
               class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
               <?= (empty($paddleClientToken) || empty($premiumPriceId)) ? 'disabled' : '' ?>>
               <?= __('pricing.premium_btn') ?>
@@ -354,6 +387,38 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 <script>
   let currentCheckout = null;
   let currentCheckoutPriceId = null;
+
+  // Monthly/yearly billing toggle. Each plan can have a yearly Price in
+  // Paddle in addition to its monthly one; falls back to monthly if a
+  // plan has no yearly price configured.
+  const PRICE_IDS = {
+    starter: { month: <?= json_encode($starterPriceId) ?>, year: <?= json_encode($starterYearlyPriceId) ?> },
+    pro: { month: <?= json_encode($proPriceId) ?>, year: <?= json_encode($proYearlyPriceId) ?> },
+    active: { month: <?= json_encode($premiumPriceId) ?>, year: <?= json_encode($premiumYearlyPriceId) ?> },
+  };
+  let billingInterval = 'month';
+
+  function planPriceId(planKey) {
+    const ids = PRICE_IDS[planKey] || {};
+    return (ids[billingInterval] || ids.month || '');
+  }
+
+  function setBillingInterval(interval) {
+    billingInterval = interval === 'year' ? 'year' : 'month';
+    document.querySelectorAll('.price-monthly').forEach(function(el) { el.classList.toggle('hidden', billingInterval !== 'month'); });
+    document.querySelectorAll('.price-yearly').forEach(function(el) { el.classList.toggle('hidden', billingInterval !== 'year'); });
+
+    const monthBtn = document.getElementById('interval-toggle-monthly');
+    const yearBtn = document.getElementById('interval-toggle-yearly');
+    [[monthBtn, billingInterval === 'month'], [yearBtn, billingInterval === 'year']].forEach(function(pair) {
+      const btn = pair[0], active = pair[1];
+      if (!btn) return;
+      btn.classList.toggle('bg-primary', active);
+      btn.classList.toggle('text-on-primary', active);
+      btn.classList.toggle('bg-surface-container-high', !active);
+      btn.classList.toggle('text-on-surface-variant', !active);
+    });
+  }
 
   // Initialize Paddle.js
   <?php if (!empty($paddleClientToken)): ?>
@@ -577,7 +642,7 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
     try {
       const res = await fetch('?page=change-subscription-plan', {
         method: 'POST',
-        body: new URLSearchParams({ plan: planKey, csrf_token: CSRF_TOKEN }),
+        body: new URLSearchParams({ plan: planKey, interval: billingInterval, csrf_token: CSRF_TOKEN }),
       });
       const data = await res.json();
       if (data.ok && data.deferred) {

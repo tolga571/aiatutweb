@@ -15,6 +15,13 @@ return [
     'paddle_starter_price_id' => getenv('PADDLE_STARTER_PLAN_PRICE_ID'),
     'paddle_pro_price_id'     => getenv('PADDLE_PRO_PLAN_PRICE_ID'),
 
+    // Optional yearly variant of each plan (same product, a second Price in
+    // Paddle). Left as '' when unset — every lookup below treats '' as "no
+    // yearly price configured" rather than a real ID.
+    'paddle_starter_yearly_price_id' => getenv('PADDLE_STARTER_YEARLY_PRICE_ID') ?: '',
+    'paddle_pro_yearly_price_id'     => getenv('PADDLE_PRO_YEARLY_PRICE_ID') ?: '',
+    'paddle_premium_yearly_price_id' => getenv('PADDLE_PREMIUM_YEARLY_PRICE_ID') ?: '',
+
     'paddle_client_token'     => getenv('PADDLE_CLIENT_TOKEN'),
     'paddle_environment'      => getenv('PADDLE_ENVIRONMENT') ?: 'sandbox',
     // Server-side Paddle API key (Developer Tools > Authentication in the Paddle
