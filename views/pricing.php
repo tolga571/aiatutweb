@@ -234,7 +234,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('starter', 'month'); ?>
-              <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>, 'month')"
+              <button onclick="changePlan('starter', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['starter'])) ?>, 'month')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
                 <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
                 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
@@ -255,7 +255,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('starter', 'year'); ?>
-              <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>, 'year')"
+              <button onclick="changePlan('starter', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['starter'])) ?>, 'year')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
                 <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
                 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
@@ -337,7 +337,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('pro', 'month'); ?>
-              <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>, 'month')"
+              <button onclick="changePlan('pro', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['pro'])) ?>, 'month')"
                 class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
                 <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
                 <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
@@ -358,7 +358,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('pro', 'year'); ?>
-              <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>, 'year')"
+              <button onclick="changePlan('pro', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['pro'])) ?>, 'year')"
                 class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
                 <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
                 <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
@@ -409,7 +409,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('active', 'month'); ?>
-              <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>, 'month')"
+              <button onclick="changePlan('active', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['active'])) ?>, 'month')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
                 <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
                 <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
@@ -430,7 +430,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 <?= __('pricing.current_plan') ?>
               </button>
             <?php elseif ($isPaidUser): $dir = $planDirection('active', 'year'); ?>
-              <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>, 'year')"
+              <button onclick="changePlan('active', <?= htmlspecialchars(json_encode($dir)) ?>, <?= htmlspecialchars(json_encode($planLabels['active'])) ?>, 'year')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
                 <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
                 <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
