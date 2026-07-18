@@ -172,6 +172,11 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       <?php if ($hasYearlyOption):
         $monthActiveClass = $initialInterval === 'month' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant';
         $yearActiveClass = $initialInterval === 'year' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant';
+        // On a solid bg-primary button (selected state), a bg-primary/20
+        // badge blends into the background and the text disappears — needs
+        // the on-primary-tinted variant instead. Kept in sync on toggle by
+        // setBillingInterval() in the script below.
+        $saveBadgeClass = $initialInterval === 'year' ? 'bg-on-primary/20 text-on-primary' : 'bg-primary/20 text-primary';
       ?>
       <div class="flex items-center justify-center gap-2 mb-8">
         <button type="button" id="interval-toggle-monthly" onclick="setBillingInterval('month')"
@@ -181,7 +186,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         <button type="button" id="interval-toggle-yearly" onclick="setBillingInterval('year')"
           class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all hover:opacity-90 cursor-pointer flex items-center gap-2 <?= $yearActiveClass ?>">
           <?= __('pricing.toggle_yearly') ?>
-          <span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold"><?= __('pricing.toggle_save_badge') ?></span>
+          <span id="save-badge" class="text-[10px] px-2 py-0.5 rounded-full font-bold <?= $saveBadgeClass ?>"><?= __('pricing.toggle_save_badge') ?></span>
         </button>
       </div>
       <?php endif; ?>
@@ -521,6 +526,18 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       btn.classList.toggle('bg-surface-container-high', !active);
       btn.classList.toggle('text-on-surface-variant', !active);
     });
+
+    // The "Save 17%" badge sits on the Yearly button — once that button
+    // goes solid bg-primary, the badge needs the on-primary-tinted variant
+    // or its text disappears into the background.
+    const saveBadge = document.getElementById('save-badge');
+    if (saveBadge) {
+      const yearActive = billingInterval === 'year';
+      saveBadge.classList.toggle('bg-on-primary/20', yearActive);
+      saveBadge.classList.toggle('text-on-primary', yearActive);
+      saveBadge.classList.toggle('bg-primary/20', !yearActive);
+      saveBadge.classList.toggle('text-primary', !yearActive);
+    }
 
     Object.keys(CARD_BORDER).forEach(function(cardId) {
       const card = document.getElementById(cardId);
