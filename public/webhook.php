@@ -103,6 +103,9 @@ if (strpos($eventType, 'subscription.') === 0) {
         // Paddle Billing statuses: 'active', 'trialing', 'past_due', 'paused', 'canceled'
         $hasPaid = ($status === 'active' || $status === 'trialing') ? 1 : 0;
         $planStatus = $status;
+        // Only set when $hasPaid resolves a real price_id below; left null
+        // otherwise so the UPDATE's COALESCE leaves the existing value alone.
+        $billingInterval = null;
 
         if ($hasPaid) {
             // Check the price ID to determine the specific plan tier. Each
@@ -127,6 +130,13 @@ if (strpos($eventType, 'subscription.') === 0) {
                 $planStatus = 'starter';
                 logWebhook($logFile, "WARNING: Unrecognized price_id '{$priceId}' for User ID {$userId} — defaulting to 'starter', verify PADDLE_*_PRICE_ID config.");
             }
+
+            $yearlyPriceIds = array_filter([
+                $config['paddle_starter_yearly_price_id'] ?? '',
+                $config['paddle_pro_yearly_price_id'] ?? '',
+                $config['paddle_premium_yearly_price_id'] ?? '',
+            ]);
+            $billingInterval = in_array($priceId, $yearlyPriceIds, true) ? 'year' : 'month';
         }
 
         try {
@@ -155,17 +165,17 @@ if (strpos($eventType, 'subscription.') === 0) {
                 $db->execute(
                     'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL,
                      paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
-                     next_billed_at = COALESCE(?, next_billed_at)
+                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $userId]
                 );
             } else {
                 $db->execute(
                     'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL,
                      paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
-                     next_billed_at = COALESCE(?, next_billed_at)
+                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $userId]
                 );
             }
 

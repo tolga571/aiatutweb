@@ -242,6 +242,23 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN pending_purchase_plan TEXT DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // 'month' or 'year' — which billing cycle the user's current
+            // paid price is on. Needed alongside plan_status so the pricing
+            // page can tell "on Pro monthly" apart from "on Pro yearly" and
+            // offer the right switch action instead of showing both as the
+            // same "current plan".
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN billing_interval TEXT DEFAULT 'month'");
+        } catch (\Exception $e) {
+        }
+        try {
+            // Mirrors pending_purchase_plan: the interval of the price the
+            // user actually checked out for, so the payment_pending_at
+            // timeout fallback can grant the right interval too, not just
+            // the right tier.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN pending_purchase_interval TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

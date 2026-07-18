@@ -322,9 +322,15 @@ switch ($page) {
         ];
         unset($purchasePlanMap['']);
         $purchasePlan = $purchasePlanMap[$priceId] ?? null;
+        $yearlyPriceIds = array_filter([
+            $config['paddle_starter_yearly_price_id'] ?? '',
+            $config['paddle_pro_yearly_price_id'] ?? '',
+            $config['paddle_premium_yearly_price_id'] ?? '',
+        ]);
+        $purchaseInterval = in_array($priceId, $yearlyPriceIds, true) ? 'year' : 'month';
         $db->execute(
-            'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ? WHERE id = ?',
-            [$purchasePlan, $auth->userId()]
+            'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ?, pending_purchase_interval = ? WHERE id = ?',
+            [$purchasePlan, $purchaseInterval, $auth->userId()]
         );
         header('Content-Type: application/json');
         echo json_encode(['ok' => true]);
@@ -338,17 +344,19 @@ switch ($page) {
         $paid = $auth->hasPaid();
 
         if (!$paid) {
-            $user = $db->fetchOne('SELECT payment_pending_at, pending_purchase_plan, plan_status FROM users WHERE id = ?', [$userId]);
+            $user = $db->fetchOne('SELECT payment_pending_at, pending_purchase_plan, pending_purchase_interval, plan_status FROM users WHERE id = ?', [$userId]);
             if (!empty($user['payment_pending_at'])) {
                 $pendingTime = strtotime($user['payment_pending_at']);
                 $elapsed = time() - $pendingTime;
                 if ($elapsed > 60) {
                     if (!empty($user['pending_purchase_plan'])) {
                         // We know which plan was actually purchased —
-                        // grant it while we wait for the webhook to catch up.
+                        // grant it (interval included) while we wait for the
+                        // webhook to catch up.
                         $db->execute(
-                            'UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL, pending_purchase_plan = NULL WHERE id = ?',
-                            [$user['pending_purchase_plan'], $userId]
+                            'UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL, pending_purchase_plan = NULL,
+                             billing_interval = COALESCE(?, billing_interval), pending_purchase_interval = NULL WHERE id = ?',
+                            [$user['pending_purchase_plan'], $user['pending_purchase_interval'] ?? null, $userId]
                         );
                         $paid = true;
                     }
@@ -510,9 +518,14 @@ switch ($page) {
             exit;
         }
         $oldPlanStatus = $changeUser['plan_status'] ?? 'inactive';
+        $oldInterval = ($changeUser['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month';
         $oldRank = \App\Src\TokenManager::planRank($oldPlanStatus);
         $newRank = \App\Src\TokenManager::planRank($planKey);
-        $isUpgrade = $newRank > $oldRank;
+        // Same tier, different billing cycle (e.g. Pro monthly -> Pro
+        // yearly): not a downgrade, nothing to defer — apply it immediately
+        // like an upgrade so billing_interval flips right away.
+        $isSameTierIntervalSwitch = ($newRank === $oldRank) && ($interval !== $oldInterval);
+        $isUpgrade = ($newRank > $oldRank) || $isSameTierIntervalSwitch;
 
         $success = $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
         if (!$success) {
@@ -526,7 +539,7 @@ switch ($page) {
             // difference right now), so reflect it right away; the next
             // webhook call will reconcile from Paddle's own event data.
             $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
-            $db->execute('UPDATE users SET plan_status = ?, has_paid = 1 WHERE id = ?', [$planKey, $auth->userId()]);
+            $db->execute('UPDATE users SET plan_status = ?, has_paid = 1, billing_interval = ? WHERE id = ?', [$planKey, $interval, $auth->userId()]);
             echo json_encode(['ok' => true]);
         } else {
             // Downgrades are deferred to the next billing period (standard

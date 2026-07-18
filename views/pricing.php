@@ -42,6 +42,11 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     $isPaidUser = $isLoggedIn && !$isTrialUser && (($currentUser['plan_status'] ?? '') === 'active' || ($currentUser['has_paid'] ?? 0) == 1);
     $trialMessagesSent = $isTrialUser && $isLoggedIn ? $auth->getTrialMessagesSent($currentUser['id']) : 0;
     $userPlan = $currentUser['plan_status'] ?? 'inactive';
+    $userBillingInterval = ($currentUser['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month';
+    // Default the toggle to whatever the user is actually on so an existing
+    // yearly subscriber sees their real "current plan" state on load,
+    // instead of always defaulting to monthly.
+    $initialInterval = $isPaidUser && $userBillingInterval === 'year' ? 'year' : 'month';
     $planLabels = [
         'starter' => __('pricing.starter_title'),
         'pro' => __('pricing.pro_title'),
@@ -52,9 +57,15 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     // Per-card button label/tone: only meaningful once the user already has a
     // paid plan, so we know whether switching to a given card is an upgrade
     // or a downgrade rather than always saying the same generic "Switch Plan".
-    $planDirection = function (string $planKey) use ($currentPlanRank) {
+    // A same-tier interval-only switch (e.g. Pro monthly -> Pro yearly) is
+    // treated as an "upgrade" (applied immediately, matches
+    // change-subscription-plan's $isSameTierIntervalSwitch logic) since
+    // there's nothing to defer — it's a billing-cycle change, not a downgrade.
+    $planDirection = function (string $planKey, string $targetInterval) use ($currentPlanRank, $userBillingInterval) {
         $rank = \App\Src\TokenManager::planRank($planKey);
-        return $rank > $currentPlanRank ? 'upgrade' : 'downgrade';
+        if ($rank > $currentPlanRank) return 'upgrade';
+        if ($rank === $currentPlanRank && $targetInterval !== $userBillingInterval) return 'upgrade';
+        return 'downgrade';
     };
     $hasCancelPending = !empty($currentUser['cancel_requested_at']);
     $hasChangePending = !empty($currentUser['pending_plan_change']);
@@ -153,14 +164,17 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
     <?php endif; ?>
 
-      <?php if ($hasYearlyOption): ?>
+      <?php if ($hasYearlyOption):
+        $monthActiveClass = $initialInterval === 'month' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant';
+        $yearActiveClass = $initialInterval === 'year' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant';
+      ?>
       <div class="flex items-center justify-center gap-2 mb-8">
         <button type="button" id="interval-toggle-monthly" onclick="setBillingInterval('month')"
-          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all bg-primary text-on-primary">
+          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all hover:opacity-90 cursor-pointer <?= $monthActiveClass ?>">
           <?= __('pricing.toggle_monthly') ?>
         </button>
         <button type="button" id="interval-toggle-yearly" onclick="setBillingInterval('year')"
-          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all bg-surface-container-high text-on-surface-variant flex items-center gap-2">
+          class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all hover:opacity-90 cursor-pointer flex items-center gap-2 <?= $yearActiveClass ?>">
           <?= __('pricing.toggle_yearly') ?>
           <span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold"><?= __('pricing.toggle_save_badge') ?></span>
         </button>
@@ -209,23 +223,47 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         </div>
 
         <div>
-          <?php if ($userPlan === 'starter'): ?>
-            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?>
-            </button>
-          <?php elseif ($isPaidUser): $dir = $planDirection('starter'); ?>
-            <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>)"
-              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
-              <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
-              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
-            </button>
-          <?php else: ?>
-            <button onclick="openCheckout(planPriceId('starter'))"
-              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
-              <?= (empty($paddleClientToken) || empty($starterPriceId)) ? 'disabled' : '' ?>>
-              <span><?= __('pricing.starter_btn') ?></span>
-              <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
-            </button>
+          <div class="price-monthly">
+            <?php if ($userPlan === 'starter' && $userBillingInterval === 'month'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('starter', 'month'); ?>
+              <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>, 'month')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
+                <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
+                <?= (empty($paddleClientToken) || empty($starterPriceId)) ? 'disabled' : '' ?>>
+                <span><?= __('pricing.starter_btn') ?></span>
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
+              </button>
+            <?php endif; ?>
+          </div>
+          <?php if ($starterYearlyPriceId !== ''): ?>
+          <div class="price-yearly hidden">
+            <?php if ($userPlan === 'starter' && $userBillingInterval === 'year'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('starter', 'year'); ?>
+              <button onclick="changePlan('starter', <?= json_encode($dir) ?>, <?= json_encode($planLabels['starter']) ?>, 'year')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover">
+                <span><?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?></span>
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($starterYearlyPriceId) ?>')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
+                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <span><?= __('pricing.starter_btn') ?></span>
+                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
+              </button>
+            <?php endif; ?>
+          </div>
           <?php endif; ?>
         </div>
       </div>
@@ -278,23 +316,47 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         </div>
 
         <div>
-          <?php if ($userPlan === 'pro'): ?>
-            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?>
-            </button>
-          <?php elseif ($isPaidUser): $dir = $planDirection('pro'); ?>
-            <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>)"
-              class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
-              <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
-              <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
-            </button>
-          <?php else: ?>
-            <button onclick="openCheckout(planPriceId('pro'))"
-              class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-              <?= (empty($paddleClientToken) || empty($proPriceId)) ? 'disabled' : '' ?>>
-              <?= __('pricing.pro_btn') ?>
-              <span class="material-symbols-outlined">bolt</span>
-            </button>
+          <div class="price-monthly">
+            <?php if ($userPlan === 'pro' && $userBillingInterval === 'month'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('pro', 'month'); ?>
+              <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>, 'month')"
+                class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+                <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+                <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
+                class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+                <?= (empty($paddleClientToken) || empty($proPriceId)) ? 'disabled' : '' ?>>
+                <?= __('pricing.pro_btn') ?>
+                <span class="material-symbols-outlined">bolt</span>
+              </button>
+            <?php endif; ?>
+          </div>
+          <?php if ($proYearlyPriceId !== ''): ?>
+          <div class="price-yearly hidden">
+            <?php if ($userPlan === 'pro' && $userBillingInterval === 'year'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('pro', 'year'); ?>
+              <button onclick="changePlan('pro', <?= json_encode($dir) ?>, <?= json_encode($planLabels['pro']) ?>, 'year')"
+                class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+                <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+                <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($proYearlyPriceId) ?>')"
+                class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <?= __('pricing.pro_btn') ?>
+                <span class="material-symbols-outlined">bolt</span>
+              </button>
+            <?php endif; ?>
+          </div>
           <?php endif; ?>
         </div>
       </div>
@@ -326,23 +388,47 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         </ul>
 
         <div>
-          <?php if ($userPlan === 'active'): ?>
-            <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
-              <?= __('pricing.current_plan') ?>
-            </button>
-          <?php elseif ($isPaidUser): $dir = $planDirection('active'); ?>
-            <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>)"
-              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
-              <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
-              <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
-            </button>
-          <?php else: ?>
-            <button onclick="openCheckout(planPriceId('active'))"
-              class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-              <?= (empty($paddleClientToken) || empty($premiumPriceId)) ? 'disabled' : '' ?>>
-              <?= __('pricing.premium_btn') ?>
-              <span class="material-symbols-outlined">star</span>
-            </button>
+          <div class="price-monthly">
+            <?php if ($userPlan === 'active' && $userBillingInterval === 'month'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('active', 'month'); ?>
+              <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>, 'month')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+                <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+                <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+                <?= (empty($paddleClientToken) || empty($premiumPriceId)) ? 'disabled' : '' ?>>
+                <?= __('pricing.premium_btn') ?>
+                <span class="material-symbols-outlined">star</span>
+              </button>
+            <?php endif; ?>
+          </div>
+          <?php if ($premiumYearlyPriceId !== ''): ?>
+          <div class="price-yearly hidden">
+            <?php if ($userPlan === 'active' && $userBillingInterval === 'year'): ?>
+              <button disabled class="w-full bg-surface-container-high text-on-surface-variant font-semibold py-3 rounded-xl cursor-not-allowed">
+                <?= __('pricing.current_plan') ?>
+              </button>
+            <?php elseif ($isPaidUser): $dir = $planDirection('active', 'year'); ?>
+              <button onclick="changePlan('active', <?= json_encode($dir) ?>, <?= json_encode($planLabels['active']) ?>, 'year')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover">
+                <?= $dir === 'upgrade' ? __('pricing.action_upgrade') : __('pricing.action_downgrade') ?>
+                <span class="material-symbols-outlined"><?= $dir === 'upgrade' ? 'arrow_upward' : 'arrow_downward' ?></span>
+              </button>
+            <?php else: ?>
+              <button onclick="openCheckout('<?= htmlspecialchars($premiumYearlyPriceId) ?>')"
+                class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
+                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <?= __('pricing.premium_btn') ?>
+                <span class="material-symbols-outlined">star</span>
+              </button>
+            <?php endif; ?>
+          </div>
           <?php endif; ?>
         </div>
       </div>
@@ -388,20 +474,10 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   let currentCheckout = null;
   let currentCheckoutPriceId = null;
 
-  // Monthly/yearly billing toggle. Each plan can have a yearly Price in
-  // Paddle in addition to its monthly one; falls back to monthly if a
-  // plan has no yearly price configured.
-  const PRICE_IDS = {
-    starter: { month: <?= json_encode($starterPriceId) ?>, year: <?= json_encode($starterYearlyPriceId) ?> },
-    pro: { month: <?= json_encode($proPriceId) ?>, year: <?= json_encode($proYearlyPriceId) ?> },
-    active: { month: <?= json_encode($premiumPriceId) ?>, year: <?= json_encode($premiumYearlyPriceId) ?> },
-  };
+  // Monthly/yearly billing toggle. Each card renders a .price-monthly and
+  // (if configured) a .price-yearly block with its own fixed price ID/CTA
+  // baked in server-side; this just shows/hides the right one.
   let billingInterval = 'month';
-
-  function planPriceId(planKey) {
-    const ids = PRICE_IDS[planKey] || {};
-    return (ids[billingInterval] || ids.month || '');
-  }
 
   function setBillingInterval(interval) {
     billingInterval = interval === 'year' ? 'year' : 'month';
@@ -419,6 +495,10 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       btn.classList.toggle('text-on-surface-variant', !active);
     });
   }
+
+  <?php if ($hasYearlyOption && $initialInterval === 'year'): ?>
+    setBillingInterval('year');
+  <?php endif; ?>
 
   // Initialize Paddle.js
   <?php if (!empty($paddleClientToken)): ?>
@@ -624,7 +704,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     actionModal.classList.remove('hidden');
   }
 
-  async function changePlan(planKey, direction, planLabel) {
+  async function changePlan(planKey, direction, planLabel, interval) {
     const isUpgrade = direction === 'upgrade';
     const title = isUpgrade
       ? <?= json_encode(__('pricing.confirm_upgrade_title')) ?>
@@ -642,7 +722,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     try {
       const res = await fetch('?page=change-subscription-plan', {
         method: 'POST',
-        body: new URLSearchParams({ plan: planKey, interval: billingInterval, csrf_token: CSRF_TOKEN }),
+        body: new URLSearchParams({ plan: planKey, interval: interval || 'month', csrf_token: CSRF_TOKEN }),
       });
       const data = await res.json();
       if (data.ok && data.deferred) {
