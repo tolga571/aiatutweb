@@ -161,6 +161,9 @@ class AdminController {
             'PADDLE_PREMIUM_PLAN_PRICE_ID' => $post['premium_price_id'] ?? '',
             'PADDLE_STARTER_PLAN_PRICE_ID' => $post['starter_price_id'] ?? '',
             'PADDLE_PRO_PLAN_PRICE_ID'     => $post['pro_price_id'] ?? '',
+            'PADDLE_STARTER_YEARLY_PRICE_ID' => $post['starter_yearly_price_id'] ?? '',
+            'PADDLE_PRO_YEARLY_PRICE_ID'     => $post['pro_yearly_price_id'] ?? '',
+            'PADDLE_PREMIUM_YEARLY_PRICE_ID' => $post['premium_yearly_price_id'] ?? '',
             'PADDLE_WEBHOOK_SECRET'       => $post['webhook_secret'] ?? '',
         ];
         foreach ($lines as &$line) {

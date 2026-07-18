@@ -30,6 +30,18 @@ ob_start();
         <input type="text" class="form-control" id="pro_price_id" name="pro_price_id" value="<?= htmlspecialchars($config['PADDLE_PRO_PLAN_PRICE_ID'] ?? '') ?>">
     </div>
     <div class="form-group mb-3">
+        <label for="starter_yearly_price_id" class="form-label"><?= __('admin.starter_yearly_price_id') ?></label>
+        <input type="text" class="form-control" id="starter_yearly_price_id" name="starter_yearly_price_id" value="<?= htmlspecialchars($config['PADDLE_STARTER_YEARLY_PRICE_ID'] ?? '') ?>">
+    </div>
+    <div class="form-group mb-3">
+        <label for="pro_yearly_price_id" class="form-label"><?= __('admin.pro_yearly_price_id') ?></label>
+        <input type="text" class="form-control" id="pro_yearly_price_id" name="pro_yearly_price_id" value="<?= htmlspecialchars($config['PADDLE_PRO_YEARLY_PRICE_ID'] ?? '') ?>">
+    </div>
+    <div class="form-group mb-3">
+        <label for="premium_yearly_price_id" class="form-label"><?= __('admin.premium_yearly_price_id') ?></label>
+        <input type="text" class="form-control" id="premium_yearly_price_id" name="premium_yearly_price_id" value="<?= htmlspecialchars($config['PADDLE_PREMIUM_YEARLY_PRICE_ID'] ?? '') ?>">
+    </div>
+    <div class="form-group mb-3">
         <label for="webhook_secret" class="form-label"><?= __('admin.webhook_secret') ?></label>
         <input type="text" class="form-control" id="webhook_secret" name="webhook_secret" value="<?= htmlspecialchars($config['PADDLE_WEBHOOK_SECRET'] ?? '') ?>">
     </div>
