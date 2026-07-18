@@ -7,12 +7,15 @@
  * PHP 8.0, so this goes straight to the REST API via Guzzle instead).
  *
  * Targets whichever account PADDLE_API_KEY + PADDLE_ENVIRONMENT in .env
- * point to (sandbox unless PADDLE_ENVIRONMENT=production).
+ * point to (sandbox unless PADDLE_ENVIRONMENT=production) — UNLESS you pass
+ * --env=live, which instead uses PADDLE_LIVE_API_KEY against api.paddle.com
+ * without touching the app's own sandbox config. Use --env=live for
+ * read-side auditing only; be extra careful with create-plan against live.
  *
  * Usage:
- *   php scripts/paddle_manage.php list-plans
- *   php scripts/paddle_manage.php create-plan --name="Team Plan" --price=2999 --currency=USD --interval=month [--frequency=1] [--description="..."] [--tax-category=standard]
- *   php scripts/paddle_manage.php list-subscribers [--status=active]
+ *   php scripts/paddle_manage.php list-plans [--env=live]
+ *   php scripts/paddle_manage.php create-plan --name="Team Plan" --price=2999 --currency=USD --interval=month [--frequency=1] [--description="..."] [--tax-category=standard] [--env=live]
+ *   php scripts/paddle_manage.php list-subscribers [--status=active] [--env=live]
  *
  * --price is in the smallest currency unit (e.g. cents for USD): 2999 = $29.99.
  */
@@ -23,13 +26,30 @@ $config = require __DIR__ . '/../config.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-$apiKey = $config['paddle_api_key'] ?? '';
-$environment = $config['paddle_environment'] ?? 'sandbox';
+$command = $argv[1] ?? '';
+$options = [];
+foreach (array_slice($argv, 2) as $arg) {
+    if (preg_match('/^--([a-zA-Z0-9_-]+)=(.*)$/', $arg, $m)) {
+        $options[$m[1]] = $m[2];
+    }
+}
 
-if ($apiKey === '') {
-    fwrite(STDERR, "Error: PADDLE_API_KEY is not set in .env.\n");
-    fwrite(STDERR, "Add your " . ($environment === 'production' ? 'LIVE' : 'sandbox') . " API key (Paddle Dashboard > Developer Tools > Authentication) as PADDLE_API_KEY and re-run.\n");
-    exit(1);
+$useLive = in_array($options['env'] ?? '', ['live', 'production'], true);
+if ($useLive) {
+    $apiKey = getenv('PADDLE_LIVE_API_KEY') ?: '';
+    $environment = 'production';
+    if ($apiKey === '') {
+        fwrite(STDERR, "Error: PADDLE_LIVE_API_KEY is not set in .env.\n");
+        exit(1);
+    }
+} else {
+    $apiKey = $config['paddle_api_key'] ?? '';
+    $environment = $config['paddle_environment'] ?? 'sandbox';
+    if ($apiKey === '') {
+        fwrite(STDERR, "Error: PADDLE_API_KEY is not set in .env.\n");
+        fwrite(STDERR, "Add your " . ($environment === 'production' ? 'LIVE' : 'sandbox') . " API key (Paddle Dashboard > Developer Tools > Authentication) as PADDLE_API_KEY and re-run.\n");
+        exit(1);
+    }
 }
 
 $baseUrl = $environment === 'production' ? 'https://api.paddle.com' : 'https://sandbox-api.paddle.com';
@@ -41,14 +61,6 @@ $http = new Client([
         'Content-Type' => 'application/json',
     ],
 ]);
-
-$command = $argv[1] ?? '';
-$options = [];
-foreach (array_slice($argv, 2) as $arg) {
-    if (preg_match('/^--([a-zA-Z0-9_-]+)=(.*)$/', $arg, $m)) {
-        $options[$m[1]] = $m[2];
-    }
-}
 
 fwrite(STDOUT, "Paddle environment: {$environment} ({$baseUrl})\n\n");
 
@@ -62,12 +74,96 @@ switch ($command) {
     case 'list-subscribers':
         listActiveSubscribers($http, $options);
         break;
+    case 'list-webhooks':
+        listWebhooks($http);
+        break;
+    case 'create-webhook':
+        createWebhook($http, $options);
+        break;
     default:
         fwrite(STDERR, "Usage:\n");
         fwrite(STDERR, "  php scripts/paddle_manage.php list-plans\n");
         fwrite(STDERR, "  php scripts/paddle_manage.php create-plan --name=\"Team Plan\" --price=2999 --currency=USD --interval=month [--frequency=1] [--description=\"...\"] [--tax-category=standard]\n");
         fwrite(STDERR, "  php scripts/paddle_manage.php list-subscribers [--status=active]\n");
+        fwrite(STDERR, "  php scripts/paddle_manage.php list-webhooks\n");
+        fwrite(STDERR, "  php scripts/paddle_manage.php create-webhook --url=\"https://example.com/webhook.php\" --description=\"...\"\n");
         exit(1);
+}
+
+function listWebhooks(Client $http): void
+{
+    try {
+        $resp = $http->get('/notification-settings');
+        $decoded = json_decode((string)$resp->getBody(), true);
+        $rows = $decoded['data'] ?? [];
+        echo "Notification destinations: " . count($rows) . "\n\n";
+        foreach ($rows as $row) {
+            echo "- {$row['id']}  {$row['description']}\n";
+            echo "    destination={$row['destination']}  type={$row['type']}  active=" . ($row['active'] ? 'yes' : 'no') . "\n";
+            echo "    events=" . implode(',', array_map(fn($e) => $e['name'] ?? $e, $row['subscribed_events'] ?? [])) . "\n";
+        }
+    } catch (RequestException $e) {
+        $body = $e->getResponse() ? (string)$e->getResponse()->getBody() : $e->getMessage();
+        fwrite(STDERR, "Paddle API error: {$body}\n");
+        exit(1);
+    }
+}
+
+function createWebhook(Client $http, array $options): void
+{
+    $url = $options['url'] ?? null;
+    $description = $options['description'] ?? 'Subscription webhook';
+    if (!$url) {
+        fwrite(STDERR, "Error: --url is required, e.g. --url=\"https://example.com/webhook.php\"\n");
+        exit(1);
+    }
+
+    // Guardrail: never create a second destination — recreating rotates the
+    // signing secret and silently breaks verification of every future
+    // delivery to whatever destination already exists. Reuse, don't recreate.
+    try {
+        $existingResp = $http->get('/notification-settings');
+        $existing = json_decode((string)$existingResp->getBody(), true)['data'] ?? [];
+        if (!empty($existing)) {
+            fwrite(STDERR, "Refusing to create: " . count($existing) . " notification destination(s) already exist on this account:\n");
+            foreach ($existing as $row) {
+                fwrite(STDERR, "  - {$row['id']}  {$row['description']}  ({$row['destination']})\n");
+            }
+            fwrite(STDERR, "If you need a new URL, update the existing destination in the Paddle dashboard instead of creating a second one.\n");
+            exit(1);
+        }
+    } catch (RequestException $e) {
+        $body = $e->getResponse() ? (string)$e->getResponse()->getBody() : $e->getMessage();
+        fwrite(STDERR, "Paddle API error checking existing destinations: {$body}\n");
+        exit(1);
+    }
+
+    $subscriptionEvents = [
+        'subscription.activated', 'subscription.canceled', 'subscription.created',
+        'subscription.imported', 'subscription.past_due', 'subscription.paused',
+        'subscription.resumed', 'subscription.trialing', 'subscription.updated',
+    ];
+
+    try {
+        $resp = $http->post('/notification-settings', [
+            'json' => [
+                'description' => $description,
+                'type' => 'url',
+                'destination' => $url,
+                'subscribed_events' => $subscriptionEvents,
+            ],
+        ]);
+        $data = json_decode((string)$resp->getBody(), true)['data'];
+        echo "Created notification destination: {$data['id']}\n";
+        echo "  destination={$data['destination']}\n";
+        echo "  subscribed to: " . implode(', ', $subscriptionEvents) . "\n\n";
+        echo "SIGNING SECRET (save this now — it cannot be retrieved again):\n";
+        echo "  {$data['endpoint_secret_key']}\n";
+    } catch (RequestException $e) {
+        $body = $e->getResponse() ? (string)$e->getResponse()->getBody() : $e->getMessage();
+        fwrite(STDERR, "Paddle API error: {$body}\n");
+        exit(1);
+    }
 }
 
 function listPlans(Client $http, array $options): void
