@@ -328,10 +328,16 @@ switch ($page) {
             $config['paddle_premium_yearly_price_id'] ?? '',
         ]);
         $purchaseInterval = in_array($priceId, $yearlyPriceIds, true) ? 'year' : 'month';
-        $db->execute(
-            'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ?, pending_purchase_interval = ? WHERE id = ?',
-            [$purchasePlan, $purchaseInterval, $auth->userId()]
-        );
+        try {
+            $db->execute(
+                'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ?, pending_purchase_interval = ? WHERE id = ?',
+                [$purchasePlan, $purchaseInterval, $auth->userId()]
+            );
+        } catch (\Throwable $e) {
+            // Best-effort tracking for the timeout fallback below — if it
+            // fails, the Paddle webhook still grants access on its own.
+            error_log('confirm-payment: failed to record pending purchase: ' . $e->getMessage());
+        }
         header('Content-Type: application/json');
         echo json_encode(['ok' => true]);
         exit;
@@ -344,6 +350,7 @@ switch ($page) {
         $paid = $auth->hasPaid();
 
         if (!$paid) {
+          try {
             $user = $db->fetchOne('SELECT payment_pending_at, pending_purchase_plan, pending_purchase_interval, plan_status FROM users WHERE id = ?', [$userId]);
             if (!empty($user['payment_pending_at'])) {
                 $pendingTime = strtotime($user['payment_pending_at']);
@@ -366,6 +373,11 @@ switch ($page) {
                     // timeout UI offer a retry/support path.
                 }
             }
+          } catch (\Throwable $e) {
+              // Keep polling rather than crash — the webhook still grants
+              // access on its own regardless of this fallback path.
+              error_log('check-payment-status: fallback grant check failed: ' . $e->getMessage());
+          }
         }
 
         echo json_encode(['paid' => $paid]);
@@ -534,21 +546,31 @@ switch ($page) {
             exit;
         }
 
-        if ($isUpgrade) {
-            // Upgrades apply immediately (Paddle charges the prorated
-            // difference right now), so reflect it right away; the next
-            // webhook call will reconcile from Paddle's own event data.
-            $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
-            $db->execute('UPDATE users SET plan_status = ?, has_paid = 1, billing_interval = ? WHERE id = ?', [$planKey, $interval, $auth->userId()]);
-            echo json_encode(['ok' => true]);
-        } else {
-            // Downgrades are deferred to the next billing period (standard
-            // practice — no immediate prorated credit). The user keeps
-            // their current plan/quota until then; plan_status and the
-            // token bonus only change once Paddle's webhook confirms the
-            // new price actually took effect.
-            $db->execute('UPDATE users SET pending_plan_change = ? WHERE id = ?', [$planKey, $auth->userId()]);
-            echo json_encode(['ok' => true, 'deferred' => true]);
+        // Paddle already accepted the price change at this point — a DB
+        // error here must not surface as a broken response (or worse, look
+        // like the whole change failed while Paddle already billed it).
+        // Fall back to reporting success and let the next webhook call
+        // reconcile plan_status/billing_interval from Paddle's own data.
+        try {
+            if ($isUpgrade) {
+                // Upgrades apply immediately (Paddle charges the prorated
+                // difference right now), so reflect it right away; the next
+                // webhook call will reconcile from Paddle's own event data.
+                $db->execute('UPDATE token_usage SET bonus_limit = 0 WHERE user_id = ?', [$auth->userId()]);
+                $db->execute('UPDATE users SET plan_status = ?, has_paid = 1, billing_interval = ? WHERE id = ?', [$planKey, $interval, $auth->userId()]);
+                echo json_encode(['ok' => true]);
+            } else {
+                // Downgrades are deferred to the next billing period (standard
+                // practice — no immediate prorated credit). The user keeps
+                // their current plan/quota until then; plan_status and the
+                // token bonus only change once Paddle's webhook confirms the
+                // new price actually took effect.
+                $db->execute('UPDATE users SET pending_plan_change = ? WHERE id = ?', [$planKey, $auth->userId()]);
+                echo json_encode(['ok' => true, 'deferred' => true]);
+            }
+        } catch (\Throwable $e) {
+            error_log('change-subscription-plan: Paddle updated but local DB write failed: ' . $e->getMessage());
+            echo json_encode(['ok' => true, 'reconciling' => true]);
         }
         exit;
 
