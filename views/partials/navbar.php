@@ -4,7 +4,7 @@
   <script src="/js/navbar.js" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex flex-col shrink-0">
-      <h1 class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</h1>
+      <p class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</p>
       <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
     </a>
     <?php if (isset($auth) && $auth->isLoggedIn()):
