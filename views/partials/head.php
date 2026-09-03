@@ -96,6 +96,24 @@
       transform: none !important;
     }
   }
+
+  /* Keyboard focus indicator, site-wide. Raw CSS (not a Tailwind focus-visible:
+     utility on every element) so it applies uniformly without touching every
+     interactive element individually. #b4c5ff mirrors the `primary` token
+     below — keep the two in sync if that token changes. */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    /* !important: the Tailwind `forms` plugin resets input/select/textarea
+       outline-color to transparent on :focus, which otherwise wins this
+       property regardless of rule order. Focus visibility isn't optional. */
+    outline: 2px solid #b4c5ff !important;
+    outline-offset: 2px !important;
+    border-radius: 4px;
+  }
 </style>
 <script>
 tailwind.config = {

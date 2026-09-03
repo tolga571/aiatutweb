@@ -9,7 +9,7 @@
     <div class="text-center mb-8">
       <a href="?page=home" class="inline-flex items-center gap-2 font-bold text-xl mb-4">
         <div class="flex flex-col items-start">
-          <h1 class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</h1>
+          <p class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</p>
           <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
         </div>
       </a>
