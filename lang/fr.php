@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => 'Demander un remboursement ?',
     'pricing.confirm_refund_body' => 'Nous examinerons votre demande selon notre politique de remboursement et vous répondrons par e-mail. Cela n\'annule pas votre abonnement.',
     'pricing.refund_success' => 'Votre demande de remboursement a été envoyée à notre équipe. Nous vous répondrons bientôt par e-mail.',
-    'pricing.refund_error' => 'Nous n\'avons pas pu envoyer votre demande de remboursement. Réessayez ou écrivez directement à support@aitut.com.',
+    'pricing.refund_error' => 'Nous n\'avons pas pu envoyer votre demande de remboursement. Réessayez ou écrivez directement à info@jumplearner.com.',
     'pricing.confirm_change' => 'Passer à ce forfait ? La différence de prix est calculée au prorata automatiquement.',
-    'pricing.manual_change_required' => 'Nous ne pouvons pas encore changer votre forfait automatiquement. Contactez support@aitut.com, nous le ferons pour vous.',
+    'pricing.manual_change_required' => 'Nous ne pouvons pas encore changer votre forfait automatiquement. Contactez info@jumplearner.com, nous le ferons pour vous.',
     'pricing.confirm_cancel' => 'Annuler votre abonnement ? Vous garderez l\'accès jusqu\'à la fin de votre période de facturation actuelle.',
     'pricing.cancel_success_api' => 'Votre abonnement sera annulé à la fin de votre période de facturation actuelle.',
     'pricing.cancel_success_manual' => 'Nous avons bien reçu votre demande d\'annulation. Notre équipe la confirmera bientôt par e-mail.',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => 'Après 14 jours',
     'refund.s2_body' => 'Après 14 jours, les remboursements sont traités au cas par cas en fonction des problèmes techniques, de l\'utilisation du compte et de la conformité à la plateforme.',
     'refund.s3_title' => 'Comment demander un remboursement',
-    'refund.s3_body' => 'Pour soumettre une demande, veuillez nous contacter via notre <a href="?page=contact" class="text-primary hover:underline font-medium">page de contact</a> ou envoyer un e-mail à support@aitut.com avec votre adresse e-mail d\'inscription et les détails d\'achat.',
+    'refund.s3_body' => 'Pour soumettre une demande, veuillez nous contacter via notre <a href="?page=contact" class="text-primary hover:underline font-medium">page de contact</a> ou envoyer un e-mail à info@jumplearner.com avec votre adresse e-mail d\'inscription et les détails d\'achat.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Politique des cookies – AiTut',

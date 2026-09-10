@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => 'Rückerstattung anfordern?',
     'pricing.confirm_refund_body' => 'Wir prüfen deine Anfrage anhand unserer Rückerstattungsrichtlinie und melden uns per E-Mail. Dies kündigt dein Abo nicht.',
     'pricing.refund_success' => 'Deine Rückerstattungsanfrage wurde an unser Team gesendet. Wir melden uns in Kürze per E-Mail.',
-    'pricing.refund_error' => 'Wir konnten deine Rückerstattungsanfrage nicht senden. Bitte versuche es erneut oder schreibe direkt an support@aitut.com.',
+    'pricing.refund_error' => 'Wir konnten deine Rückerstattungsanfrage nicht senden. Bitte versuche es erneut oder schreibe direkt an info@jumplearner.com.',
     'pricing.confirm_change' => 'Zu diesem Plan wechseln? Der Preisunterschied wird automatisch anteilig berechnet.',
-    'pricing.manual_change_required' => 'Wir können deinen Plan noch nicht automatisch wechseln. Bitte kontaktiere support@aitut.com, wir erledigen das für dich.',
+    'pricing.manual_change_required' => 'Wir können deinen Plan noch nicht automatisch wechseln. Bitte kontaktiere info@jumplearner.com, wir erledigen das für dich.',
     'pricing.confirm_cancel' => 'Abo kündigen? Du behältst den Zugang bis zum Ende deines aktuellen Abrechnungszeitraums.',
     'pricing.cancel_success_api' => 'Dein Abo wird zum Ende des aktuellen Abrechnungszeitraums gekündigt.',
     'pricing.cancel_success_manual' => 'Wir haben deine Kündigung erhalten. Unser Team bestätigt sie in Kürze per E-Mail.',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => 'Nach 14 Tagen',
     'refund.s2_body' => 'Nach 14 Tagen werden Rückerstattungen je nach technischen Problemen, Kontonutzung und Plattform-Compliance von Fall zu Fall geprüft.',
     'refund.s3_title' => 'So beantragst du eine Rückerstattung',
-    'refund.s3_body' => 'Um einen Antrag zu stellen, kontaktiere uns bitte über unsere <a href="?page=contact" class="text-primary hover:underline font-medium">Kontaktseite</a> oder sende eine E-Mail an support@aitut.com mit deiner Registrierungs-E-Mail-Adresse und den Kaufdetails.',
+    'refund.s3_body' => 'Um einen Antrag zu stellen, kontaktiere uns bitte über unsere <a href="?page=contact" class="text-primary hover:underline font-medium">Kontaktseite</a> oder sende eine E-Mail an info@jumplearner.com mit deiner Registrierungs-E-Mail-Adresse und den Kaufdetails.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie-Richtlinie – AiTut',

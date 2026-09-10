@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => 'طلب استرداد؟',
     'pricing.confirm_refund_body' => 'سنراجع طلبك وفقًا لسياسة الاسترداد الخاصة بنا ونتواصل معك عبر البريد الإلكتروني. هذا لا يلغي اشتراكك.',
     'pricing.refund_success' => 'تم إرسال طلب الاسترداد إلى فريقنا. سنتواصل معك قريبًا عبر البريد الإلكتروني.',
-    'pricing.refund_error' => 'تعذّر إرسال طلب الاسترداد. يرجى المحاولة مرة أخرى أو مراسلة support@aitut.com مباشرة.',
+    'pricing.refund_error' => 'تعذّر إرسال طلب الاسترداد. يرجى المحاولة مرة أخرى أو مراسلة info@jumplearner.com مباشرة.',
     'pricing.confirm_change' => 'التبديل إلى هذه الخطة؟ سيتم احتساب فرق السعر تلقائيًا بالتناسب.',
-    'pricing.manual_change_required' => 'لا يمكننا تبديل خطتك تلقائيًا بعد. يرجى التواصل مع support@aitut.com وسنقوم بذلك نيابة عنك.',
+    'pricing.manual_change_required' => 'لا يمكننا تبديل خطتك تلقائيًا بعد. يرجى التواصل مع info@jumplearner.com وسنقوم بذلك نيابة عنك.',
     'pricing.confirm_cancel' => 'إلغاء اشتراكك؟ ستحتفظ بالوصول حتى نهاية فترة الفوترة الحالية.',
     'pricing.cancel_success_api' => 'تم جدولة إلغاء اشتراكك في نهاية فترة الفوترة الحالية.',
     'pricing.cancel_success_manual' => 'تم استلام طلب الإلغاء الخاص بك. سيؤكده فريقنا قريبًا عبر البريد الإلكتروني.',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => 'بعد 14 يوماً',
     'refund.s2_body' => 'بعد 14 يوماً، يتم التعامل مع طلبات الاسترداد على أساس كل حالة على حدة اعتماداً على المشكلات الفنية واستخدام الحساب والامتثال للمنصة.',
     'refund.s3_title' => 'كيفية طلب استرداد',
-    'refund.s3_body' => 'لتقديم طلب، يرجى الاتصال بنا عبر <a href="?page=contact" class="text-primary hover:underline font-medium">صفحة الاتصال</a> أو إرسال بريد إلكتروني إلى support@aitut.com يحتوي على عنوان بريدك الإلكتروني المسجل وتفاصيل الشراء.',
+    'refund.s3_body' => 'لتقديم طلب، يرجى الاتصال بنا عبر <a href="?page=contact" class="text-primary hover:underline font-medium">صفحة الاتصال</a> أو إرسال بريد إلكتروني إلى info@jumplearner.com يحتوي على عنوان بريدك الإلكتروني المسجل وتفاصيل الشراء.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'سياسة ملفات تعريف الارتباط – AiTut',

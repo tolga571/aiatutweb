@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => '返金をリクエストしますか？',
     'pricing.confirm_refund_body' => '返金ポリシーに基づいてリクエストを確認し、メールでご連絡します。これによりサブスクリプションが解約されることはありません。',
     'pricing.refund_success' => '返金リクエストをチームに送信しました。まもなくメールでご連絡します。',
-    'pricing.refund_error' => '返金リクエストを送信できませんでした。再試行するか、support@aitut.com に直接メールしてください。',
+    'pricing.refund_error' => '返金リクエストを送信できませんでした。再試行するか、info@jumplearner.com に直接メールしてください。',
     'pricing.confirm_change' => 'このプランに切り替えますか？差額は自動的に日割り計算されます。',
-    'pricing.manual_change_required' => 'まだ自動でプランを変更できません。support@aitut.com までご連絡いただければ対応いたします。',
+    'pricing.manual_change_required' => 'まだ自動でプランを変更できません。info@jumplearner.com までご連絡いただければ対応いたします。',
     'pricing.confirm_cancel' => 'サブスクリプションを解約しますか？現在の請求期間の終了までアクセスは継続します。',
     'pricing.cancel_success_api' => 'サブスクリプションは現在の請求期間の終了時に解約される予定です。',
     'pricing.cancel_success_manual' => '解約リクエストを受け付けました。まもなくメールでご案内いたします。',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => '14日経過後',
     'refund.s2_body' => '14日経過後の返金については、技術的な問題、アカウント使用状況、プラットフォームコンプライアンスに基づいてケースバイケースで対応します。',
     'refund.s3_title' => '返金リクエスト方法',
-    'refund.s3_body' => 'リクエストを提出するには、<a href="?page=contact" class="text-primary hover:underline font-medium">お問い合わせページ</a>からご連絡いただくか、登録メールアドレスと購入詳細を添えて support@aitut.com までメールをお送りください。',
+    'refund.s3_body' => 'リクエストを提出するには、<a href="?page=contact" class="text-primary hover:underline font-medium">お問い合わせページ</a>からご連絡いただくか、登録メールアドレスと購入詳細を添えて info@jumplearner.com までメールをお送りください。',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookieポリシー – AiTut',

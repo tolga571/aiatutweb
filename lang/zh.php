@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => '申请退款？',
     'pricing.confirm_refund_body' => '我们将根据退款政策审核您的申请并通过邮件回复。这不会取消您的订阅。',
     'pricing.refund_success' => '您的退款申请已发送给我们的团队，我们会尽快通过邮件回复。',
-    'pricing.refund_error' => '无法提交您的退款申请，请重试或直接发邮件至 support@aitut.com。',
+    'pricing.refund_error' => '无法提交您的退款申请，请重试或直接发邮件至 info@jumplearner.com。',
     'pricing.confirm_change' => '切换到此套餐？差价将自动按比例计算。',
-    'pricing.manual_change_required' => '暂时无法自动切换您的套餐。请联系 support@aitut.com，我们会为您处理。',
+    'pricing.manual_change_required' => '暂时无法自动切换您的套餐。请联系 info@jumplearner.com，我们会为您处理。',
     'pricing.confirm_cancel' => '确定取消订阅吗？在当前计费周期结束前您仍可使用。',
     'pricing.cancel_success_api' => '您的订阅将在当前计费周期结束时取消。',
     'pricing.cancel_success_manual' => '我们已收到您的取消请求，团队会尽快通过邮件确认。',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => '超过14天',
     'refund.s2_body' => '14天后，退款将根据技术问题、账号使用情况和平台合规性逐案处理。',
     'refund.s3_title' => '如何申请退款',
-    'refund.s3_body' => '要提交申请，请通过我们的<a href="?page=contact" class="text-primary hover:underline font-medium">联系页面</a>联系我们，或发送包含注册邮箱地址和购买详情的电子邮件至 support@aitut.com。',
+    'refund.s3_body' => '要提交申请，请通过我们的<a href="?page=contact" class="text-primary hover:underline font-medium">联系页面</a>联系我们，或发送包含注册邮箱地址和购买详情的电子邮件至 info@jumplearner.com。',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie政策 – AiTut',

@@ -320,9 +320,9 @@ return [
     'pricing.confirm_refund_title' => 'Request a refund?',
     'pricing.confirm_refund_body' => 'We\'ll review your request against our refund policy and follow up by email. This does not cancel your subscription.',
     'pricing.refund_success' => 'Your refund request has been sent to our team. We\'ll follow up by email shortly.',
-    'pricing.refund_error' => 'We couldn\'t submit your refund request. Please try again or email support@aitut.com directly.',
+    'pricing.refund_error' => 'We couldn\'t submit your refund request. Please try again or email info@jumplearner.com directly.',
     'pricing.confirm_change' => 'Switch to this plan? The price difference is prorated automatically.',
-    'pricing.manual_change_required' => 'We can\'t switch your plan automatically yet. Please contact support@aitut.com and we\'ll do it for you.',
+    'pricing.manual_change_required' => 'We can\'t switch your plan automatically yet. Please contact info@jumplearner.com and we\'ll do it for you.',
     'pricing.confirm_cancel' => 'Cancel your subscription? You\'ll keep access until the end of your current billing period.',
     'pricing.cancel_success_api' => 'Your subscription is scheduled to cancel at the end of your current billing period.',
     'pricing.cancel_success_manual' => 'We\'ve received your cancellation request. Our team will confirm it by email shortly.',
@@ -528,7 +528,7 @@ return [
     'refund.s2_title' => 'After 14 Days',
     'refund.s2_body' => 'After 14 days, refunds are handled on a case-by-case basis depending on technical issues, account usage, and platform compliance.',
     'refund.s3_title' => 'How to Request a Refund',
-    'refund.s3_body' => 'To submit a request, please contact us via our <a href="?page=contact" class="text-primary hover:underline font-medium">Contact Page</a> or write an email to support@aitut.com containing your registration email address and purchase details.',
+    'refund.s3_body' => 'To submit a request, please contact us via our <a href="?page=contact" class="text-primary hover:underline font-medium">Contact Page</a> or write an email to info@jumplearner.com containing your registration email address and purchase details.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie Policy – AiTut',

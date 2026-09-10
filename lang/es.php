@@ -315,9 +315,9 @@ return [
     'pricing.confirm_refund_title' => '¿Solicitar un reembolso?',
     'pricing.confirm_refund_body' => 'Revisaremos tu solicitud según nuestra política de reembolsos y te responderemos por correo. Esto no cancela tu suscripción.',
     'pricing.refund_success' => 'Tu solicitud de reembolso fue enviada a nuestro equipo. Te responderemos pronto por correo.',
-    'pricing.refund_error' => 'No pudimos enviar tu solicitud de reembolso. Inténtalo de nuevo o escribe directamente a support@aitut.com.',
+    'pricing.refund_error' => 'No pudimos enviar tu solicitud de reembolso. Inténtalo de nuevo o escribe directamente a info@jumplearner.com.',
     'pricing.confirm_change' => '¿Cambiar a este plan? La diferencia de precio se prorratea automáticamente.',
-    'pricing.manual_change_required' => 'Todavía no podemos cambiar tu plan automáticamente. Contacta a support@aitut.com y lo haremos por ti.',
+    'pricing.manual_change_required' => 'Todavía no podemos cambiar tu plan automáticamente. Contacta a info@jumplearner.com y lo haremos por ti.',
     'pricing.confirm_cancel' => '¿Cancelar tu suscripción? Conservarás el acceso hasta el final de tu período de facturación actual.',
     'pricing.cancel_success_api' => 'Tu suscripción se cancelará al final de tu período de facturación actual.',
     'pricing.cancel_success_manual' => 'Hemos recibido tu solicitud de cancelación. Nuestro equipo la confirmará pronto por correo.',
@@ -515,7 +515,7 @@ return [
     'refund.s2_title' => 'Después de 14 días',
     'refund.s2_body' => 'Después de 14 días, los reembolsos se gestionan caso por caso según problemas técnicos, uso de la cuenta y cumplimiento de la plataforma.',
     'refund.s3_title' => 'Cómo solicitar un reembolso',
-    'refund.s3_body' => 'Para enviar una solicitud, contáctanos a través de nuestra <a href="?page=contact" class="text-primary hover:underline font-medium">Página de contacto</a> o escribe un correo electrónico a support@aitut.com con tu dirección de correo electrónico de registro y los detalles de la compra.',
+    'refund.s3_body' => 'Para enviar una solicitud, contáctanos a través de nuestra <a href="?page=contact" class="text-primary hover:underline font-medium">Página de contacto</a> o escribe un correo electrónico a info@jumplearner.com con tu dirección de correo electrónico de registro y los detalles de la compra.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Política de cookies – AiTut',
