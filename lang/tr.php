@@ -505,6 +505,8 @@ return [
     'terms.page_title' => 'Kullanım Koşulları – AiTut',
     'terms.heading' => 'Kullanım Koşulları',
     'terms.intro' => 'AiTut\'a hoş geldiniz. Web sitemize veya hizmetlerimize erişerek veya bunları kullanarak, aşağıdaki kullanım koşullarına uymayı ve bunlarla bağlı olmayı kabul edersiniz.',
+    'terms.seller_title' => 'Satıcı Bilgileri',
+    'terms.seller_body' => 'AiTut, İstanbul, Türkiye merkezli bireysel bir satıcı (şahıs) olan Tolga Ayberk Gültekin tarafından sahiplenilmekte ve işletilmektedir. Bu koşullarla ilgili sorularınız için bize info@jumplearner.com adresinden ulaşabilirsiniz.',
     'terms.s1_title' => '1. Yetkili Kullanım',
     'terms.s1_body' => 'AiTut\'u kullanarak, hizmeti yalnızca kişisel, ticari olmayan dil öğrenme amaçları için kullanmayı kabul edersiniz. Açık izin olmadan hesabınıza erişimi paylaşamaz veya hizmeti üçüncü taraf eğitimi için kullanamazsınız.',
     'terms.s2_title' => '2. Kısıtlamalar',

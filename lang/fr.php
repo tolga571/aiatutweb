@@ -492,6 +492,8 @@ return [
     'terms.page_title' => 'Conditions générales – AiTut',
     'terms.heading' => 'Conditions générales',
     'terms.intro' => 'Bienvenue sur AiTut. En accédant à notre site web et à nos services ou en les utilisant, vous acceptez de vous conformer aux conditions générales suivantes.',
+    'terms.seller_title' => 'Informations sur le vendeur',
+    'terms.seller_body' => 'AiTut est détenu et exploité par Tolga Ayberk Gültekin, un vendeur individuel (entrepreneur indépendant) basé à Istanbul, en Turquie. Pour toute question concernant ces conditions, contactez-nous à info@jumplearner.com.',
     'terms.s1_title' => '1. Utilisation autorisée',
     'terms.s1_body' => 'En utilisant AiTut, vous acceptez d\'utiliser le service uniquement à des fins personnelles et non commerciales d\'apprentissage des langues. Vous ne pouvez pas partager l\'accès à votre compte ni utiliser le service pour l\'enseignement à des tiers sans autorisation explicite.',
     'terms.s2_title' => '2. Restrictions',

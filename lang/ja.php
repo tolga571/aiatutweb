@@ -492,6 +492,8 @@ return [
     'terms.page_title' => '利用規約 – AiTut',
     'terms.heading' => '利用規約',
     'terms.intro' => 'AiTutへようこそ。当社のウェブサイトおよびサービスにアクセスまたは使用することにより、以下の利用規約に従うことに同意したものとみなされます。',
+    'terms.seller_title' => '販売者情報',
+    'terms.seller_body' => 'AiTutは、トルコ・イスタンブールを拠点とする個人事業主のTolga Ayberk Gültekinが所有・運営しています。本規約に関するお問い合わせは info@jumplearner.com までご連絡ください。',
     'terms.s1_title' => '1. 許可される使用',
     'terms.s1_body' => 'AiTutを使用することにより、お客様はサービスを個人の非営利目的の言語学習にのみ使用することに同意します。明示的な許可なく、アカウントへのアクセスを共有したり、サービスを第三者への指導に使用することはできません。',
     'terms.s2_title' => '2. 制限事項',

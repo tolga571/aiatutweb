@@ -27,6 +27,15 @@
         <div class="border-t border-outline-variant/10 my-6"></div>
 
         <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.seller_title') ?></h2>
+          <p>
+            <?= __('terms.seller_body') ?>
+          </p>
+        </div>
+
+        <div class="border-t border-outline-variant/10 my-6"></div>
+
+        <div>
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.s1_title') ?></h2>
           <p>
             <?= __('terms.s1_body') ?>

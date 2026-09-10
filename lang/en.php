@@ -505,6 +505,8 @@ return [
     'terms.page_title' => 'Terms & Conditions – AiTut',
     'terms.heading' => 'Terms & Conditions',
     'terms.intro' => 'Welcome to AiTut. By accessing or using our website and services, you agree to comply with and be bound by the following terms and conditions.',
+    'terms.seller_title' => 'Seller Information',
+    'terms.seller_body' => 'AiTut is owned and operated by Tolga Ayberk Gültekin, an individual (sole trader) based in Istanbul, Türkiye. For any questions regarding these terms, contact us at info@jumplearner.com.',
     'terms.s1_title' => '1. Authorized Use',
     'terms.s1_body' => 'By using AiTut, you agree to use the service for personal, non-commercial language learning purposes only. You may not share access to your account or use the service for third-party instruction without explicit permission.',
     'terms.s2_title' => '2. Restrictions',

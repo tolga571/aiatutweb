@@ -492,6 +492,8 @@ return [
     'terms.page_title' => 'AGB – AiTut',
     'terms.heading' => 'Allgemeine Geschäftsbedingungen',
     'terms.intro' => 'Willkommen bei AiTut. Durch den Zugriff auf oder die Nutzung unserer Website und Dienste erklärst du dich mit den folgenden Bedingungen einverstanden.',
+    'terms.seller_title' => 'Verkäuferinformationen',
+    'terms.seller_body' => 'AiTut wird von Tolga Ayberk Gültekin, einem Einzelunternehmer mit Sitz in Istanbul, Türkei, betrieben. Bei Fragen zu diesen Bedingungen kontaktieren Sie uns unter info@jumplearner.com.',
     'terms.s1_title' => '1. Autorisierte Nutzung',
     'terms.s1_body' => 'Durch die Nutzung von AiTut erklärst du dich damit einverstanden, den Dienst ausschließlich für persönliche, nicht-kommerzielle Sprachlernzwecke zu nutzen. Du darfst den Zugang zu deinem Konto nicht teilen oder den Dienst ohne ausdrückliche Genehmigung für den Unterricht Dritter nutzen.',
     'terms.s2_title' => '2. Einschränkungen',

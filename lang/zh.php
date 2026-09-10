@@ -492,6 +492,8 @@ return [
     'terms.page_title' => '条款与条件 – AiTut',
     'terms.heading' => '条款与条件',
     'terms.intro' => '欢迎使用AiTut。通过访问或使用我们的网站和服务，您同意遵守以下条款与条件。',
+    'terms.seller_title' => '卖家信息',
+    'terms.seller_body' => 'AiTut 由位于土耳其伊斯坦布尔的个体经营者 Tolga Ayberk Gültekin 拥有并运营。如对本条款有任何疑问，请通过 info@jumplearner.com 与我们联系。',
     'terms.s1_title' => '1. 授权使用',
     'terms.s1_body' => '使用AiTut即表示您同意仅将服务用于个人、非商业的语言学习目的。未经明确许可，您不得共享账号访问权限或将服务用于第三方教学。',
     'terms.s2_title' => '2. 限制',
