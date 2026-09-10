@@ -463,7 +463,7 @@ return [
     'faq.q4' => '什么是词汇构建器？',
     'faq.a4_1' => '您在聊天中遇到或难以掌握的新单词和概念都会保存到您的个人词汇笔记本中。您可以查看定义、翻译和例句以便以后练习。',
     'faq.q5' => '有退款政策吗？',
-    'faq.a5_1' => '是的。对于首次购买，如果您不满意，我们提供14天全额退款政策。请联系支持或阅读我们的退款政策页面了解更多详情。',
+    'faq.a5_1' => '是的。对于首次购买，如果您不满意，我们提供30天全额退款政策。请联系支持或阅读我们的退款政策页面了解更多详情。',
 
     // ── Privacy Policy ──────────────────────────────────────
     'privacy.page_title' => '隐私政策 – AiTut',
@@ -510,12 +510,14 @@ return [
     'refund.page_title' => '退款政策 – AiTut',
     'refund.heading' => '退款政策',
     'refund.intro' => '我们希望您对语言学习之旅完全满意。本文档概述了订阅套餐的退款条件。',
-    'refund.s1_title' => '14天退款保证',
-    'refund.s1_body' => '如果您在首次付款后<strong>14天内</strong>对AiTut不满意，请联系支持人员获得全额退款。',
-    'refund.s2_title' => '超过14天',
-    'refund.s2_body' => '14天后，退款将根据技术问题、账号使用情况和平台合规性逐案处理。',
-    'refund.s3_title' => '如何申请退款',
-    'refund.s3_body' => '要提交申请，请通过我们的<a href="?page=contact" class="text-primary hover:underline font-medium">联系页面</a>联系我们，或发送包含注册邮箱地址和购买详情的电子邮件至 info@jumplearner.com。',
+    'refund.s1_title' => '30天退款保证',
+    'refund.s1_body' => '如果您在首次付款后<strong>30天内</strong>对AiTut不满意，请联系支持人员获得全额退款。',
+    'refund.s2_title' => '超过30天',
+    'refund.s2_body' => '30天后，退款将根据技术问题、账号使用情况和平台合规性逐案处理。',
+    'refund.s3_title' => '取消订阅',
+    'refund.s3_body' => '您可以随时在账户设置的定价页面取消订阅。取消将在当前计费周期结束时生效——在此之前您仍可完全使用服务，之后将不再收费。取消不会自动触发当前周期的退款。',
+    'refund.s4_title' => '如何申请退款',
+    'refund.s4_body' => '要提交申请，请通过我们的<a href="?page=contact" class="text-primary hover:underline font-medium">联系页面</a>联系我们，或发送包含注册邮箱地址和购买详情的电子邮件至 info@jumplearner.com。',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie政策 – AiTut',

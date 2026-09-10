@@ -46,6 +46,13 @@
             <?= __('refund.s3_body') ?>
           </p>
         </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('refund.s4_title') ?></h2>
+          <p>
+            <?= __('refund.s4_body') ?>
+          </p>
+        </div>
       </div>
 
     </div>

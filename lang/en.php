@@ -476,7 +476,7 @@ return [
     'faq.q4' => 'What is the vocabulary builder?',
     'faq.a4_1' => 'Every new word or concept you encounter or struggle with during chats is saved to your personal vocabulary notebook. You can view definitions, translations, and example sentences to practice later.',
     'faq.q5' => 'Is there a refund policy?',
-    'faq.a5_1' => 'Yes, we offer a 14-day full refund policy for your initial purchase if you are not satisfied. Please contact support or read our Refund Policy page for more details.',
+    'faq.a5_1' => 'Yes, we offer a 30-day full refund policy for your initial purchase if you are not satisfied. Please contact support or read our Refund Policy page for more details.',
 
     // ── Privacy Policy ──────────────────────────────────────
     'privacy.page_title' => 'Privacy Policy – AiTut',
@@ -523,12 +523,14 @@ return [
     'refund.page_title' => 'Refund Policy – AiTut',
     'refund.heading' => 'Refund Policy',
     'refund.intro' => 'We want you to be fully satisfied with your language learning journey. This document outlines the refund conditions for our subscription plans.',
-    'refund.s1_title' => '14-Day Money Back Guarantee',
-    'refund.s1_body' => 'If you are unsatisfied with AiTut within <strong>14 days</strong> of your first payment, contact support for a full refund.',
-    'refund.s2_title' => 'After 14 Days',
-    'refund.s2_body' => 'After 14 days, refunds are handled on a case-by-case basis depending on technical issues, account usage, and platform compliance.',
-    'refund.s3_title' => 'How to Request a Refund',
-    'refund.s3_body' => 'To submit a request, please contact us via our <a href="?page=contact" class="text-primary hover:underline font-medium">Contact Page</a> or write an email to info@jumplearner.com containing your registration email address and purchase details.',
+    'refund.s1_title' => '30-Day Money Back Guarantee',
+    'refund.s1_body' => 'If you are unsatisfied with AiTut within <strong>30 days</strong> of your first payment, contact support for a full refund.',
+    'refund.s2_title' => 'After 30 Days',
+    'refund.s2_body' => 'After 30 days, refunds are handled on a case-by-case basis depending on technical issues, account usage, and platform compliance.',
+    'refund.s3_title' => 'Cancelling Your Subscription',
+    'refund.s3_body' => 'You can cancel your subscription at any time from the Pricing page in your account settings. Cancellation takes effect at the end of your current billing period — you keep full access until then and will not be charged again afterwards. Cancelling does not automatically trigger a refund for the current period.',
+    'refund.s4_title' => 'How to Request a Refund',
+    'refund.s4_body' => 'To submit a request, please contact us via our <a href="?page=contact" class="text-primary hover:underline font-medium">Contact Page</a> or write an email to info@jumplearner.com containing your registration email address and purchase details.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie Policy – AiTut',

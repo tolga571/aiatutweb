@@ -476,7 +476,7 @@ return [
     'faq.q4' => 'Kelime oluşturucu nedir?',
     'faq.a4_1' => 'Sohbetler sırasında karşılaştığınız veya zorlandığınız her yeni kelime veya kavram, kişisel kelime defterinize kaydedilir. Daha sonra pratik yapmak için tanımları, çevirileri ve örnek cümleleri görüntüleyebilirsiniz.',
     'faq.q5' => 'İade politikanız var mı?',
-    'faq.a5_1' => 'Evet, memnun kalmamanız durumunda ilk satın alma işleminiz için 14 günlük tam para iade politikamız bulunmaktadır. Destek ekibimizle iletişime geçin veya daha fazla bilgi için İade Politikası sayfamızı okuyun.',
+    'faq.a5_1' => 'Evet, memnun kalmamanız durumunda ilk satın alma işleminiz için 30 günlük tam para iade politikamız bulunmaktadır. Destek ekibimizle iletişime geçin veya daha fazla bilgi için İade Politikası sayfamızı okuyun.',
 
     // ── Privacy Policy ──────────────────────────────────────
     'privacy.page_title' => 'Gizlilik Politikası – AiTut',
@@ -523,12 +523,14 @@ return [
     'refund.page_title' => 'İade Politikası – AiTut',
     'refund.heading' => 'İade Politikası',
     'refund.intro' => 'Dil öğrenme yolculuğunuzdan tamamen memnun kalmanızı istiyoruz. Bu belge, abonelik planlarımız için iade koşullarını özetlemektedir.',
-    'refund.s1_title' => '14 Gün Para İade Garantisi',
-    'refund.s1_body' => 'İlk ödemenizden itibaren <strong>14 gün</strong> içinde AiTut\'tan memnun kalmazsanız, tam para iadesi için destek ekibimizle iletişime geçin.',
-    'refund.s2_title' => '14 Günden Sonra',
-    'refund.s2_body' => '14 günden sonra iadeler, teknik sorunlar, hesap kullanımı ve platform uyumluluğuna bağlı olarak duruma göre değerlendirilir.',
-    'refund.s3_title' => 'İade Nasıl Talep Edilir',
-    'refund.s3_body' => 'Talep göndermek için <a href="?page=contact" class="text-primary hover:underline font-medium">İletişim Sayfamız</a> üzerinden bize ulaşın veya kayıtlı e-posta adresinizi ve satın alma bilgilerinizi içeren bir e-posta gönderin.',
+    'refund.s1_title' => '30 Gün Para İade Garantisi',
+    'refund.s1_body' => 'İlk ödemenizden itibaren <strong>30 gün</strong> içinde AiTut\'tan memnun kalmazsanız, tam para iadesi için destek ekibimizle iletişime geçin.',
+    'refund.s2_title' => '30 Günden Sonra',
+    'refund.s2_body' => '30 günden sonra iadeler, teknik sorunlar, hesap kullanımı ve platform uyumluluğuna bağlı olarak duruma göre değerlendirilir.',
+    'refund.s3_title' => 'Aboneliğinizi İptal Etme',
+    'refund.s3_body' => 'Aboneliğinizi istediğiniz zaman hesap ayarlarınızdaki Fiyatlandırma sayfasından iptal edebilirsiniz. İptal, mevcut fatura döneminizin sonunda geçerli olur — o tarihe kadar erişiminiz devam eder ve sonrasında tekrar ücretlendirilmezsiniz. İptal etmek, mevcut dönem için otomatik olarak para iadesi tetiklemez.',
+    'refund.s4_title' => 'İade Nasıl Talep Edilir',
+    'refund.s4_body' => 'Talep göndermek için <a href="?page=contact" class="text-primary hover:underline font-medium">İletişim Sayfamız</a> üzerinden bize ulaşın veya kayıtlı e-posta adresinizi ve satın alma bilgilerinizi içeren bir e-posta gönderin.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Çerez Politikası – AiTut',

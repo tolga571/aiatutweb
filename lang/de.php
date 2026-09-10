@@ -463,7 +463,7 @@ return [
     'faq.q4' => 'Was ist der Wortschatz-Builder?',
     'faq.a4_1' => 'Jedes neue Wort oder Konzept, dem du während Chats begegnest oder mit dem du Schwierigkeiten hast, wird in deinem persönlichen Vokabelheft gespeichert. Du kannst Definitionen, Übersetzungen und Beispielsätze zur späteren Wiederholung ansehen.',
     'faq.q5' => 'Gibt es eine Rückerstattungsrichtlinie?',
-    'faq.a5_1' => 'Ja, wir bieten eine vollständige Rückerstattung innerhalb von 14 Tagen nach deinem ersten Kauf, falls du nicht zufrieden bist. Bitte kontaktiere den Support oder lies unsere Rückerstattungsrichtlinie für weitere Details.',
+    'faq.a5_1' => 'Ja, wir bieten eine vollständige Rückerstattung innerhalb von 30 Tagen nach deinem ersten Kauf, falls du nicht zufrieden bist. Bitte kontaktiere den Support oder lies unsere Rückerstattungsrichtlinie für weitere Details.',
 
     // ── Privacy Policy ──────────────────────────────────────
     'privacy.page_title' => 'Datenschutzrichtlinie – AiTut',
@@ -510,12 +510,14 @@ return [
     'refund.page_title' => 'Rückerstattungsrichtlinie – AiTut',
     'refund.heading' => 'Rückerstattungsrichtlinie',
     'refund.intro' => 'Wir möchten, dass du mit deiner Sprachlernreise vollkommen zufrieden bist. Dieses Dokument beschreibt die Rückerstattungsbedingungen für unsere Abonnementpläne.',
-    'refund.s1_title' => '14-Tage-Geld-zurück-Garantie',
-    'refund.s1_body' => 'Wenn du mit AiTut innerhalb von <strong>14 Tagen</strong> nach deiner ersten Zahlung nicht zufrieden bist, kontaktiere den Support für eine vollständige Rückerstattung.',
-    'refund.s2_title' => 'Nach 14 Tagen',
-    'refund.s2_body' => 'Nach 14 Tagen werden Rückerstattungen je nach technischen Problemen, Kontonutzung und Plattform-Compliance von Fall zu Fall geprüft.',
-    'refund.s3_title' => 'So beantragst du eine Rückerstattung',
-    'refund.s3_body' => 'Um einen Antrag zu stellen, kontaktiere uns bitte über unsere <a href="?page=contact" class="text-primary hover:underline font-medium">Kontaktseite</a> oder sende eine E-Mail an info@jumplearner.com mit deiner Registrierungs-E-Mail-Adresse und den Kaufdetails.',
+    'refund.s1_title' => '30-Tage-Geld-zurück-Garantie',
+    'refund.s1_body' => 'Wenn du mit AiTut innerhalb von <strong>30 Tagen</strong> nach deiner ersten Zahlung nicht zufrieden bist, kontaktiere den Support für eine vollständige Rückerstattung.',
+    'refund.s2_title' => 'Nach 30 Tagen',
+    'refund.s2_body' => 'Nach 30 Tagen werden Rückerstattungen je nach technischen Problemen, Kontonutzung und Plattform-Compliance von Fall zu Fall geprüft.',
+    'refund.s3_title' => 'Kündigung deines Abonnements',
+    'refund.s3_body' => 'Du kannst dein Abonnement jederzeit über die Pricing-Seite in deinen Kontoeinstellungen kündigen. Die Kündigung wird zum Ende deines aktuellen Abrechnungszeitraums wirksam — bis dahin behältst du vollen Zugriff und wirst danach nicht mehr belastet. Eine Kündigung löst keine automatische Rückerstattung für den laufenden Zeitraum aus.',
+    'refund.s4_title' => 'So beantragst du eine Rückerstattung',
+    'refund.s4_body' => 'Um einen Antrag zu stellen, kontaktiere uns bitte über unsere <a href="?page=contact" class="text-primary hover:underline font-medium">Kontaktseite</a> oder sende eine E-Mail an info@jumplearner.com mit deiner Registrierungs-E-Mail-Adresse und den Kaufdetails.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Cookie-Richtlinie – AiTut',
