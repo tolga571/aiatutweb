@@ -52,7 +52,14 @@ if ($auth->isLoggedIn()) {
 }
 Language::load($detectedLang);
 
-$page = $_GET['page'] ?? 'home';
+// FrankenPHP/Caddy's `rewrite` directive doesn't reliably hand this app's
+// query-string router a rewritten path (see php/frankenphp#1895), so clean
+// URLs like /pricing are resolved here instead of in the Caddyfile.
+$cleanUrlPages = ['pricing','login','register','blog','chat-tips','privacy-policy',
+    'terms-and-conditions','refund-policy','license-agreement','cookie-policy',
+    'about','contact','faq','alphabet'];
+$requestPath = trim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '', '/');
+$page = $_GET['page'] ?? (in_array($requestPath, $cleanUrlPages, true) ? $requestPath : 'home');
 
 // Auth-required pages helper
 $requireAuth = function() use ($auth, $page) {
