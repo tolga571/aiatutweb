@@ -2,4 +2,23 @@
 
 root * public
 encode zstd gzip
+
+# The app only routes via ?page=; without these, a clean URL like /pricing
+# 404s into php_server's front-controller fallback with no page param, which
+# silently serves the homepage instead (reported by a FastSpring reviewer).
+rewrite /pricing /index.php?page=pricing
+rewrite /login /index.php?page=login
+rewrite /register /index.php?page=register
+rewrite /blog /index.php?page=blog
+rewrite /chat-tips /index.php?page=chat-tips
+rewrite /privacy-policy /index.php?page=privacy-policy
+rewrite /terms-and-conditions /index.php?page=terms-and-conditions
+rewrite /refund-policy /index.php?page=refund-policy
+rewrite /license-agreement /index.php?page=license-agreement
+rewrite /cookie-policy /index.php?page=cookie-policy
+rewrite /about /index.php?page=about
+rewrite /contact /index.php?page=contact
+rewrite /faq /index.php?page=faq
+rewrite /alphabet /index.php?page=alphabet
+
 php_server
