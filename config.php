@@ -56,7 +56,7 @@ return [
             'year'  => getenv('FASTSPRING_PRO_YEARLY_PATH') ?: 'pro-plan-yearly',
         ],
         'active' => [
-            'month' => getenv('FASTSPRING_PREMIUM_MONTHLY_PATH') ?: 'premium-plan-mounthly',
+            'month' => getenv('FASTSPRING_PREMIUM_MONTHLY_PATH') ?: 'premium-plan-monthly',
             'year'  => getenv('FASTSPRING_PREMIUM_YEARLY_PATH') ?: 'premium-plan-yearly',
         ],
     ],
