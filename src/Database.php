@@ -259,6 +259,16 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN pending_purchase_interval TEXT DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // FastSpring subscription/account IDs, kept separate from the
+            // Paddle ones so both providers can coexist during migration.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_subscription_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_account_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

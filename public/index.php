@@ -40,6 +40,8 @@ $gemini = new GeminiClient($config['gemini_api_key'], $config['gemini_api_key_ba
 $adminCtrl = new AdminController($db);
 $flashcard = new Flashcard($db);
 $paddleClient = new \App\Src\PaddleClient($config['paddle_api_key'] ?? '', $config['paddle_environment'] ?? 'sandbox');
+$fastspringClient = new \App\Src\FastSpringClient($config['fastspring_api_username'] ?? '', $config['fastspring_api_password'] ?? '');
+$fastspringBilling = new \App\Src\FastSpringBilling($db, $config, $fastspringClient);
 
 // Initialize language system
 $detectedLang = 'en';
@@ -349,6 +351,36 @@ switch ($page) {
         echo json_encode(['ok' => true]);
         exit;
 
+    case 'fastspring-confirm-order':
+        // Called by the pricing page when the FastSpring popup closes after
+        // a purchase. Access is only granted after the order and its
+        // subscription are confirmed through the FastSpring API; if the API
+        // isn't configured, the webhook grants access instead.
+        $requireAuth();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $orderId = trim((string)($_POST['order_id'] ?? ''));
+        if ($orderId === '' || !preg_match('/^[A-Za-z0-9_\-]{6,64}$/', $orderId)) {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'invalid_order']);
+            exit;
+        }
+        try {
+            $result = $fastspringBilling->verifyOrderForUser((int)$auth->userId(), $orderId);
+        } catch (\Throwable $e) {
+            error_log('fastspring-confirm-order: ' . $e->getMessage());
+            $result = ['ok' => false, 'error' => 'server_error'];
+        }
+        if (!$result['ok']) {
+            error_log('fastspring-confirm-order: user ' . (int)$auth->userId() . ' order ' . $orderId . ' not verified: ' . $result['error']);
+        }
+        echo json_encode($result);
+        exit;
+
     case 'check-payment-status':
         $requireAuth();
         header('Content-Type: application/json');
@@ -421,8 +453,19 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => 'change_pending']);
             exit;
         }
+        $fsSubId = $cancelUser['fastspring_subscription_id'] ?? null;
+        if ($fsSubId && $fastspringClient->isConfigured()) {
+            if ($fastspringClient->cancelSubscription($fsSubId)) {
+                $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
+                echo json_encode(['ok' => true, 'method' => 'api']);
+            } else {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+            }
+            exit;
+        }
         $subId = $cancelUser['paddle_subscription_id'] ?? null;
-        if ($subId && $paddleClient->isConfigured()) {
+        if (!$fsSubId && $subId && $paddleClient->isConfigured()) {
             $success = $paddleClient->cancelSubscription($subId, 'next_billing_period');
             if ($success) {
                 $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
@@ -442,7 +485,7 @@ switch ($page) {
             $mailer->send(
                 $config['mail_from_address'],
                 'Manual cancellation request',
-                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($cancelUser['email'] ?? '') . ') requested to cancel their subscription, but no Paddle subscription ID / API key is on file for automatic cancellation. Please cancel manually in the Paddle dashboard.</p>'
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($cancelUser['email'] ?? '') . ') requested to cancel their subscription, but no subscription ID / API credentials are on file for automatic cancellation. Please cancel manually in the ' . ($fsSubId ? 'FastSpring' : 'Paddle') . ' dashboard.</p>'
             );
         }
         echo json_encode(['ok' => true, 'method' => 'manual']);
@@ -469,7 +512,32 @@ switch ($page) {
         // scheduled_change, and a cancellation only needs a real API call
         // when cancel_method is 'api'.
         $needsApiCall = $hasPendingChange || ($resumeUser['cancel_method'] ?? '') === 'api';
-        if ($needsApiCall) {
+        $fsSubId = $resumeUser['fastspring_subscription_id'] ?? null;
+        if ($needsApiCall && $fsSubId) {
+            if (!$fastspringClient->isConfigured()) {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+                exit;
+            }
+            $fsOk = true;
+            if ($hasPendingChange) {
+                // Undo a scheduled downgrade by switching back to the
+                // product the user is still on, without proration.
+                $currentPath = $fastspringBilling->pathFor(
+                    $resumeUser['plan_status'] ?? '',
+                    ($resumeUser['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month'
+                );
+                $fsOk = $currentPath !== '' && $fastspringClient->changeSubscriptionProduct($fsSubId, $currentPath, false);
+            }
+            if ($fsOk && $hasPendingCancel && ($resumeUser['cancel_method'] ?? '') === 'api') {
+                $fsOk = $fastspringClient->uncancelSubscription($fsSubId);
+            }
+            if (!$fsOk) {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+                exit;
+            }
+        } elseif ($needsApiCall) {
             $subId = $resumeUser['paddle_subscription_id'] ?? null;
             if (!$subId || !$paddleClient->isConfigured() || !$paddleClient->resumeSubscription($subId)) {
                 http_response_code(502);
@@ -508,14 +576,19 @@ switch ($page) {
             'pro' => ['month' => $config['paddle_pro_price_id'] ?? '', 'year' => $config['paddle_pro_yearly_price_id'] ?? ''],
             'active' => ['month' => $config['paddle_premium_price_id'] ?? '', 'year' => $config['paddle_premium_yearly_price_id'] ?? ''],
         ];
-        $targetPriceId = $planPriceMap[$planKey][$interval] ?? '';
+        $changeUser = $auth->currentUser();
+        // FastSpring subscribers switch products; Paddle subscribers switch prices.
+        $fsSubId = $changeUser['fastspring_subscription_id'] ?? null;
+        $targetPriceId = $fsSubId
+            ? $fastspringBilling->pathFor($planKey, $interval)
+            : ($planPriceMap[$planKey][$interval] ?? '');
         if ($targetPriceId === '') {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'invalid_plan']);
             exit;
         }
-        $changeUser = $auth->currentUser();
-        $subId = $changeUser['paddle_subscription_id'] ?? null;
+        $subId = $fsSubId ?: ($changeUser['paddle_subscription_id'] ?? null);
+        $providerReady = $fsSubId ? $fastspringClient->isConfigured() : $paddleClient->isConfigured();
         if (!empty($changeUser['cancel_requested_at'])) {
             // Paddle won't apply a price change on top of a subscription
             // that already has a pending cancellation scheduled — resuming
@@ -529,7 +602,7 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => 'change_pending']);
             exit;
         }
-        if (!$auth->hasPaid() || ($changeUser['plan_status'] ?? '') === 'trial' || !$subId || !$paddleClient->isConfigured()) {
+        if (!$auth->hasPaid() || ($changeUser['plan_status'] ?? '') === 'trial' || !$subId || !$providerReady) {
             // Can't safely swap the existing subscription in place — refuse
             // rather than fall back to opening a second checkout, which is
             // what caused double-billing before this fix.
@@ -546,10 +619,13 @@ switch ($page) {
         $isSameTierIntervalSwitch = ($newRank === $oldRank) && ($interval !== $oldInterval);
         $isUpgrade = ($newRank > $oldRank) || $isSameTierIntervalSwitch;
 
-        $success = $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
+        $success = $fsSubId
+            // Upgrades prorate now; downgrades bill the new price from the next rebill.
+            ? $fastspringClient->changeSubscriptionProduct($fsSubId, $targetPriceId, $isUpgrade)
+            : $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
         if (!$success) {
             http_response_code(502);
-            echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
+            echo json_encode(['ok' => false, 'error' => $fsSubId ? 'provider_api_failed' : 'paddle_api_failed']);
             exit;
         }
 
@@ -610,7 +686,7 @@ switch ($page) {
             $mailer->send(
                 $config['mail_from_address'],
                 'Refund request',
-                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($refundUser['email'] ?? '') . '), plan: ' . htmlspecialchars($refundUser['plan_status'] ?? '') . ', requested a refund. Check the payment date in the Paddle dashboard against the 14-day policy and process there.</p>'
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($refundUser['email'] ?? '') . '), plan: ' . htmlspecialchars($refundUser['plan_status'] ?? '') . ', requested a refund. Check the payment date in the ' . (!empty($refundUser['fastspring_subscription_id']) ? 'FastSpring' : 'Paddle') . ' dashboard against the refund policy and process there.</p>'
             );
         }
         echo json_encode(['ok' => true]);

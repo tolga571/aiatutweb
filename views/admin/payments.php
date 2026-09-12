@@ -5,7 +5,7 @@ ob_start();
 <table class="admin-table" style="width:100%;border-collapse:collapse;">
     <thead>
         <tr style="background:#333;color:#fff;">
-            <th><?= __('admin.id') ?></th><th><?= __('admin.email_col') ?></th><th><?= __('admin.plan_col') ?></th><th><?= __('admin.status') ?></th><th><?= __('admin.created_at') ?></th><th>Renews</th><th>Paddle Sub ID</th><th>Cancellation</th><th>Pending Change</th><th>Refund</th>
+            <th><?= __('admin.id') ?></th><th><?= __('admin.email_col') ?></th><th><?= __('admin.plan_col') ?></th><th><?= __('admin.status') ?></th><th><?= __('admin.created_at') ?></th><th>Renews</th><th>Subscription ID</th><th>Cancellation</th><th>Pending Change</th><th>Refund</th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@ ob_start();
             <td><?php echo $pay['has_paid'] ? __('admin.paid') : __('admin.unpaid'); ?></td>
             <td><?php echo htmlspecialchars($pay['created_at']); ?></td>
             <td><?php echo htmlspecialchars($pay['next_billed_at'] ?? '—'); ?></td>
-            <td><?php echo htmlspecialchars($pay['paddle_subscription_id'] ?? '—'); ?></td>
+            <td><?php if (!empty($pay['fastspring_subscription_id'])): ?>FastSpring: <?php echo htmlspecialchars($pay['fastspring_subscription_id']); ?><?php else: ?><?php echo htmlspecialchars($pay['paddle_subscription_id'] ?? '—'); ?><?php endif; ?></td>
             <td>
                 <?php if (!empty($pay['cancel_requested_at'])): ?>
                     <?php if (($pay['cancel_method'] ?? '') === 'manual'): ?>

@@ -29,6 +29,38 @@ return [
     // without it those actions fall back to a manual support request.
     'paddle_api_key'          => getenv('PADDLE_API_KEY') ?: '',
 
+    // Which checkout the pricing page shows to new buyers: 'paddle' (default)
+    // or 'fastspring'. Existing subscribers keep being managed by whichever
+    // provider their subscription lives in, regardless of this setting.
+    'payment_provider'        => strtolower(getenv('PAYMENT_PROVIDER') ?: 'paddle') === 'fastspring' ? 'fastspring' : 'paddle',
+
+    // FastSpring (Checkouts > Popup Checkouts > "Place on your website").
+    // Test:  yourstore.test.onfastspring.com/popup-yourstore
+    // Live:  yourstore.onfastspring.com/popup-yourstore
+    'fastspring_storefront'      => getenv('FASTSPRING_STOREFRONT') ?: '',
+    'fastspring_environment'     => strtolower(getenv('FASTSPRING_ENVIRONMENT') ?: 'test') === 'live' ? 'live' : 'test',
+    'fastspring_sbl_version'     => getenv('FASTSPRING_SBL_VERSION') ?: '1.0.9',
+    'fastspring_webhook_secret'  => getenv('FASTSPRING_WEBHOOK_SECRET') ?: '',
+    // Developer Tools > APIs > API Credentials. Needed to verify orders and
+    // for in-app cancel / resume / plan changes.
+    'fastspring_api_username'    => getenv('FASTSPRING_API_USERNAME') ?: '',
+    'fastspring_api_password'    => getenv('FASTSPRING_API_PASSWORD') ?: '',
+    // Product paths from Catalog > Subscription Plans.
+    'fastspring_product_paths' => [
+        'starter' => [
+            'month' => getenv('FASTSPRING_STARTER_MONTHLY_PATH') ?: 'starter-plan',
+            'year'  => getenv('FASTSPRING_STARTER_YEARLY_PATH') ?: 'starter-plan-yearly',
+        ],
+        'pro' => [
+            'month' => getenv('FASTSPRING_PRO_MONTHLY_PATH') ?: 'pro-plan-monthly',
+            'year'  => getenv('FASTSPRING_PRO_YEARLY_PATH') ?: 'pro-plan-yearly',
+        ],
+        'active' => [
+            'month' => getenv('FASTSPRING_PREMIUM_MONTHLY_PATH') ?: 'premium-plan-mounthly',
+            'year'  => getenv('FASTSPRING_PREMIUM_YEARLY_PATH') ?: 'premium-plan-yearly',
+        ],
+    ],
+
     // Google Sign-In Client ID
     'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',
 

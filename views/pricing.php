@@ -12,11 +12,37 @@ $premiumPriceId = $config['paddle_premium_price_id'] ?? '';
 $starterYearlyPriceId = $config['paddle_starter_yearly_price_id'] ?? '';
 $proYearlyPriceId = $config['paddle_pro_yearly_price_id'] ?? '';
 $premiumYearlyPriceId = $config['paddle_premium_yearly_price_id'] ?? '';
+$paymentProvider = $config['payment_provider'] ?? 'paddle';
+$fastspringStorefront = $config['fastspring_storefront'] ?? '';
+if ($paymentProvider === 'fastspring') {
+    // With FastSpring the buttons carry product paths instead of Paddle
+    // price IDs — the rest of the page logic stays the same.
+    $fsPaths = $config['fastspring_product_paths'] ?? [];
+    $starterPriceId = $fsPaths['starter']['month'] ?? '';
+    $proPriceId = $fsPaths['pro']['month'] ?? '';
+    $premiumPriceId = $fsPaths['active']['month'] ?? '';
+    $starterYearlyPriceId = $fsPaths['starter']['year'] ?? '';
+    $proYearlyPriceId = $fsPaths['pro']['year'] ?? '';
+    $premiumYearlyPriceId = $fsPaths['active']['year'] ?? '';
+    $checkoutEnabled = $fastspringStorefront !== '';
+} else {
+    $checkoutEnabled = !empty($paddleClientToken);
+}
 $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $premiumYearlyPriceId !== '';
 ?>
 
+<?php if ($paymentProvider === 'fastspring'): ?>
+<!-- FastSpring Store Builder Library (popup checkout) -->
+<script
+  id="fsc-api"
+  src="https://sbl.onfastspring.com/sbl/<?= htmlspecialchars($config['fastspring_sbl_version'] ?? '1.0.9') ?>/fastspring-builder.min.js"
+  type="text/javascript"
+  data-storefront="<?= htmlspecialchars($fastspringStorefront) ?>"
+  data-popup-closed="onFastSpringPopupClosed"></script>
+<?php else: ?>
 <!-- Load Paddle.js -->
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<?php endif; ?>
 
 <main class="flex-1 overflow-y-auto flex flex-col items-center pt-16 pb-12 px-6 bg-radial-gradient">
   <div class="max-w-4xl w-full">
@@ -25,7 +51,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       <p class="text-body-lg text-on-surface-variant max-w-xl mx-auto"><?= __('pricing.subtitle') ?></p>
     </div>
 
-    <?php if (empty($paddleClientToken) && $paddleEnvironment !== 'production'): ?>
+    <?php if ($paymentProvider === 'paddle' && empty($paddleClientToken) && $paddleEnvironment !== 'production'): ?>
       <!-- Configuration warning banner for the developer -->
       <div class="bg-error-container border border-error text-on-error-container p-4 rounded-xl mb-8 max-w-lg mx-auto text-left flex items-start gap-3">
         <span class="material-symbols-outlined text-error text-2xl">warning</span>
@@ -247,7 +273,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($starterPriceId) ?>')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
-                <?= (empty($paddleClientToken) || empty($starterPriceId)) ? 'disabled' : '' ?>>
+                <?= (!$checkoutEnabled || empty($starterPriceId)) ? 'disabled' : '' ?>>
                 <span><?= __('pricing.starter_btn') ?></span>
                 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
               </button>
@@ -268,7 +294,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($starterYearlyPriceId) ?>')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 relative flex items-center justify-center text-center glow-hover"
-                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <?= !$checkoutEnabled ? 'disabled' : '' ?>>
                 <span><?= __('pricing.starter_btn') ?></span>
                 <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[20px]">arrow_forward</span>
               </button>
@@ -350,7 +376,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($proPriceId) ?>')"
                 class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-                <?= (empty($paddleClientToken) || empty($proPriceId)) ? 'disabled' : '' ?>>
+                <?= (!$checkoutEnabled || empty($proPriceId)) ? 'disabled' : '' ?>>
                 <?= __('pricing.pro_btn') ?>
                 <span class="material-symbols-outlined">bolt</span>
               </button>
@@ -371,7 +397,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($proYearlyPriceId) ?>')"
                 class="w-full bg-primary text-on-primary hover:opacity-90 font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <?= !$checkoutEnabled ? 'disabled' : '' ?>>
                 <?= __('pricing.pro_btn') ?>
                 <span class="material-symbols-outlined">bolt</span>
               </button>
@@ -422,7 +448,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($premiumPriceId) ?>')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-                <?= (empty($paddleClientToken) || empty($premiumPriceId)) ? 'disabled' : '' ?>>
+                <?= (!$checkoutEnabled || empty($premiumPriceId)) ? 'disabled' : '' ?>>
                 <?= __('pricing.premium_btn') ?>
                 <span class="material-symbols-outlined">star</span>
               </button>
@@ -443,7 +469,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
             <?php else: ?>
               <button onclick="openCheckout('<?= htmlspecialchars($premiumYearlyPriceId) ?>')"
                 class="w-full bg-secondary-container hover:bg-outline/20 text-on-surface font-semibold py-3 rounded-xl transition duration-300 flex items-center justify-center gap-2 glow-hover"
-                <?= empty($paddleClientToken) ? 'disabled' : '' ?>>
+                <?= !$checkoutEnabled ? 'disabled' : '' ?>>
                 <?= __('pricing.premium_btn') ?>
                 <span class="material-symbols-outlined">star</span>
               </button>
@@ -554,7 +580,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   <?php endif; ?>
 
   // Initialize Paddle.js
-  <?php if (!empty($paddleClientToken)): ?>
+  <?php if ($paymentProvider === 'paddle' && !empty($paddleClientToken)): ?>
     try {
       if ("<?= $paddleEnvironment ?>" === "sandbox") {
         Paddle.Environment.set("sandbox");
@@ -575,6 +601,21 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     } catch (e) {
       console.error("Paddle initialization failed:", e);
     }
+  <?php endif; ?>
+
+  <?php if ($paymentProvider === 'fastspring'): ?>
+  // Fired by the FastSpring library when the popup closes. `data` carries
+  // the order id/reference after a purchase, and is null/empty otherwise.
+  function onFastSpringPopupClosed(data) {
+    if (!data || !data.id) return;
+    handleCheckoutSuccess();
+    // Ask the server to verify the order with the FastSpring API and grant
+    // the plan right away; the webhook does the same if this can't.
+    fetch('?page=fastspring-confirm-order', {
+      method: 'POST',
+      body: new URLSearchParams({ order_id: data.id, csrf_token: <?= json_encode(csrf_token()) ?> })
+    }).catch(function(e) { console.error(e); });
+  }
   <?php endif; ?>
 
   function handleCheckoutSuccess() {
@@ -640,6 +681,23 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     <?php if (!$isLoggedIn): ?>
       window.location.href = '?page=login';
       return;
+    <?php endif; ?>
+
+    <?php if ($paymentProvider === 'fastspring'): ?>
+    try {
+      // priceId is the FastSpring product path here.
+      fastspring.builder.reset();
+      fastspring.builder.push({
+        products: [{ path: priceId, quantity: 1 }],
+        paymentContact: { email: <?= json_encode($currentUser['email'] ?? '') ?> },
+        tags: { user_id: <?= json_encode((string)($currentUser['id'] ?? '')) ?> },
+        checkout: true
+      });
+    } catch (error) {
+      console.error("Error opening FastSpring checkout:", error);
+      alert("<?= __('pricing.checkout_error') ?>");
+    }
+    return;
     <?php endif; ?>
 
     try {
