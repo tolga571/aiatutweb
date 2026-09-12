@@ -13,6 +13,13 @@ $starterYearlyPriceId = $config['paddle_starter_yearly_price_id'] ?? '';
 $proYearlyPriceId = $config['paddle_pro_yearly_price_id'] ?? '';
 $premiumYearlyPriceId = $config['paddle_premium_yearly_price_id'] ?? '';
 $paymentProvider = $config['payment_provider'] ?? 'paddle';
+// Lets a single request preview the FastSpring checkout (e.g. while testing)
+// without flipping PAYMENT_PROVIDER for every visitor. Requires FastSpring
+// to actually be configured, so a stray query param can't break the page
+// for anyone who stumbles on it while it's unconfigured.
+if (($_GET['checkout'] ?? '') === 'fastspring' && !empty($config['fastspring_storefront'])) {
+    $paymentProvider = 'fastspring';
+}
 $fastspringStorefront = $config['fastspring_storefront'] ?? '';
 if ($paymentProvider === 'fastspring') {
     // With FastSpring the buttons carry product paths instead of Paddle
