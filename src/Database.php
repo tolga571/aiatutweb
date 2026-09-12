@@ -269,6 +269,14 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_account_id TEXT DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // The `created` (ms) timestamp of the last webhook event actually
+            // applied to this user, so an out-of-order redelivery of an
+            // older event can be detected and skipped instead of clobbering
+            // state a newer event already wrote.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_last_event_at BIGINT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {

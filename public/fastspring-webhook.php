@@ -93,7 +93,8 @@ foreach ($body['events'] as $event) {
             fsLog($logFile, "UNMATCHED {$type} {$eventId}: no user for subscription " . FastSpringBilling::subscriptionId($sub));
             continue;
         }
-        $result = $billing->applySubscription($userId, $sub, $type);
+        $eventCreatedMs = isset($event['created']) && is_numeric($event['created']) ? (int)$event['created'] : null;
+        $result = $billing->applySubscription($userId, $sub, $type, $eventCreatedMs);
         fsLog($logFile, "OK {$type} {$eventId}: {$result}");
     } catch (\Throwable $e) {
         $hadError = true;

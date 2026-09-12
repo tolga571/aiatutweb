@@ -170,9 +170,13 @@ class FastSpringBilling
 
     /**
      * Applies a FastSpring subscription's current state to a user.
+     * $eventCreatedMs is the webhook envelope's `created` (ms) timestamp —
+     * pass null when there is no event to order against (the direct
+     * post-checkout order-verification path isn't part of the event
+     * stream, so there's nothing to be stale relative to).
      * Returns a short human-readable result for logging.
      */
-    public function applySubscription(int $userId, array $sub, string $eventType): string
+    public function applySubscription(int $userId, array $sub, string $eventType, ?int $eventCreatedMs = null): string
     {
         $subId = self::subscriptionId($sub);
         $path = self::productPath($sub['product'] ?? null);
@@ -184,12 +188,23 @@ class FastSpringBilling
         $nextBilledAt = self::msToTimestamp($sub['next'] ?? null);
 
         $user = $this->db->fetchOne(
-            'SELECT plan_status, pending_plan_change, cancel_method, fastspring_subscription_id FROM users WHERE id = ?',
+            'SELECT plan_status, pending_plan_change, cancel_method, fastspring_subscription_id, fastspring_last_event_at FROM users WHERE id = ?',
             [$userId]
         );
         if (!$user) {
             return "user {$userId} not found";
         }
+
+        // Webhook delivery order isn't guaranteed to match send order once
+        // retries/network jitter are in play. If a fresher event already
+        // moved this user's state forward, an older one arriving late must
+        // not roll it back (e.g. a delayed subscription.activated retry
+        // undoing a subscription.deactivated that already landed).
+        $lastAppliedMs = $user['fastspring_last_event_at'] !== null ? (int)$user['fastspring_last_event_at'] : null;
+        if ($eventCreatedMs !== null && $lastAppliedMs !== null && $eventCreatedMs <= $lastAppliedMs) {
+            return "ignored stale event {$eventType} (created={$eventCreatedMs}) — user {$userId} already has a newer event applied (last={$lastAppliedMs})";
+        }
+
         $oldPlanStatus = $user['plan_status'] ?? 'inactive';
 
         if (!$isActive) {
@@ -200,9 +215,10 @@ class FastSpringBilling
             }
             $this->db->execute(
                 "UPDATE users SET plan_status = 'canceled', has_paid = 0, payment_pending_at = NULL,
-                 cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL, next_billed_at = NULL
+                 cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL, next_billed_at = NULL,
+                 fastspring_last_event_at = COALESCE(?, fastspring_last_event_at)
                  WHERE id = ?",
-                [$userId]
+                [$eventCreatedMs, $userId]
             );
             $this->adjustTokenBonus($userId, $oldPlanStatus, 'canceled');
             return "deactivated user {$userId} (subscription {$subId})";
@@ -233,8 +249,9 @@ class FastSpringBilling
             'pending_purchase_plan = NULL', 'pending_purchase_interval = NULL',
             'fastspring_subscription_id = COALESCE(?, fastspring_subscription_id)', 'fastspring_account_id = COALESCE(?, fastspring_account_id)',
             'next_billed_at = COALESCE(?, next_billed_at)', 'billing_interval = COALESCE(?, billing_interval)',
+            'fastspring_last_event_at = COALESCE(?, fastspring_last_event_at)',
         ];
-        $params = [$newPlan, $subId !== '' ? $subId : null, $accountId !== '' ? $accountId : null, $nextBilledAt, $interval];
+        $params = [$newPlan, $subId !== '' ? $subId : null, $accountId !== '' ? $accountId : null, $nextBilledAt, $interval, $eventCreatedMs];
 
         if (!$keepPendingDowngrade) {
             $sets[] = 'pending_plan_change = NULL';
