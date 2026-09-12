@@ -200,8 +200,13 @@ class FastSpringBilling
         // moved this user's state forward, an older one arriving late must
         // not roll it back (e.g. a delayed subscription.activated retry
         // undoing a subscription.deactivated that already landed).
+        // Strictly-less-than only: different event types for the same
+        // purchase (e.g. order.completed and subscription.activated) can
+        // legitimately share the same millisecond `created` value, and a
+        // tie must never be treated as stale — that's not this check's job,
+        // duplicate *events* are deduped by id in the webhook loop instead.
         $lastAppliedMs = $user['fastspring_last_event_at'] !== null ? (int)$user['fastspring_last_event_at'] : null;
-        if ($eventCreatedMs !== null && $lastAppliedMs !== null && $eventCreatedMs <= $lastAppliedMs) {
+        if ($eventCreatedMs !== null && $lastAppliedMs !== null && $eventCreatedMs < $lastAppliedMs) {
             return "ignored stale event {$eventType} (created={$eventCreatedMs}) — user {$userId} already has a newer event applied (last={$lastAppliedMs})";
         }
 

@@ -188,6 +188,15 @@ class Database {
             attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
+        // Dedup for FastSpring webhook deliveries: retries resend the same
+        // event id, so this is what actually decides "have I processed this
+        // exact event before" — kept separate from the created-timestamp
+        // ordering guard in FastSpringBilling, which answers a different
+        // question (is this event older than one I've already applied).
+        $this->exec("CREATE TABLE IF NOT EXISTS fastspring_processed_events (
+            event_id TEXT PRIMARY KEY,
+            processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
         $this->migrate();
     }
 

@@ -82,6 +82,21 @@ foreach ($body['events'] as $event) {
         continue;
     }
 
+    // Dedup by event id: FastSpring resends the same id on automatic
+    // retries (a manual retry gets a new id, which is fine — it represents
+    // "process this again on purpose"). The created-timestamp check inside
+    // applySubscription answers a different question (is this event older
+    // than one already applied) and must not also be used for this.
+    // Checked here (cheap SELECT) to skip real duplicates before spending an
+    // API call on subscriptionFromEvent, but only marked done further below
+    // on actual success — an event that failed to resolve (e.g. because API
+    // credentials weren't configured yet) must still be eligible for a
+    // later retry to succeed, not permanently quarantined.
+    if ($eventId !== '' && $db->fetchOne('SELECT 1 FROM fastspring_processed_events WHERE event_id = ?', [$eventId])) {
+        fsLog($logFile, "DUPLICATE {$type} {$eventId}: already processed, skipping");
+        continue;
+    }
+
     try {
         $sub = $billing->subscriptionFromEvent($type, $data);
         if (!$sub) {
@@ -95,6 +110,13 @@ foreach ($body['events'] as $event) {
         }
         $eventCreatedMs = isset($event['created']) && is_numeric($event['created']) ? (int)$event['created'] : null;
         $result = $billing->applySubscription($userId, $sub, $type, $eventCreatedMs);
+        if ($eventId !== '') {
+            // A concurrent duplicate delivery could race past the SELECT
+            // check above and reach here too — harmless, since
+            // applySubscription's own writes are idempotent either way, and
+            // ON CONFLICT here just means the marker was already inserted.
+            $db->execute('INSERT INTO fastspring_processed_events (event_id) VALUES (?) ON CONFLICT (event_id) DO NOTHING', [$eventId]);
+        }
         fsLog($logFile, "OK {$type} {$eventId}: {$result}");
     } catch (\Throwable $e) {
         $hadError = true;
