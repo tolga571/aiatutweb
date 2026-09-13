@@ -56,12 +56,20 @@ Language::load($detectedLang);
 
 // FrankenPHP/Caddy's `rewrite` directive doesn't reliably hand this app's
 // query-string router a rewritten path (see php/frankenphp#1895), so clean
-// URLs like /pricing are resolved here instead of in the Caddyfile.
-$cleanUrlPages = ['pricing','login','register','blog','chat-tips','privacy-policy',
-    'terms-and-conditions','refund-policy','license-agreement','cookie-policy',
-    'about','contact','faq','alphabet'];
+// URLs like /pricing are resolved here instead of in the Caddyfile. An
+// unrecognized path (not '/', not an explicit ?page=) is passed through
+// as-is so it falls into the switch's own default case (404) instead of
+// being folded into 'home' — which used to make an unknown path
+// indistinguishable from the real homepage. The switch's case list below
+// is the single source of truth for which paths are valid.
 $requestPath = trim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '', '/');
-$page = $_GET['page'] ?? (in_array($requestPath, $cleanUrlPages, true) ? $requestPath : 'home');
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+} elseif ($requestPath === '') {
+    $page = 'home';
+} else {
+    $page = $requestPath;
+}
 
 // Auth-required pages helper
 $requireAuth = function() use ($auth, $page) {
