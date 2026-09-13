@@ -34,9 +34,6 @@ class EachPromise implements PromisorInterface
     /** @var bool|null */
     private $mutex;
 
-    /** @var bool */
-    private $stepWhileLocked = false;
-
     /**
      * Configuration hash can include the following key value pairs:
      *
@@ -126,23 +123,16 @@ class EachPromise implements PromisorInterface
     {
         $this->mutex = false;
         $this->aggregate = new Promise(function (): void {
-            while (true) {
-                if ($this->checkIfFinished()) {
-                    return;
-                }
-                reset($this->pending);
-                // Consume a potentially fluctuating list of promises while
-                // ensuring that indexes are maintained (precluding array_shift).
-                while ($promise = current($this->pending)) {
-                    next($this->pending);
-                    $promise->wait();
-                    if (Is::settled($this->aggregate)) {
-                        return;
-                    }
-                }
-                // Refill and re-sweep; give up only when nothing remains.
-                $this->refillPending();
-                if (Is::settled($this->aggregate) || !$this->pending) {
+            if ($this->checkIfFinished()) {
+                return;
+            }
+            reset($this->pending);
+            // Consume a potentially fluctuating list of promises while
+            // ensuring that indexes are maintained (precluding array_shift).
+            while ($promise = current($this->pending)) {
+                next($this->pending);
+                $promise->wait();
+                if (Is::settled($this->aggregate)) {
                     return;
                 }
             }
@@ -172,10 +162,6 @@ class EachPromise implements PromisorInterface
         $concurrency = is_callable($this->concurrency)
             ? ($this->concurrency)(count($this->pending))
             : $this->concurrency;
-        // The callable can settle the aggregate; admit nothing more.
-        if (Is::settled($this->aggregate)) {
-            return;
-        }
         $concurrency = max($concurrency - count($this->pending), 0);
         // Concurrency may be set to 0 to disallow new promises.
         if (!$concurrency) {
@@ -237,8 +223,6 @@ class EachPromise implements PromisorInterface
         // Place a lock on the iterator so that we ensure to not recurse,
         // preventing fatal generator errors.
         if ($this->mutex) {
-            $this->stepWhileLocked = true;
-
             return false;
         }
 
@@ -247,22 +231,14 @@ class EachPromise implements PromisorInterface
         try {
             $this->iterable->next();
             $this->mutex = false;
+
+            return true;
         } catch (\Throwable $e) {
             $this->aggregate->reject($e);
             $this->mutex = false;
 
             return false;
         }
-
-        // Run the completion check that locked steps skipped.
-        if ($this->stepWhileLocked) {
-            $this->stepWhileLocked = false;
-            if (!Is::settled($this->aggregate)) {
-                $this->checkIfFinished();
-            }
-        }
-
-        return true;
     }
 
     private function step(int $idx): void
@@ -283,7 +259,6 @@ class EachPromise implements PromisorInterface
         }
     }
 
-    /** @phpstan-impure */
     private function checkIfFinished(): bool
     {
         if (!$this->pending && !$this->iterable->valid()) {
