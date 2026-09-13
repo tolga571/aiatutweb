@@ -965,7 +965,16 @@ switch ($page) {
         }
         break;
 
+    case 'home':
+        require __DIR__ . '/../views/home.php';
+        break;
+
     default:
+        // An unrecognized ?page= (or clean URL) used to silently render the
+        // homepage with a 200 — a "soft 404" that search engines index as
+        // real content and that gives a dead link no visible signal it's
+        // dead. Same visual fallback, correct status code.
+        http_response_code(404);
         require __DIR__ . '/../views/home.php';
 }
 ?>

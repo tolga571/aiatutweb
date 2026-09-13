@@ -5,6 +5,22 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title><?= htmlspecialchars($pageTitle ?? 'AiTut') ?></title>
+<?php
+// Views may set $pageDescription for a page-specific summary; otherwise
+// this default covers the marketing/legal pages that don't set one.
+$metaDescription = $pageDescription ?? 'AiTut is an AI language tutor that adapts to your CEFR level — practice conversations, get instant grammar corrections, and build vocabulary automatically.';
+$canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') === '/' ? '/' : '/' . ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '', '/'));
+?>
+<meta name="description" content="<?= htmlspecialchars($metaDescription) ?>"/>
+<link rel="canonical" href="<?= htmlspecialchars($canonicalUrl) ?>"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="AiTut"/>
+<meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'AiTut') ?>"/>
+<meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>"/>
+<meta property="og:url" content="<?= htmlspecialchars($canonicalUrl) ?>"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="<?= htmlspecialchars($pageTitle ?? 'AiTut') ?>"/>
+<meta name="twitter:description" content="<?= htmlspecialchars($metaDescription) ?>"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
