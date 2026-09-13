@@ -70,21 +70,51 @@ class AdminController {
         require __DIR__ . '/../views/admin/admin_layout.php';
     }
 
+    /**
+     * Admin login shares the same login_attempts table as regular user
+     * login (Auth::tooManyAttempts et al.), just under its own 'admin-login'
+     * type, so a brute-force run against one doesn't get counted against —
+     * or accidentally cleared by — the other.
+     */
+    private function adminLoginTooManyAttempts(string $ip): bool {
+        $row = $this->db->fetchOne(
+            "SELECT COUNT(*) as cnt FROM login_attempts WHERE ip = ? AND type = 'admin-login' AND attempted_at > CURRENT_TIMESTAMP - INTERVAL '900 seconds'",
+            [$ip]
+        );
+        return $row && (int)$row['cnt'] >= 8;
+    }
+
+    private function recordAdminLoginAttempt(string $ip): void {
+        $this->db->execute("INSERT INTO login_attempts (ip, type) VALUES (?, 'admin-login')", [$ip]);
+    }
+
+    private function clearAdminLoginAttempts(string $ip): void {
+        $this->db->execute("DELETE FROM login_attempts WHERE ip = ? AND type = 'admin-login'", [$ip]);
+    }
+
     public function handleLogin(array $post): void {
         $email    = trim($post['email'] ?? '');
         $password = $post['password'] ?? '';
         $csrf     = $post['csrf'] ?? '';
+        $ip       = client_ip();
         if (!$this->validateCsrfToken($csrf)) {
             $_SESSION['admin_login_error'] = 'Invalid CSRF token.';
             header('Location: ?page=admin-login');
             exit;
         }
+        if ($this->adminLoginTooManyAttempts($ip)) {
+            $_SESSION['admin_login_error'] = 'Too many login attempts. Please try again later.';
+            header('Location: ?page=admin-login');
+            exit;
+        }
         $admin = $this->db->fetchOne('SELECT * FROM admins WHERE email = ?', [$email]);
         if ($admin && password_verify($password, $admin['password'])) {
+            $this->clearAdminLoginAttempts($ip);
             $_SESSION['admin_id'] = $admin['id'];
             header('Location: ?page=admin-dashboard');
             exit;
         }
+        $this->recordAdminLoginAttempt($ip);
         $_SESSION['admin_login_error'] = 'Invalid email or password.';
         header('Location: ?page=admin-login');
         exit;
