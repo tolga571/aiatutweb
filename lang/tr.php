@@ -530,7 +530,7 @@ return [
     'refund.s3_title' => 'Aboneliğinizi İptal Etme',
     'refund.s3_body' => 'Aboneliğinizi istediğiniz zaman hesap ayarlarınızdaki Fiyatlandırma sayfasından iptal edebilirsiniz. İptal, mevcut fatura döneminizin sonunda geçerli olur — o tarihe kadar erişiminiz devam eder ve sonrasında tekrar ücretlendirilmezsiniz. İptal etmek, mevcut dönem için otomatik olarak para iadesi tetiklemez.',
     'refund.s4_title' => 'İade Nasıl Talep Edilir',
-    'refund.s4_body' => 'Talep göndermek için <a href="?page=contact" class="text-primary hover:underline font-medium">İletişim Sayfamız</a> üzerinden bize ulaşın veya kayıtlı e-posta adresinizi ve satın alma bilgilerinizi içeren bir e-posta gönderin.',
+    'refund.s4_body' => 'Talep göndermek için <a href="?page=contact" class="text-primary hover:underline font-medium">İletişim Sayfamız</a> üzerinden bize ulaşın veya kayıtlı e-posta adresinizi ve satın alma bilgilerinizi içeren bir e-postayı info@jumplearner.com adresine gönderin.',
 
     // ── Cookie Policy ───────────────────────────────────────
     'cookie.page_title' => 'Çerez Politikası – AiTut',
