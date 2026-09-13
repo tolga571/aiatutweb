@@ -99,30 +99,12 @@ class Uri implements UriInterface, \JsonSerializable
             return self::parsePathNoSchemeReference($url);
         }
 
-        // Preserve bracketed IPv6 literals before encoding, including dotted IPv4
-        // tails. DEL (\x7F) is excluded so a raw-DEL host falls through to the
-        // general path and is rejected rather than silently mutated by parse_url().
+        // Preserve bracketed IPv6 literals before encoding, including dotted IPv4 tails.
         $prefix = '';
-        $ipv6Prefix = preg_match('%\A([0-9A-Za-z+.-]+://\[[^\]\x00-\x20\x7F/?#@]+\])(.*)\z%s', $url, $matches);
-
-        if ($ipv6Prefix === false) {
-            return false;
-        }
-
-        if ($ipv6Prefix === 1) {
+        if (preg_match('%^([0-9A-Za-z+.-]+://\[[0-9:.a-fA-F]+\])(.*?)$%', $url, $matches)) {
             /** @var array{0:string, 1:string, 2:string} $matches */
-            $suffix = $matches[2];
-
-            // After the bracketed host only an optional numeric port and/or a
-            // path, query, or fragment may follow. Anything else (for example
-            // `:80@evil` or `:80x`) would let parse_url() reinterpret a
-            // different host.
-            if (preg_match('%\A(?::[0-9]*)?(?:[/?#].*)?\z%s', $suffix) !== 1) {
-                return false;
-            }
-
             $prefix = $matches[1];
-            $url = $suffix;
+            $url = $matches[2];
         }
 
         /** @var string|null */
@@ -454,27 +436,7 @@ class Uri implements UriInterface, \JsonSerializable
             return;
         }
 
-        // Reject control characters and URI authority delimiters so getHost()
-        // cannot disagree with the on-wire authority.
-        $invalidHost = preg_match('/[\x00-\x20\x7F\/\?#@\\\\]/', $host);
-
-        if ($invalidHost === false) {
-            throw new \RuntimeException('Unable to validate URI host: '.preg_last_error_msg());
-        }
-
-        if ($invalidHost === 1) {
-            throw new \InvalidArgumentException(sprintf('Invalid host: "%s"', $host));
-        }
-
-        if (strpos($host, '[') !== false || strpos($host, ']') !== false) {
-            if ($host[0] !== '[' || substr($host, -1) !== ']') {
-                throw new \InvalidArgumentException(sprintf('Invalid host: "%s"', $host));
-            }
-
-            return;
-        }
-
-        if (strpos($host, ':') !== false) {
+        if (preg_match('/[\x00-\x20\x7F]/', $host)) {
             throw new \InvalidArgumentException(sprintf('Invalid host: "%s"', $host));
         }
     }
@@ -696,7 +658,7 @@ class Uri implements UriInterface, \JsonSerializable
             throw new \InvalidArgumentException('Scheme must be a string');
         }
 
-        $scheme = Utils::asciiToLower($scheme);
+        $scheme = \strtr($scheme, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 
         if ($scheme !== '' && !preg_match('/^[a-z][a-z0-9.+-]*$/D', $scheme)) {
             \trigger_deprecation(
@@ -721,10 +683,10 @@ class Uri implements UriInterface, \JsonSerializable
             throw new \InvalidArgumentException('User info must be a string');
         }
 
-        return $this->filterComponent(
+        return preg_replace_callback(
             '/(?:[^%'.Rfc3986::CHAR_UNRESERVED.Rfc3986::CHAR_SUB_DELIMS.']+|%(?![A-Fa-f0-9]{2}))/',
-            $component,
-            'Unable to filter URI user info'
+            [$this, 'rawurlencodeMatchZero'],
+            $component
         );
     }
 
@@ -739,7 +701,7 @@ class Uri implements UriInterface, \JsonSerializable
             throw new \InvalidArgumentException('Host must be a string');
         }
 
-        $host = Utils::asciiToLower($host);
+        $host = \strtr($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         self::assertValidHost($host);
 
         return $host;
@@ -823,10 +785,10 @@ class Uri implements UriInterface, \JsonSerializable
             throw new \InvalidArgumentException('Path must be a string');
         }
 
-        return $this->filterComponent(
+        return preg_replace_callback(
             '/(?:[^'.Rfc3986::CHAR_UNRESERVED.Rfc3986::CHAR_SUB_DELIMS.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
-            $path,
-            'Unable to filter URI path'
+            [$this, 'rawurlencodeMatchZero'],
+            $path
         );
     }
 
@@ -843,22 +805,11 @@ class Uri implements UriInterface, \JsonSerializable
             throw new \InvalidArgumentException('Query and fragment must be a string');
         }
 
-        return $this->filterComponent(
+        return preg_replace_callback(
             '/(?:[^'.Rfc3986::CHAR_UNRESERVED.Rfc3986::CHAR_SUB_DELIMS.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
-            $str,
-            'Unable to filter URI query or fragment'
+            [$this, 'rawurlencodeMatchZero'],
+            $str
         );
-    }
-
-    private function filterComponent(string $pattern, string $component, string $context): string
-    {
-        $filtered = preg_replace_callback($pattern, [$this, 'rawurlencodeMatchZero'], $component);
-
-        if ($filtered === null) {
-            throw new \RuntimeException($context.': '.preg_last_error_msg());
-        }
-
-        return $filtered;
     }
 
     private function rawurlencodeMatchZero(array $match): string
