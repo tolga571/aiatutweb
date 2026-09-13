@@ -141,8 +141,17 @@ if (strpos($eventType, 'subscription.') === 0) {
 
         try {
             // Check old plan status
-            $userRow = $db->fetchOne('SELECT plan_status FROM users WHERE id = ?', [$userId]);
+            $userRow = $db->fetchOne('SELECT plan_status, paddle_last_event_at FROM users WHERE id = ?', [$userId]);
             $oldPlanStatus = $userRow ? ($userRow['plan_status'] ?? 'inactive') : 'inactive';
+
+            // Shadow-mode only: never skips anything, just records whether an
+            // out-of-order-delivery guard (like FastSpring's) would have
+            // fired here too. $ts is the Paddle-Signature header's own
+            // timestamp (seconds since epoch), verified above.
+            $lastEventAt = $userRow && $userRow['paddle_last_event_at'] !== null ? (int)$userRow['paddle_last_event_at'] : null;
+            if ($lastEventAt !== null && $ts < $lastEventAt) {
+                logWebhook($logFile, "SHADOW: event {$eventType} ts={$ts} for User ID {$userId} is older than last applied ts={$lastEventAt} — would have been skipped, applying anyway (shadow mode).");
+            }
 
             // Keep the Paddle subscription/customer IDs on file so the app can
             // later call the Paddle API to cancel or change this subscription
@@ -165,17 +174,19 @@ if (strpos($eventType, 'subscription.') === 0) {
                 $db->execute(
                     'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL,
                      paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
-                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval)
+                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval),
+                     paddle_last_event_at = GREATEST(COALESCE(paddle_last_event_at, 0), ?)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $ts, $userId]
                 );
             } else {
                 $db->execute(
                     'UPDATE users SET plan_status = ?, has_paid = ?, payment_pending_at = NULL, cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL,
                      paddle_subscription_id = COALESCE(?, paddle_subscription_id), paddle_customer_id = COALESCE(?, paddle_customer_id),
-                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval)
+                     next_billed_at = COALESCE(?, next_billed_at), billing_interval = COALESCE(?, billing_interval),
+                     paddle_last_event_at = GREATEST(COALESCE(paddle_last_event_at, 0), ?)
                      WHERE id = ?',
-                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $userId]
+                    [$planStatus, $hasPaid, $subscriptionId, $customerId, $nextBilledAt, $billingInterval, $ts, $userId]
                 );
             }
 

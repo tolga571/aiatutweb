@@ -286,6 +286,14 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_last_event_at BIGINT DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // Shadow-mode equivalent for Paddle (the signature header's `ts`,
+            // seconds since epoch): public/webhook.php only logs when an
+            // incoming event would have been considered stale, it never
+            // skips anything, so this is purely observational for now.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN paddle_last_event_at BIGINT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {
