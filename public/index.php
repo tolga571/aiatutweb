@@ -42,6 +42,8 @@ $flashcard = new Flashcard($db);
 $paddleClient = new \App\Src\PaddleClient($config['paddle_api_key'] ?? '', $config['paddle_environment'] ?? 'sandbox');
 $fastspringClient = new \App\Src\FastSpringClient($config['fastspring_api_username'] ?? '', $config['fastspring_api_password'] ?? '');
 $fastspringBilling = new \App\Src\FastSpringBilling($db, $config, $fastspringClient);
+$dodoClient = new \App\Src\DodoClient($config['dodo_api_key'] ?? '', $config['dodo_environment'] ?? 'live');
+$dodoBilling = new \App\Src\DodoBilling($db, $config, $dodoClient);
 
 // Initialize language system
 $detectedLang = 'en';
@@ -389,6 +391,49 @@ switch ($page) {
         echo json_encode($result);
         exit;
 
+    case 'dodo-checkout':
+        // Dodo has no client-side checkout widget like Paddle/FastSpring —
+        // the pricing page just links here, this creates a hosted checkout
+        // session server-side, and the browser is redirected to it. Records
+        // the same payment_pending_at / pending_purchase_plan fields Paddle
+        // uses so the existing check-payment-status timeout fallback (see
+        // below) covers Dodo too without any Dodo-specific polling logic.
+        $requireAuth();
+        $planKey = $_GET['plan'] ?? '';
+        $interval = $_GET['interval'] ?? 'month';
+        if (!in_array($planKey, ['starter', 'pro', 'active'], true) || !in_array($interval, ['month', 'year'], true)) {
+            header('Location: ?page=pricing&dodo_error=invalid_plan');
+            exit;
+        }
+        $productId = $dodoBilling->productIdFor($planKey, $interval);
+        if ($productId === '' || !$dodoClient->isConfigured()) {
+            header('Location: ?page=pricing&dodo_error=not_configured');
+            exit;
+        }
+        $checkoutUser = $auth->currentUser();
+        $checkoutUrl = $dodoClient->createCheckoutSession(
+            $productId,
+            $checkoutUser['email'] ?? '',
+            $auth->userId(),
+            'https://jumplearner.com/?page=pricing&dodo_return=1',
+            'https://jumplearner.com/?page=pricing'
+        );
+        if (!$checkoutUrl) {
+            header('Location: ?page=pricing&dodo_error=checkout_failed');
+            exit;
+        }
+        try {
+            $db->execute(
+                'UPDATE users SET payment_pending_at = ' . $db->now() . ', pending_purchase_plan = ?, pending_purchase_interval = ? WHERE id = ?',
+                [$planKey, $interval, $auth->userId()]
+            );
+        } catch (\Throwable $e) {
+            // Best-effort — if it fails, the webhook still grants access on its own.
+            error_log('dodo-checkout: failed to record pending purchase: ' . $e->getMessage());
+        }
+        header('Location: ' . $checkoutUrl);
+        exit;
+
     case 'check-payment-status':
         $requireAuth();
         header('Content-Type: application/json');
@@ -461,6 +506,17 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => 'change_pending']);
             exit;
         }
+        $dodoSubId = $cancelUser['dodo_subscription_id'] ?? null;
+        if ($dodoSubId && $dodoClient->isConfigured()) {
+            if ($dodoClient->cancelSubscription($dodoSubId)) {
+                $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
+                echo json_encode(['ok' => true, 'method' => 'api']);
+            } else {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+            }
+            exit;
+        }
         $fsSubId = $cancelUser['fastspring_subscription_id'] ?? null;
         if ($fsSubId && $fastspringClient->isConfigured()) {
             if ($fastspringClient->cancelSubscription($fsSubId)) {
@@ -473,7 +529,7 @@ switch ($page) {
             exit;
         }
         $subId = $cancelUser['paddle_subscription_id'] ?? null;
-        if (!$fsSubId && $subId && $paddleClient->isConfigured()) {
+        if (!$dodoSubId && !$fsSubId && $subId && $paddleClient->isConfigured()) {
             $success = $paddleClient->cancelSubscription($subId, 'next_billing_period');
             if ($success) {
                 $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
@@ -493,7 +549,7 @@ switch ($page) {
             $mailer->send(
                 $config['mail_from_address'],
                 'Manual cancellation request',
-                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($cancelUser['email'] ?? '') . ') requested to cancel their subscription, but no subscription ID / API credentials are on file for automatic cancellation. Please cancel manually in the ' . ($fsSubId ? 'FastSpring' : 'Paddle') . ' dashboard.</p>'
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($cancelUser['email'] ?? '') . ') requested to cancel their subscription, but no subscription ID / API credentials are on file for automatic cancellation. Please cancel manually in the ' . ($dodoSubId ? 'Dodo' : ($fsSubId ? 'FastSpring' : 'Paddle')) . ' dashboard.</p>'
             );
         }
         echo json_encode(['ok' => true, 'method' => 'manual']);
@@ -520,8 +576,32 @@ switch ($page) {
         // scheduled_change, and a cancellation only needs a real API call
         // when cancel_method is 'api'.
         $needsApiCall = $hasPendingChange || ($resumeUser['cancel_method'] ?? '') === 'api';
+        $dodoSubId = $resumeUser['dodo_subscription_id'] ?? null;
+        if ($needsApiCall && $dodoSubId) {
+            if (!$dodoClient->isConfigured()) {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+                exit;
+            }
+            $dodoOk = true;
+            if ($hasPendingChange) {
+                $currentProductId = $dodoBilling->productIdFor(
+                    $resumeUser['plan_status'] ?? '',
+                    ($resumeUser['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month'
+                );
+                $dodoOk = $currentProductId !== '' && $dodoClient->changeSubscriptionPlan($dodoSubId, $currentProductId, false);
+            }
+            if ($dodoOk && $hasPendingCancel && ($resumeUser['cancel_method'] ?? '') === 'api') {
+                $dodoOk = $dodoClient->resumeSubscription($dodoSubId);
+            }
+            if (!$dodoOk) {
+                http_response_code(502);
+                echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
+                exit;
+            }
+        }
         $fsSubId = $resumeUser['fastspring_subscription_id'] ?? null;
-        if ($needsApiCall && $fsSubId) {
+        if ($needsApiCall && $fsSubId && !$dodoSubId) {
             if (!$fastspringClient->isConfigured()) {
                 http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
@@ -545,7 +625,7 @@ switch ($page) {
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
                 exit;
             }
-        } elseif ($needsApiCall) {
+        } elseif ($needsApiCall && !$dodoSubId) {
             $subId = $resumeUser['paddle_subscription_id'] ?? null;
             if (!$subId || !$paddleClient->isConfigured() || !$paddleClient->resumeSubscription($subId)) {
                 http_response_code(502);
@@ -585,18 +665,23 @@ switch ($page) {
             'active' => ['month' => $config['paddle_premium_price_id'] ?? '', 'year' => $config['paddle_premium_yearly_price_id'] ?? ''],
         ];
         $changeUser = $auth->currentUser();
-        // FastSpring subscribers switch products; Paddle subscribers switch prices.
-        $fsSubId = $changeUser['fastspring_subscription_id'] ?? null;
-        $targetPriceId = $fsSubId
-            ? $fastspringBilling->pathFor($planKey, $interval)
-            : ($planPriceMap[$planKey][$interval] ?? '');
+        // Dodo/FastSpring subscribers switch products; Paddle subscribers switch prices.
+        $dodoSubId = $changeUser['dodo_subscription_id'] ?? null;
+        $fsSubId = $dodoSubId ? null : ($changeUser['fastspring_subscription_id'] ?? null);
+        if ($dodoSubId) {
+            $targetPriceId = $dodoBilling->productIdFor($planKey, $interval);
+        } elseif ($fsSubId) {
+            $targetPriceId = $fastspringBilling->pathFor($planKey, $interval);
+        } else {
+            $targetPriceId = $planPriceMap[$planKey][$interval] ?? '';
+        }
         if ($targetPriceId === '') {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'invalid_plan']);
             exit;
         }
-        $subId = $fsSubId ?: ($changeUser['paddle_subscription_id'] ?? null);
-        $providerReady = $fsSubId ? $fastspringClient->isConfigured() : $paddleClient->isConfigured();
+        $subId = $dodoSubId ?: ($fsSubId ?: ($changeUser['paddle_subscription_id'] ?? null));
+        $providerReady = $dodoSubId ? $dodoClient->isConfigured() : ($fsSubId ? $fastspringClient->isConfigured() : $paddleClient->isConfigured());
         if (!empty($changeUser['cancel_requested_at'])) {
             // Paddle won't apply a price change on top of a subscription
             // that already has a pending cancellation scheduled — resuming
@@ -627,13 +712,17 @@ switch ($page) {
         $isSameTierIntervalSwitch = ($newRank === $oldRank) && ($interval !== $oldInterval);
         $isUpgrade = ($newRank > $oldRank) || $isSameTierIntervalSwitch;
 
-        $success = $fsSubId
-            // Upgrades prorate now; downgrades bill the new price from the next rebill.
-            ? $fastspringClient->changeSubscriptionProduct($fsSubId, $targetPriceId, $isUpgrade)
-            : $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
+        // Upgrades prorate now; downgrades bill the new price from the next rebill.
+        if ($dodoSubId) {
+            $success = $dodoClient->changeSubscriptionPlan($dodoSubId, $targetPriceId, $isUpgrade);
+        } elseif ($fsSubId) {
+            $success = $fastspringClient->changeSubscriptionProduct($fsSubId, $targetPriceId, $isUpgrade);
+        } else {
+            $success = $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
+        }
         if (!$success) {
             http_response_code(502);
-            echo json_encode(['ok' => false, 'error' => $fsSubId ? 'provider_api_failed' : 'paddle_api_failed']);
+            echo json_encode(['ok' => false, 'error' => ($dodoSubId || $fsSubId) ? 'provider_api_failed' : 'paddle_api_failed']);
             exit;
         }
 
@@ -694,7 +783,7 @@ switch ($page) {
             $mailer->send(
                 $config['mail_from_address'],
                 'Refund request',
-                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($refundUser['email'] ?? '') . '), plan: ' . htmlspecialchars($refundUser['plan_status'] ?? '') . ', requested a refund. Check the payment date in the ' . (!empty($refundUser['fastspring_subscription_id']) ? 'FastSpring' : 'Paddle') . ' dashboard against the refund policy and process there.</p>'
+                '<p>User #' . (int)$auth->userId() . ' (' . htmlspecialchars($refundUser['email'] ?? '') . '), plan: ' . htmlspecialchars($refundUser['plan_status'] ?? '') . ', requested a refund. Check the payment date in the ' . (!empty($refundUser['dodo_subscription_id']) ? 'Dodo' : (!empty($refundUser['fastspring_subscription_id']) ? 'FastSpring' : 'Paddle')) . ' dashboard against the refund policy and process there.</p>'
             );
         }
         echo json_encode(['ok' => true]);

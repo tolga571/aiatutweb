@@ -197,6 +197,12 @@ class Database {
             event_id TEXT PRIMARY KEY,
             processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
+        // Same dedup role as fastspring_processed_events, for Dodo's
+        // webhook-id header (Standard Webhooks spec).
+        $this->exec("CREATE TABLE IF NOT EXISTS dodo_processed_events (
+            event_id TEXT PRIMARY KEY,
+            processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
         $this->migrate();
     }
 
@@ -284,6 +290,21 @@ class Database {
             // older event can be detected and skipped instead of clobbering
             // state a newer event already wrote.
             $this->pdo->exec("ALTER TABLE users ADD COLUMN fastspring_last_event_at BIGINT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN dodo_subscription_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN dodo_customer_id TEXT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            // Dodo's webhook-timestamp header (Unix seconds), used the same
+            // way as fastspring_last_event_at above to reject a redelivered
+            // event older than the newest one already applied.
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN dodo_last_event_at BIGINT DEFAULT NULL");
         } catch (\Exception $e) {
         }
         try {

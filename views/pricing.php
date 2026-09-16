@@ -13,12 +13,15 @@ $starterYearlyPriceId = $config['paddle_starter_yearly_price_id'] ?? '';
 $proYearlyPriceId = $config['paddle_pro_yearly_price_id'] ?? '';
 $premiumYearlyPriceId = $config['paddle_premium_yearly_price_id'] ?? '';
 $paymentProvider = $config['payment_provider'] ?? 'paddle';
-// Lets a single request preview the FastSpring checkout (e.g. while testing)
-// without flipping PAYMENT_PROVIDER for every visitor. Requires FastSpring
-// to actually be configured, so a stray query param can't break the page
-// for anyone who stumbles on it while it's unconfigured.
-if (($_GET['checkout'] ?? '') === 'fastspring' && !empty($config['fastspring_storefront'])) {
+// Lets a single request preview the FastSpring/Dodo checkout (e.g. while
+// testing) without flipping PAYMENT_PROVIDER for every visitor. Requires
+// the provider to actually be configured, so a stray query param can't
+// break the page for anyone who stumbles on it while it's unconfigured.
+$checkoutPreview = $_GET['checkout'] ?? '';
+if ($checkoutPreview === 'fastspring' && !empty($config['fastspring_storefront'])) {
     $paymentProvider = 'fastspring';
+} elseif ($checkoutPreview === 'dodo' && !empty($config['dodo_api_key'])) {
+    $paymentProvider = 'dodo';
 }
 $fastspringStorefront = $config['fastspring_storefront'] ?? '';
 if ($paymentProvider === 'fastspring') {
@@ -32,6 +35,17 @@ if ($paymentProvider === 'fastspring') {
     $proYearlyPriceId = $fsPaths['pro']['year'] ?? '';
     $premiumYearlyPriceId = $fsPaths['active']['year'] ?? '';
     $checkoutEnabled = $fastspringStorefront !== '';
+} elseif ($paymentProvider === 'dodo') {
+    // Dodo has no client-side widget — openCheckout() below just redirects
+    // to ?page=dodo-checkout with the plan/interval encoded in the "price
+    // id" string, so the button markup itself doesn't need to change.
+    $starterPriceId = 'starter:month';
+    $proPriceId = 'pro:month';
+    $premiumPriceId = 'active:month';
+    $starterYearlyPriceId = 'starter:year';
+    $proYearlyPriceId = 'pro:year';
+    $premiumYearlyPriceId = 'active:year';
+    $checkoutEnabled = !empty($config['dodo_api_key']);
 } else {
     $checkoutEnabled = !empty($paddleClientToken);
 }
@@ -46,7 +60,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   type="text/javascript"
   data-storefront="<?= htmlspecialchars($fastspringStorefront) ?>"
   data-popup-closed="onFastSpringPopupClosed"></script>
-<?php else: ?>
+<?php elseif ($paymentProvider === 'paddle'): ?>
 <!-- Load Paddle.js -->
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <?php endif; ?>
@@ -666,6 +680,18 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     }, 1500);
   }
 
+  <?php if (!empty($_GET['dodo_error'])): ?>
+  alert("<?= __('pricing.checkout_error') ?>");
+  <?php endif; ?>
+
+  <?php if (($_GET['dodo_return'] ?? '') === '1'): ?>
+  // Landed back here from Dodo's hosted checkout page (see the return_url
+  // set in the ?page=dodo-checkout handler). Reuses the exact same polling
+  // modal as Paddle/FastSpring — check-payment-status already covers Dodo
+  // via the pending_purchase_plan fields that route set before redirecting.
+  handleCheckoutSuccess();
+  <?php endif; ?>
+
   function checkAgain() {
     fetch('?page=check-payment-status')
       .then(response => response.json())
@@ -704,6 +730,15 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       console.error("Error opening FastSpring checkout:", error);
       alert("<?= __('pricing.checkout_error') ?>");
     }
+    return;
+    <?php endif; ?>
+
+    <?php if ($paymentProvider === 'dodo'): ?>
+    // priceId is "<plan>:<interval>" here (see $starterPriceId etc. above) —
+    // there's no client-side widget, just a redirect to a hosted checkout
+    // page the server creates.
+    var dodoParts = priceId.split(':');
+    window.location.href = '?page=dodo-checkout&plan=' + encodeURIComponent(dodoParts[0]) + '&interval=' + encodeURIComponent(dodoParts[1] || 'month');
     return;
     <?php endif; ?>
 

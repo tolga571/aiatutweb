@@ -29,10 +29,14 @@ return [
     // without it those actions fall back to a manual support request.
     'paddle_api_key'          => getenv('PADDLE_API_KEY') ?: '',
 
-    // Which checkout the pricing page shows to new buyers: 'paddle' (default)
-    // or 'fastspring'. Existing subscribers keep being managed by whichever
-    // provider their subscription lives in, regardless of this setting.
-    'payment_provider'        => strtolower(getenv('PAYMENT_PROVIDER') ?: 'paddle') === 'fastspring' ? 'fastspring' : 'paddle',
+    // Which checkout the pricing page shows to new buyers: 'paddle' (default),
+    // 'fastspring', or 'dodo'. Existing subscribers keep being managed by
+    // whichever provider their subscription lives in, regardless of this
+    // setting.
+    'payment_provider'        => (function () {
+        $v = strtolower(getenv('PAYMENT_PROVIDER') ?: 'paddle');
+        return in_array($v, ['fastspring', 'dodo'], true) ? $v : 'paddle';
+    })(),
 
     // FastSpring (Checkouts > Popup Checkouts > "Place on your website").
     // Test:  yourstore.test.onfastspring.com/popup-yourstore
@@ -58,6 +62,29 @@ return [
         'active' => [
             'month' => getenv('FASTSPRING_PREMIUM_MONTHLY_PATH') ?: 'premium-plan-monthly',
             'year'  => getenv('FASTSPRING_PREMIUM_YEARLY_PATH') ?: 'premium-plan-yearly',
+        ],
+    ],
+
+    // Dodo Payments (Developer > API Keys, and Developer > Webhooks for the
+    // signing secret). Live and test mode use separate base URLs and
+    // separate API keys/catalogs (unlike FastSpring, where one key serves
+    // both and a flag on the object tells them apart).
+    'dodo_environment'       => strtolower(getenv('DODO_ENVIRONMENT') ?: 'live') === 'test' ? 'test' : 'live',
+    'dodo_api_key'           => getenv('DODO_API_KEY') ?: '',
+    'dodo_webhook_secret'    => getenv('DODO_WEBHOOK_SECRET') ?: '',
+    // Product IDs from Products in the Dodo dashboard.
+    'dodo_product_paths' => [
+        'starter' => [
+            'month' => getenv('DODO_STARTER_MONTHLY_ID') ?: 'pdt_0NnjYrx2ALzXetqOHufyU',
+            'year'  => getenv('DODO_STARTER_YEARLY_ID') ?: 'pdt_0NnjYs2Q4DqehrWIFnAKN',
+        ],
+        'pro' => [
+            'month' => getenv('DODO_PRO_MONTHLY_ID') ?: 'pdt_0NnjYs5i3QuMtGjC1gUqq',
+            'year'  => getenv('DODO_PRO_YEARLY_ID') ?: 'pdt_0NnjYs8Y3VpDeQXrfrrjT',
+        ],
+        'active' => [
+            'month' => getenv('DODO_PREMIUM_MONTHLY_ID') ?: 'pdt_0NnjYsBegy7ezvuQbj7Ow',
+            'year'  => getenv('DODO_PREMIUM_YEARLY_ID') ?: 'pdt_0NnjYsEVUHIfpLzX6nrgq',
         ],
     ],
 

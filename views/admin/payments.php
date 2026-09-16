@@ -19,7 +19,7 @@ ob_start();
             <td><?php echo $pay['has_paid'] ? __('admin.paid') : __('admin.unpaid'); ?></td>
             <td><?php echo htmlspecialchars($pay['created_at']); ?></td>
             <td><?php echo htmlspecialchars($pay['next_billed_at'] ?? '—'); ?></td>
-            <td><?php if (!empty($pay['fastspring_subscription_id'])): ?>FastSpring: <?php echo htmlspecialchars($pay['fastspring_subscription_id']); ?><?php else: ?><?php echo htmlspecialchars($pay['paddle_subscription_id'] ?? '—'); ?><?php endif; ?></td>
+            <td><?php if (!empty($pay['dodo_subscription_id'])): ?>Dodo: <?php echo htmlspecialchars($pay['dodo_subscription_id']); ?><?php elseif (!empty($pay['fastspring_subscription_id'])): ?>FastSpring: <?php echo htmlspecialchars($pay['fastspring_subscription_id']); ?><?php else: ?><?php echo htmlspecialchars($pay['paddle_subscription_id'] ?? '—'); ?><?php endif; ?></td>
             <td>
                 <?php if (!empty($pay['cancel_requested_at'])): ?>
                     <?php if (($pay['cancel_method'] ?? '') === 'manual'): ?>
