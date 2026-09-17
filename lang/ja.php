@@ -96,6 +96,7 @@ return [
     'account.download_data' => '自分のデータをダウンロード',
     'account.delete_account_link' => 'アカウントを削除',
     'account.data_section_title' => 'アカウントとデータ',
+    'account.billing_portal' => '請求と領収書',
     'auth.message_empty' => 'メッセージを入力してください。',
     'auth.ai_unavailable' => 'AIが利用できません。もう一度お試しください。',
 

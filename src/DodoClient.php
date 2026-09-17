@@ -90,6 +90,20 @@ class DodoClient
     }
 
     /**
+     * POST /customers/{id}/customer-portal/session — a hosted page where
+     * the customer can view their invoices/receipts and payment methods
+     * without us building any of that ourselves. Returns the portal URL,
+     * or null on failure.
+     */
+    public function createCustomerPortalSession(string $customerId, string $returnUrl): ?string
+    {
+        $data = $this->request('POST', '/customers/' . rawurlencode($customerId) . '/customer-portal/session', [
+            'return_url' => $returnUrl,
+        ]);
+        return $data['link'] ?? null;
+    }
+
+    /**
      * POST /subscriptions/{id}/change-plan — switches to another product.
      * $prorate = true charges/credits the difference now (upgrades);
      * false defers to the next billing date (downgrades).

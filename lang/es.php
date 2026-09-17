@@ -96,6 +96,7 @@ return [
     'account.download_data' => 'Descargar mis datos',
     'account.delete_account_link' => 'Eliminar mi cuenta',
     'account.data_section_title' => 'Cuenta y datos',
+    'account.billing_portal' => 'Facturación y facturas',
     'auth.message_empty' => 'El mensaje no puede estar vacío.',
     'auth.ai_unavailable' => 'IA no disponible, inténtalo de nuevo.',
 

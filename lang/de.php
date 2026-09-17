@@ -96,6 +96,7 @@ return [
     'account.download_data' => 'Meine Daten herunterladen',
     'account.delete_account_link' => 'Konto löschen',
     'account.data_section_title' => 'Konto & Daten',
+    'account.billing_portal' => 'Rechnungen & Zahlungen',
     'auth.message_empty' => 'Nachricht darf nicht leer sein.',
     'auth.ai_unavailable' => 'KI nicht verfügbar, bitte versuchen Sie es erneut.',
 

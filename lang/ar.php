@@ -96,6 +96,7 @@ return [
     'account.download_data' => 'تنزيل بياناتي',
     'account.delete_account_link' => 'حذف حسابي',
     'account.data_section_title' => 'الحساب والبيانات',
+    'account.billing_portal' => 'الفواتير والمدفوعات',
     'auth.message_empty' => 'لا يمكن أن تكون الرسالة فارغة.',
     'auth.ai_unavailable' => 'الذكاء الاصطناعي غير متاح، يرجى المحاولة مرة أخرى.',
 

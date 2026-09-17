@@ -98,6 +98,7 @@ return [
     'account.download_data' => 'Download my data',
     'account.delete_account_link' => 'Delete my account',
     'account.data_section_title' => 'Your account & data',
+    'account.billing_portal' => 'Billing & invoices',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Set up your profile',

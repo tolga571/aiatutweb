@@ -98,6 +98,7 @@ return [
     'account.download_data' => 'Verilerimi indir',
     'account.delete_account_link' => 'Hesabımı sil',
     'account.data_section_title' => 'Hesabın ve verilerin',
+    'account.billing_portal' => 'Faturalarım',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Profilinizi ayarlayın',

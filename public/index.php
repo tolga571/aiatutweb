@@ -884,6 +884,18 @@ switch ($page) {
         exit;
 
     // ── GDPR self-service: export & delete ──────────────────────────
+    case 'dodo-billing-portal':
+        $requireAuth();
+        $portalUser = $auth->currentUser();
+        $dodoCustomerId = $portalUser['dodo_customer_id'] ?? null;
+        if (!$dodoCustomerId || !$dodoClient->isConfigured()) {
+            header('Location: ?page=dashboard');
+            exit;
+        }
+        $portalUrl = $dodoClient->createCustomerPortalSession($dodoCustomerId, 'https://jumplearner.com/?page=dashboard');
+        header('Location: ' . ($portalUrl ?: '?page=dashboard'));
+        exit;
+
     case 'account-export':
         $requireAuth();
         $exportUserId = $auth->userId();

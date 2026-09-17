@@ -293,6 +293,11 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6">
         <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('account.data_section_title') ?></h2>
         <div class="flex flex-wrap gap-3">
+          <?php if (!empty($user['dodo_customer_id'])): ?>
+          <a href="?page=dodo-billing-portal" class="bg-surface-variant text-on-surface font-semibold py-2 px-4 rounded-lg transition hover:bg-surface-variant/80 text-sm inline-block">
+            <?= __('account.billing_portal') ?>
+          </a>
+          <?php endif; ?>
           <a href="?page=account-export" class="bg-surface-variant text-on-surface font-semibold py-2 px-4 rounded-lg transition hover:bg-surface-variant/80 text-sm inline-block">
             <?= __('account.download_data') ?>
           </a>

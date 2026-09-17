@@ -96,6 +96,7 @@ return [
     'account.download_data' => '下载我的数据',
     'account.delete_account_link' => '删除我的账户',
     'account.data_section_title' => '账户与数据',
+    'account.billing_portal' => '账单与发票',
     'auth.message_empty' => '消息不能为空。',
     'auth.ai_unavailable' => 'AI不可用，请重试。',
 
