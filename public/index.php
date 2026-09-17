@@ -586,6 +586,7 @@ switch ($page) {
         if ($dodoSubId && $dodoClient->isConfigured()) {
             if ($dodoClient->cancelSubscription($dodoSubId)) {
                 $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
+                \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'dodo', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
                 http_response_code(502);
@@ -597,6 +598,7 @@ switch ($page) {
         if ($fsSubId && $fastspringClient->isConfigured()) {
             if ($fastspringClient->cancelSubscription($fsSubId)) {
                 $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
+                \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'fastspring', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
                 http_response_code(502);
@@ -609,6 +611,7 @@ switch ($page) {
             $success = $paddleClient->cancelSubscription($subId, 'next_billing_period');
             if ($success) {
                 $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'api' WHERE id = ?", [$auth->userId()]);
+                \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'paddle', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
                 http_response_code(502);
@@ -620,6 +623,7 @@ switch ($page) {
         // or no API key configured: record the request so support can finish
         // it manually instead of silently doing nothing.
         $db->execute("UPDATE users SET cancel_requested_at = " . $db->now() . ", cancel_method = 'manual' WHERE id = ?", [$auth->userId()]);
+        \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', $dodoSubId ? 'dodo' : ($fsSubId ? 'fastspring' : 'paddle'), $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} requested cancellation (manual, no provider credentials on file)");
         if (!empty($config['mailtrap_api_token'])) {
             $mailer = new \App\Src\Mailer($config);
             $mailer->send(
@@ -714,6 +718,7 @@ switch ($page) {
         // If it was actually already processed by support, the next
         // webhook call is what reflects reality anyway.
         $db->execute('UPDATE users SET cancel_requested_at = NULL, cancel_method = NULL, pending_plan_change = NULL WHERE id = ?', [$auth->userId()]);
+        \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_resumed', $dodoSubId ? 'dodo' : ($fsSubId ? 'fastspring' : 'paddle'), $resumeUser['plan_status'] ?? null, null, "user {$auth->userId()} resumed subscription / undid pending change");
         echo json_encode(['ok' => true]);
         exit;
 
@@ -801,6 +806,13 @@ switch ($page) {
             echo json_encode(['ok' => false, 'error' => ($dodoSubId || $fsSubId) ? 'provider_api_failed' : 'paddle_api_failed']);
             exit;
         }
+        \App\Src\ActivityLog::record(
+            $db, $auth->userId(),
+            $isUpgrade ? 'subscription_upgraded' : 'downgrade_scheduled',
+            $dodoSubId ? 'dodo' : ($fsSubId ? 'fastspring' : 'paddle'),
+            $planKey, $interval,
+            "user {$auth->userId()} " . ($isUpgrade ? 'changed' : 'scheduled a change') . " {$oldPlanStatus}/{$oldInterval} -> {$planKey}/{$interval}"
+        );
 
         // Paddle already accepted the price change at this point — a DB
         // error here must not surface as a broken response (or worse, look
@@ -854,6 +866,12 @@ switch ($page) {
         // support immediately, instead of only existing as an email no one
         // in the product can see the status of.
         $db->execute('UPDATE users SET refund_requested_at = ' . $db->now() . ' WHERE id = ?', [$auth->userId()]);
+        \App\Src\ActivityLog::record(
+            $db, $auth->userId(), 'refund_requested',
+            !empty($refundUser['dodo_subscription_id']) ? 'dodo' : (!empty($refundUser['fastspring_subscription_id']) ? 'fastspring' : 'paddle'),
+            $refundUser['plan_status'] ?? null, null,
+            "user {$auth->userId()} requested a refund"
+        );
         if (!empty($config['mailtrap_api_token'])) {
             $mailer = new \App\Src\Mailer($config);
             $mailer->send(
@@ -1068,6 +1086,9 @@ switch ($page) {
         break;
     case 'admin-payments':
         $adminCtrl->listPayments();
+        break;
+    case 'admin-activity':
+        $adminCtrl->listActivity((int)($_GET['p'] ?? 1));
         break;
     case 'admin-conversations':
         $adminCtrl->listConversations();

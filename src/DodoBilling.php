@@ -121,7 +121,11 @@ class DodoBilling
                 [$eventTimestamp, $userId]
             );
             $this->adjustTokenBonus($userId, $oldPlanStatus, 'canceled');
-            return "deactivated user {$userId} (subscription {$subId}, status={$status})";
+            $result = "deactivated user {$userId} (subscription {$subId}, status={$status})";
+            if ($oldPlanStatus !== 'canceled' && $oldPlanStatus !== 'inactive') {
+                ActivityLog::record($this->db, $userId, 'subscription_canceled', 'dodo', null, null, $result);
+            }
+            return $result;
         }
 
         $map = $this->productMap();
@@ -169,7 +173,14 @@ class DodoBilling
         $this->db->execute('UPDATE users SET ' . implode(', ', $sets) . ' WHERE id = ?', $params);
         $this->adjustTokenBonus($userId, $oldPlanStatus, $newPlan);
 
-        return "user {$userId} -> {$newPlan}" . ($interval ? "/{$interval}" : '') . " (status={$status}, subscription {$subId})";
+        $result = "user {$userId} -> {$newPlan}" . ($interval ? "/{$interval}" : '') . " (status={$status}, subscription {$subId})";
+        if (!$keepPendingDowngrade && $newPlan !== $oldPlanStatus) {
+            $eventType = in_array($oldPlanStatus, ['inactive', 'canceled'], true)
+                ? 'subscription_started'
+                : (TokenManager::planRank($newPlan) > TokenManager::planRank($oldPlanStatus) ? 'subscription_upgraded' : 'subscription_downgraded');
+            ActivityLog::record($this->db, $userId, $eventType, 'dodo', $newPlan, $interval, $result);
+        }
+        return $result;
     }
 
     /** Same upgrade/downgrade quota handling as Paddle/FastSpring. */

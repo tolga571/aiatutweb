@@ -571,6 +571,7 @@ return [
     'admin.users' => 'المستخدمون',
     'admin.admins' => 'المديرون',
     'admin.payments' => 'المدفوعات',
+    'admin.activity' => 'النشاط',
     'admin.conversations' => 'المحادثات',
     'admin.settings' => 'الإعدادات',
     'admin.user_count' => 'عدد المستخدمين',

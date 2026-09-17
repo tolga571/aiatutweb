@@ -226,7 +226,11 @@ class FastSpringBilling
                 [$eventCreatedMs, $userId]
             );
             $this->adjustTokenBonus($userId, $oldPlanStatus, 'canceled');
-            return "deactivated user {$userId} (subscription {$subId})";
+            $result = "deactivated user {$userId} (subscription {$subId})";
+            if ($oldPlanStatus !== 'canceled' && $oldPlanStatus !== 'inactive') {
+                ActivityLog::record($this->db, $userId, 'subscription_canceled', 'fastspring', null, null, $result);
+            }
+            return $result;
         }
 
         $map = $this->productMap();
@@ -275,7 +279,14 @@ class FastSpringBilling
         $this->db->execute('UPDATE users SET ' . implode(', ', $sets) . ' WHERE id = ?', $params);
         $this->adjustTokenBonus($userId, $oldPlanStatus, $newPlan);
 
-        return "user {$userId} -> {$newPlan}" . ($interval ? "/{$interval}" : '') . " (state={$state}, subscription {$subId})";
+        $result = "user {$userId} -> {$newPlan}" . ($interval ? "/{$interval}" : '') . " (state={$state}, subscription {$subId})";
+        if (!$keepPendingDowngrade && $newPlan !== $oldPlanStatus) {
+            $eventType = in_array($oldPlanStatus, ['inactive', 'canceled'], true)
+                ? 'subscription_started'
+                : (TokenManager::planRank($newPlan) > TokenManager::planRank($oldPlanStatus) ? 'subscription_upgraded' : 'subscription_downgraded');
+            ActivityLog::record($this->db, $userId, $eventType, 'fastspring', $newPlan, $interval, $result);
+        }
+        return $result;
     }
 
     /** Same upgrade/downgrade quota handling as the Paddle webhook. */

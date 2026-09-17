@@ -205,6 +205,22 @@ if (strpos($eventType, 'subscription.') === 0) {
                 logWebhook($logFile, "DOWNGRADE: Added {$oldLimit} to bonus limit for User ID {$userId}");
             }
 
+            // Same event-log rule as Dodo/FastSpring: only a real state
+            // transition is worth a row, not every webhook that reconfirms
+            // the status quo (e.g. a renewal charge).
+            if ($planStatus !== $oldPlanStatus) {
+                $detail = "user {$userId} -> {$planStatus}" . ($billingInterval ? "/{$billingInterval}" : '') . ' (paddle)';
+                if (!$hasPaid) {
+                    if (in_array($oldPlanStatus, ['starter', 'pro', 'active'], true)) {
+                        \App\Src\ActivityLog::record($db, $userId, 'subscription_canceled', 'paddle', null, null, $detail);
+                    }
+                } elseif (in_array($oldPlanStatus, ['inactive', 'canceled', ''], true)) {
+                    \App\Src\ActivityLog::record($db, $userId, 'subscription_started', 'paddle', $planStatus, $billingInterval, $detail);
+                } else {
+                    \App\Src\ActivityLog::record($db, $userId, $newRank > $oldRank ? 'subscription_upgraded' : 'subscription_downgraded', 'paddle', $planStatus, $billingInterval, $detail);
+                }
+            }
+
             logWebhook($logFile, "SUCCESS: Updated User ID {$userId} to Status: {$planStatus}, has_paid: {$hasPaid}");
         } catch (\Exception $e) {
             logWebhook($logFile, "DATABASE ERROR: " . $e->getMessage());

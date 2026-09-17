@@ -226,6 +226,22 @@ class Database {
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications (token_hash)");
+        // Human-readable billing/account timeline for the admin activity
+        // monitor — every subscription start/upgrade/downgrade/cancel,
+        // resume, and refund request, across all three providers, in one
+        // place. user_id is nullable (ON DELETE SET NULL) so a deleted
+        // user's history stays in the feed instead of vanishing with them.
+        $this->exec("CREATE TABLE IF NOT EXISTS activity_events (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            event_type TEXT NOT NULL,
+            provider TEXT,
+            plan TEXT,
+            billing_interval TEXT,
+            detail TEXT NOT NULL DEFAULT '',
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_activity_events_created ON activity_events (created_at DESC)");
         $this->migrate();
     }
 

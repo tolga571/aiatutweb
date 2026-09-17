@@ -571,6 +571,7 @@ return [
     'admin.users' => '用户',
     'admin.admins' => '管理员',
     'admin.payments' => '支付',
+    'admin.activity' => '活动',
     'admin.conversations' => '对话',
     'admin.settings' => '设置',
     'admin.user_count' => '用户数量',

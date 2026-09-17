@@ -571,6 +571,7 @@ return [
     'admin.users' => 'ユーザー',
     'admin.admins' => '管理者',
     'admin.payments' => '支払い',
+    'admin.activity' => 'アクティビティ',
     'admin.conversations' => '会話',
     'admin.settings' => '設定',
     'admin.user_count' => 'ユーザー数',

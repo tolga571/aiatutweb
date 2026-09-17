@@ -584,6 +584,7 @@ return [
     'admin.users' => 'Kullanıcılar',
     'admin.admins' => 'Yöneticiler',
     'admin.payments' => 'Ödemeler',
+    'admin.activity' => 'Aktivite',
     'admin.conversations' => 'Konuşmalar',
     'admin.settings' => 'Ayarlar',
     'admin.user_count' => 'Kullanıcı Sayısı',

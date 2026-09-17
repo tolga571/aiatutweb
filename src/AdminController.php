@@ -159,6 +159,24 @@ class AdminController {
         require __DIR__ . '/../views/admin/payments.php';
     }
 
+    // ------------------- Activity monitor -------------------
+    public function listActivity(int $pageNum = 1): void {
+        $this->requireAdmin();
+        $perPage = 50;
+        $pageNum = max(1, $pageNum);
+        $offset = ($pageNum - 1) * $perPage;
+        $totalCount = (int)$this->db->fetchOne('SELECT COUNT(*) as cnt FROM activity_events')['cnt'];
+        $events = $this->db->fetchAll(
+            'SELECT ae.id, ae.event_type, ae.provider, ae.plan, ae.billing_interval, ae.detail, ae.created_at, u.email as user_email
+             FROM activity_events ae
+             LEFT JOIN users u ON u.id = ae.user_id
+             ORDER BY ae.created_at DESC
+             LIMIT ' . $perPage . ' OFFSET ' . $offset
+        );
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
+        require __DIR__ . '/../views/admin/activity.php';
+    }
+
     // ------------------- Conversations -------------------
     public function listConversations(): void {
         $this->requireAdmin();

@@ -584,6 +584,7 @@ return [
     'admin.users' => 'Users',
     'admin.admins' => 'Admins',
     'admin.payments' => 'Payments',
+    'admin.activity' => 'Activity',
     'admin.conversations' => 'Conversations',
     'admin.settings' => 'Settings',
     'admin.user_count' => 'User Count',
