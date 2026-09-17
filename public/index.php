@@ -153,6 +153,15 @@ switch ($page) {
                     if ($auth->register($email, $pass, $name)) {
                         $auth->clearAttempts($clientIp, 'register');
                         $auth->login($email, $pass);
+                        if ($auth->userId()) {
+                            $verifyToken = $auth->createEmailVerificationToken($auth->userId());
+                            $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
+                            (new \App\Src\Mailer($config))->send(
+                                $email,
+                                __('auth.verify_email_subject'),
+                                '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
+                            );
+                        }
                         $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
                         header('Location: ?page=onboarding' . $redirect); exit;
                     }
@@ -163,6 +172,73 @@ switch ($page) {
         }
         require __DIR__ . '/../views/register.php';
         break;
+
+    case 'forgot-password':
+        $forgotSent = false;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $clientIp = client_ip();
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $forgotError = __('auth.error_generic');
+            } elseif ($auth->tooManyAttempts($clientIp, 'password-reset', 5, 3600)) {
+                $forgotError = __('auth.error_too_many_attempts');
+            } else {
+                $auth->recordAttempt($clientIp, 'password-reset');
+                $email = trim($_POST['email'] ?? '');
+                $resetUser = filter_var($email, FILTER_VALIDATE_EMAIL)
+                    ? $db->fetchOne('SELECT id FROM users WHERE email = ?', [$email])
+                    : null;
+                // Always report success either way — confirming whether an
+                // email is registered is its own information leak.
+                if ($resetUser) {
+                    $resetToken = $auth->createPasswordResetToken((int)$resetUser['id']);
+                    $resetUrl = 'https://jumplearner.com/?page=reset-password&token=' . urlencode($resetToken);
+                    (new \App\Src\Mailer($config))->send(
+                        $email,
+                        __('auth.reset_email_subject'),
+                        '<p>' . __('auth.reset_email_body') . '</p><p><a href="' . htmlspecialchars($resetUrl) . '">' . htmlspecialchars($resetUrl) . '</a></p>'
+                    );
+                }
+                $forgotSent = true;
+            }
+        }
+        require __DIR__ . '/../views/forgot-password.php';
+        break;
+
+    case 'reset-password':
+        $resetToken = $_GET['token'] ?? ($_POST['token'] ?? '');
+        $resetUserId = $resetToken !== '' ? $auth->findValidResetUserId($resetToken) : null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $resetUserId) {
+            if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+                $resetError = __('auth.error_generic');
+            } else {
+                $newPass = $_POST['password'] ?? '';
+                $newPassConfirm = $_POST['password_confirm'] ?? '';
+                if (strlen($newPass) < 8) {
+                    $resetError = __('auth.error_weak_password');
+                } elseif ($newPass !== $newPassConfirm) {
+                    $resetError = __('auth.error_password_mismatch');
+                } elseif ($auth->completePasswordReset($resetToken, $newPass)) {
+                    $auth->clearAttempts(client_ip(), 'password-reset');
+                    $_SESSION['user_id'] = $resetUserId;
+                    session_regenerate_id(true);
+                    header('Location: ?page=dashboard&password_reset=1');
+                    exit;
+                } else {
+                    $resetError = __('auth.reset_invalid_token');
+                }
+            }
+        }
+        require __DIR__ . '/../views/reset-password.php';
+        break;
+
+    case 'verify-email':
+        $verifyOk = $auth->verifyEmailToken($_GET['token'] ?? '');
+        if ($auth->isLoggedIn()) {
+            header('Location: ?page=dashboard&email_verified=' . ($verifyOk ? '1' : '0'));
+            exit;
+        }
+        header('Location: ?page=login&email_verified=' . ($verifyOk ? '1' : '0'));
+        exit;
 
     case 'google-login':
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['credential'])) {

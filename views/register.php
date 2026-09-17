@@ -121,7 +121,8 @@
 </div>
 
 <?php if (!empty($googleClientId)): ?>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<?php $googleHl = ['zh' => 'zh-CN'][\App\Src\Language::currentLang()] ?? \App\Src\Language::currentLang(); ?>
+<script src="https://accounts.google.com/gsi/client?hl=<?= htmlspecialchars($googleHl) ?>" async defer></script>
 <script>
 function handleCredentialResponse(response) {
   if (response.credential) {

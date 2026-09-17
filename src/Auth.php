@@ -98,6 +98,72 @@ class Auth {
         session_destroy();
     }
 
+    /**
+     * Creates a password reset token for the given user, storing only its
+     * hash (the plaintext token lives solely in the emailed link) with a
+     * 1 hour expiry. Returns the plaintext token to embed in the link.
+     */
+    public function createPasswordResetToken(int $userId): string {
+        $token = bin2hex(random_bytes(32));
+        $this->db->execute(
+            "INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (?, ?, CURRENT_TIMESTAMP + INTERVAL '1 hour')",
+            [$userId, hash('sha256', $token)]
+        );
+        return $token;
+    }
+
+    /** Looks up the user for an unexpired, unused reset token without consuming it (for rendering the reset form). */
+    public function findValidResetUserId(string $token): ?int {
+        $row = $this->db->fetchOne(
+            "SELECT user_id FROM password_resets WHERE token_hash = ? AND used_at IS NULL AND expires_at > CURRENT_TIMESTAMP",
+            [hash('sha256', $token)]
+        );
+        return $row ? (int)$row['user_id'] : null;
+    }
+
+    /** Validates the token again, sets the new password, and marks the token used — all in one step so it can't be replayed. */
+    public function completePasswordReset(string $token, string $newPassword): bool {
+        $tokenHash = hash('sha256', $token);
+        $row = $this->db->fetchOne(
+            "SELECT id, user_id FROM password_resets WHERE token_hash = ? AND used_at IS NULL AND expires_at > CURRENT_TIMESTAMP",
+            [$tokenHash]
+        );
+        if (!$row) {
+            return false;
+        }
+        $hash = password_hash($newPassword, PASSWORD_BCRYPT);
+        $this->db->execute('UPDATE users SET password = ? WHERE id = ?', [$hash, $row['user_id']]);
+        $this->db->execute("UPDATE password_resets SET used_at = CURRENT_TIMESTAMP WHERE id = ?", [$row['id']]);
+        // Any other outstanding reset links for this user should die with it.
+        $this->db->execute("UPDATE password_resets SET used_at = CURRENT_TIMESTAMP WHERE user_id = ? AND used_at IS NULL", [$row['user_id']]);
+        return true;
+    }
+
+    /** Creates an email verification token for the given user (24 hour expiry). Returns the plaintext token to embed in the link. */
+    public function createEmailVerificationToken(int $userId): string {
+        $token = bin2hex(random_bytes(32));
+        $this->db->execute(
+            "INSERT INTO email_verifications (user_id, token_hash, expires_at) VALUES (?, ?, CURRENT_TIMESTAMP + INTERVAL '24 hours')",
+            [$userId, hash('sha256', $token)]
+        );
+        return $token;
+    }
+
+    /** Validates the token, marks the user's email verified, and marks the token used. */
+    public function verifyEmailToken(string $token): bool {
+        $tokenHash = hash('sha256', $token);
+        $row = $this->db->fetchOne(
+            "SELECT id, user_id FROM email_verifications WHERE token_hash = ? AND used_at IS NULL AND expires_at > CURRENT_TIMESTAMP",
+            [$tokenHash]
+        );
+        if (!$row) {
+            return false;
+        }
+        $this->db->execute('UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE id = ?', [$row['user_id']]);
+        $this->db->execute("UPDATE email_verifications SET used_at = CURRENT_TIMESTAMP WHERE id = ?", [$row['id']]);
+        return true;
+    }
+
     public function isLoggedIn(): bool {
         return isset($_SESSION['user_id']);
     }

@@ -34,7 +34,10 @@
             placeholder="you@example.com" />
         </div>
         <div>
-          <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.password') ?></label>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-body-md text-on-surface-variant"><?= __('auth.password') ?></label>
+            <a href="?page=forgot-password" class="text-[13px] text-primary hover:text-primary-fixed transition"><?= __('auth.forgot_password') ?></a>
+          </div>
           <input type="password" name="password" required autocomplete="current-password"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
             placeholder="••••••••" />
@@ -94,7 +97,8 @@
 </div>
 
 <?php if (!empty($googleClientId)): ?>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<?php $googleHl = ['zh' => 'zh-CN'][\App\Src\Language::currentLang()] ?? \App\Src\Language::currentLang(); ?>
+<script src="https://accounts.google.com/gsi/client?hl=<?= htmlspecialchars($googleHl) ?>" async defer></script>
 <script>
 function handleCredentialResponse(response) {
   if (response.credential) {

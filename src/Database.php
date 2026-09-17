@@ -203,6 +203,29 @@ class Database {
             event_id TEXT PRIMARY KEY,
             processed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
+        // Password reset tokens. Only the hash is stored — the plaintext
+        // token lives solely in the emailed link — and each row is single
+        // use (used_at set on consumption) with a short expiry.
+        $this->exec("CREATE TABLE IF NOT EXISTS password_resets (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            token_hash TEXT NOT NULL,
+            expires_at TIMESTAMP NOT NULL,
+            used_at TIMESTAMP DEFAULT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets (token_hash)");
+        // Same shape as password_resets, for the register-time email
+        // verification link.
+        $this->exec("CREATE TABLE IF NOT EXISTS email_verifications (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            token_hash TEXT NOT NULL,
+            expires_at TIMESTAMP NOT NULL,
+            used_at TIMESTAMP DEFAULT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications (token_hash)");
         $this->migrate();
     }
 
@@ -313,6 +336,10 @@ class Database {
             // incoming event would have been considered stale, it never
             // skips anything, so this is purely observational for now.
             $this->pdo->exec("ALTER TABLE users ADD COLUMN paddle_last_event_at BIGINT DEFAULT NULL");
+        } catch (\Exception $e) {
+        }
+        try {
+            $this->pdo->exec("ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMP DEFAULT NULL");
         } catch (\Exception $e) {
         }
     }
