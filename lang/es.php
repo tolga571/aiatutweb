@@ -383,9 +383,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – Tutor de idiomas con IA',
-    'home.badge' => 'Aprendizaje de idiomas impulsado por IA',
+    'home.badge' => 'Coach de conversación con IA',
     'home.heading' => 'Aprende cualquier idioma con<br /><span class="text-primary">tu tutor de IA</span>',
-    'home.subtitle' => 'Practica conversaciones, recibe correcciones instantáneas, construye vocabulario todo con una IA personalizada que se adapta a tu nivel.',
+    'home.subtitle' => 'La mayoría de las apps te hacen tocar respuestas de opción múltiple. Con AiTut mantienes conversaciones reales — con correcciones instantáneas y un tutor que se adapta exactamente a tu nivel MCER.',
     'home.get_started' => 'Empezar gratis',
     'home.continue_learning' => 'Continuar aprendiendo',
     'home.read_blog' => 'Leer el blog',

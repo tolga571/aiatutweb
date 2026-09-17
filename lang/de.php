@@ -383,9 +383,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – KI-Sprachtutor',
-    'home.badge' => 'KI-gestütztes Sprachenlernen',
+    'home.badge' => 'KI-Gesprächscoach',
     'home.heading' => 'Lerne jede Sprache mit<br /><span class="text-primary">deinem KI-Tutor</span>',
-    'home.subtitle' => 'Führe Konversationen, erhalte sofortige Korrekturen und baue Wortschatz auf – mit einer persönlichen KI, die sich an dein Niveau anpasst.',
+    'home.subtitle' => 'Die meisten Apps lassen dich nur Multiple-Choice-Antworten antippen. Bei AiTut führst du echte Gespräche — mit sofortigem Feedback und einem Tutor, der sich genau an dein CEFR-Niveau anpasst.',
     'home.get_started' => 'Kostenlos starten',
     'home.continue_learning' => 'Weiterlernen',
     'home.read_blog' => 'Blog lesen',

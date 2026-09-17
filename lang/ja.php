@@ -383,9 +383,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – AI言語チューター',
-    'home.badge' => 'AI駆動の言語学習',
+    'home.badge' => 'AI会話コーチ',
     'home.heading' => 'あらゆる言語を<br /><span class="text-primary">AIチューター</span>で学ぶ',
-    'home.subtitle' => '会話の練習、即時訂正、語彙構築を、あなたのレベルに合わせたパーソナライズAIで実現。',
+    'home.subtitle' => '多くのアプリは選択式の問題を解かせるだけです。AiTutでは実際の会話を練習でき、即座に添削が受けられ、あなたのCEFRレベルに正確に合わせたチューターが指導します。',
     'home.get_started' => '無料ではじめる',
     'home.continue_learning' => '学習を続ける',
     'home.read_blog' => 'ブログを読む',

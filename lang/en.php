@@ -396,9 +396,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – AI Language Tutor',
-    'home.badge' => 'AI-Powered Language Learning',
+    'home.badge' => 'AI Conversation Coach',
     'home.heading' => 'Learn any language with<br /><span class="text-primary">your AI Tutor</span>',
-    'home.subtitle' => 'Practice conversations, get instant corrections, and build vocabulary with a personalized AI that adapts to your level.',
+    'home.subtitle' => 'Most apps have you tap multiple-choice answers. AiTut has you practice real conversations — with instant corrections and a tutor that adapts to your exact CEFR level.',
     'home.get_started' => 'Start for free',
     'home.continue_learning' => 'Continue Learning',
     'home.read_blog' => 'Read Blog',

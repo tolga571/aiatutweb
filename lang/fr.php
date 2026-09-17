@@ -383,9 +383,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – Tuteur de langue IA',
-    'home.badge' => 'Apprentissage des langues par IA',
+    'home.badge' => 'Coach de conversation IA',
     'home.heading' => 'Apprenez n\'importe quelle langue avec<br /><span class="text-primary">votre tuteur IA</span>',
-    'home.subtitle' => 'Pratiquez des conversations, recevez des corrections instantanées, développez votre vocabulaire avec une IA personnalisée qui s\'adapte à votre niveau.',
+    'home.subtitle' => 'La plupart des applications vous font cocher des réponses à choix multiples. Avec AiTut, vous avez de vraies conversations — avec des corrections instantanées et un tuteur qui s\'adapte exactement à votre niveau CECR.',
     'home.get_started' => 'Commencer gratuitement',
     'home.continue_learning' => 'Continuer à apprendre',
     'home.read_blog' => 'Lire le blog',

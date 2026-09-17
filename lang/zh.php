@@ -383,9 +383,9 @@ return [
 
     // ── Home ────────────────────────────────────────────────
     'home.page_title' => 'AiTut – AI语言导师',
-    'home.badge' => 'AI驱动的语言学习',
+    'home.badge' => 'AI对话教练',
     'home.heading' => '通过<br /><span class="text-primary">AI导师</span>学习任何语言',
-    'home.subtitle' => '练习对话、获得即时纠错、构建词汇，一切由个性化AI为您量身定制，适应您的水平。',
+    'home.subtitle' => '大多数应用只是让你点选多选题答案。AiTut让你进行真实对话——获得即时纠错，并配备完全适应你CEFR水平的AI导师。',
     'home.get_started' => '免费开始',
     'home.continue_learning' => '继续学习',
     'home.read_blog' => '阅读博客',

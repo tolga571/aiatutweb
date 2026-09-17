@@ -9,7 +9,7 @@
 <?php
 // Views may set $pageDescription for a page-specific summary; otherwise
 // this default covers the marketing/legal pages that don't set one.
-$metaDescription = $pageDescription ?? 'AiTut is an AI language tutor that adapts to your CEFR level — practice conversations, get instant grammar corrections, and build vocabulary automatically.';
+$metaDescription = $pageDescription ?? 'AiTut is an AI conversation coach for language learners — not another tap-to-translate app. Practice real conversations at your CEFR level, get instant corrections, and build vocabulary automatically.';
 $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') === '/' ? '/' : '/' . ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '', '/'));
 ?>
 <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>"/>
