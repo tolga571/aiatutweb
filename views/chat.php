@@ -3,7 +3,7 @@ require_once __DIR__ . '/partials/flags.php';
 $pageTitle = __('chat.page_title');
 $currentUser = $currentUser ?? $auth->currentUser();
 $isTrial = (($currentUser['plan_status'] ?? '') === 'trial');
-$trialLimit = 5;
+$trialLimit = 15;
 $trialMessagesSent = 0;
 if ($isTrial) {
   $trialMessagesSent = $auth->getTrialMessagesSent((int) $currentUser['id']);

@@ -1095,7 +1095,7 @@ switch ($page) {
 
             $currentUser = $auth->currentUser();
             $isTrial = (($currentUser['plan_status'] ?? '') === 'trial');
-            if ($isTrial && $auth->getTrialMessagesSent($userId) >= 5) {
+            if ($isTrial && $auth->getTrialMessagesSent($userId) >= 15) {
                 header('Content-Type: application/json');
                 echo json_encode(['error' => __('error.trial_expired')]);
                 exit;
@@ -1105,7 +1105,7 @@ switch ($page) {
             $result['isTrial'] = $isTrial;
             if ($isTrial) {
                 $sent = $auth->getTrialMessagesSent($userId);
-                $result['trialRemaining'] = max(0, 5 - $sent);
+                $result['trialRemaining'] = max(0, 15 - $sent);
             }
 
             header('Content-Type: application/json');

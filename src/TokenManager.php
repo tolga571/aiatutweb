@@ -24,7 +24,7 @@ class TokenManager {
 
     public function getBaseLimit(string $planStatus): int {
         switch ($planStatus) {
-            case 'trial': return 5;
+            case 'trial': return 15;
             case 'starter': return 50;
             case 'pro': return 500;
             case 'active': return 1500;

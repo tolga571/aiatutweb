@@ -194,7 +194,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
           <div>
             <?php if ($isTrialUser): ?>
               <h3 class="text-lg font-bold text-on-surface"><?= __('pricing.trial_active_title') ?></h3>
-              <p class="text-xs text-on-surface-variant"><?= sprintf(__('pricing.trial_active_desc'), max(0, 5 - $trialMessagesSent)) ?></p>
+              <p class="text-xs text-on-surface-variant"><?= sprintf(__('pricing.trial_active_desc'), max(0, 15 - $trialMessagesSent)) ?></p>
             <?php else: ?>
               <h3 class="text-lg font-bold text-on-surface"><?= __('pricing.trial_prompt_title') ?></h3>
               <p class="text-xs text-on-surface-variant"><?= __('pricing.trial_prompt_desc') ?></p>
