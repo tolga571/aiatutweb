@@ -184,6 +184,11 @@ class AdminController {
 
     public function updateSettings(array $post): void {
         $this->requireAdmin();
+        if (!$this->validateCsrfToken($post['csrf'] ?? '')) {
+            $_SESSION['admin_settings_msg'] = 'Invalid CSRF token — settings were not saved.';
+            header('Location: ?page=admin-settings');
+            exit;
+        }
         // Simple .env update (no validation for brevity)
         $envPath = __DIR__ . '/../.env';
         $lines   = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
