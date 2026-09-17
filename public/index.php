@@ -1079,13 +1079,13 @@ switch ($page) {
         $adminCtrl->dashboard();
         break;
     case 'admin-users':
-        $adminCtrl->listUsers();
+        $adminCtrl->listUsers((int)($_GET['p'] ?? 1), (string)($_GET['q'] ?? ''));
         break;
     case 'admin-admins':
         $adminCtrl->listAdmins();
         break;
     case 'admin-payments':
-        $adminCtrl->listPayments();
+        $adminCtrl->listPayments((int)($_GET['p'] ?? 1), (string)($_GET['q'] ?? ''));
         break;
     case 'admin-activity':
         $adminCtrl->listActivity((int)($_GET['p'] ?? 1));

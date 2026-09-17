@@ -2,17 +2,28 @@
 $title = __('admin.payments');
 ob_start();
 ?>
-<table class="admin-table" style="width:100%;border-collapse:collapse;">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+    <h2 style="margin:0;"><?= __('admin.payments') ?></h2>
+    <form method="GET" action="" style="display:flex;gap:8px;">
+        <input type="hidden" name="page" value="admin-payments">
+        <input type="text" name="q" value="<?= htmlspecialchars($search ?? '') ?>" placeholder="<?= __('admin.search_email') ?>" class="form-control form-control-sm" style="width:220px;">
+        <button type="submit" class="btn btn-sm btn-outline-secondary"><?= __('admin.search') ?></button>
+    </form>
+</div>
+<table class="table table-hover table-striped">
     <thead>
-        <tr style="background:#333;color:#fff;">
+        <tr>
             <th><?= __('admin.id') ?></th><th><?= __('admin.email_col') ?></th><th><?= __('admin.plan_col') ?></th><th><?= __('admin.status') ?></th><th><?= __('admin.created_at') ?></th><th>Renews</th><th>Subscription ID</th><th>Cancellation</th><th>Pending Change</th><th>Refund</th>
         </tr>
     </thead>
     <tbody>
+        <?php if (empty($payments)): ?>
+        <tr><td colspan="10" style="text-align:center;color:#9aa0a6;padding:24px;"><?= __('admin.no_results') ?></td></tr>
+        <?php endif; ?>
         <?php foreach ($payments as $pay):
             $needsAction = (!empty($pay['cancel_requested_at']) && ($pay['cancel_method'] ?? '') === 'manual') || !empty($pay['refund_requested_at']);
         ?>
-        <tr style="border-bottom:1px solid #444;<?= $needsAction ? 'background:#4a2e00;' : '' ?>">
+        <tr<?= $needsAction ? ' style="background:#4a2e00;"' : '' ?>>
             <td><?php echo htmlspecialchars($pay['id']); ?></td>
             <td><?php echo htmlspecialchars($pay['email']); ?></td>
             <td><?php echo htmlspecialchars($pay['plan_status']); ?></td>
@@ -43,6 +54,18 @@ ob_start();
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php if (($totalPages ?? 1) > 1): ?>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:16px;">
+    <?php $qs = $search !== '' ? '&q=' . urlencode($search) : ''; ?>
+    <?php if ($pageNum > 1): ?>
+        <a href="?page=admin-payments&p=<?= $pageNum - 1 ?><?= $qs ?>" class="btn btn-sm btn-outline-secondary">&larr; <?= __('admin.prev_page') ?></a>
+    <?php endif; ?>
+    <span style="align-self:center;color:#9aa0a6;font-size:13px;"><?= __('admin.page_label') ?> <?= $pageNum ?> / <?= $totalPages ?></span>
+    <?php if ($pageNum < $totalPages): ?>
+        <a href="?page=admin-payments&p=<?= $pageNum + 1 ?><?= $qs ?>" class="btn btn-sm btn-outline-secondary"><?= __('admin.next_page') ?> &rarr;</a>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
 <p style="margin-top:20px;">
     <a href="?page=admin-export&type=payments" style="background:#28a745;color:#fff;padding:8px 12px;text-decoration:none;"><?= __('admin.csv_download') ?></a>
 </p>

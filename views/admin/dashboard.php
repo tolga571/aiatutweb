@@ -33,7 +33,7 @@ ob_start();
         <div class="card card-sm">
           <div class="card-body">
             <h3 class="card-title"><?= __('admin.revenue') ?></h3>
-            <div class="h1 mb-0"><?= htmlspecialchars(number_format($revenue ?? 0, 2)) ?> TL</div>
+            <div class="h1 mb-0">$<?= htmlspecialchars(number_format($mrrUsd ?? 0, 2)) ?></div>
           </div>
         </div>
       </div>

@@ -134,14 +134,48 @@ class AdminController {
         $userCount = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM users')['cnt'];
         $paidCount = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM users WHERE has_paid = 1')['cnt'];
         $msgCount  = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM messages')['cnt'];
-        $revenue   = $paidCount * ($this->config['premium_price'] ?? 0);
+
+        // List price per plan, USD — must track the prices actually shown
+        // on the pricing page (lang/*.php pricing.*_monthly/_yearly) and the
+        // live Dodo product catalog, since that's the current source of
+        // truth. This was previously $paidCount * $config['premium_price'],
+        // a config key that has never existed, so the dashboard always
+        // showed 0 regardless of how many users were actually paying.
+        $monthlyPriceUsd = [
+            'starter' => ['month' => 15,  'year' => 150 / 12],
+            'pro'     => ['month' => 50,  'year' => 500 / 12],
+            'active'  => ['month' => 150, 'year' => 1500 / 12],
+        ];
+        $planCounts = $this->db->fetchAll(
+            'SELECT plan_status, billing_interval, COUNT(*) as cnt FROM users WHERE has_paid = 1 GROUP BY plan_status, billing_interval'
+        );
+        $mrrUsd = 0.0;
+        foreach ($planCounts as $row) {
+            $interval = ($row['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month';
+            $mrrUsd += ($monthlyPriceUsd[$row['plan_status']][$interval] ?? 0) * (int)$row['cnt'];
+        }
         require __DIR__ . '/../views/admin/dashboard.php';
     }
 
     // ------------------- Users -------------------
-    public function listUsers(): void {
+    public function listUsers(int $pageNum = 1, string $search = ''): void {
         $this->requireAdmin();
-        $users = $this->db->fetchAll('SELECT id, email, name, xp, has_paid, plan_status FROM users');
+        $perPage = 50;
+        $pageNum = max(1, $pageNum);
+        $offset = ($pageNum - 1) * $perPage;
+        $search = trim($search);
+        $where = '';
+        $params = [];
+        if ($search !== '') {
+            $where = ' WHERE email ILIKE ?';
+            $params[] = '%' . $search . '%';
+        }
+        $totalCount = (int)$this->db->fetchOne('SELECT COUNT(*) as cnt FROM users' . $where, $params)['cnt'];
+        $users = $this->db->fetchAll(
+            'SELECT id, email, name, xp, has_paid, plan_status FROM users' . $where . ' ORDER BY id DESC LIMIT ' . $perPage . ' OFFSET ' . $offset,
+            $params
+        );
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
         require __DIR__ . '/../views/admin/users.php';
     }
 
@@ -153,9 +187,25 @@ class AdminController {
     }
 
     // ------------------- Payments -------------------
-    public function listPayments(): void {
+    public function listPayments(int $pageNum = 1, string $search = ''): void {
         $this->requireAdmin();
-        $payments = $this->db->fetchAll('SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at, u.paddle_subscription_id, u.fastspring_subscription_id, u.dodo_subscription_id, u.cancel_requested_at, u.cancel_method, u.next_billed_at, u.pending_plan_change, u.refund_requested_at FROM users u WHERE u.has_paid = 1');
+        $perPage = 50;
+        $pageNum = max(1, $pageNum);
+        $offset = ($pageNum - 1) * $perPage;
+        $search = trim($search);
+        $where = 'WHERE u.has_paid = 1';
+        $params = [];
+        if ($search !== '') {
+            $where .= ' AND u.email ILIKE ?';
+            $params[] = '%' . $search . '%';
+        }
+        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) as cnt FROM users u {$where}", $params)['cnt'];
+        $payments = $this->db->fetchAll(
+            "SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at, u.paddle_subscription_id, u.fastspring_subscription_id, u.dodo_subscription_id, u.cancel_requested_at, u.cancel_method, u.next_billed_at, u.pending_plan_change, u.refund_requested_at
+             FROM users u {$where} ORDER BY u.id DESC LIMIT {$perPage} OFFSET {$offset}",
+            $params
+        );
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
         require __DIR__ . '/../views/admin/payments.php';
     }
 
