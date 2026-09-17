@@ -1157,6 +1157,16 @@ switch ($page) {
     case 'admin-admins':
         $adminCtrl->listAdmins();
         break;
+    case 'admin-create-admin':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->createAdmin($_POST);
+        }
+        header('Location: ?page=admin-admins'); exit;
+    case 'admin-delete-admin':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->deleteAdmin((int)($_POST['id'] ?? 0));
+        }
+        header('Location: ?page=admin-admins'); exit;
     case 'admin-payments':
         $adminCtrl->listPayments((int)($_GET['p'] ?? 1), (string)($_GET['q'] ?? ''));
         break;

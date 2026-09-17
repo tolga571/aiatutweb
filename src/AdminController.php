@@ -32,6 +32,18 @@ class AdminController {
             header('Location: ?page=admin-login');
             exit;
         }
+        // Re-read on every request (cheap — this query already ran above)
+        // rather than trusting a role cached at login time, so a role
+        // change takes effect on the admin's very next click.
+        $_SESSION['admin_role'] = $admin['role'] ?? 'admin';
+    }
+
+    /** Blocks 'viewer' admins from write actions; call after requireAdmin(). */
+    private function requireFullAdmin(): void {
+        if (($_SESSION['admin_role'] ?? 'admin') !== 'admin') {
+            http_response_code(403);
+            exit('Forbidden — your admin account is read-only.');
+        }
     }
 
     /** CSRF token generation */
@@ -182,8 +194,61 @@ class AdminController {
     // ------------------- Admins -------------------
     public function listAdmins(): void {
         $this->requireAdmin();
-        $admins = $this->db->fetchAll('SELECT id, email, name, created_at FROM admins');
+        if (isset($_SESSION['admin_admins_error'])) {
+            $adminsError = $_SESSION['admin_admins_error'];
+            unset($_SESSION['admin_admins_error']);
+        }
+        $admins = $this->db->fetchAll('SELECT id, email, name, role, created_at FROM admins ORDER BY id');
+        $csrf = $this->generateCsrfToken();
         require __DIR__ . '/../views/admin/admins.php';
+    }
+
+    public function createAdmin(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken($post['csrf'] ?? '')) {
+            $_SESSION['admin_admins_error'] = 'Invalid CSRF token.';
+            header('Location: ?page=admin-admins');
+            exit;
+        }
+        $email = trim($post['email'] ?? '');
+        $password = $post['password'] ?? '';
+        $role = ($post['role'] ?? 'viewer') === 'admin' ? 'admin' : 'viewer';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 8) {
+            $_SESSION['admin_admins_error'] = 'Enter a valid email and a password of at least 8 characters.';
+            header('Location: ?page=admin-admins');
+            exit;
+        }
+        try {
+            $this->db->execute(
+                'INSERT INTO admins (email, password, name, role) VALUES (?, ?, ?, ?)',
+                [$email, password_hash($password, PASSWORD_BCRYPT), $post['name'] ?? '', $role]
+            );
+        } catch (\PDOException $e) {
+            $_SESSION['admin_admins_error'] = str_contains($e->getMessage(), 'duplicate key')
+                ? 'An admin with that email already exists.'
+                : 'Could not create admin.';
+        }
+        header('Location: ?page=admin-admins');
+        exit;
+    }
+
+    public function deleteAdmin(int $id): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken($_POST['csrf'] ?? '')) {
+            $_SESSION['admin_admins_error'] = 'Invalid CSRF token.';
+            header('Location: ?page=admin-admins');
+            exit;
+        }
+        if ($id === (int)($_SESSION['admin_id'] ?? 0)) {
+            $_SESSION['admin_admins_error'] = "You can't remove your own admin account.";
+            header('Location: ?page=admin-admins');
+            exit;
+        }
+        $this->db->execute('DELETE FROM admins WHERE id = ?', [$id]);
+        header('Location: ?page=admin-admins');
+        exit;
     }
 
     // ------------------- Payments -------------------
@@ -252,6 +317,7 @@ class AdminController {
 
     public function updateSettings(array $post): void {
         $this->requireAdmin();
+        $this->requireFullAdmin();
         if (!$this->validateCsrfToken($post['csrf'] ?? '')) {
             $_SESSION['admin_settings_msg'] = 'Invalid CSRF token — settings were not saved.';
             header('Location: ?page=admin-settings');
@@ -297,6 +363,12 @@ class AdminController {
         } elseif ($type === 'payments') {
             fputcsv($output, ['user_id', 'email', 'plan_status', 'has_paid', 'created_at']);
             $rows = $this->db->fetchAll('SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at FROM users u WHERE u.has_paid = 1');
+            foreach ($rows as $row) {
+                fputcsv($output, $row);
+            }
+        } elseif ($type === 'admins') {
+            fputcsv($output, ['id', 'email', 'name', 'role', 'created_at']);
+            $rows = $this->db->fetchAll('SELECT id, email, name, role, created_at FROM admins ORDER BY id');
             foreach ($rows as $row) {
                 fputcsv($output, $row);
             }

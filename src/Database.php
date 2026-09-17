@@ -358,6 +358,14 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMP DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        try {
+            // 'admin' (full access) or 'viewer' (read-only — can see every
+            // admin page but can't save settings or manage other admins).
+            // Defaults existing rows to 'admin' so today's admins keep the
+            // access they already had.
+            $this->pdo->exec("ALTER TABLE admins ADD COLUMN role TEXT NOT NULL DEFAULT 'admin'");
+        } catch (\Exception $e) {
+        }
     }
 
     public function getPdo(): \PDO {
