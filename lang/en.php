@@ -89,6 +89,15 @@ return [
     'auth.reset_email_body' => "We received a request to reset your password. Click the link below to choose a new one. This link expires in 1 hour and can only be used once. If you didn't request this, you can safely ignore this email.",
     'auth.verify_email_subject' => 'Confirm your email address',
     'auth.verify_email_body' => 'Thanks for signing up for AiTut! Please confirm your email address by clicking the link below.',
+    'account.wrong_password' => 'Incorrect password.',
+    'account.delete_heading' => 'Delete your account',
+    'account.delete_warning' => "This permanently deletes your account, conversations, and progress. This can't be undone.",
+    'account.delete_password_label' => 'Confirm your password',
+    'account.delete_confirm_btn' => 'Permanently delete my account',
+    'account.cancel_delete' => 'Cancel, take me back',
+    'account.download_data' => 'Download my data',
+    'account.delete_account_link' => 'Delete my account',
+    'account.data_section_title' => 'Your account & data',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Set up your profile',

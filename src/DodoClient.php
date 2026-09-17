@@ -55,6 +55,11 @@ class DodoClient
             'metadata' => ['user_id' => (string)$userId],
             'return_url' => $returnUrl,
             'cancel_url' => $cancelUrl,
+            // Catalog prices are USD-only, but this lets a customer switch
+            // the checkout to their own currency (Dodo handles the
+            // conversion) instead of being stuck paying in USD regardless
+            // of where they are.
+            'feature_flags' => ['allow_currency_selection' => true],
         ]);
         return $data['checkout_url'] ?? null;
     }

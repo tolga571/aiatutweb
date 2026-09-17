@@ -289,6 +289,18 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
           </button>
         </form>
       </div>
+
+      <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6">
+        <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('account.data_section_title') ?></h2>
+        <div class="flex flex-wrap gap-3">
+          <a href="?page=account-export" class="bg-surface-variant text-on-surface font-semibold py-2 px-4 rounded-lg transition hover:bg-surface-variant/80 text-sm inline-block">
+            <?= __('account.download_data') ?>
+          </a>
+          <a href="?page=account-delete-confirm" class="bg-error-container/30 text-error border border-error/30 font-semibold py-2 px-4 rounded-lg transition hover:bg-error-container/50 text-sm inline-block">
+            <?= __('account.delete_account_link') ?>
+          </a>
+        </div>
+      </div>
     </div>
   </main>
 </div>

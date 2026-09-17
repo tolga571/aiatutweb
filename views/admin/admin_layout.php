@@ -10,6 +10,7 @@ $title = $title ?? __('admin.title');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= htmlspecialchars($title) ?></title>
+    <link rel="icon" type="image/gif" href="/favicon.gif">
     <link href="https://cdn.jsdelivr.net/npm/tabler@latest/dist/css/tabler.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/tabler@latest/dist/js/tabler.min.js" defer></script>
 </head>

@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title><?= htmlspecialchars($pageTitle ?? 'AiTut') ?></title>
+<link rel="icon" type="image/gif" href="/favicon.gif">
 <?php
 // Views may set $pageDescription for a page-specific summary; otherwise
 // this default covers the marketing/legal pages that don't set one.

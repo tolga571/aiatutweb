@@ -89,6 +89,15 @@ return [
     'auth.reset_email_body' => 'Şifreni sıfırlamak için bir istek aldık. Yeni bir şifre belirlemek için aşağıdaki bağlantıya tıkla. Bu bağlantı 1 saat içinde geçerliliğini yitirir ve yalnızca bir kez kullanılabilir. Bu isteği sen yapmadıysan bu e-postayı görmezden gelebilirsin.',
     'auth.verify_email_subject' => 'E-posta adresini doğrula',
     'auth.verify_email_body' => "AiTut'a kaydolduğun için teşekkürler! Lütfen aşağıdaki bağlantıya tıklayarak e-posta adresini doğrula.",
+    'account.wrong_password' => 'Şifre yanlış.',
+    'account.delete_heading' => 'Hesabını sil',
+    'account.delete_warning' => 'Bu işlem hesabını, konuşmalarını ve ilerlemeni kalıcı olarak siler. Geri alınamaz.',
+    'account.delete_password_label' => 'Şifreni onayla',
+    'account.delete_confirm_btn' => 'Hesabımı kalıcı olarak sil',
+    'account.cancel_delete' => 'Vazgeç, geri dön',
+    'account.download_data' => 'Verilerimi indir',
+    'account.delete_account_link' => 'Hesabımı sil',
+    'account.data_section_title' => 'Hesabın ve verilerin',
 
     // ── Onboarding ──────────────────────────────────────────
     'onboarding.title' => 'Profilinizi ayarlayın',

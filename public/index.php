@@ -883,6 +883,79 @@ switch ($page) {
         echo json_encode(['ok' => true]);
         exit;
 
+    // ── GDPR self-service: export & delete ──────────────────────────
+    case 'account-export':
+        $requireAuth();
+        $exportUserId = $auth->userId();
+        $exportUser = $auth->currentUser();
+        unset($exportUser['password']);
+        $export = [
+            'exported_at' => date('c'),
+            'profile' => $exportUser,
+            'conversations' => $db->fetchAll('SELECT id, topic_id, topic_label, created_at, updated_at FROM conversations WHERE user_id = ? ORDER BY created_at', [$exportUserId]),
+            'messages' => $db->fetchAll(
+                'SELECT m.id, m.conversation_id, m.role, m.content, m.translation, m.correction, m.created_at
+                 FROM messages m JOIN conversations c ON c.id = m.conversation_id
+                 WHERE c.user_id = ? ORDER BY m.created_at',
+                [$exportUserId]
+            ),
+            'vocabulary_words' => $db->fetchAll('SELECT * FROM vocabulary_words WHERE user_id = ?', [$exportUserId]),
+            'flashcards' => $db->fetchAll('SELECT * FROM user_flashcards WHERE user_id = ?', [$exportUserId]),
+            'alphabet_progress' => $db->fetchAll('SELECT * FROM alphabet_progress WHERE user_id = ?', [$exportUserId]),
+            'learning_notes' => $db->fetchAll('SELECT * FROM learning_notes WHERE user_id = ?', [$exportUserId]),
+            'billing_activity' => $db->fetchAll(
+                'SELECT event_type, provider, plan, billing_interval, detail, created_at FROM activity_events WHERE user_id = ? ORDER BY created_at',
+                [$exportUserId]
+            ),
+        ];
+        header('Content-Type: application/json');
+        header('Content-Disposition: attachment; filename="aitut-my-data-' . date('Y-m-d') . '.json"');
+        echo json_encode($export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+
+    case 'account-delete-confirm':
+        $requireAuth();
+        if (isset($_SESSION['account_delete_error'])) {
+            $accountDeleteError = $_SESSION['account_delete_error'];
+            unset($_SESSION['account_delete_error']);
+        }
+        require __DIR__ . '/../views/account-delete-confirm.php';
+        break;
+
+    case 'account-delete':
+        $requireAuth();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            $_SESSION['account_delete_error'] = __('auth.error_generic');
+            header('Location: ?page=account-delete-confirm');
+            exit;
+        }
+        $deleteUser = $auth->currentUser();
+        if (!password_verify($_POST['password'] ?? '', $deleteUser['password'] ?? '')) {
+            $_SESSION['account_delete_error'] = __('account.wrong_password');
+            header('Location: ?page=account-delete-confirm');
+            exit;
+        }
+        $deleteUserId = $auth->userId();
+        // Best-effort: stop future billing before erasing the account a
+        // webhook would otherwise try to reconcile against. Not blocking —
+        // the right to erasure doesn't wait on a provider API call.
+        if (!empty($deleteUser['dodo_subscription_id']) && $dodoClient->isConfigured()) {
+            $dodoClient->cancelSubscription($deleteUser['dodo_subscription_id']);
+        } elseif (!empty($deleteUser['fastspring_subscription_id']) && $fastspringClient->isConfigured()) {
+            $fastspringClient->cancelSubscription($deleteUser['fastspring_subscription_id']);
+        } elseif (!empty($deleteUser['paddle_subscription_id']) && $paddleClient->isConfigured()) {
+            $paddleClient->cancelSubscription($deleteUser['paddle_subscription_id'], 'immediately');
+        }
+        \App\Src\ActivityLog::record($db, $deleteUserId, 'account_deleted', null, $deleteUser['plan_status'] ?? null, null, "user {$deleteUserId} ({$deleteUser['email']}) deleted their own account");
+        // token_usage has no ON DELETE CASCADE from users — every other
+        // user-owned table does, so this is the only manual cleanup needed
+        // before the DELETE below can succeed.
+        $db->execute('DELETE FROM token_usage WHERE user_id = ?', [$deleteUserId]);
+        $db->execute('DELETE FROM users WHERE id = ?', [$deleteUserId]);
+        $auth->logout();
+        header('Location: ?page=home&account_deleted=1');
+        exit;
+
     case 'flashcards':
         $requirePlan();
         $currentUser = $auth->currentUser();
