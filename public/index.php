@@ -907,6 +907,30 @@ switch ($page) {
         echo json_encode(['sub_id' => $diagSubId, 'result' => $diagResult]);
         exit;
 
+    case 'dodo-diag-patch-stream':
+        // TEMPORARY — same PATCH the crashing call makes, but via
+        // file_get_contents()/stream context instead of curl, to isolate
+        // whether this is a curl-library-specific issue.
+        $requireAuth();
+        header('Content-Type: application/json');
+        $diagUser2 = $auth->currentUser();
+        $diagSubId2 = $diagUser2['dodo_subscription_id'] ?? '';
+        $diagKey = $config['dodo_api_key'] ?? '';
+        $diagBody = json_encode(['cancel_at_next_billing_date' => true]);
+        $ctx = stream_context_create([
+            'http' => [
+                'method' => 'PATCH',
+                'header' => "Authorization: Bearer {$diagKey}\r\nAccept: application/json\r\nContent-Type: application/json\r\n",
+                'content' => $diagBody,
+                'ignore_errors' => true,
+                'timeout' => 15,
+            ],
+        ]);
+        $diagOut = @file_get_contents("https://live.dodopayments.com/subscriptions/" . rawurlencode($diagSubId2), false, $ctx);
+        $diagHeaders = $http_response_header ?? [];
+        echo json_encode(['sub_id' => $diagSubId2, 'response_headers' => $diagHeaders, 'body' => $diagOut]);
+        exit;
+
     case 'account-export':
         $requireAuth();
         $exportUserId = $auth->userId();
