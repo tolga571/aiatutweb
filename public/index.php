@@ -589,7 +589,6 @@ switch ($page) {
                 \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'dodo', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
             }
             exit;
@@ -601,7 +600,6 @@ switch ($page) {
                 \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'fastspring', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
             }
             exit;
@@ -614,7 +612,6 @@ switch ($page) {
                 \App\Src\ActivityLog::record($db, $auth->userId(), 'cancellation_requested', 'paddle', $cancelUser['plan_status'] ?? null, null, "user {$auth->userId()} scheduled cancellation (api)");
                 echo json_encode(['ok' => true, 'method' => 'api']);
             } else {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
             }
             exit;
@@ -659,7 +656,6 @@ switch ($page) {
         $dodoSubId = $resumeUser['dodo_subscription_id'] ?? null;
         if ($needsApiCall && $dodoSubId) {
             if (!$dodoClient->isConfigured()) {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
                 exit;
             }
@@ -675,7 +671,6 @@ switch ($page) {
                 $dodoOk = $dodoClient->resumeSubscription($dodoSubId);
             }
             if (!$dodoOk) {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
                 exit;
             }
@@ -683,7 +678,6 @@ switch ($page) {
         $fsSubId = $resumeUser['fastspring_subscription_id'] ?? null;
         if ($needsApiCall && $fsSubId && !$dodoSubId) {
             if (!$fastspringClient->isConfigured()) {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
                 exit;
             }
@@ -701,14 +695,12 @@ switch ($page) {
                 $fsOk = $fastspringClient->uncancelSubscription($fsSubId);
             }
             if (!$fsOk) {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'provider_api_failed']);
                 exit;
             }
         } elseif ($needsApiCall && !$dodoSubId) {
             $subId = $resumeUser['paddle_subscription_id'] ?? null;
             if (!$subId || !$paddleClient->isConfigured() || !$paddleClient->resumeSubscription($subId)) {
-                http_response_code(502);
                 echo json_encode(['ok' => false, 'error' => 'paddle_api_failed']);
                 exit;
             }
@@ -802,7 +794,6 @@ switch ($page) {
             $success = $paddleClient->updateSubscriptionPrice($subId, $targetPriceId, $isUpgrade);
         }
         if (!$success) {
-            http_response_code(502);
             echo json_encode(['ok' => false, 'error' => ($dodoSubId || $fsSubId) ? 'provider_api_failed' : 'paddle_api_failed']);
             exit;
         }
@@ -894,22 +885,6 @@ switch ($page) {
         }
         $portalUrl = $dodoClient->createCustomerPortalSession($dodoCustomerId, 'https://jumplearner.com/?page=dashboard');
         header('Location: ' . ($portalUrl ?: '?page=dashboard'));
-        exit;
-
-    case 'dodo-diag-classmethod':
-        // TEMPORARY — calling DodoClient::cancelSubscription() directly,
-        // nothing else from the cancel-subscription case around it.
-        $requireAuth();
-        header('Content-Type: application/json');
-        $diagUser3 = $auth->currentUser();
-        $diagSubId3 = $diagUser3['dodo_subscription_id'] ?? '';
-        $diagOk = $dodoClient->cancelSubscription($diagSubId3);
-        if (!$diagOk) {
-            http_response_code(502);
-            echo json_encode(['sub_id' => $diagSubId3, 'ok' => false, 'via' => 'with-502-code']);
-            exit;
-        }
-        echo json_encode(['sub_id' => $diagSubId3, 'ok' => $diagOk]);
         exit;
 
     case 'account-export':
