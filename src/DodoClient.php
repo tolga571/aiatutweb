@@ -114,72 +114,64 @@ class DodoClient
     }
 
     /**
-     * Deliberately bypasses Guzzle and speaks raw cURL. A live audit found
-     * that Guzzle's client crashed the entire request (a bare Cloudflare
-     * 502, not even our own catch blocks running) specifically on
+     * Speaks raw HTTP via a stream context — deliberately not Guzzle, and
+     * not PHP's curl extension either. A live billing-lifecycle audit
+     * found that both crashed the entire worker (a bare Cloudflare 502,
+     * not even our own catch-\Throwable running) specifically on
      * PATCH /subscriptions/{id} and POST /subscriptions/{id}/change-plan
      * against a subscription id Dodo rejected — reproducible on every
-     * attempt, while the equivalent Guzzle call for /checkouts and
-     * /customers/.../customer-portal/session degraded to null cleanly on
-     * the same class of failure. Catching \Throwable around the Guzzle
-     * call did not help, which means whatever broke wasn't a catchable PHP
-     * exception at all — almost certainly a native crash below the PHP
-     * layer (curl/TLS), the same category of environment-specific Guzzle
-     * fragility as the 7.15.5 upgrade incident earlier on this project.
-     * Native cURL sidesteps Guzzle's handling entirely and every failure
-     * mode here (curl_errno, a non-2xx status, unparseable JSON) is a
-     * plain return value, nothing to mis-catch.
+     * attempt, across Guzzle and native cURL, with and without forcing
+     * HTTP/1.1. The one difference in Dodo's response on that path: a
+     * `Connection: close` header that its 2xx responses don't send.
+     * Something below PHP in this specific environment's curl/TLS stack
+     * chokes on that combination hard enough to be uncatchable — the same
+     * category of environment-specific curl-backed-client fragility as
+     * the Guzzle 7.15.5 upgrade incident earlier on this project, just a
+     * different trigger. Confirmed by direct comparison: the identical
+     * PATCH over a stream-context file_get_contents() returned Dodo's 404
+     * cleanly with no crash. Every failure mode here (a warning from
+     * file_get_contents, a non-2xx status, unparseable JSON) is a plain
+     * return value, nothing to mis-catch.
      */
     private function request(string $method, string $path, ?array $json = null): ?array
     {
         if (!$this->isConfigured()) {
             return null;
         }
-        $ch = curl_init($this->baseUri . $path);
-        $headers = [
-            'Authorization: Bearer ' . $this->apiKey,
-            'Accept: application/json',
-        ];
-        $options = [
-            CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 15,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            // Dodo's error responses (unlike its 2xx ones) come back with
-            // `Connection: close` — over HTTP/2 that header is meaningless
-            // noise, but something below PHP was choking on it hard enough
-            // to take the whole worker down with it. Forcing HTTP/1.1,
-            // where Connection: close is the header's actual native
-            // meaning, and refusing to pool/reuse the socket afterward
-            // sidesteps whatever that interaction was.
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_FORBID_REUSE => true,
-            CURLOPT_FRESH_CONNECT => true,
-        ];
+        $headers = "Authorization: Bearer {$this->apiKey}\r\nAccept: application/json\r\n";
+        $content = null;
         if ($json !== null) {
-            $headers[] = 'Content-Type: application/json';
-            $options[CURLOPT_POSTFIELDS] = json_encode(array_filter($json, fn($v) => $v !== null));
+            $headers .= "Content-Type: application/json\r\n";
+            $content = json_encode(array_filter($json, fn($v) => $v !== null));
         }
-        $options[CURLOPT_HTTPHEADER] = $headers;
-        curl_setopt_array($ch, $options);
-        $body = curl_exec($ch);
-        $errno = curl_errno($ch);
-        $error = curl_error($ch);
-        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($errno !== 0) {
-            error_log("Dodo API {$method} {$path} curl error ({$errno}): {$error}");
+        $ctx = stream_context_create([
+            'http' => [
+                'method' => $method,
+                'header' => $headers,
+                'content' => $content,
+                'timeout' => 15,
+                'ignore_errors' => true, // still returns the body on 4xx/5xx instead of raising a warning-only failure
+            ],
+        ]);
+        $body = @file_get_contents($this->baseUri . $path, false, $ctx);
+        if ($body === false) {
+            error_log("Dodo API {$method} {$path} request failed: " . (error_get_last()['message'] ?? 'unknown'));
             return null;
+        }
+        $status = 0;
+        foreach ($http_response_header ?? [] as $line) {
+            if (preg_match('#^HTTP/\S+\s+(\d+)#', $line, $m)) {
+                $status = (int)$m[1];
+            }
         }
         if ($status < 200 || $status >= 300) {
-            error_log("Dodo API {$method} {$path} HTTP {$status}: " . substr((string)$body, 0, 300));
+            error_log("Dodo API {$method} {$path} HTTP {$status}: " . substr($body, 0, 300));
             return null;
         }
-        if ($body === '' || $body === false) {
+        if ($body === '') {
             return [];
         }
-        $decoded = json_decode((string)$body, true);
+        $decoded = json_decode($body, true);
         return is_array($decoded) ? $decoded : [];
     }
 }
