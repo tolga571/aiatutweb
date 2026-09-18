@@ -896,6 +896,17 @@ switch ($page) {
         header('Location: ' . ($portalUrl ?: '?page=dashboard'));
         exit;
 
+    case 'dodo-diag-classmethod':
+        // TEMPORARY — calling DodoClient::cancelSubscription() directly,
+        // nothing else from the cancel-subscription case around it.
+        $requireAuth();
+        header('Content-Type: application/json');
+        $diagUser3 = $auth->currentUser();
+        $diagSubId3 = $diagUser3['dodo_subscription_id'] ?? '';
+        $diagOk = $dodoClient->cancelSubscription($diagSubId3);
+        echo json_encode(['sub_id' => $diagSubId3, 'ok' => $diagOk]);
+        exit;
+
     case 'account-export':
         $requireAuth();
         $exportUserId = $auth->userId();
