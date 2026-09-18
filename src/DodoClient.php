@@ -147,6 +147,17 @@ class DodoClient
         } catch (GuzzleException $e) {
             error_log("Dodo API {$method} {$path} error: " . $e->getMessage());
             return null;
+        } catch (\Throwable $e) {
+            // Defensive: cancel/resume/change-plan were crashing the whole
+            // request (Cloudflare 502, not our own JSON error response) on
+            // a non-existent subscription id, even though the equivalent
+            // Guzzle call for checkouts/customer-portal degrades cleanly.
+            // Whatever this actually is, it isn't a GuzzleException, so it
+            // was never being caught above — catch broadly here so a
+            // provider-side failure degrades to "action failed", not a
+            // crashed worker.
+            error_log("Dodo API {$method} {$path} unexpected error: " . get_class($e) . ': ' . $e->getMessage());
+            return null;
         }
     }
 }
