@@ -896,6 +896,17 @@ switch ($page) {
         header('Location: ' . ($portalUrl ?: '?page=dashboard'));
         exit;
 
+    case 'dodo-diag-getsub':
+        // TEMPORARY — diagnosing the cancel-subscription/change-plan 502
+        // crash. Remove this case as soon as root cause is found.
+        $requireAuth();
+        header('Content-Type: application/json');
+        $diagUser = $auth->currentUser();
+        $diagSubId = $diagUser['dodo_subscription_id'] ?? '';
+        $diagResult = $dodoClient->getSubscription($diagSubId);
+        echo json_encode(['sub_id' => $diagSubId, 'result' => $diagResult]);
+        exit;
+
     case 'account-export':
         $requireAuth();
         $exportUserId = $auth->userId();
