@@ -1,9 +1,6 @@
 <?php
 namespace App\Src;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-
 /**
  * Thin wrapper around the Dodo Payments REST API
  * (https://live.dodopayments.com / https://test.dodopayments.com).
@@ -15,20 +12,18 @@ use GuzzleHttp\Exception\GuzzleException;
  *
  * Used server-side only: creating a hosted checkout session for a plan, and
  * cancelling / resuming / switching an existing subscription in place.
+ *
+ * Speaks raw cURL rather than Guzzle — see the note on request() below.
  */
 class DodoClient
 {
-    private Client $http;
     private string $apiKey;
+    private string $baseUri;
 
     public function __construct(string $apiKey, string $environment = 'live')
     {
         $this->apiKey = $apiKey;
-        $baseUri = $environment === 'test' ? 'https://test.dodopayments.com' : 'https://live.dodopayments.com';
-        $this->http = new Client([
-            'base_uri' => $baseUri,
-            'timeout' => 15.0,
-        ]);
+        $this->baseUri = $environment === 'test' ? 'https://test.dodopayments.com' : 'https://live.dodopayments.com';
     }
 
     public function isConfigured(): bool
@@ -118,46 +113,63 @@ class DodoClient
         ]) !== null;
     }
 
+    /**
+     * Deliberately bypasses Guzzle and speaks raw cURL. A live audit found
+     * that Guzzle's client crashed the entire request (a bare Cloudflare
+     * 502, not even our own catch blocks running) specifically on
+     * PATCH /subscriptions/{id} and POST /subscriptions/{id}/change-plan
+     * against a subscription id Dodo rejected — reproducible on every
+     * attempt, while the equivalent Guzzle call for /checkouts and
+     * /customers/.../customer-portal/session degraded to null cleanly on
+     * the same class of failure. Catching \Throwable around the Guzzle
+     * call did not help, which means whatever broke wasn't a catchable PHP
+     * exception at all — almost certainly a native crash below the PHP
+     * layer (curl/TLS), the same category of environment-specific Guzzle
+     * fragility as the 7.15.5 upgrade incident earlier on this project.
+     * Native cURL sidesteps Guzzle's handling entirely and every failure
+     * mode here (curl_errno, a non-2xx status, unparseable JSON) is a
+     * plain return value, nothing to mis-catch.
+     */
     private function request(string $method, string $path, ?array $json = null): ?array
     {
         if (!$this->isConfigured()) {
             return null;
         }
+        $ch = curl_init($this->baseUri . $path);
+        $headers = [
+            'Authorization: Bearer ' . $this->apiKey,
+            'Accept: application/json',
+        ];
         $options = [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->apiKey,
-                'Accept' => 'application/json',
-            ],
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_CONNECTTIMEOUT => 10,
         ];
         if ($json !== null) {
-            $options['json'] = array_filter($json, fn($v) => $v !== null);
+            $headers[] = 'Content-Type: application/json';
+            $options[CURLOPT_POSTFIELDS] = json_encode(array_filter($json, fn($v) => $v !== null));
         }
-        try {
-            $response = $this->http->request($method, $path, $options);
-            $status = $response->getStatusCode();
-            if ($status < 200 || $status >= 300) {
-                return null;
-            }
-            $body = (string)$response->getBody();
-            if ($body === '') {
-                return [];
-            }
-            $decoded = json_decode($body, true);
-            return is_array($decoded) ? $decoded : [];
-        } catch (GuzzleException $e) {
-            error_log("Dodo API {$method} {$path} error: " . $e->getMessage());
-            return null;
-        } catch (\Throwable $e) {
-            // Defensive: cancel/resume/change-plan were crashing the whole
-            // request (Cloudflare 502, not our own JSON error response) on
-            // a non-existent subscription id, even though the equivalent
-            // Guzzle call for checkouts/customer-portal degrades cleanly.
-            // Whatever this actually is, it isn't a GuzzleException, so it
-            // was never being caught above — catch broadly here so a
-            // provider-side failure degrades to "action failed", not a
-            // crashed worker.
-            error_log("Dodo API {$method} {$path} unexpected error: " . get_class($e) . ': ' . $e->getMessage());
+        $options[CURLOPT_HTTPHEADER] = $headers;
+        curl_setopt_array($ch, $options);
+        $body = curl_exec($ch);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($errno !== 0) {
+            error_log("Dodo API {$method} {$path} curl error ({$errno}): {$error}");
             return null;
         }
+        if ($status < 200 || $status >= 300) {
+            error_log("Dodo API {$method} {$path} HTTP {$status}: " . substr((string)$body, 0, 300));
+            return null;
+        }
+        if ($body === '' || $body === false) {
+            return [];
+        }
+        $decoded = json_decode((string)$body, true);
+        return is_array($decoded) ? $decoded : [];
     }
 }
