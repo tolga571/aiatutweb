@@ -904,6 +904,11 @@ switch ($page) {
         $diagUser3 = $auth->currentUser();
         $diagSubId3 = $diagUser3['dodo_subscription_id'] ?? '';
         $diagOk = $dodoClient->cancelSubscription($diagSubId3);
+        if (!$diagOk) {
+            http_response_code(502);
+            echo json_encode(['sub_id' => $diagSubId3, 'ok' => false, 'via' => 'with-502-code']);
+            exit;
+        }
         echo json_encode(['sub_id' => $diagSubId3, 'ok' => $diagOk]);
         exit;
 
