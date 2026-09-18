@@ -145,6 +145,16 @@ class DodoClient
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 15,
             CURLOPT_CONNECTTIMEOUT => 10,
+            // Dodo's error responses (unlike its 2xx ones) come back with
+            // `Connection: close` — over HTTP/2 that header is meaningless
+            // noise, but something below PHP was choking on it hard enough
+            // to take the whole worker down with it. Forcing HTTP/1.1,
+            // where Connection: close is the header's actual native
+            // meaning, and refusing to pool/reuse the socket afterward
+            // sidesteps whatever that interaction was.
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_FORBID_REUSE => true,
+            CURLOPT_FRESH_CONNECT => true,
         ];
         if ($json !== null) {
             $headers[] = 'Content-Type: application/json';
