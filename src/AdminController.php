@@ -306,9 +306,11 @@ class AdminController {
     }
 
     // ------------------- Settings -------------------
-    // ------------------- Settings -------------------
     public function settings(): void {
+        // Full admin only: this page exposes configuration values (and
+        // masked secret values), so read-only viewers must not reach it.
         $this->requireAdmin();
+        $this->requireFullAdmin();
         $csrf = $this->generateCsrfToken();
         $config = include __DIR__ . '/../config.php';
         // Variables $csrf and $config are available in the view
@@ -323,7 +325,10 @@ class AdminController {
             header('Location: ?page=admin-settings');
             exit;
         }
-        // Simple .env update (no validation for brevity)
+        // Simple .env update (no validation for brevity).
+        // NOTE: PADDLE_WEBHOOK_SECRET is intentionally NOT editable here —
+        // the settings page only shows it masked, and managing the secret
+        // lives in the deployment's environment variables instead.
         $envPath = __DIR__ . '/../.env';
         $lines   = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $map = [
@@ -333,7 +338,6 @@ class AdminController {
             'PADDLE_STARTER_YEARLY_PRICE_ID' => $post['starter_yearly_price_id'] ?? '',
             'PADDLE_PRO_YEARLY_PRICE_ID'     => $post['pro_yearly_price_id'] ?? '',
             'PADDLE_PREMIUM_YEARLY_PRICE_ID' => $post['premium_yearly_price_id'] ?? '',
-            'PADDLE_WEBHOOK_SECRET'       => $post['webhook_secret'] ?? '',
         ];
         foreach ($lines as &$line) {
             foreach ($map as $key => $val) {

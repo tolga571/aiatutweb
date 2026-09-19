@@ -43,7 +43,9 @@ ob_start();
     </div>
     <div class="form-group mb-3">
         <label for="webhook_secret" class="form-label"><?= __('admin.webhook_secret') ?></label>
-        <input type="text" class="form-control" id="webhook_secret" name="webhook_secret" value="<?= htmlspecialchars($config['paddle_webhook_secret'] ?? '') ?>">
+        <input type="text" class="form-control" id="webhook_secret" name="webhook_secret" readonly
+            value="<?= htmlspecialchars($config['paddle_webhook_secret'] ? (substr($config['paddle_webhook_secret'], 0, 6) . '••••••••••••') : '') ?>" placeholder="Manage via Railway environment variables">
+        <small class="form-text text-muted">Read-only &amp; masked — change the secret via the deployment's environment variables.</small>
     </div>
 
     <button type="submit" class="btn btn-primary"><?= __('admin.save_settings') ?></button>

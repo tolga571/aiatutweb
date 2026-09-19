@@ -511,44 +511,16 @@ switch ($page) {
         exit;
 
     case 'check-payment-status':
+        // Security: plan access is ONLY granted by a verified provider
+        // webhook (or a server-side order verification such as
+        // fastspring-confirm-order). The previous fallback here trusted
+        // client-controllable flags (payment_pending_at /
+        // pending_purchase_plan) to grant paid plans without any payment —
+        // a free-subscription bypass. Polling this endpoint now only
+        // reflects webhook-confirmed state.
         $requireAuth();
         header('Content-Type: application/json');
-
-        $userId = $auth->userId();
-        $paid = $auth->hasPaid();
-
-        if (!$paid) {
-          try {
-            $user = $db->fetchOne('SELECT payment_pending_at, pending_purchase_plan, pending_purchase_interval, plan_status FROM users WHERE id = ?', [$userId]);
-            if (!empty($user['payment_pending_at'])) {
-                $pendingTime = strtotime($user['payment_pending_at']);
-                $elapsed = time() - $pendingTime;
-                if ($elapsed > 60) {
-                    if (!empty($user['pending_purchase_plan'])) {
-                        // We know which plan was actually purchased —
-                        // grant it (interval included) while we wait for the
-                        // webhook to catch up.
-                        $db->execute(
-                            'UPDATE users SET plan_status = ?, has_paid = 1, payment_pending_at = NULL, pending_purchase_plan = NULL,
-                             billing_interval = COALESCE(?, billing_interval), pending_purchase_interval = NULL WHERE id = ?',
-                            [$user['pending_purchase_plan'], $user['pending_purchase_interval'] ?? null, $userId]
-                        );
-                        $paid = true;
-                    }
-                    // If we don't know the plan (e.g. price_id didn't match
-                    // any configured plan), don't guess — keep polling and
-                    // let the webhook resolve it, or the client's own
-                    // timeout UI offer a retry/support path.
-                }
-            }
-          } catch (\Throwable $e) {
-              // Keep polling rather than crash — the webhook still grants
-              // access on its own regardless of this fallback path.
-              error_log('check-payment-status: fallback grant check failed: ' . $e->getMessage());
-          }
-        }
-
-        echo json_encode(['paid' => $paid]);
+        echo json_encode(['paid' => $auth->hasPaid()]);
         exit;
 
     case 'start-trial':
