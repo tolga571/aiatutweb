@@ -15,9 +15,15 @@
       <?= __('home.badge') ?>
     </div>
 
-    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-4">
-      <?= __('home.heading') ?>
+    <h1 class="font-headline-lg font-extrabold leading-none tracking-tight mb-3">
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary text-[clamp(2.75rem,11vw,5.25rem)]">
+        jumplearner.com
+      </span>
     </h1>
+
+    <p class="font-headline-md text-headline-md text-on-surface mb-2">
+      <?= __('home.heading') ?>
+    </p>
 
     <p class="text-body-lg text-on-surface-variant mb-8">
       <?= __('home.subtitle') ?>
