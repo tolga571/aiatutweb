@@ -38,6 +38,9 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
   .chat-scrollbar::-webkit-scrollbar-track { background: transparent; }
   .chat-scrollbar::-webkit-scrollbar-thumb { background: #3f465c; border-radius: 10px; }
   .glow-hover:hover { box-shadow: 0 0 15px rgba(180, 197, 255, 0.2); }
+  /* Google Sign-In renders a fixed-width iframe; on very narrow cards
+     (<200px, below Google's minimum data-width) keep it from overflowing. */
+  #google-signin-container iframe { max-width: 100%; }
   .nav-link {
     font-family: 'Geist', sans-serif;
     text-transform: uppercase;

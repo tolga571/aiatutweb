@@ -106,10 +106,22 @@
              data-theme="filled_blue"
              data-text="signup_with"
              data-size="large"
-             data-logo_alignment="left"
-             data-width="382">
+             data-logo_alignment="left">
         </div>
       </div>
+      <script>
+        // Google's button is a fixed-width iframe: a hardcoded data-width
+        // (was 382) overflows the card and gets clipped on narrow phones.
+        // Size it to the card instead (Google allows 200-400px); the
+        // max-width guard in head.php covers cards narrower than 200px.
+        (function () {
+          var btn = document.querySelector('.g_id_signin');
+          var wrap = document.getElementById('google-signin-container');
+          if (!btn || !wrap) return;
+          var w = Math.floor(wrap.clientWidth);
+          btn.setAttribute('data-width', String(Math.max(200, Math.min(400, w))));
+        })();
+      </script>
       <?php endif; ?>
 
       <p class="text-center text-body-md text-outline mt-6">
