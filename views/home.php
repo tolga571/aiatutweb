@@ -16,7 +16,7 @@
     </div>
 
     <h1 class="font-headline-lg font-extrabold leading-none tracking-tight mb-3">
-      <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary text-[clamp(2.75rem,11vw,5.25rem)]">
+      <span class="shine-text text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary text-[clamp(2.75rem,11vw,5.25rem)]">
         jumplearner.com
       </span>
     </h1>

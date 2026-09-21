@@ -105,8 +105,34 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
   @keyframes caret-blink {
     50% { opacity: 0; }
   }
+  /* Homepage wordmark: a soft diagonal light band sweeps left-to-right
+     across the gradient text at intervals (via the keyframe pause), giving
+     a gentle gloss without being distracting. */
+  .shine-text {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+  .shine-text::after {
+    content: '';
+    position: absolute;
+    top: -25%;
+    bottom: -25%;
+    left: -70%;
+    width: 45%;
+    transform: skewX(-18deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+    animation: shine-sweep 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes shine-sweep {
+    0%   { left: -70%; }
+    55%  { left: 135%; }
+    100% { left: 135%; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .message-row, .reveal-block, .seg-token, .typing-caret::after {
+    .message-row, .reveal-block, .seg-token, .typing-caret::after, .shine-text::after {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
