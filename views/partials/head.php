@@ -105,34 +105,48 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
   @keyframes caret-blink {
     50% { opacity: 0; }
   }
-  /* Homepage wordmark: a soft diagonal light band sweeps left-to-right
-     across the gradient text at intervals (via the keyframe pause), giving
-     a gentle gloss without being distracting. */
+  /* Homepage wordmark: a thin, blade-like glint sweeps across the gradient
+     text. The glint is part of the text's own background layers and is
+     clipped to the glyphs, so it traces the letterforms instead of showing
+     up as a floating rectangle with hard edges. A white-hot core sits on a
+     cool plasma halo, giving a sword-slash / lightning flash rather than a
+     flat band of white. The #b4c5ff / #7bd0ff stops mirror the `primary`
+     and `tertiary` tokens — keep them in sync if those change. */
   .shine-text {
-    position: relative;
     display: inline-block;
-    overflow: hidden;
-  }
-  .shine-text::after {
-    content: '';
-    position: absolute;
-    top: -25%;
-    bottom: -25%;
-    left: -70%;
-    width: 45%;
-    transform: skewX(-18deg);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
-    animation: shine-sweep 4s ease-in-out infinite;
-    pointer-events: none;
+    background-image:
+      /* white-hot blade core: a narrow, crisp line of light */
+      linear-gradient(115deg,
+        rgba(255, 255, 255, 0) 48.2%,
+        rgba(255, 255, 255, 0.95) 49.6%,
+        #ffffff 50%,
+        rgba(255, 255, 255, 0.95) 50.4%,
+        rgba(255, 255, 255, 0) 51.8%),
+      /* cool plasma halo bleeding off the blade */
+      linear-gradient(115deg,
+        rgba(123, 208, 255, 0) 40%,
+        rgba(123, 208, 255, 0.5) 47.5%,
+        rgba(180, 197, 255, 0.7) 50%,
+        rgba(123, 208, 255, 0.5) 52.5%,
+        rgba(123, 208, 255, 0) 60%),
+      /* base fill */
+      linear-gradient(100deg, #b4c5ff 0%, #7bd0ff 100%);
+    background-size: 200% 100%, 200% 100%, 100% 100%;
+    background-position: 200% 0, 200% 0, 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine-sweep 4.2s cubic-bezier(0.5, 0, 0.15, 1) infinite;
   }
   @keyframes shine-sweep {
-    0%   { left: -70%; }
-    55%  { left: 135%; }
-    100% { left: 135%; }
+    0%   { background-position: 200% 0, 200% 0, 0 0; }
+    42%  { background-position: -80% 0, -80% 0, 0 0; }
+    100% { background-position: -80% 0, -80% 0, 0 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .message-row, .reveal-block, .seg-token, .typing-caret::after, .shine-text::after {
+    .message-row, .reveal-block, .seg-token, .typing-caret::after, .shine-text {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
