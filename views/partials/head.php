@@ -256,6 +256,42 @@ tailwind.config = {
   }
 }
 </script>
+<?php
+// ── Motion layer ────────────────────────────────────────────────────────
+// Tokens + helpers live in public/css/motion.css and public/js/motion.js.
+// GSAP/Lenis load only on the short, mostly-static marketing pages: the app
+// screens (chat, dashboard, flashcards) use inner scroll containers that
+// Lenis would fight with, and chat runs on CSS alone. Kill switch:
+// MOTION_ENABLED=0 (see config.php).
+$motionPage   = $_GET['page'] ?? 'home';
+$motionOn     = ($config['motion_enabled'] ?? true) && strpos($motionPage, 'admin') !== 0;
+$motionSmooth = in_array($motionPage, ['home', 'pricing', 'about', 'faq', 'contact', 'blog', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cookie-policy', 'license-agreement'], true);
+$motionGsap   = in_array($motionPage, ['home', 'pricing'], true);
+$motionVer    = static function (string $rel): string {
+    $f = __DIR__ . '/../../public/' . $rel;
+    return '/' . $rel . '?v=' . (is_file($f) ? filemtime($f) : '0');
+};
+if ($motionOn): ?>
+<script>
+/* js-motion gates every "hidden until animated" starting state, so the page
+   is fully visible if JS, the CDN or motion.js fails (3s failsafe) or the
+   visitor prefers reduced motion. */
+(function (d) {
+  window.__motionCfg = {smooth: <?= $motionSmooth ? 'true' : 'false' ?>, gsap: <?= $motionGsap ? 'true' : 'false' ?>, page: <?= json_encode($motionPage) ?>};
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.documentElement.classList.add('js-motion');
+  setTimeout(function () { if (!window.__motionReady) d.documentElement.classList.remove('js-motion'); }, 3000);
+})(document);
+</script>
+<link rel="stylesheet" href="<?= $motionVer('css/motion.css') ?>"/>
+<?php if ($motionGsap): ?>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+<?php endif; ?>
+<?php if ($motionSmooth): ?>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" integrity="sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw" crossorigin="anonymous"></script>
+<?php endif; ?>
+<script defer src="<?= $motionVer('js/motion.js') ?>"></script>
+<?php endif; ?>
 </head>
 <?php
 $isAppPage = in_array($_GET['page'] ?? 'home', ['chat', 'flashcards', 'dashboard']);

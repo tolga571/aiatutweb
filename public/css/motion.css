@@ -1,0 +1,55 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   AiTut motion layer — tokens + shared helpers.
+   Single source of truth: public/js/motion.js reads the values below from
+   :root, so CSS transitions and GSAP tweens always share one set of numbers.
+
+   Rules: animate only transform + opacity; every entrance plays once; hidden
+   starting states are scoped under `.js-motion` (see views/partials/head.php)
+   so the page is fully visible if JS/CDN fails or motion is reduced.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* easing */
+  --ease-out:    cubic-bezier(.16, 1, .3, 1);   /* enter / reveal (== chat msg-row-in) */
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);  /* state-to-state moves */
+  --ease-in:     cubic-bezier(.4, 0, 1, 1);     /* exits, always shorter than enters */
+
+  /* durations (ms) */
+  --dur-micro:  150ms;   /* press, hover, icons */
+  --dur-ui:     300ms;   /* menus, modals, chips */
+  --dur-reveal: 600ms;   /* card / block entrances */
+  --dur-hero:   900ms;   /* hero wordmark only */
+
+  /* stagger (ms) */
+  --stagger-item: 60ms;  /* cards, blocks, chips */
+  --stagger-word: 45ms;  /* per-token reveal (chat formula: clamp 20–70) */
+
+  /* travel distance */
+  --dist-micro:  6px;
+  --dist-reveal: 20px;
+}
+
+/* Mobile: shorter and calmer (durations ×0.8 are applied in motion.js). */
+
+/* ── Lenis (smooth scroll, marketing pages only) ────────────────────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* ── Shared building blocks ─────────────────────────────────────────────── */
+
+/* Overflow mask for line/wordmark reveals: text rises out of a clip box.
+   Padding + negative margin keep descenders (j, p) and glyph overshoot
+   from being cut without changing layout. */
+.m-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: .08em .04em .18em;
+  margin: -.08em -.04em -.18em;
+}
+
+/* Decorative pulse that used to loop forever — now static. */
+.m-still { animation: none !important; }

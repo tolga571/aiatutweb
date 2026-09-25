@@ -10,6 +10,11 @@ return [
     'daily_token_limit' => 1000,
     'payment_required' => true,
 
+    // Kill switch for the site-wide motion layer (public/css/motion.css,
+    // public/js/motion.js). Set MOTION_ENABLED=0 in Railway to turn every
+    // animation/smooth-scroll effect off without a deploy.
+    'motion_enabled' => getenv('MOTION_ENABLED') !== '0',
+
     'paddle_premium_price_id' => getenv('PADDLE_PREMIUM_PLAN_PRICE_ID'),
     'paddle_webhook_secret'   => getenv('PADDLE_WEBHOOK_SECRET'),
     'paddle_starter_price_id' => getenv('PADDLE_STARTER_PLAN_PRICE_ID'),
