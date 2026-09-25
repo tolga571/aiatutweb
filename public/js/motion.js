@@ -64,8 +64,8 @@
     var lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true, autoRaf: true });
     Motion.lenis = lenis;
 
-    // Modals lock page scroll: pause Lenis while one is open (pricing).
-    var modalIds = ['payment-loading-modal', 'action-modal'];
+    // Modals / the mobile menu lock page scroll: pause Lenis while one is open.
+    var modalIds = ['payment-loading-modal', 'action-modal', 'mobileMenu'];
     var modals = modalIds.map(function (id) { return document.getElementById(id); }).filter(Boolean);
     if (modals.length) {
       var sync = function () {

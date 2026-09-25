@@ -158,13 +158,12 @@ html.lenis, html.lenis body { height: auto; }
    below; .m-done hands the element back to its natural styles afterwards so
    hover transforms/transitions keep working. Hidden start states exist only
    under .js-motion — see head.php failsafe. */
-.js-motion [data-m="rise"],
-.js-motion [data-m="card"] {
+.js-motion [data-m="rise"]:not(.m-done),
+.js-motion [data-m="card"]:not(.m-done) {
   opacity: var(--m-o, 0);
   transform: translateY(calc(var(--m-y, 1) * var(--dist-reveal)));
 }
-.js-motion [data-m="wordmark"] { transform: translateY(calc(var(--m-wy, 110) * 1%)); }
-.js-motion [data-m].m-done { opacity: 1; transform: none; }
+.js-motion [data-m="wordmark"]:not(.m-done) { transform: translateY(calc(var(--m-wy, 110) * 1%)); }
 /* no CSS transition may fight the JS-driven values while entering */
 .js-motion [data-m]:not(.m-done) { transition: none !important; }
 
@@ -233,4 +232,69 @@ html.lenis, html.lenis body { height: auto; }
     animation-duration: 180ms;
     animation-timing-function: var(--ease-in-out);
   }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   MICRO-INTERACTIONS — only where a pointer can hover; phones get :active only
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* press feedback on every button / button-like link */
+/* individual `scale`/`translate` properties compose with Tailwind's own
+   transform (e.g. -translate-x-1/2 on the scroll-to-latest button) */
+button:not(:disabled):active,
+a[class*="rounded-xl"][class*="font-semibold"]:active {
+  scale: .98;
+  transition: scale 90ms var(--ease-out);
+}
+
+/* top-nav links: underline draws in (left → right, mirrored for RTL) */
+.nav-link:not(.pages-btn) { position: relative; }
+.nav-link:not(.pages-btn)::after {
+  content: '';
+  position: absolute;
+  left: 1rem; right: 1rem; bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-micro) var(--ease-out);
+  pointer-events: none;
+}
+.nav-link:not(.pages-btn):dir(rtl)::after { transform-origin: right; }
+
+@media (hover: hover) {
+  .nav-link:not(.pages-btn):hover::after { transform: scaleX(1); }
+
+  /* home feature cards + chat topic chips lift; pricing cards lift instead of
+     scaling (scale(1.02) softens the text) */
+  .m-lift { transition: translate var(--dur-ui) var(--ease-out), border-color var(--dur-ui) ease; }
+  .m-lift:hover { translate: 0 -4px; border-color: rgba(180, 197, 255, .3); }
+  .topic-chip:hover { translate: 0 -2px; }        /* chip already has transition-all */
+  #card-starter, #card-pro, #card-active { transition: translate var(--dur-ui) var(--ease-out); }
+  #card-starter:hover, #card-pro:hover, #card-active:hover { transform: none; translate: 0 -4px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — the site's real off-switch
+   js-motion is never set for these visitors (head.php), so every hidden start
+   state is already skipped; this block additionally removes everything that
+   is plain CSS: Tailwind pulses/bounces, hover lifts, drawers, modals, the
+   flashcard flip and shake, view transitions. State changes stay visible
+   (they just happen instantly).
+   ═════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  /* a loading indicator that stops moving reads as "frozen" */
+  .animate-spin { animation-duration: 1.2s !important; animation-iteration-count: infinite !important; }
+  .m-lift:hover, .topic-chip:hover,
+  #card-starter:hover, #card-pro:hover, #card-active:hover,
+  button:not(:disabled):active,
+  a[class*="rounded-xl"][class*="font-semibold"]:active { translate: none !important; scale: none !important; }
 }

@@ -49,21 +49,21 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16">
-      <div data-m="card" class="bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
+      <div data-m="card" class="m-lift bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
         <div class="text-2xl mb-3">
           <span class="material-symbols-outlined text-primary text-3xl">track_changes</span>
         </div>
         <h3 class="font-headline-sm text-headline-sm text-on-surface mb-1"><?= __('home.feature_1_title') ?></h3>
         <p class="text-body-md text-on-surface-variant"><?= __('home.feature_1_desc') ?></p>
       </div>
-      <div data-m="card" class="bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
+      <div data-m="card" class="m-lift bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
         <div class="text-2xl mb-3">
           <span class="material-symbols-outlined text-tertiary text-3xl">edit_note</span>
         </div>
         <h3 class="font-headline-sm text-headline-sm text-on-surface mb-1"><?= __('home.feature_2_title') ?></h3>
         <p class="text-body-md text-on-surface-variant"><?= __('home.feature_2_desc') ?></p>
       </div>
-      <div data-m="card" class="bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
+      <div data-m="card" class="m-lift bg-surface-container-high border border-outline-variant/20 rounded-2xl p-5 text-left">
         <div class="text-2xl mb-3">
           <span class="material-symbols-outlined text-primary text-3xl">book</span>
         </div>
