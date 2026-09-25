@@ -53,3 +53,106 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Decorative pulse that used to loop forever — now static. */
 .m-still { animation: none !important; }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CHAT — the signature moment
+   Answer arrives → each word lands, then its pronunciation, then its meaning
+   → supporting blocks (existing reveal-block stagger) → the correction:
+   wrong word struck through, right word lands, one green ring.
+   Everything below is gated on .js-motion: without it (kill switch, failsafe,
+   reduced motion) the chat renders exactly as before.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* 1 · three-layer token reveal: word (existing) → +50ms pron → +100ms meaning */
+.js-motion .seg-token .seg-pron,
+.js-motion .seg-token .seg-trans {
+  opacity: 0;
+  transition: opacity var(--dur-ui) var(--ease-out) 50ms;
+}
+.js-motion .seg-token .seg-trans { transition-delay: 100ms; }
+.js-motion .seg-token.is-visible .seg-pron,
+.js-motion .seg-token.is-visible .seg-trans { opacity: 1; }
+.js-motion .is-instant .seg-pron,
+.js-motion .is-instant .seg-trans { transition: none; }
+
+/* 2 · skeleton → answer crossfade (JS lifts the skeleton out of the flow) */
+.js-motion .message-row.is-leaving {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms var(--ease-in);
+}
+
+/* 3 · the correction moment */
+.js-motion .m-fix { position: relative; }
+.js-motion .m-fix-old {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;              /* Tailwind line-through → drawn line */
+}
+.js-motion .m-fix-old::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 54%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.js-motion .m-fix-old:dir(rtl)::after { transform-origin: right; }
+
+.js-motion .m-fix-new {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+}
+.js-motion .m-fix-rule { opacity: 0; }
+
+/* green ring: one pulse, opacity only */
+.js-motion .m-fix::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, .55);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* live: 0 → 350ms strike · 350–600ms beat · 600ms new word · 850ms ring · 900ms rule */
+.js-motion .m-fix.is-live .m-fix-old::after {
+  transform: scaleX(1);
+  transition: transform 350ms var(--ease-in-out) var(--fx, 0ms);
+}
+.js-motion .m-fix.is-live .m-fix-new {
+  opacity: 1;
+  transform: none;
+  transition: opacity 350ms var(--ease-out) calc(600ms + var(--fx, 0ms)),
+              transform 350ms var(--ease-out) calc(600ms + var(--fx, 0ms));
+}
+.js-motion .m-fix.is-live::before {
+  animation: m-fix-ring 900ms var(--ease-out) calc(850ms + var(--fx, 0ms)) 1 both;
+}
+.js-motion .m-fix.is-live .m-fix-rule {
+  opacity: 1;
+  transition: opacity 300ms ease calc(900ms + var(--fx, 0ms));
+}
+@keyframes m-fix-ring {
+  0%   { opacity: 0; }
+  25%  { opacity: .6; }
+  100% { opacity: 0; }
+}
+/* history loads: final state immediately */
+.js-motion .is-instant .m-fix-old::after,
+.js-motion .is-instant .m-fix-new,
+.js-motion .is-instant .m-fix-rule { transition: none !important; }
+.js-motion .is-instant .m-fix::before { animation: none; }
+
+/* 4 · vocabulary panel: new words settle in one after another */
+.js-motion .m-in {
+  animation: m-chip-in var(--dur-ui) var(--ease-out) calc(var(--i, 0) * var(--stagger-item)) both;
+}
+@keyframes m-chip-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}

@@ -912,13 +912,15 @@ if ($quotaPercent > 75) {
 
       let correctionsHtml = '';
       if (corrections.length) {
-        const chips = corrections.map(c => {
+        const chips = corrections.map((c, ci) => {
           const pron = c.pronunciation ? `<span class="text-gray-500 ml-1 italic">(${escHtml(c.pronunciation)})</span>` : '';
-          return `<div class="bg-gray-800/50 rounded-lg px-3 py-2 text-xs mb-1 border border-gray-700/30">
-          <span class="line-through text-red-400">${escHtml(c.original)}</span>
+          // m-fix hooks drive the "correction moment" in motion.css: the
+          // wrong word is struck through, the right one lands, one green ring.
+          return `<div class="m-fix bg-gray-800/50 rounded-lg px-3 py-2 text-xs mb-1 border border-gray-700/30" style="--fx:${ci * 140}ms">
+          <span class="m-fix-old line-through text-red-400" dir="auto">${escHtml(c.original)}</span>
           <span class="text-gray-500 mx-1">→</span>
-          <span class="text-green-400">${escHtml(c.corrected)}</span>${pron}
-          ${c.rule ? `<div class="text-gray-400 mt-0.5">${formatRichText(c.rule, 'text-teal-400 font-bold')}</div>` : ''}
+          <span class="m-fix-new text-green-400" dir="auto">${escHtml(c.corrected)}</span>${pron}
+          ${c.rule ? `<div class="m-fix-rule text-gray-400 mt-0.5">${formatRichText(c.rule, 'text-teal-400 font-bold')}</div>` : ''}
         </div>`;
         }).join('');
         correctionsHtml = `
@@ -1049,10 +1051,10 @@ if ($quotaPercent > 75) {
         if (wordsListEl.innerHTML.includes('New words will appear here')) {
           wordsListEl.innerHTML = '';
         }
-        words.forEach(w => {
+        words.forEach((w, wi) => {
           const pron = w.pronunciation ? `<span class="text-[10px] text-outline ml-1 italic">(${escHtml(w.pronunciation)})</span>` : '';
           const html = `
-          <div class="relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" onclick="speakText('${escAttr(w.word)}')">
+          <div class="${animate ? 'm-in ' : ''}relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" ${animate ? `style="--i:${wi}"` : ''} onclick="speakText('${escAttr(w.word)}')">
             <span class="material-symbols-outlined absolute top-2 right-2 text-[14px] text-outline group-hover:text-primary transition-colors">volume_up</span>
             <div class="flex justify-between items-start pr-5">
               <strong class="text-primary text-sm">${escHtml(w.word)}</strong>
@@ -1070,7 +1072,7 @@ if ($quotaPercent > 75) {
          }
          if (content.length > 10) {
            const html = `
-           <div class="bg-surface-container p-sm rounded-xl border border-outline-variant/20 group relative">
+           <div class="${animate ? 'm-in ' : ''}bg-surface-container p-sm rounded-xl border border-outline-variant/20 group relative">
              <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText('${escAttr(content)}')">
                <span class="material-symbols-outlined text-[14px]">volume_up</span>
              </button>
@@ -1091,7 +1093,10 @@ if ($quotaPercent > 75) {
       if (animate) {
         scrollBottom(true);
         animateAiCard(row, { segmented: segmented, content: content, cardId: cardId });
+        row.querySelectorAll('.m-fix').forEach(observeCorrection);
       } else {
+        row.classList.add('is-instant');
+        row.querySelectorAll('.m-fix').forEach(el => el.classList.add('is-live'));
         const textEl = document.getElementById(cardId + '-content');
         if (textEl && !(segmented && segmented.length > 0)) {
           textEl.textContent = content;
@@ -1190,8 +1195,44 @@ if ($quotaPercent > 75) {
       return id;
     }
 
+    // Skeleton → answer is a crossfade, not a pop: the skeleton leaves the
+    // flow (so the answer lands exactly where it was) and fades out while the
+    // answer's own entrance runs. Without motion it is removed instantly.
     function removeLoadingMessage(id) {
-      document.getElementById(id)?.remove();
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!document.documentElement.classList.contains('js-motion')) { el.remove(); return; }
+      el.style.width = el.offsetWidth + 'px';
+      el.style.position = 'absolute';
+      el.classList.add('is-leaving');
+      setTimeout(function () { el.remove(); }, 220);
+    }
+
+    // The correction moment plays when the corrections block is actually in
+    // view and revealed — it sits at the bottom of a long answer, so a timer
+    // would fire before the reader ever scrolls there.
+    const correctionObserver = ('IntersectionObserver' in window)
+      ? new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            correctionObserver.unobserve(e.target);
+            armCorrection(e.target, 0);
+          });
+        }, { root: messagesEl, threshold: 0.9 })
+      : null;
+
+    function armCorrection(el, tries) {
+      const block = el.closest('.reveal-block');
+      if (!block || block.classList.contains('is-visible') || tries > 40) {
+        el.classList.add('is-live');
+      } else {
+        setTimeout(function () { armCorrection(el, tries + 1); }, 120);
+      }
+    }
+
+    function observeCorrection(el) {
+      if (correctionObserver) correctionObserver.observe(el);
+      else el.classList.add('is-live');
     }
 
     function showToast(message, type = 'error') {
