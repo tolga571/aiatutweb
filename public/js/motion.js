@@ -87,6 +87,111 @@
     if (reduceMq.matches) { stopLenis(); root.classList.remove('js-motion'); }
   });
 
+  // ── Marketing choreography (GSAP: home + pricing) ─────────────────────
+  // Elements opt in with data-m="rise|card|wordmark|orb". Those with a
+  // data-m-at (seconds) belong to the hero timeline; the rest reveal as they
+  // scroll into view, in small batches. GSAP tweens two custom properties
+  // (--m-o / --m-y) that motion.css maps to opacity / translateY, and .m-done
+  // returns each element to its natural styles afterwards.
+  function revealEverything() {
+    root.classList.remove('js-motion');
+    document.querySelectorAll('[data-m]').forEach(function (el) { el.classList.add('m-done'); });
+  }
+
+  function initMarketing() {
+    var g = window.gsap;
+    var T = tokens;
+    var t0 = performance.now();
+    var els = Array.prototype.slice.call(document.querySelectorAll('[data-m]'));
+    if (!els.length) return;
+
+    function done(el) { el.classList.add('m-done'); }
+    function rise(list, baseDelay) {
+      if (!list.length) return;
+      g.fromTo(list, { '--m-o': 0, '--m-y': 1 }, {
+        '--m-o': 1, '--m-y': 0,
+        duration: T.dur.reveal, ease: T.ease.out,
+        delay: function (i) { return baseDelay + Math.min(i, 5) * T.stagger.item; }, // mobile-friendly cap
+        onComplete: function () { list.forEach(done); }
+      });
+    }
+
+    // Hero timeline (items with data-m-at)
+    var hero = els.filter(function (el) { return el.hasAttribute('data-m-at'); });
+    var tl = g.timeline();
+    hero.forEach(function (el) {
+      var at = parseFloat(el.getAttribute('data-m-at')) || 0;
+      if (el.getAttribute('data-m') === 'wordmark') {
+        tl.fromTo(el, { '--m-wy': 110 }, { '--m-wy': 0, duration: T.dur.hero, ease: T.ease.out, onComplete: function () { done(el); } }, at);
+      } else {
+        tl.fromTo(el, { '--m-o': 0, '--m-y': 1 }, { '--m-o': 1, '--m-y': 0, duration: T.dur.reveal * 0.9, ease: T.ease.out, onComplete: function () { done(el); } }, at);
+      }
+    });
+
+    // Wordmark glint: once, right after it lands, then only occasionally
+    var mark = document.querySelector('.shine-text');
+    if (mark && hero.length) {
+      var glint = function () {
+        if (document.hidden) return;
+        var r = mark.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;
+        mark.classList.remove('is-glinting');
+        void mark.offsetWidth; // restart the animation
+        mark.classList.add('is-glinting');
+      };
+      mark.addEventListener('animationend', function () { mark.classList.remove('is-glinting'); });
+      tl.call(glint, null, 1.1);
+      setInterval(glint, 13000);
+    }
+
+    // Everything else: reveal on entering the viewport, batched
+    var later = els.filter(function (el) {
+      var m = el.getAttribute('data-m');
+      return !el.hasAttribute('data-m-at') && (m === 'rise' || m === 'card');
+    });
+    if (later.length && 'IntersectionObserver' in window) {
+      var queue = [], timer = null;
+      var flush = function () {
+        timer = null;
+        var batch = queue.splice(0).sort(function (a, b) {
+          return (a.compareDocumentPosition(b) & 4) ? -1 : 1; // DOM order
+        });
+        // first batch on the home page waits for the hero to have started
+        var wait = hero.length ? Math.max(0, 0.75 - (performance.now() - t0) / 1000) : 0.05;
+        rise(batch, wait);
+      };
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          queue.push(e.target);
+        });
+        if (queue.length && !timer) timer = setTimeout(flush, 30);
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      later.forEach(function (el) { io.observe(el); });
+    } else {
+      later.forEach(done);
+    }
+
+    // Ambient orbs: very slow drift, desktop only
+    if (!mobileMq.matches && window.matchMedia('(min-width: 1024px)').matches) {
+      els.filter(function (el) { return el.getAttribute('data-m') === 'orb'; }).forEach(function (orb, i) {
+        g.to(orb, { x: i ? -34 : 30, y: i ? 22 : -20, duration: 20 + i * 4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      });
+    }
+  }
+
+  function initChoreography() {
+    if (!cfg.gsap) return;
+    try {
+      if (!window.gsap) throw new Error('gsap unavailable');
+      initMarketing();
+    } catch (err) {
+      revealEverything(); // never leave content hidden
+    }
+  }
+
   startLenis();
+  initChoreography();
   markReady();
 })();

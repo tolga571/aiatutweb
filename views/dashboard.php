@@ -91,7 +91,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         <span><?= sprintf(__('dash.xp_progress'), $xpInLevel) ?></span>
       </div>
       <div class="w-full bg-surface-container-highest rounded-full h-2">
-        <div class="bg-primary h-2 rounded-full transition-all" style="width:<?= $xpInLevel ?>%"></div>
+        <div class="m-bar bg-primary h-2 rounded-full transition-all" style="width:<?= $xpInLevel ?>%"></div>
       </div>
       <div class="text-center text-label-md text-outline mt-1"><?= sprintf(__('dash.total_xp'), $xp) ?></div>
     </div>
@@ -161,7 +161,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
   <!-- Main content -->
   <main class="flex-1 overflow-y-auto p-6">
     <div class="max-w-3xl mx-auto space-y-6">
-      <div class="flex items-start justify-between gap-3">
+      <div class="m-in flex items-start justify-between gap-3" style="--i:0">
         <div>
           <h1 class="font-headline-md text-headline-md text-on-surface mb-1">
             <?= sprintf(__('dash.greeting'), htmlspecialchars($user['name'] ?? explode('@', $user['email'])[0])) ?>
@@ -175,13 +175,13 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         </button>
       </div>
 
-      <div class="bg-primary/10 border border-primary/20 rounded-2xl p-5">
+      <div class="m-in bg-primary/10 border border-primary/20 rounded-2xl p-5" style="--i:1">
         <div class="text-label-md text-primary font-semibold uppercase tracking-wide mb-2"><?= __('dash.tip_title') ?></div>
         <p class="text-body-md text-on-surface-variant"><?= htmlspecialchars($tip) ?></p>
       </div>
 
       <!-- Quota Overview Card -->
-      <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="m-in bg-surface-container border border-outline-variant/20 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4" style="--i:2">
         <div>
           <h2 class="font-headline-sm text-headline-sm text-on-surface mb-1 flex items-center gap-2">
             <span class="material-symbols-outlined <?= $quotaTextColor ?>">bolt</span>
@@ -255,7 +255,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       </div>
       <?php endif; ?>
 
-      <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6">
+      <div class="m-in bg-surface-container border border-outline-variant/20 rounded-2xl p-5 mt-6" style="--i:4">
         <h2 class="text-label-md font-semibold text-outline uppercase tracking-wide mb-4"><?= __('dash.preferences') ?></h2>
         <?php if (isset($_SESSION['pref_saved'])): unset($_SESSION['pref_saved']); ?>
           <div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-lg mb-4 text-sm"><?= __('dash.pref_saved') ?></div>

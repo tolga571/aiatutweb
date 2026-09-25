@@ -141,9 +141,96 @@ html.lenis, html.lenis body { height: auto; }
 
 /* 4 · vocabulary panel: new words settle in one after another */
 .js-motion .m-in {
-  animation: m-chip-in var(--dur-ui) var(--ease-out) calc(var(--i, 0) * var(--stagger-item)) both;
+  /* backwards (not both): after the entrance the element returns to its
+     natural styles, so later hover transforms still work */
+  animation: m-chip-in var(--dur-ui) var(--ease-out) calc(var(--i, 0) * var(--stagger-item)) backwards;
 }
 @keyframes m-chip-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SECTIONS — hero, marketing entrances, dashboard, overlays
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* Marketing entrances (home, pricing). GSAP tweens the two custom properties
+   below; .m-done hands the element back to its natural styles afterwards so
+   hover transforms/transitions keep working. Hidden start states exist only
+   under .js-motion — see head.php failsafe. */
+.js-motion [data-m="rise"],
+.js-motion [data-m="card"] {
+  opacity: var(--m-o, 0);
+  transform: translateY(calc(var(--m-y, 1) * var(--dist-reveal)));
+}
+.js-motion [data-m="wordmark"] { transform: translateY(calc(var(--m-wy, 110) * 1%)); }
+.js-motion [data-m].m-done { opacity: 1; transform: none; }
+/* no CSS transition may fight the JS-driven values while entering */
+.js-motion [data-m]:not(.m-done) { transition: none !important; }
+
+/* Wordmark glint: once after the entrance, then rarely — not a forever loop.
+   (The keyframes live in head.php; the class is toggled by motion.js.) */
+.js-motion .shine-text { animation: none; }
+.js-motion .shine-text.is-glinting {
+  animation: shine-sweep 4.2s cubic-bezier(.5, 0, .15, 1) 1 both;
+}
+
+/* Dashboard XP bar fills from the left once */
+.js-motion .m-bar {
+  transform-origin: left;
+  animation: m-bar-grow 900ms var(--ease-out) 250ms backwards;
+}
+@keyframes m-bar-grow { from { transform: scaleX(0); } to { transform: none; } }
+
+/* Menus, drawers, modals: they toggle display:none, so they get an entrance
+   only (a CSS animation starts when the element starts rendering). The
+   individual `translate` / `scale` properties are used so they compose with
+   Tailwind's own `transform` (e.g. -translate-x-1/2) instead of replacing it. */
+@keyframes m-pop-in {
+  from { opacity: 0; translate: 0 calc(var(--dist-micro) * -1); scale: .98; }
+  to   { opacity: 1; translate: 0 0; scale: 1; }
+}
+@keyframes m-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes m-slide-x  { from { translate: var(--m-from, 100%) 0; } to { translate: 0 0; } }
+@keyframes m-modal-in { from { opacity: 0; scale: .96; } to { opacity: 1; scale: 1; } }
+
+.js-motion #pagesMenu:not(.hidden) {
+  transform-origin: top center;
+  animation: m-pop-in var(--dur-ui) var(--ease-out) both;
+}
+.js-motion #nav-lang-dropdown:not(.hidden),
+.js-motion #nav-profile-dropdown:not(.hidden) {
+  transform-origin: top right;
+  animation: m-pop-in var(--dur-ui) var(--ease-out) both;
+}
+.js-motion #mobileMenu:not(.hidden) > #mobileMenuBackdrop { animation: m-fade-in var(--dur-ui) var(--ease-out) both; }
+.js-motion #mobileMenu:not(.hidden) > div:last-child {
+  --m-from: 100%;
+  animation: m-slide-x 320ms var(--ease-in-out) both;
+}
+.js-motion #payment-loading-modal:not(.hidden),
+.js-motion #action-modal:not(.hidden),
+.js-motion #trial-expired-modal:not(.hidden) { animation: m-fade-in var(--dur-ui) var(--ease-out) both; }
+.js-motion #payment-loading-modal:not(.hidden) > div,
+.js-motion #action-modal:not(.hidden) > div,
+.js-motion #trial-expired-modal:not(.hidden) > div { animation: m-modal-in 225ms var(--ease-out) both; }
+
+/* chat drawers (phone / tablet only — on desktop the panels are static) */
+@media (max-width: 767px) {
+  .js-motion #chat-sidebar:not(.hidden) { --m-from: -100%; animation: m-slide-x 320ms var(--ease-in-out) both; }
+}
+@media (max-width: 1279px) {
+  .js-motion #study-panel:not(.hidden) { --m-from: 100%; animation: m-slide-x 320ms var(--ease-in-out) both; }
+  .js-motion #drawer-backdrop:not(.hidden) { animation: m-fade-in var(--dur-ui) var(--ease-out) both; }
+}
+
+/* Page-to-page: cross-document view transition (progressive enhancement;
+   browsers without support navigate exactly as before). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 180ms;
+    animation-timing-function: var(--ease-in-out);
+  }
 }

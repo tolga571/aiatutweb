@@ -67,7 +67,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
 
 <main class="flex-1 overflow-y-auto flex flex-col items-center pt-16 pb-12 px-6 bg-radial-gradient">
   <div class="max-w-4xl w-full">
-    <div class="text-center mb-10">
+    <div data-m="rise" class="text-center mb-10">
       <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2"><?= __('pricing.heading') ?></h1>
       <p class="text-body-lg text-on-surface-variant max-w-xl mx-auto"><?= __('pricing.subtitle') ?></p>
     </div>
@@ -183,7 +183,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     
     <?php if (!$isPaidUser): ?>
       <!-- Free Trial Promo Banner -->
-      <div class="max-w-2xl mx-auto mb-10 p-6 rounded-2xl border border-primary/30 bg-surface-container-high/60 backdrop-blur-md shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 transition-all hover:border-primary/50">
+      <div data-m="rise" class="max-w-2xl mx-auto mb-10 p-6 rounded-2xl border border-primary/30 bg-surface-container-high/60 backdrop-blur-md shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 transition-all hover:border-primary/50">
         <!-- Glow effect -->
         <div class="absolute -right-16 -top-16 w-36 h-36 bg-primary/20 rounded-full blur-2xl pointer-events-none"></div>
         
@@ -225,7 +225,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         // setBillingInterval() in the script below.
         $saveBadgeClass = $initialInterval === 'year' ? 'bg-on-primary/20 text-on-primary' : 'bg-primary/20 text-primary';
       ?>
-      <div class="flex items-center justify-center gap-2 mb-8">
+      <div data-m="rise" class="flex items-center justify-center gap-2 mb-8">
         <button type="button" id="interval-toggle-monthly" onclick="setBillingInterval('month')"
           class="billing-toggle-btn px-5 py-2 rounded-full text-body-md font-semibold transition-all hover:opacity-90 cursor-pointer <?= $monthActiveClass ?>">
           <?= __('pricing.toggle_monthly') ?>
@@ -240,7 +240,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
 
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
-      <div id="card-starter" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+      <div id="card-starter" data-m="card" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
         <?php if ($userPlan === 'starter'): ?>
           <div id="badge-starter" class="<?= $currentBadgeIntervalClass ?> absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
@@ -326,7 +326,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
 
       <!-- Pro Plan Card (Popular) -->
-      <div id="card-pro" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative overflow-hidden <?= $userPlan === 'pro' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-primary/40' ?>">
+      <div id="card-pro" data-m="card" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative overflow-hidden <?= $userPlan === 'pro' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-primary/40' ?>">
         <div id="badge-pro" class="price-monthly absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl font-label-md flex items-center gap-1">
           <?php if ($userPlan === 'pro' && $userBillingInterval === 'month'): ?>
             <span class="material-symbols-outlined text-[12px]">check_circle</span>
@@ -429,7 +429,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
 
       <!-- Premium Plan Card -->
-      <div id="card-active" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'active' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
+      <div id="card-active" data-m="card" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'active' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
         <?php if ($userPlan === 'active'): ?>
           <div id="badge-active" class="<?= $currentBadgeIntervalClass ?> absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold tracking-widest uppercase py-1 px-4 rounded-bl-xl rounded-tr-2xl font-label-md flex items-center gap-1">
             <span class="material-symbols-outlined text-[12px]">check_circle</span>

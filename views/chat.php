@@ -364,21 +364,21 @@ if ($quotaPercent > 75) {
             $map = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
             $country = $map[$targetLang] ?? 'us';
             ?>
-            <div
-              class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant/30 mb-4 overflow-hidden shadow-lg">
+            <div style="--i:0"
+              class="m-in w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant/30 mb-4 overflow-hidden shadow-lg">
               <img src="https://flagcdn.com/<?= $country ?>.svg" class="w-full h-full object-cover" />
             </div>
-            <h2 class="font-headline-md text-headline-sm text-primary mb-1"><?= __('chat.start_chatting') ?></h2>
-            <p class="text-body-md text-on-surface-variant">
+            <h2 style="--i:1" class="m-in font-headline-md text-headline-sm text-primary mb-1"><?= __('chat.start_chatting') ?></h2>
+            <p style="--i:2" class="m-in text-body-md text-on-surface-variant">
               <?= sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?></p>
           </div>
 
           <!-- Topics suggestions grid -->
           <div id="topic-chips"
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-sm w-full pt-xl pb-md">
-            <?php foreach ($topics as $id => $t): ?>
-              <button
-                class="topic-chip flex flex-col text-left bg-surface-container-high border border-outline-variant/20 hover:border-primary/50 text-on-surface-variant hover:text-on-surface p-md rounded-xl transition-all h-full"
+            <?php $topicIdx = 0; foreach ($topics as $id => $t): ?>
+              <button style="--i:<?= 3 + $topicIdx++ ?>"
+                class="m-in topic-chip flex flex-col text-left bg-surface-container-high border border-outline-variant/20 hover:border-primary/50 text-on-surface-variant hover:text-on-surface p-md rounded-xl transition-all h-full"
                 data-topic="<?= $id ?>">
                 <div class="font-bold text-xs text-on-surface mb-1"><?= htmlspecialchars($t['en']) ?></div>
                 <div class="text-[10px] text-outline leading-normal">
