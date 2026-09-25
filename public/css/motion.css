@@ -85,27 +85,20 @@ html.lenis, html.lenis body { height: auto; }
 
 /* 3 · the correction moment */
 .js-motion .m-fix { position: relative; }
+/* The struck word stays inline so long phrases keep wrapping with the
+   sentence. A background line (one fragment per wrapped line) is drawn
+   instead of text-decoration; background-size is the one paint-only
+   property in this file — tiny area, 350ms, once. */
 .js-motion .m-fix-old {
-  position: relative;
-  display: inline-block;
   text-decoration: none;              /* Tailwind line-through → drawn line */
+  background: linear-gradient(currentColor, currentColor) no-repeat left 56% / 0% 1.5px;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
 }
-.js-motion .m-fix-old::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; top: 54%;
-  height: 1.5px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.js-motion .m-fix-old:dir(rtl)::after { transform-origin: right; }
+.js-motion .m-fix-old:dir(rtl) { background-position: right 56%; }
 
-.js-motion .m-fix-new {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(8px);
-}
+/* The right word arrives by fading in (inline text can't translate). */
+.js-motion .m-fix-new { opacity: 0; }
 .js-motion .m-fix-rule { opacity: 0; }
 
 /* green ring: one pulse, opacity only */
@@ -120,15 +113,13 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* live: 0 → 350ms strike · 350–600ms beat · 600ms new word · 850ms ring · 900ms rule */
-.js-motion .m-fix.is-live .m-fix-old::after {
-  transform: scaleX(1);
-  transition: transform 350ms var(--ease-in-out) var(--fx, 0ms);
+.js-motion .m-fix.is-live .m-fix-old {
+  background-size: 100% 1.5px;
+  transition: background-size 350ms var(--ease-in-out) var(--fx, 0ms);
 }
 .js-motion .m-fix.is-live .m-fix-new {
   opacity: 1;
-  transform: none;
-  transition: opacity 350ms var(--ease-out) calc(600ms + var(--fx, 0ms)),
-              transform 350ms var(--ease-out) calc(600ms + var(--fx, 0ms));
+  transition: opacity 350ms var(--ease-out) calc(600ms + var(--fx, 0ms));
 }
 .js-motion .m-fix.is-live::before {
   animation: m-fix-ring 900ms var(--ease-out) calc(850ms + var(--fx, 0ms)) 1 both;
@@ -143,7 +134,7 @@ html.lenis, html.lenis body { height: auto; }
   100% { opacity: 0; }
 }
 /* history loads: final state immediately */
-.js-motion .is-instant .m-fix-old::after,
+.js-motion .is-instant .m-fix-old,
 .js-motion .is-instant .m-fix-new,
 .js-motion .is-instant .m-fix-rule { transition: none !important; }
 .js-motion .is-instant .m-fix::before { animation: none; }
