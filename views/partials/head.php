@@ -191,6 +191,21 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
     outline-offset: 2px !important;
     border-radius: 4px;
   }
+  /* Text boxes that live inside a bordered container (the chat message box,
+     the search fields) show focus on the container / their own border instead
+     of a bright rectangle drawn around the inner element. Focus stays clearly
+     visible, so keyboard users are not affected. */
+  #chat-input:focus-visible,
+  #conv-search:focus-visible,
+  #word-search:focus-visible {
+    outline: none !important;
+    border-radius: inherit;
+  }
+  .chat-input-wrap { transition: border-color .15s ease, box-shadow .15s ease; }
+  .chat-input-wrap:focus-within {
+    border-color: rgba(180, 197, 255, .6);
+    box-shadow: 0 0 0 3px rgba(180, 197, 255, .12);
+  }
 </style>
 <script>
 tailwind.config = {

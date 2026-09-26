@@ -399,7 +399,7 @@ if ($quotaPercent > 75) {
       <!-- Input Area -->
       <div class="px-3 sm:px-xl pb-3 sm:pb-lg pt-sm shrink-0">
         <div
-          class="bg-surface-container border border-outline-variant/20 rounded-2xl flex items-center gap-md px-md py-sm <?= $isTrialExpired ? 'opacity-60' : '' ?>">
+          class="chat-input-wrap bg-surface-container border border-outline-variant/20 rounded-2xl flex items-center gap-md px-md py-sm <?= $isTrialExpired ? 'opacity-60' : '' ?>">
 
           <!-- Textarea / Input -->
           <textarea id="chat-input"
