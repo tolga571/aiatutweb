@@ -36,7 +36,7 @@ $langNames = ['tr' => 'Türkçe', 'en' => 'English', 'de' => 'Deutsch', 'fr' => 
 require __DIR__ . '/../partials/head.php';
 require __DIR__ . '/../partials/navbar.php';
 ?>
-<link rel="stylesheet" href="/css/alphabet.css?v=3">
+<link rel="stylesheet" href="/css/alphabet.css?v=4">
 <main class="flex-1 overflow-y-auto flex flex-col bg-radial-gradient">
   <div class="py-10 px-6 max-w-5xl mx-auto w-full">
     <div class="glass-panel rounded-2xl p-8 md:p-10">

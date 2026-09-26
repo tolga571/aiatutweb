@@ -3,8 +3,8 @@
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 
 <main class="flex-1 overflow-y-auto flex flex-col justify-between bg-radial-gradient">
-  <div class="py-12 px-6 max-w-3xl mx-auto w-full">
-    <div class="glass-panel rounded-2xl p-8 md:p-10 border border-outline-variant/20 shadow-2xl backdrop-blur-md">
+  <div class="py-8 sm:py-12 px-3 sm:px-6 max-w-3xl mx-auto w-full">
+    <div class="glass-panel rounded-2xl p-5 sm:p-8 md:p-10 border border-outline-variant/20 shadow-2xl backdrop-blur-md">
       
       <!-- Icon & Header -->
       <div class="flex items-center gap-4 mb-8">

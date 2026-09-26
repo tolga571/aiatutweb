@@ -17,7 +17,7 @@
       <p class="text-body-md text-on-surface-variant"><?= __('auth.forgot_password_instructions') ?></p>
     </div>
 
-    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-8">
+    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 sm:p-8">
       <?php if (!empty($forgotSent)): ?>
         <div class="bg-primary/10 border border-primary/30 text-on-surface rounded-xl px-4 py-3 mb-5 text-body-md">
           <?= __('auth.reset_email_sent') ?>

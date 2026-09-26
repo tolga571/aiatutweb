@@ -206,7 +206,7 @@
             
             <!-- FRONT -->
             <div id="fc-front-${i}" class="fc-face fc-front p-4 relative flex flex-col">
-              <div class="absolute top-3 left-3 text-[9px] font-bold uppercase text-teal-500/80 tracking-wider">
+              <div class="absolute top-3 left-3 text-[10px] sm:text-[9px] font-bold uppercase text-teal-500/80 tracking-wider">
                 ${escHtml(c.category || T.category_label || 'Word')}
               </div>
               <div class="absolute top-2 right-2">
@@ -228,7 +228,7 @@
 
             <!-- BACK -->
             <div class="fc-face fc-back p-4 relative flex flex-col">
-              <div class="absolute top-3 left-3 text-[9px] font-bold uppercase text-indigo-500/80 tracking-wider">
+              <div class="absolute top-3 left-3 text-[10px] sm:text-[9px] font-bold uppercase text-indigo-500/80 tracking-wider">
                 Translation
               </div>
               
@@ -237,16 +237,16 @@
               </div>
               
               <div class="w-full grid grid-cols-2 gap-1.5 mt-auto" onclick="event.stopPropagation()">
-                <button onclick="reviewCardGrid(${i}, 0, event)" class="py-1.5 text-[10px] font-bold rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20">
+                <button onclick="reviewCardGrid(${i}, 0, event)" class="py-2.5 sm:py-1.5 text-xs sm:text-[10px] font-bold rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20">
                   Again
                 </button>
-                <button onclick="reviewCardGrid(${i}, 1, event)" class="py-1.5 text-[10px] font-bold rounded bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 transition-colors border border-orange-500/20">
+                <button onclick="reviewCardGrid(${i}, 1, event)" class="py-2.5 sm:py-1.5 text-xs sm:text-[10px] font-bold rounded bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 transition-colors border border-orange-500/20">
                   Hard
                 </button>
-                <button onclick="reviewCardGrid(${i}, 2, event)" class="py-1.5 text-[10px] font-bold rounded bg-green-500/10 hover:bg-green-500/20 text-green-600 transition-colors border border-green-500/20">
+                <button onclick="reviewCardGrid(${i}, 2, event)" class="py-2.5 sm:py-1.5 text-xs sm:text-[10px] font-bold rounded bg-green-500/10 hover:bg-green-500/20 text-green-600 transition-colors border border-green-500/20">
                   Good
                 </button>
-                <button onclick="reviewCardGrid(${i}, 3, event)" class="py-1.5 text-[10px] font-bold rounded bg-teal-500/10 hover:bg-teal-500/20 text-teal-500 transition-colors border border-teal-500/20">
+                <button onclick="reviewCardGrid(${i}, 3, event)" class="py-2.5 sm:py-1.5 text-xs sm:text-[10px] font-bold rounded bg-teal-500/10 hover:bg-teal-500/20 text-teal-500 transition-colors border border-teal-500/20">
                   Easy
                 </button>
               </div>

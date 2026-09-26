@@ -2,7 +2,7 @@
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 
-<main class="flex-1 overflow-y-auto p-xl">
+<main class="flex-1 overflow-y-auto p-4 sm:p-xl">
   <div class="max-w-2xl mx-auto">
     <a href="?page=blog" class="text-label-md text-outline hover:text-on-surface transition mb-6 inline-flex items-center gap-1">
       <span class="material-symbols-outlined text-[16px]">arrow_back</span>

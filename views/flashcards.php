@@ -238,6 +238,6 @@ window.__FC_CONFIG__ = {
   csrf: "<?= htmlspecialchars(csrf_token()) ?>",
 };
 </script>
-<script src="js/flashcard.js?v=6"></script>
+<script src="js/flashcard.js?v=7"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>

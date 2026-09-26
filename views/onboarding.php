@@ -17,7 +17,7 @@
       <p class="text-body-md text-on-surface-variant"><?= __('onboarding.subtitle') ?></p>
     </div>
 
-    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-8">
+    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 sm:p-8">
       <div id="onboarding-error" class="<?= empty($onboardingError) ? 'hidden' : '' ?> bg-error-container border border-error text-on-error-container px-4 py-3 rounded-xl mb-4 text-sm flex items-start gap-2">
         <span class="material-symbols-outlined text-error text-lg shrink-0">error</span>
         <span id="onboarding-error-text"><?= htmlspecialchars($onboardingError ?? '') ?></span>

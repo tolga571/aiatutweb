@@ -2,7 +2,7 @@
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 
-<main class="flex-1 overflow-y-auto p-xl">
+<main class="flex-1 overflow-y-auto p-4 sm:p-xl">
   <div class="max-w-3xl mx-auto">
     <h1 class="font-headline-md text-headline-md text-on-surface mb-2"><?= __('blog.heading') ?></h1>
     <p class="text-body-md text-on-surface-variant mb-8"><?= __('blog.subtitle') ?></p>

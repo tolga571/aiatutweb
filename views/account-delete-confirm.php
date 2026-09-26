@@ -15,7 +15,7 @@
       <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2"><?= __('account.delete_heading') ?></h1>
     </div>
 
-    <div class="bg-surface-container border border-error/30 rounded-2xl p-8">
+    <div class="bg-surface-container border border-error/30 rounded-2xl p-5 sm:p-8">
       <div class="bg-error-container/30 border border-error/30 text-error rounded-xl px-4 py-3 mb-5 text-body-md">
         <?= __('account.delete_warning') ?>
       </div>

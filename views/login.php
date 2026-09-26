@@ -17,7 +17,7 @@
       <p class="text-body-md text-on-surface-variant"><?= __('auth.sign_in_to_continue') ?></p>
     </div>
 
-    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-8">
+    <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 sm:p-8">
       <?php if (!empty($loginError)): ?>
         <div class="bg-error-container/30 border border-error/30 text-error rounded-xl px-4 py-3 mb-5 text-body-md">
           <?= htmlspecialchars($loginError) ?>
