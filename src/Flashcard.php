@@ -107,7 +107,7 @@ class Flashcard {
     /**
      * Get all cards with optional category/search filters.
      */
-    public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60): array {
+    public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60, ?string $level = null): array {
         // Cards actually due for spaced-repetition review are sorted to the
         // front so the deck reflects what the user should practice today,
         // not just alphabetical/category order.
@@ -125,6 +125,10 @@ class Flashcard {
         if ($category && $category !== 'all') {
             $sql .= ' AND vw.category = ?';
             $params[] = $category;
+        }
+        if ($level && $level !== 'all') {
+            $sql .= ' AND vw.level = ?';
+            $params[] = $level;
         }
         if ($search) {
             $sql .= ' AND (vw.word LIKE ? OR vw.translation LIKE ?)';
@@ -236,8 +240,100 @@ class Flashcard {
         return $vocabId;
     }
 
+    /** CEFR levels a vocabulary pack can be added for, in display order. */
+    public const PACK_LEVELS = ['A1', 'A2', 'B1', 'B2'];
+    private const NATIVE_LANGS = ['en', 'de', 'fr', 'es', 'zh', 'ja', 'ar', 'tr'];
+
     /**
-     * Import static cards from flashcards_data.php for a user.
+     * Loads the extra vocabulary pack for a language (data/vocab/<lang>.json,
+     * built from the sqlite-data-languages dictionaries by scripts/vocab/).
+     * The language is whitelisted, so the path can never be user-controlled.
+     */
+    private function loadPack(string $lang): array {
+        if (!in_array($lang, self::NATIVE_LANGS, true)) {
+            return [];
+        }
+        $file = __DIR__ . '/../data/vocab/' . $lang . '.json';
+        if (!is_file($file)) {
+            return [];
+        }
+        $cards = json_decode((string)file_get_contents($file), true);
+        return is_array($cards) ? $cards : [];
+    }
+
+    /**
+     * Bulk-inserts cards the user does not have yet (case-insensitive by word)
+     * plus their spaced-repetition rows. One SELECT + a few multi-row INSERTs
+     * instead of two queries per card. Returns [imported, skipped].
+     */
+    private function insertCards(int $userId, string $targetLang, string $nativeLang, array $cards, string $source): array {
+        $useLang = in_array($nativeLang, self::NATIVE_LANGS, true) ? $nativeLang : 'en';
+
+        $have = [];
+        foreach ($this->db->fetchAll('SELECT word FROM vocabulary_words WHERE user_id = ? AND language = ?', [$userId, $targetLang]) as $row) {
+            $have[mb_strtolower($row['word'])] = true;
+        }
+
+        $rows = [];
+        $skipped = 0;
+        foreach ($cards as $card) {
+            $word = (string)($card['word'] ?? '');
+            $key = mb_strtolower($word);
+            if ($word === '' || isset($have[$key])) {
+                $skipped++;
+                continue;
+            }
+            $have[$key] = true;
+            $tr = $card['translations'] ?? [];
+            $etr = $card['example_translations'] ?? [];
+            $rows[] = [
+                $userId, $word,
+                $tr[$useLang] ?? $tr['en'] ?? '',
+                $card['pronunciation'] ?? '',
+                $card['example'] ?? '',
+                $etr[$useLang] ?? $etr['en'] ?? '',
+                $card['category'] ?? 'General',
+                $card['level'] ?? 'A1',
+                $targetLang,
+                $source,
+            ];
+        }
+        if (!$rows) {
+            return [0, $skipped];
+        }
+
+        $pdo = $this->db->getPdo();
+        $pdo->beginTransaction();
+        try {
+            foreach (array_chunk($rows, 100) as $chunk) {
+                $ph = implode(', ', array_fill(0, count($chunk), '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'));
+                $this->db->execute(
+                    'INSERT INTO vocabulary_words (user_id, word, translation, pronunciation, example, example_translation, category, level, language, source) VALUES ' . $ph,
+                    array_merge(...$chunk)
+                );
+            }
+            // Spaced-repetition row for every card that has none yet.
+            $this->db->execute(
+                'INSERT INTO user_flashcards (user_id, vocab_id)
+                 SELECT vw.user_id, vw.id FROM vocabulary_words vw
+                 WHERE vw.user_id = ? AND vw.language = ?
+                 ON CONFLICT DO NOTHING',
+                [$userId, $targetLang]
+            );
+            $pdo->commit();
+        } catch (\Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            error_log('Flashcard::insertCards failed: ' . $e->getMessage());
+            return [0, $skipped];
+        }
+        return [count($rows), $skipped];
+    }
+
+    /**
+     * The original starter deck (data/flashcards_data.php). Behaviour is
+     * unchanged: returns ['imported' => n, 'skipped' => n].
      */
     public function importStaticCards(int $userId, string $targetLang, string $nativeLang): array {
         $vocabData = require __DIR__ . '/../data/flashcards_data.php';
@@ -245,54 +341,47 @@ class Flashcard {
         if (!isset($vocabData[$targetLang])) {
             return ['imported' => 0, 'skipped' => 0, 'error' => 'Language not available'];
         }
+        [$imported, $skipped] = $this->insertCards($userId, $targetLang, $nativeLang, $vocabData[$targetLang], 'static');
+        return ['imported' => $imported, 'skipped' => $skipped];
+    }
 
-        $cards = $vocabData[$targetLang];
-        $supportedNativeLangs = ['en', 'de', 'fr', 'es', 'zh', 'ja', 'ar', 'tr'];
-        $useLang = in_array($nativeLang, $supportedNativeLangs, true) ? $nativeLang : 'en';
-
-        $imported = 0;
-        $skipped = 0;
-
-        foreach ($cards as $card) {
-            // Check if already imported
-            $existing = $this->db->fetchOne(
-                'SELECT id FROM vocabulary_words WHERE user_id = ? AND word = ? AND language = ?',
-                [$userId, $card['word'], $targetLang]
-            );
-
-            if ($existing) {
-                $skipped++;
-                continue;
-            }
-
-            // Resolve translation
-            $translation = $card['translations'][$useLang] ?? $card['translations']['en'] ?? '';
-            $exampleTranslation = $card['example_translations'][$useLang] ?? $card['example_translations']['en'] ?? '';
-
-            $this->db->execute(
-                'INSERT INTO vocabulary_words (user_id, word, translation, pronunciation, example, example_translation, category, level, language, source)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [
-                    $userId,
-                    $card['word'],
-                    $translation,
-                    $card['pronunciation'] ?? '',
-                    $card['example'] ?? '',
-                    $exampleTranslation,
-                    $card['category'] ?? 'General',
-                    $card['level'] ?? 'A1',
-                    $targetLang,
-                    'static'
-                ]
-            );
-            $vocabId = $this->db->lastInsertId('vocabulary_words');
-
-            // Auto-create flashcard record
-            $this->db->insertIgnore('user_flashcards', ['user_id', 'vocab_id'], [$userId, $vocabId]);
-
-            $imported++;
+    /**
+     * Levels of the extra vocabulary packs for a language with, per level,
+     * the pack size and how many of those words the user already added.
+     * @return array<string, array{total:int, added:int}>
+     */
+    public function getPacks(int $userId, string $lang): array {
+        $totals = [];
+        foreach ($this->loadPack($lang) as $card) {
+            $lv = $card['level'] ?? 'A1';
+            $totals[$lv] = ($totals[$lv] ?? 0) + 1;
         }
+        $added = [];
+        foreach ($this->db->fetchAll(
+            "SELECT level, COUNT(*) AS c FROM vocabulary_words WHERE user_id = ? AND language = ? AND source = 'pack' GROUP BY level",
+            [$userId, $lang]
+        ) as $row) {
+            $added[$row['level']] = (int)$row['c'];
+        }
+        $packs = [];
+        foreach (self::PACK_LEVELS as $lv) {
+            if (!empty($totals[$lv])) {
+                $packs[$lv] = ['total' => $totals[$lv], 'added' => min($added[$lv] ?? 0, $totals[$lv])];
+            }
+        }
+        return $packs;
+    }
 
+    /** Adds one CEFR level of the extra pack to the user's deck. */
+    public function importPack(int $userId, string $targetLang, string $nativeLang, string $level): array {
+        if (!in_array($level, self::PACK_LEVELS, true)) {
+            return ['imported' => 0, 'skipped' => 0, 'error' => 'Unknown level'];
+        }
+        $cards = array_values(array_filter($this->loadPack($targetLang), fn($c) => ($c['level'] ?? '') === $level));
+        if (!$cards) {
+            return ['imported' => 0, 'skipped' => 0, 'error' => 'Level not available'];
+        }
+        [$imported, $skipped] = $this->insertCards($userId, $targetLang, $nativeLang, $cards, 'pack');
         return ['imported' => $imported, 'skipped' => $skipped];
     }
 

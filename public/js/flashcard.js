@@ -50,6 +50,34 @@
     });
   }
 
+  // Word packs: add one CEFR level, then show that level.
+  function bindPackButtons() {
+    document.querySelectorAll('.pack-add-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var level = btn.dataset.level;
+        btn.disabled = true;
+        btn.classList.add('is-busy');
+        var body = new URLSearchParams({ csrf_token: cfg.csrf || '', level: level });
+        fetch('?page=flashcard-import-pack', { method: 'POST', body: body })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.success) {
+              showToast((T.importSuccess || 'Imported %d new words.').replace('%d', data.imported || 0), 'success');
+              setTimeout(function () { window.location.href = '?page=flashcards&level=' + encodeURIComponent(level); }, 500);
+            } else {
+              btn.disabled = false; btn.classList.remove('is-busy');
+              showToast(T.packError || 'Error', 'error');
+            }
+          })
+          .catch(function () {
+            btn.disabled = false; btn.classList.remove('is-busy');
+            showToast(T.packError || 'Error', 'error');
+          });
+      });
+    });
+  }
+  bindPackButtons();
+
   if (!cards.length) {
     setDeckVisibility(false);
     bindImportButton();
@@ -132,7 +160,7 @@
   function updateProgress() {
     const pct = cards.length ? Math.round((learnedCount / cards.length) * 100) : 0;
     const pctEl = document.getElementById('percent-complete');
-    if (pctEl) pctEl.textContent = T.percentLearned.replace('%d', pct);
+    if (pctEl) pctEl.textContent = T.percentLearned.replace('%d', pct).replace('%%', '%');
     const barEl = document.getElementById('progress-bar-fill');
     if (barEl) barEl.style.width = pct + '%';
   }

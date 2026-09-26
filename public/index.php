@@ -1003,6 +1003,26 @@ switch ($page) {
         echo json_encode(['success' => false]);
         exit;
 
+    case 'flashcard-import-pack':
+        // Adds one CEFR level of the extra vocabulary pack (data/vocab/) to the
+        // user's deck. Responds with JSON only — never a 5xx (Cloudflare would
+        // replace the body).
+        $requirePlan();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            echo json_encode(['success' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $packUser = $auth->currentUser();
+        $packResult = (new \App\Src\Flashcard($db))->importPack(
+            $auth->userId(),
+            $packUser['target_lang'] ?? 'en',
+            $packUser['native_lang'] ?? 'en',
+            (string)($_POST['level'] ?? '')
+        );
+        echo json_encode(array_merge(['success' => empty($packResult['error'])], $packResult));
+        exit;
+
     // ── Dashboard ─────────────────────────────────────────────────
     case 'dashboard':
         $requirePlan();

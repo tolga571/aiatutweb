@@ -35,3 +35,4 @@ cookie.jar
 
 # ── Local-only notes (not for GitHub) ─
 CRITICAL_NOTES.md
+__pycache__/

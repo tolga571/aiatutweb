@@ -1,0 +1,221 @@
+{
+ "dropped": [
+  [
+   "potato",
+   "ja",
+   "じゃがいも",
+   "not in dictionary"
+  ],
+  [
+   "bag",
+   "ja",
+   "かばん",
+   "not in dictionary"
+  ],
+  [
+   "come",
+   "ar",
+   "جاء",
+   "not in dictionary"
+  ],
+  [
+   "listen",
+   "ar",
+   "استمع",
+   "not in dictionary"
+  ],
+  [
+   "give",
+   "ja",
+   "あげる",
+   "not in dictionary"
+  ],
+  [
+   "want",
+   "ar",
+   "أراد",
+   "not in dictionary"
+  ],
+  [
+   "live",
+   "ar",
+   "عاش",
+   "not in dictionary"
+  ],
+  [
+   "visit",
+   "ja",
+   "訪問する",
+   "not in dictionary"
+  ],
+  [
+   "explain",
+   "ja",
+   "説明する",
+   "not in dictionary"
+  ],
+  [
+   "choose",
+   "ar",
+   "اختار",
+   "not in dictionary"
+  ],
+  [
+   "try",
+   "ar",
+   "حاول",
+   "not in dictionary"
+  ],
+  [
+   "use",
+   "ar",
+   "استخدم",
+   "not in dictionary"
+  ],
+  [
+   "cook",
+   "ja",
+   "料理する",
+   "not in dictionary"
+  ],
+  [
+   "finish",
+   "ar",
+   "أنهى",
+   "not in dictionary"
+  ],
+  [
+   "clean",
+   "ja",
+   "きれい",
+   "not in dictionary"
+  ],
+  [
+   "full",
+   "ja",
+   "いっぱい",
+   "not in dictionary"
+  ],
+  [
+   "ready",
+   "zh",
+   "准备好",
+   "not in dictionary"
+  ],
+  [
+   "wet",
+   "ja",
+   "濡れた",
+   "not in dictionary"
+  ],
+  [
+   "always",
+   "ja",
+   "いつも",
+   "not in dictionary"
+  ],
+  [
+   "often",
+   "ja",
+   "よく",
+   "not in dictionary"
+  ],
+  [
+   "again",
+   "ja",
+   "また",
+   "not in dictionary"
+  ],
+  [
+   "again",
+   "ar",
+   "مرة أخرى",
+   "not in dictionary"
+  ],
+  [
+   "together",
+   "es",
+   "juntos",
+   "not in dictionary"
+  ],
+  [
+   "here",
+   "ja",
+   "ここ",
+   "not in dictionary"
+  ],
+  [
+   "there",
+   "ja",
+   "そこ",
+   "not in dictionary"
+  ],
+  [
+   "very",
+   "ja",
+   "とても",
+   "not in dictionary"
+  ],
+  [
+   "face",
+   "tr",
+   "yüz",
+   "duplicate of an existing card"
+  ],
+  [
+   "moon",
+   "tr",
+   "ay",
+   "duplicate of an existing card"
+  ],
+  [
+   "tomorrow",
+   "de",
+   "morgen",
+   "duplicate of an existing card"
+  ],
+  [
+   "poor",
+   "de",
+   "arm",
+   "duplicate of an existing card"
+  ],
+  [
+   "life",
+   "de",
+   "Leben",
+   "duplicate of an existing card"
+  ],
+  [
+   "tomorrow",
+   "es",
+   "mañana",
+   "duplicate of an existing card"
+  ],
+  [
+   "weather",
+   "es",
+   "tiempo",
+   "duplicate of an existing card"
+  ],
+  [
+   "evening",
+   "zh",
+   "晚上",
+   "duplicate of an existing card"
+  ],
+  [
+   "moon",
+   "ja",
+   "月",
+   "duplicate of an existing card"
+  ],
+  [
+   "hour",
+   "ja",
+   "時間",
+   "duplicate of an existing card"
+  ]
+ ],
+ "no_pron": []
+}

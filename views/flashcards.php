@@ -18,11 +18,19 @@ $nativeFlag = flagImg($nativeLang, 'w-5 h-4');
 $rtlLangs = ['ar', 'he', 'fa', 'ur'];
 $isRtlTarget = in_array($targetLang, $rtlLangs, true);
 
-// Load cards — ensure minimum deck exists
-$cards = $flashcard->getAllCards($currentUser['id'], $targetLang);
-if (count($cards) < 50) {
+// Load cards — ensure minimum deck exists. ?level=A1..B2 shows one CEFR level
+// (server-side, so big decks never all land in the DOM at once).
+$activeLevel = in_array($_GET['level'] ?? '', \App\Src\Flashcard::PACK_LEVELS, true) ? $_GET['level'] : 'all';
+$levelArg = $activeLevel === 'all' ? null : $activeLevel;
+$cards = $flashcard->getAllCards($currentUser['id'], $targetLang, null, null, $levelArg ? 1000 : 400, $levelArg);
+if ($activeLevel === 'all' && count($cards) < 50) {
     $flashcard->importStaticCards($currentUser['id'], $targetLang, $nativeLang);
-    $cards = $flashcard->getAllCards($currentUser['id'], $targetLang);
+    $cards = $flashcard->getAllCards($currentUser['id'], $targetLang, null, null, 400);
+}
+$packs = $flashcard->getPacks($currentUser['id'], $targetLang);
+$levelCounts = [];
+foreach ($db->fetchAll('SELECT level, COUNT(*) AS c FROM vocabulary_words WHERE user_id = ? AND language = ? GROUP BY level', [$currentUser['id'], $targetLang]) as $lr) {
+    $levelCounts[$lr['level']] = (int)$lr['c'];
 }
 $cardsJson = json_encode($cards, JSON_UNESCAPED_UNICODE);
 $firstCard = $cards[0] ?? null;
@@ -31,7 +39,7 @@ $firstCard = $cards[0] ?? null;
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<link rel="stylesheet" href="css/flashcard.css?v=4">
+<link rel="stylesheet" href="css/flashcard.css?v=5">
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
@@ -71,14 +79,57 @@ $firstCard = $cards[0] ?? null;
         'Education' => __('fc.category_education'),
         'General' => __('fc.category_general'),
         'Shopping' => __('fc.category_shopping'),
+        'Body' => __('fc.category_body'),
+        'Nature' => __('fc.category_nature'),
+        'Work' => __('fc.category_work'),
+        'Numbers' => __('fc.category_numbers'),
+        'Colors' => __('fc.category_colors'),
+        'Actions' => __('fc.category_actions'),
+        'Describing' => __('fc.category_describing'),
+        'Time' => __('fc.category_time'),
+        'HSK' => __('fc.category_hsk'),
       ];
       ?>
+      <?php if (count(array_filter($levelCounts)) > 1 || $activeLevel !== 'all'): ?>
+      <div class="flex flex-wrap gap-xs" id="level-filters" aria-label="CEFR">
+        <a href="?page=flashcards" class="level-chip <?= $activeLevel === 'all' ? 'is-active' : '' ?>"><?= __('fc.all') ?></a>
+        <?php foreach (\App\Src\Flashcard::PACK_LEVELS as $lv): if (empty($levelCounts[$lv])) continue; ?>
+        <a href="?page=flashcards&amp;level=<?= $lv ?>" class="level-chip <?= $activeLevel === $lv ? 'is-active' : '' ?>"><?= $lv ?> <span class="opacity-70"><?= (int)$levelCounts[$lv] ?></span></a>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+
       <div class="flex flex-wrap gap-xs py-xs" id="category-filters">
         <button class="filter-chip active-filter bg-primary text-on-primary text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all hover:opacity-90" data-cat="all"><?= __('fc.all') ?></button>
         <?php foreach ($uniqueCats as $cat): ?>
         <button class="filter-chip bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-[10px] px-2.5 py-1 rounded-full font-semibold transition-all" data-cat="<?= htmlspecialchars($cat) ?>"><?= htmlspecialchars($catLabels[$cat] ?? $cat) ?></button>
         <?php endforeach; ?>
       </div>
+
+      <?php if ($packs): ?>
+      <div class="fc-packs rounded-xl border border-outline-variant/20 bg-surface-container-high/50 p-3" id="fc-packs">
+        <div class="flex items-center gap-2 text-[11px] font-bold text-on-surface uppercase tracking-wider">
+          <span class="material-symbols-outlined text-[16px] text-primary">library_add</span>
+          <?= __('fc.packs_title') ?>
+        </div>
+        <p class="text-[10px] text-on-surface-variant mt-1 mb-2"><?= __('fc.packs_hint') ?></p>
+        <div class="flex flex-col gap-1.5">
+          <?php foreach ($packs as $lv => $pk): $done = $pk['added'] >= $pk['total']; ?>
+          <div class="flex items-center justify-between gap-2 text-[11px]">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="level-badge"><?= $lv ?></span>
+              <span class="text-on-surface-variant truncate"><?= sprintf(__('fc.pack_words'), $pk['total']) ?></span>
+            </div>
+            <?php if ($done): ?>
+              <span class="pack-done"><span class="material-symbols-outlined text-[14px]">check</span><?= __('fc.pack_added') ?></span>
+            <?php else: ?>
+              <button type="button" class="pack-add-btn" data-level="<?= $lv ?>"><?= __('fc.pack_add') ?><?= $pk['added'] > 0 ? ' +' . ($pk['total'] - $pk['added']) : '' ?></button>
+            <?php endif; ?>
+          </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endif; ?>
 
       <div class="flex-1 flex flex-col gap-xs overflow-y-auto chat-scrollbar" id="words-list"></div>
     </aside>
@@ -182,9 +233,11 @@ window.__FC_CONFIG__ = {
     percentLearned: "<?= __('fc.percent_learned') ?>",
     speechNotSupported: "<?= __('fc.speech_not_supported') ?>",
     importSuccess: "<?= __('fc.import_success') ?>",
-  }
+    packError: "<?= __('fc.pack_error') ?>",
+  },
+  csrf: "<?= htmlspecialchars(csrf_token()) ?>",
 };
 </script>
-<script src="js/flashcard.js?v=4"></script>
+<script src="js/flashcard.js?v=5"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>
