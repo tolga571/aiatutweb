@@ -241,8 +241,9 @@
 <!-- Mobile Menu Overlay -->
 <div id="mobileMenu" class="fixed inset-0 z-[60] hidden lg:hidden">
   <div class="absolute inset-0 bg-surface-dim/80 backdrop-blur-md" id="mobileMenuBackdrop"></div>
-  <div
-    class="absolute right-0 top-0 h-full w-72 max-w-[85vw] bg-surface-container-high border-l border-outline-variant/20 shadow-2xl flex flex-col overflow-y-auto">
+  <!-- Drops down from the top (full width), not a side drawer -->
+  <div id="mobileMenuPanel"
+    class="absolute left-0 right-0 top-0 max-h-[calc(100vh-1.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-1.5rem)] bg-surface-container-high border-b border-outline-variant/20 rounded-b-2xl shadow-2xl flex flex-col overflow-y-auto overscroll-contain">
     <div class="flex items-center justify-between p-4 border-b border-outline-variant/10">
       <a href="?page=home" class="flex flex-col">
         <span class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</span>
@@ -273,11 +274,17 @@
           </div>
         </div>
         <p class="mt-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-outline"><?= __('nav.learning_language') ?></p>
-        <div class="flex flex-wrap gap-1.5">
-          <?php foreach (['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'] as $l => $c):
+        <div class="flex gap-1.5 overflow-x-auto -mx-1 px-1 pb-1 [scrollbar-width:none]">
+          <?php
+          // current language first, so the highlighted chip is never scrolled out of view
+          $navLangs = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
+          if (isset($navLangs[$navTargetLang])) {
+            $navLangs = [$navTargetLang => $navLangs[$navTargetLang]] + $navLangs;
+          }
+          foreach ($navLangs as $l => $c):
             $isCur = ($l === $navTargetLang); ?>
             <a href="<?= $isCur ? '#' : '?page=update_lang&lang=' . $l ?>" <?= $isCur ? 'aria-current="true"' : '' ?>
-              class="flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs transition-colors <?= $isCur ? 'border-primary/50 bg-primary/15 text-primary font-semibold' : 'border-outline-variant/20 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50' ?>">
+              class="shrink-0 flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs transition-colors <?= $isCur ? 'border-primary/50 bg-primary/15 text-primary font-semibold' : 'border-outline-variant/20 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50' ?>">
               <img src="https://flagcdn.com/<?= $c ?>.svg" class="w-4 h-3 rounded-[2px] object-cover shrink-0" alt="" />
               <?= __("languages.{$l}") ?>
             </a>
@@ -285,69 +292,73 @@
         </div>
       </div>
       <?php endif; ?>
+      <div class="grid grid-cols-2 gap-x-1">
       <a href="?page=home"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">home</span>
         <?= __('nav.home') ?>
       </a>
       <a href="?page=chat"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">forum</span>
         <?= __('nav.chat') ?>
       </a>
       <a href="?page=flashcards"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">style</span>
         <?= __('nav.flashcards') ?>
       </a>
       <a href="?page=pricing"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">payments</span>
         <?= __('nav.pricing') ?>
       </a>
       <a href="?page=chat-tips"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">menu_book</span>
         <?= __('nav.instructions') ?>
       </a>
       <a href="?page=blog"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">article</span>
         <?= __('nav.blog') ?>
       </a>
       <a href="?page=dashboard"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">dashboard</span>
         <?= __('nav.dashboard') ?>
       </a>
+      </div>
 
       <div class="border-t border-outline-variant/10 my-2"></div>
       <p class="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-outline"><?= __('nav.section_legal') ?></p>
-      <a href="?page=privacy-policy"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[18px]">shield</span>
-        <?= __('nav.privacy_policy') ?>
-      </a>
-      <a href="?page=terms-and-conditions"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[18px]">gavel</span>
-        <?= __('nav.terms_conditions') ?>
-      </a>
-      <a href="?page=refund-policy"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[18px]">replay</span>
-        <?= __('nav.refund_policy') ?>
-      </a>
-      <a href="?page=cookie-policy"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[18px]">cookie</span>
-        <?= __('nav.cookie_policy') ?>
-      </a>
-      <a href="?page=license-agreement"
-        class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[18px]">contract</span>
-        <?= __('nav.license_agreement') ?>
-      </a>
+      <div class="grid grid-cols-2 gap-x-1">
+        <a href="?page=privacy-policy"
+          class="mobile-nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+          <span class="material-symbols-outlined text-[16px] shrink-0">shield</span>
+          <span class="min-w-0"><?= __('nav.privacy_policy') ?></span>
+        </a>
+        <a href="?page=terms-and-conditions"
+          class="mobile-nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+          <span class="material-symbols-outlined text-[16px] shrink-0">gavel</span>
+          <span class="min-w-0"><?= __('nav.terms_conditions') ?></span>
+        </a>
+        <a href="?page=refund-policy"
+          class="mobile-nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+          <span class="material-symbols-outlined text-[16px] shrink-0">replay</span>
+          <span class="min-w-0"><?= __('nav.refund_policy') ?></span>
+        </a>
+        <a href="?page=cookie-policy"
+          class="mobile-nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+          <span class="material-symbols-outlined text-[16px] shrink-0">cookie</span>
+          <span class="min-w-0"><?= __('nav.cookie_policy') ?></span>
+        </a>
+        <a href="?page=license-agreement"
+          class="mobile-nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+          <span class="material-symbols-outlined text-[16px] shrink-0">contract</span>
+          <span class="min-w-0"><?= __('nav.license_agreement') ?></span>
+        </a>
+      </div>
     </div>
 
     <?php if (!(isset($auth) && $auth->isLoggedIn())): ?>
