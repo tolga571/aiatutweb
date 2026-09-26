@@ -69,6 +69,23 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
     font-size: 0.8rem; color: #64748b; line-height: 1.2;
   }
 
+  /* ── Chat on phones ───────────────────────────────────────────────
+     iOS Safari: 100vh is the height WITH the toolbar hidden, so the bottom
+     of a 100vh page (the message box) sits under the toolbar. dvh follows the
+     visible viewport. Long words must wrap instead of widening the layout. */
+  .chat-main { height: calc(100vh - 56px); }
+  @supports (height: 100dvh) {
+    body.h-screen { height: 100dvh; }
+    .chat-main { height: calc(100dvh - 56px); }
+  }
+  #chat-messages, #chat-messages .message-row { min-width: 0; overflow-wrap: anywhere; }
+  #chat-messages .seg-token { max-width: 100%; }
+  #chat-messages .seg-text, #chat-messages .seg-pron, #chat-messages .seg-trans { overflow-wrap: anywhere; }
+  @media (max-width: 639px) {
+    .seg-text { font-size: clamp(1.1rem, 5.4vw, 1.5rem); }
+    .seg-token { margin: 0 2px; }
+  }
+
   /* Message entrance + progressive reveal animations */
   .message-row {
     animation: msg-row-in .35s cubic-bezier(.16,1,.3,1) both;

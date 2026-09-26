@@ -143,6 +143,7 @@ return [
     'chat.new_chat' => 'محادثة جديدة',
     'chat.search_conv' => 'البحث في المحادثات...',
     'chat.section_recent' => 'المحادثات الأخيرة',
+    'chat.history' => 'السجل',
     'chat.quota_title' => 'حصة الرسائل',
     'chat.quota_unit' => 'رسالة',
     'chat.quota_renews' => 'يتجدد شهرياً',

@@ -143,6 +143,7 @@ return [
     'chat.new_chat' => '新建聊天',
     'chat.search_conv' => '搜索对话...',
     'chat.section_recent' => '最近的对话',
+    'chat.history' => '历史',
     'chat.quota_title' => '消息额度',
     'chat.quota_unit' => '条',
     'chat.quota_renews' => '每月更新',

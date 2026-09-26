@@ -143,6 +143,7 @@ return [
     'chat.new_chat' => '新しいチャット',
     'chat.search_conv' => '会話を検索...',
     'chat.section_recent' => '最近の会話',
+    'chat.history' => '履歴',
     'chat.quota_title' => 'メッセージクォータ',
     'chat.quota_unit' => '件',
     'chat.quota_renews' => '毎月更新',

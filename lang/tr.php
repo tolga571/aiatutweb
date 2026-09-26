@@ -144,6 +144,7 @@ return [
     'chat.search_conv' => 'Konuşmaları ara...',
     'chat.search_no_results' => 'Konuşma bulunamadı.',
     'chat.section_recent' => 'Son konuşmalar',
+    'chat.history' => 'Geçmiş',
     'chat.quota_title' => 'Mesaj Kotası',
     'chat.quota_unit' => 'mesaj',
     'chat.quota_renews' => 'Aylık yenilenir',

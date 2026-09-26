@@ -144,6 +144,7 @@ return [
     'chat.search_conv' => 'Search conversations...',
     'chat.search_no_results' => 'No conversations found.',
     'chat.section_recent' => 'Recent conversations',
+    'chat.history' => 'History',
     'chat.quota_title' => 'Message Quota',
     'chat.quota_unit' => 'msgs',
     'chat.quota_renews' => 'Renews monthly',

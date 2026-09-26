@@ -143,6 +143,7 @@ return [
     'chat.new_chat' => 'Nuevo Chat',
     'chat.search_conv' => 'Buscar conversaciones...',
     'chat.section_recent' => 'Conversaciones recientes',
+    'chat.history' => 'Historial',
     'chat.quota_title' => 'Cuota de mensajes',
     'chat.quota_unit' => 'msg',
     'chat.quota_renews' => 'Se renueva mensualmente',

@@ -75,9 +75,10 @@ if ($quotaPercent > 75) {
       class="text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors"><?= __('chat.my_profile') ?></a>
   </div>
   <div class="flex items-center gap-xs sm:gap-md shrink-0">
-    <button onclick="toggleDrawer('chat-sidebar')"
-      class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 sm:p-2 rounded-full hover:bg-surface-container-high/50">
-      <span class="material-symbols-outlined text-[20px] sm:text-[24px]">menu</span>
+    <button onclick="toggleDrawer('chat-sidebar')" aria-label="<?= __('chat.history') ?>"
+      class="md:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center gap-1 p-1.5 sm:p-2 rounded-full hover:bg-surface-container-high/50">
+      <span class="material-symbols-outlined text-[22px] sm:text-[24px]">history</span>
+      <span class="hidden min-[360px]:inline text-[11px] font-semibold pr-1"><?= __('chat.history') ?></span>
     </button>
     <button onclick="toggleDrawer('study-panel')"
       class="xl:hidden text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 sm:p-2 rounded-full hover:bg-surface-container-high/50"
@@ -149,7 +150,7 @@ if ($quotaPercent > 75) {
 </script>
 
 <!-- Main Content Canvas -->
-<main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
+<main class="chat-main flex-1 flex flex-col relative bg-surface-dim overflow-hidden">
   <div id="drawer-backdrop" onclick="closeDrawers()" class="hidden fixed inset-0 bg-black/40 z-30"></div>
 
   <div class="flex flex-1 overflow-hidden h-full w-full">
@@ -158,7 +159,7 @@ if ($quotaPercent > 75) {
     <aside id="chat-sidebar"
       class="hidden absolute z-40 md:relative md:flex w-64 h-full bg-surface-container-low/95 backdrop-blur-xl flex-col border-r border-outline-variant/10 p-md gap-md overflow-y-auto chat-scrollbar shrink-0 shadow-2xl md:shadow-none">
       <!-- User Email & Mobile Close -->
-      <div class="flex items-center justify-between gap-sm text-on-surface-variant text-[11px] mb-xs">
+      <div class="order-1 md:order-none flex items-center justify-between gap-sm text-on-surface-variant text-[11px] mb-xs">
         <span class="truncate"><?= htmlspecialchars($currentUser['email'] ?? '') ?></span>
         <button onclick="closeDrawers()" class="md:hidden p-1 rounded-full hover:bg-surface-variant/50">
           <span class="material-symbols-outlined text-[16px]">close</span>
@@ -167,7 +168,7 @@ if ($quotaPercent > 75) {
 
       <!-- Account links: mobile-only equivalent of the hover-only avatar
            menu in the top nav, which touch devices can't rely on. -->
-      <div class="flex flex-col gap-xs md:hidden">
+      <div class="order-5 flex flex-row flex-wrap gap-xs md:hidden">
         <a href="?page=dashboard"
           class="flex items-center gap-2 px-sm py-2 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/40 transition-colors">
           <span class="material-symbols-outlined text-[16px]">person</span>
@@ -187,7 +188,7 @@ if ($quotaPercent > 75) {
 
       <!-- Your Progress Card -->
       <div
-        class="bg-surface-container p-md rounded-xl border border-outline-variant/20 flex items-center justify-between gap-sm">
+        class="order-6 md:order-none bg-surface-container p-sm md:p-md rounded-xl border border-outline-variant/20 flex items-center justify-between gap-sm">
         <div class="flex flex-col">
           <span class="text-xs text-on-surface-variant font-medium"><?= __('chat.your_progress') ?></span>
           <span class="text-sm font-bold text-primary mt-1">Level <?= $level ?> &middot; <?= $xpInLevel ?>/100 XP</span>
@@ -203,7 +204,7 @@ if ($quotaPercent > 75) {
       </div>
 
       <!-- Quota / Remaining Rights Card -->
-      <div id="quota-card" class="bg-surface-container p-md rounded-xl border border-outline-variant/20">
+      <div id="quota-card" class="order-7 md:order-none bg-surface-container p-sm md:p-md rounded-xl border border-outline-variant/20">
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-[16px] <?= $quotaTextColor ?>" id="quota-icon">bolt</span>
@@ -224,7 +225,7 @@ if ($quotaPercent > 75) {
 
       <!-- New Chat Button -->
       <a href="?page=chat&new=1"
-        class="flex items-center justify-center gap-2 bg-primary-container hover:bg-primary/20 text-on-primary-container border border-primary/20 rounded-xl py-3 px-md font-semibold text-sm transition-all shadow-md">
+        class="order-2 md:order-none flex items-center justify-center gap-2 bg-primary-container hover:bg-primary/20 text-on-primary-container border border-primary/20 rounded-xl py-3 px-md font-semibold text-sm transition-all shadow-md">
         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
@@ -232,19 +233,19 @@ if ($quotaPercent > 75) {
       </a>
 
       <!-- Search Box -->
-      <div class="relative">
+      <div class="order-3 md:order-none relative">
         <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-outline shrink-0" fill="none"
           stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
         <input type="text" id="conv-search"
-          class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl pl-9 pr-3 py-2 text-xs text-on-surface placeholder-outline focus:outline-none focus:border-primary/50 transition-colors"
+          class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl pl-9 pr-3 py-2 text-base md:text-xs text-on-surface placeholder-outline focus:outline-none focus:border-primary/50 transition-colors"
           placeholder="<?= __('chat.search_conv') ?>">
       </div>
 
       <!-- Conversations List -->
-      <div class="flex-1 flex flex-col gap-sm overflow-y-auto chat-scrollbar">
+      <div class="order-4 md:order-none flex-none md:flex-1 min-h-[200px] md:min-h-0 flex flex-col gap-sm md:overflow-y-auto chat-scrollbar">
         <div class="text-[10px] font-bold text-outline uppercase tracking-wider mt-2 px-1">
           <?= __('chat.section_recent') ?></div>
         <div class="flex flex-col gap-xs" id="conversations-list">
@@ -279,7 +280,7 @@ if ($quotaPercent > 75) {
       </div>
 
       <!-- Language selector at bottom left -->
-      <div class="mt-auto pt-sm border-t border-outline-variant/10 relative" id="lang-selector">
+      <div class="order-8 md:order-none mt-auto pt-sm border-t border-outline-variant/10 relative" id="lang-selector">
         <div id="lang-selector-btn" class="flex items-center justify-between bg-primary/10 border border-primary/20 text-primary rounded-xl px-md py-2.5 font-semibold text-xs transition-colors cursor-pointer hover:bg-primary/20">
           <div class="flex items-center gap-2">
             <?= $targetFlag ?>
@@ -321,7 +322,7 @@ if ($quotaPercent > 75) {
     </aside>
 
     <!-- Center: Chat Interface -->
-    <section class="flex-1 flex flex-col relative bg-surface-dim h-full">
+    <section class="flex-1 min-w-0 flex flex-col relative bg-surface-dim h-full">
       <?php if ($isTrialExpired): ?>
       <div class="shrink-0 bg-error-container/90 backdrop-blur-md border-b border-error/30 px-md sm:px-xl py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-md">
         <div class="flex items-center gap-2 text-on-error-container text-sm">
@@ -354,7 +355,7 @@ if ($quotaPercent > 75) {
       <?php endif; ?>
 
       <!-- Message History -->
-      <div id="chat-messages" class="flex-1 overflow-y-auto chat-scrollbar p-xl space-y-xl">
+      <div id="chat-messages" class="flex-1 min-w-0 overflow-y-auto overflow-x-hidden chat-scrollbar px-3 py-4 sm:p-xl space-y-lg sm:space-y-xl">
         <!-- Empty state wrapper (contains both center text and bottom cards) -->
         <div id="empty-state-wrapper"
           class="flex flex-col justify-between h-full w-full <?= $activeConvId ? 'hidden' : '' ?>">
@@ -396,13 +397,13 @@ if ($quotaPercent > 75) {
       </button>
 
       <!-- Input Area -->
-      <div class="px-xl pb-lg pt-sm shrink-0">
+      <div class="px-3 sm:px-xl pb-3 sm:pb-lg pt-sm shrink-0">
         <div
           class="bg-surface-container border border-outline-variant/20 rounded-2xl flex items-center gap-md px-md py-sm <?= $isTrialExpired ? 'opacity-60' : '' ?>">
 
           <!-- Textarea / Input -->
           <textarea id="chat-input"
-            class="flex-1 bg-transparent border-none focus:ring-0 text-xs py-1 px-1 resize-none chat-scrollbar min-h-[24px] max-h-32 text-on-surface placeholder-outline focus:outline-none"
+            class="flex-1 bg-transparent border-none focus:ring-0 text-base sm:text-xs py-1 px-1 resize-none chat-scrollbar min-h-[24px] max-h-32 text-on-surface placeholder-outline focus:outline-none"
             placeholder="<?= $isTrialExpired ? __('chat.trial_expired_placeholder') : sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?>"
             rows="1" <?= $isTrialExpired ? 'disabled' : '' ?>></textarea>
 
@@ -795,8 +796,8 @@ if ($quotaPercent > 75) {
       if (role === 'user') {
         const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         row.innerHTML = `
-        <div class="flex flex-row-reverse gap-lg max-w-[75%] group">
-          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/20 mt-1">
+        <div class="flex flex-row-reverse gap-2 sm:gap-lg max-w-[92%] sm:max-w-[75%] group">
+          <div class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400/20 mt-1">
             <span class="material-symbols-outlined text-white text-[20px]">person</span>
           </div>
           <div class="space-y-sm flex-1 min-w-0">
@@ -805,7 +806,7 @@ if ($quotaPercent > 75) {
               <span class="font-bold text-on-surface"><?= __('chat.you') ?></span>
             </div>
             <div class="user-bubble bg-[#1e1b4b]/50 border border-indigo-500/30 rounded-2xl rounded-tr-none overflow-hidden shadow-xl backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
-              <div class="px-5 py-4">
+              <div class="px-4 sm:px-5 py-4">
                 <p class="text-[15px] text-indigo-50 leading-relaxed" dir="auto">${escHtml(content)}</p>
               </div>
             </div>
@@ -813,16 +814,16 @@ if ($quotaPercent > 75) {
           </div>
         </div>`;
       } else {
-        const avatar = `<div class="flex-shrink-0 w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/30 shadow-sm"><span class="material-symbols-outlined text-primary">psychology</span></div>`;
+        const avatar = `<div class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/30 shadow-sm"><span class="material-symbols-outlined text-primary">psychology</span></div>`;
         row.innerHTML = `
-        <div class="flex gap-lg max-w-[75%] group">
+        <div class="flex gap-2 sm:gap-lg max-w-[92%] sm:max-w-[75%] group">
           ${avatar}
           <div class="space-y-sm">
             <div class="flex items-center gap-sm opacity-70 group-hover:opacity-100 transition-opacity">
               <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
               <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
-            <div class="glass-panel p-lg rounded-2xl rounded-tl-none border border-outline-variant/20 transform transition-all duration-300 hover:scale-[1.01]">
+            <div class="glass-panel p-3 sm:p-lg rounded-2xl rounded-tl-none border border-outline-variant/20 transform transition-all duration-300 md:hover:scale-[1.01]">
               <p class="text-body-lg text-on-surface">${escHtml(content)}</p>
             </div>
           </div>
@@ -924,13 +925,13 @@ if ($quotaPercent > 75) {
         </div>`;
         }).join('');
         correctionsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
           <div class="space-y-1">${chips}</div>
         </div>`;
       } else if (correction) {
         correctionsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
           <div class="bg-gray-800/50 rounded-lg px-3 py-2 text-xs text-amber-200/80 border border-gray-700/30">${escHtml(correction)}</div>
         </div>`;
@@ -946,7 +947,7 @@ if ($quotaPercent > 75) {
         </span>`;
         }).join('');
         wordsHtml = `
-        <div class="px-6 py-4 border-t border-gray-700/50 reveal-block">
+        <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 reveal-block">
           <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.key_vocabulary') ?></p>
           <div class="flex flex-wrap">${chips}</div>
         </div>`;
@@ -965,8 +966,8 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const metaGrid = (phonetic || literalTranslation) ? `
-      <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40 reveal-block">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+      <div class="p-4 sm:p-6 border-b border-gray-700/50 bg-[#1e293b]/40 reveal-block">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-0">
           <div class="md:border-r md:border-gray-700/30 md:pr-5">
             ${phoneticBlock}
           </div>
@@ -977,7 +978,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const naturalTranslationBlock = translation ? `
-      <div class="px-6 py-4 bg-indigo-500/5 border-b border-gray-700/50 reveal-block">
+      <div class="px-4 sm:px-6 py-4 bg-indigo-500/5 border-b border-gray-700/50 reveal-block">
         <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= __('chat.natural_translation') ?></p>
         <p class="text-lg text-gray-100 font-medium italic">"${escHtml(translation)}"</p>
       </div>` : '';
@@ -1005,7 +1006,7 @@ if ($quotaPercent > 75) {
       </div>` : '';
 
       const learningGrid = (grammarSpotlight || proTip) ? `
-      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-block">
+      <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-block">
         ${grammarBlock}
         ${proTipBlock}
       </div>` : '';
@@ -1013,8 +1014,8 @@ if ($quotaPercent > 75) {
       const row = document.createElement('div');
       row.className = 'message-row w-full flex justify-start';
       row.innerHTML = `
-      <div class="flex gap-lg w-full max-w-2xl">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20 mt-1">
+      <div class="flex gap-2 sm:gap-lg w-full max-w-2xl">
+        <div class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20 mt-1">
           <span class="material-symbols-outlined text-on-primary-container">psychology</span>
         </div>
         <div class="space-y-sm flex-1 min-w-0">
@@ -1023,7 +1024,7 @@ if ($quotaPercent > 75) {
             <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </div>
           <div id="${cardId}" class="bg-[#1e293b]/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
-            <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40">
+            <div class="p-4 sm:p-6 border-b border-gray-700/50 bg-[#1e293b]/40">
               <div class="flex justify-between items-start mb-4">
                 <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest bg-teal-900/20 px-2 py-0.5 rounded"><?= __('chat.target_language') ?></span>
                 <button type="button" class="ai-speak-btn text-gray-500 hover:text-white transition-colors" data-text="${escAttr(content)}" aria-label="Listen">
@@ -1164,8 +1165,8 @@ if ($quotaPercent > 75) {
       row.id = id;
       row.className = 'message-row w-full flex justify-start';
       row.innerHTML = `
-      <div class="flex gap-lg w-full max-w-2xl">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20 mt-1">
+      <div class="flex gap-2 sm:gap-lg w-full max-w-2xl">
+        <div class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20 mt-1">
           <span class="material-symbols-outlined text-on-primary-container">psychology</span>
         </div>
         <div class="space-y-sm flex-1 min-w-0">
@@ -1178,12 +1179,12 @@ if ($quotaPercent > 75) {
             </span>
           </div>
           <div class="bg-[#1e293b]/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl">
-            <div class="p-6 border-b border-gray-700/50 bg-[#1e293b]/40 space-y-3 animate-pulse">
+            <div class="p-4 sm:p-6 border-b border-gray-700/50 bg-[#1e293b]/40 space-y-3 animate-pulse">
               <div class="h-2.5 w-20 bg-gray-700/50 rounded"></div>
               <div class="h-7 w-3/4 bg-gray-700/50 rounded"></div>
               <div class="h-7 w-1/2 bg-gray-700/50 rounded"></div>
             </div>
-            <div class="p-6 flex gap-4 animate-pulse">
+            <div class="p-4 sm:p-6 flex gap-4 animate-pulse">
               <div class="h-2.5 w-16 bg-gray-700/40 rounded"></div>
               <div class="h-2.5 w-24 bg-gray-700/40 rounded"></div>
             </div>

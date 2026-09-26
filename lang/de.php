@@ -143,6 +143,7 @@ return [
     'chat.new_chat' => 'Neuer Chat',
     'chat.search_conv' => 'Konversationen durchsuchen...',
     'chat.section_recent' => 'Letzte Konversationen',
+    'chat.history' => 'Verlauf',
     'chat.quota_title' => 'Nachrichtenkontingent',
     'chat.quota_unit' => 'Nachr.',
     'chat.quota_renews' => 'Erneuert sich monatlich',
