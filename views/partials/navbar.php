@@ -257,6 +257,15 @@
     </div>
 
     <div class="flex-1 p-4 space-y-1">
+      <!-- Chat is the product: it gets its own prominent button above the other links -->
+      <a href="?page=chat"
+        class="mb-2 flex items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-primary to-primary/80 px-4 py-3 text-on-primary font-semibold shadow-md shadow-primary/20 hover:opacity-90 active:opacity-90 transition-opacity">
+        <span class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24">forum</span>
+          <?= __('nav.chat') ?>
+        </span>
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+      </a>
       <?php if (isset($auth) && $auth->isLoggedIn()): ?>
       <!-- Account + learning language: phones don't get the crowded top-bar switchers -->
       <div class="rounded-xl border border-outline-variant/15 bg-surface-container/60 p-3 mb-2">
@@ -297,11 +306,6 @@
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">home</span>
         <?= __('nav.home') ?>
-      </a>
-      <a href="?page=chat"
-        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
-        <span class="material-symbols-outlined text-[20px]">forum</span>
-        <?= __('nav.chat') ?>
       </a>
       <a href="?page=flashcards"
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
@@ -362,7 +366,7 @@
     </div>
 
     <?php if (!(isset($auth) && $auth->isLoggedIn())): ?>
-      <div class="p-4 border-t border-outline-variant/10 space-y-2">
+      <div class="px-4 py-3 border-t border-outline-variant/10 space-y-2">
         <a href="?page=login"
           class="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 transition-all font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">login</span>
@@ -375,7 +379,7 @@
         </a>
       </div>
     <?php else: ?>
-      <div class="p-4 border-t border-outline-variant/10 space-y-2">
+      <div class="px-4 py-3 border-t border-outline-variant/10 space-y-2">
         <a href="?page=logout"
           class="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl border border-error/30 text-error hover:bg-error/10 transition-all font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">logout</span>
