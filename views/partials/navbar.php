@@ -21,7 +21,7 @@
         'starter', 'pro', 'active' => 'bg-primary/20 text-primary border-primary/30',
         default => 'bg-surface-variant/50 text-on-surface-variant border-outline-variant/20',
       }; ?>
-      <span class="ml-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border <?= $badgeClass ?>"><?= $badgeLabel ?></span>
+      <span class="hidden sm:inline-block ml-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border <?= $badgeClass ?>"><?= $badgeLabel ?></span>
     <?php endif; ?>
   </div>
 
@@ -160,7 +160,7 @@
       $navTargetCountry = $navLangMap[$navTargetLang] ?? 'us';
       ?>
       <!-- Language Switcher -->
-      <div class="relative inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?>">
+      <div class="relative hidden lg:inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?>">
         <button
           class="flex items-center gap-1.5 p-1.5 pr-2.5 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-pointer">
           <img src="https://flagcdn.com/<?= $navTargetCountry ?>.svg"
@@ -182,7 +182,7 @@
         </div>
       </div>
 
-      <div class="relative inline-block text-left" id="nav-profile-switcher">
+      <div class="relative hidden lg:inline-block text-left" id="nav-profile-switcher">
         <button
           class="flex items-center gap-2 hover:bg-surface-variant/50 p-1 pr-3 rounded-full transition-colors focus:outline-none border border-outline-variant/20 cursor-pointer">
           <div
@@ -256,6 +256,35 @@
     </div>
 
     <div class="flex-1 p-4 space-y-1">
+      <?php if (isset($auth) && $auth->isLoggedIn()): ?>
+      <!-- Account + learning language: phones don't get the crowded top-bar switchers -->
+      <div class="rounded-xl border border-outline-variant/15 bg-surface-container/60 p-3 mb-2">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center text-base font-bold overflow-hidden shrink-0">
+            <?php if (!empty($currUser['profile_image'])): ?>
+              <img src="<?= htmlspecialchars($currUser['profile_image']) ?>" class="w-full h-full object-cover" referrerpolicy="no-referrer" alt="" />
+            <?php else: ?>
+              <?= strtoupper(substr($currUser['name'] ?? $currUser['email'] ?? 'U', 0, 1)) ?>
+            <?php endif; ?>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-on-surface truncate"><?= htmlspecialchars($currUser['name'] ?? explode('@', $currUser['email'] ?? 'User')[0]) ?></p>
+            <span class="inline-block mt-0.5 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border <?= $badgeClass ?>"><?= $badgeLabel ?></span>
+          </div>
+        </div>
+        <p class="mt-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-outline"><?= __('nav.learning_language') ?></p>
+        <div class="flex flex-wrap gap-1.5">
+          <?php foreach (['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'] as $l => $c):
+            $isCur = ($l === $navTargetLang); ?>
+            <a href="<?= $isCur ? '#' : '?page=update_lang&lang=' . $l ?>" <?= $isCur ? 'aria-current="true"' : '' ?>
+              class="flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs transition-colors <?= $isCur ? 'border-primary/50 bg-primary/15 text-primary font-semibold' : 'border-outline-variant/20 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50' ?>">
+              <img src="https://flagcdn.com/<?= $c ?>.svg" class="w-4 h-3 rounded-[2px] object-cover shrink-0" alt="" />
+              <?= __("languages.{$l}") ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endif; ?>
       <a href="?page=home"
         class="mobile-nav-link flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">home</span>

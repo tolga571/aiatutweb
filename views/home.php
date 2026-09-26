@@ -3,7 +3,7 @@
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
 <main
-  class="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] px-4 text-center relative overflow-hidden">
+  class="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] supports-[height:100dvh]:min-h-[calc(100dvh-56px)] px-4 py-10 sm:py-0 text-center relative overflow-hidden">
   <div data-m="orb" class="absolute top-1/4 left-1/3 w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
   <div data-m="orb" class="absolute bottom-1/4 right-1/3 w-80 h-80 bg-tertiary/10 blur-[120px] rounded-full pointer-events-none">
   </div>
