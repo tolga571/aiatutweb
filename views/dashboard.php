@@ -22,6 +22,7 @@ $streak = (int)($user['streak_count'] ?? 0);
 $wordsToday = $db->fetchOne("SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id=? AND date(created_at) = " . $db->dateNow(), [$auth->userId()])['c'] ?? 0;
 $dueCount = $db->fetchOne("SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND next_review <= " . $db->now(), [$auth->userId()])['c'] ?? 0;
 $masteredCount = $db->fetchOne("SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND status='mastered'", [$auth->userId()])['c'] ?? 0;
+$mistakesDue = (int)($db->fetchOne('SELECT COUNT(*) as c FROM user_mistakes WHERE user_id=? AND language=? AND learned_at IS NULL', [$auth->userId(), $user['target_lang'] ?? 'en'])['c'] ?? 0);
 $tips = [
   __('dash.tip_1'),
   __('dash.tip_2'),
@@ -148,6 +149,10 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
         <span class="material-symbols-outlined text-[18px]">style</span>
         <?= __('dash.flashcards') ?>
       </a>
+      <a href="?page=mistakes" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-body-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition">
+        <span class="material-symbols-outlined text-[18px]">edit_note</span>
+        <?= __('dash.mistakes') ?>
+      </a>
     </div>
 
     <div class="mt-auto">
@@ -224,6 +229,16 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
           <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.review_desc'), $dueCount) ?></div>
         </div>
         <span class="material-symbols-outlined text-secondary text-2xl group-hover:scale-110 transition-transform">style</span>
+      </a>
+      <?php endif; ?>
+
+      <?php if ($mistakesDue > 0): ?>
+      <a href="?page=mistakes" class="flex items-center justify-between bg-error/10 border border-error/25 hover:border-error/50 rounded-2xl p-5 transition group">
+        <div>
+          <div class="font-headline-sm text-headline-sm text-on-surface mb-1"><?= __('dash.mistakes_title') ?></div>
+          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.mistakes_desc'), $mistakesDue) ?></div>
+        </div>
+        <span class="material-symbols-outlined text-error text-2xl group-hover:scale-110 transition-transform">edit_note</span>
       </a>
       <?php endif; ?>
 

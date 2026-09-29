@@ -75,6 +75,13 @@
                   <span class="pages-menu-desc"><?= __('nav.alphabet_desc') ?></span>
                 </span>
               </a>
+              <a href="?page=mistakes" class="pages-menu-item">
+                <span class="material-symbols-outlined pages-menu-icon">edit_note</span>
+                <span>
+                  <span class="pages-menu-title"><?= __('nav.mistakes') ?></span>
+                  <span class="pages-menu-desc"><?= __('nav.mistakes_desc') ?></span>
+                </span>
+              </a>
             </div>
           </div>
           <div>
@@ -208,6 +215,8 @@
                 role="menuitem"><?= __('nav.chat') ?></a>
               <a href="?page=flashcards" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
                 role="menuitem"><?= __('nav.flashcards') ?></a>
+              <a href="?page=mistakes" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
+                role="menuitem"><?= __('nav.mistakes') ?></a>
               <a href="?page=chat-tips" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
                 role="menuitem"><?= __('nav.instructions') ?></a>
               <a href="?page=logout" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant text-error"
@@ -311,6 +320,11 @@
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">style</span>
         <?= __('nav.flashcards') ?>
+      </a>
+      <a href="?page=mistakes"
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[20px]">edit_note</span>
+        <?= __('nav.mistakes') ?>
       </a>
       <a href="?page=pricing"
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">

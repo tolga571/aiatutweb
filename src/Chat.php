@@ -268,6 +268,16 @@ SEGMENTED RULES:
                 }
             }
 
+            // Copy this reply's corrections into the mistakes notebook now,
+            // while the target language is still the one it was made in.
+            if ($corrections) {
+                try {
+                    (new Mistakes($this->db))->sync($userId, $targetLang);
+                } catch (\Throwable $e) {
+                    error_log("Mistakes sync failed for user {$userId}: " . $e->getMessage());
+                }
+            }
+
             // XP + message usage
             $this->db->execute('UPDATE users SET xp = xp + 10 WHERE id = ?', [$userId]);
             $this->tokenManager->addUsage($userId, 1);

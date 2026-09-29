@@ -167,6 +167,29 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, vocab_id)
         )");
+        // "My mistakes" notebook: one row per chat correction, copied out of
+        // messages.metadata by Mistakes::sync(). (message_id, position) keeps
+        // a re-sync from duplicating rows; deleting the conversation (or the
+        // user) cascades here through messages.
+        $this->exec("CREATE TABLE IF NOT EXISTS user_mistakes (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+            position INTEGER NOT NULL DEFAULT 0,
+            language TEXT NOT NULL,
+            original TEXT NOT NULL,
+            corrected TEXT NOT NULL,
+            pronunciation TEXT,
+            rule TEXT,
+            sentence TEXT,
+            practice_count INTEGER NOT NULL DEFAULT 0,
+            correct_count INTEGER NOT NULL DEFAULT 0,
+            last_practiced_at TIMESTAMP DEFAULT NULL,
+            learned_at TIMESTAMP DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(message_id, position)
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_user_mistakes_user ON user_mistakes (user_id, language, created_at DESC)");
         $this->exec("CREATE TABLE IF NOT EXISTS alphabet_progress (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

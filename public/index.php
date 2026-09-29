@@ -877,6 +877,10 @@ switch ($page) {
             'vocabulary_words' => $db->fetchAll('SELECT * FROM vocabulary_words WHERE user_id = ?', [$exportUserId]),
             'flashcards' => $db->fetchAll('SELECT * FROM user_flashcards WHERE user_id = ?', [$exportUserId]),
             'alphabet_progress' => $db->fetchAll('SELECT * FROM alphabet_progress WHERE user_id = ?', [$exportUserId]),
+            'mistakes' => $db->fetchAll(
+                'SELECT language, original, corrected, rule, sentence, practice_count, correct_count, learned_at, created_at FROM user_mistakes WHERE user_id = ? ORDER BY created_at',
+                [$exportUserId]
+            ),
             'learning_notes' => $db->fetchAll('SELECT * FROM learning_notes WHERE user_id = ?', [$exportUserId]),
             'billing_activity' => $db->fetchAll(
                 'SELECT event_type, provider, plan, billing_interval, detail, created_at FROM activity_events WHERE user_id = ? ORDER BY created_at',
@@ -1023,6 +1027,33 @@ switch ($page) {
         echo json_encode(array_merge(['success' => empty($packResult['error'])], $packResult));
         exit;
 
+    // ── My mistakes ───────────────────────────────────────────────
+    case 'mistakes':
+        $requirePlan();
+        $currentUser = $auth->currentUser();
+        $mistakesLang = $currentUser['target_lang'] ?? 'en';
+        $mistakesSvc = new \App\Src\Mistakes($db);
+        $mistakesSvc->sync($auth->userId(), $mistakesLang);
+        $mistakes = $mistakesSvc->getAll($auth->userId(), $mistakesLang);
+        require __DIR__ . '/../views/mistakes.php';
+        break;
+
+    case 'mistake-review':
+        // JSON only, never a 5xx (Cloudflare would replace the body).
+        $requirePlan();
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        $reviewed = (new \App\Src\Mistakes($db))->review(
+            $auth->userId(),
+            (int)($_POST['id'] ?? 0),
+            (string)($_POST['action'] ?? '')
+        );
+        echo json_encode($reviewed ? ['ok' => true, 'mistake' => $reviewed] : ['ok' => false, 'error' => 'not_found']);
+        exit;
+
     // ── Dashboard ─────────────────────────────────────────────────
     case 'dashboard':
         $requirePlan();
@@ -1040,6 +1071,14 @@ switch ($page) {
             }
             header('Location: ?page=dashboard');
             exit;
+        }
+
+        // Keeps the dashboard's "review your mistakes" count current; must
+        // never take the dashboard down with it.
+        try {
+            (new \App\Src\Mistakes($db))->sync($auth->userId(), $auth->currentUser()['target_lang'] ?? 'en');
+        } catch (\Throwable $e) {
+            error_log('dashboard: mistakes sync failed: ' . $e->getMessage());
         }
 
         // Compute quota for dashboard
