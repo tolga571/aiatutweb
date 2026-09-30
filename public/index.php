@@ -1213,6 +1213,9 @@ switch ($page) {
     case 'admin-conversation':
         $adminCtrl->viewConversation((int)($_GET['conv_id'] ?? 0));
         break;
+    case 'admin-ai-usage':
+        $adminCtrl->aiUsage();
+        break;
     case 'admin-settings':
         $adminCtrl->settings();
         break;

@@ -190,6 +190,24 @@ class Database {
             UNIQUE(message_id, position)
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_user_mistakes_user ON user_mistakes (user_id, language, created_at DESC)");
+        // One row per Gemini request (see AiUsage). cost_usd is computed at
+        // insert time from AiUsage::PRICES, so a later price change doesn't
+        // rewrite history. SET NULL keeps totals intact when a user deletes
+        // their account.
+        $this->exec("CREATE TABLE IF NOT EXISTS ai_usage (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            feature TEXT NOT NULL DEFAULT 'chat',
+            model TEXT,
+            ok BOOLEAN NOT NULL DEFAULT TRUE,
+            prompt_tokens INTEGER NOT NULL DEFAULT 0,
+            output_tokens INTEGER NOT NULL DEFAULT 0,
+            thought_tokens INTEGER NOT NULL DEFAULT 0,
+            cost_usd NUMERIC(12,6) NOT NULL DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_created ON ai_usage (created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_user ON ai_usage (user_id, created_at)");
         $this->exec("CREATE TABLE IF NOT EXISTS alphabet_progress (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

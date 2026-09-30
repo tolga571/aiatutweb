@@ -3,14 +3,17 @@ namespace App\Src;
 
 class GeminiClient {
     private array $apiKeys;
+    // Tried in order. The fallback is Flash-Lite, not Pro: when Flash is
+    // overloaded, Pro (~4x Flash's price) is usually slow too, while
+    // Flash-Lite answers fast at a fraction of the cost.
     private array $models = [
         'gemini-2.5-flash',
-        'gemini-2.5-pro',
-        'gemini-2.0-flash',
+        'gemini-2.5-flash-lite',
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     private string $lastError = '';
+    private ?array $lastUsage = null;
 
     public function __construct(string $primaryKey, string $backupKey = '') {
         $keys = [$primaryKey];
@@ -22,6 +25,14 @@ class GeminiClient {
 
     public function getLastError(): string {
         return $this->lastError;
+    }
+
+    /**
+     * Token usage of the last successful call: model, prompt_tokens,
+     * output_tokens, thought_tokens. Null if no model answered.
+     */
+    public function getLastUsage(): ?array {
+        return $this->lastUsage;
     }
 
     public function chat(string $prompt): string {
@@ -44,9 +55,16 @@ class GeminiClient {
         if ($systemPrompt) {
             $payload['systemInstruction'] = ['parts' => [['text' => $systemPrompt]]];
         }
-        $payload['generationConfig'] = ['responseMimeType' => 'application/json'];
+        // Thinking off: thought tokens bill at the output rate and were up to
+        // half of a reply's cost, with no difference in the corrections
+        // (compared on the real tutor prompt, 2026-09-30).
+        $payload['generationConfig'] = [
+            'responseMimeType' => 'application/json',
+            'thinkingConfig' => ['thinkingBudget' => 0],
+        ];
 
         $errors = [];
+        $this->lastUsage = null;
         foreach ($this->apiKeys as $ki => $key) {
             $keyLabel = 'key' . ($ki + 1);
             foreach ($this->models as $model) {
@@ -57,7 +75,16 @@ class GeminiClient {
                         $response = $this->httpPost($url, $payload);
                         $data = json_decode($response, true);
                         $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
-                        if ($text) return $text;
+                        if ($text) {
+                            $meta = $data['usageMetadata'] ?? [];
+                            $this->lastUsage = [
+                                'model' => $model,
+                                'prompt_tokens' => (int)($meta['promptTokenCount'] ?? 0),
+                                'output_tokens' => (int)($meta['candidatesTokenCount'] ?? 0),
+                                'thought_tokens' => (int)($meta['thoughtsTokenCount'] ?? 0),
+                            ];
+                            return $text;
+                        }
                     } catch (\Exception $e) {
                         $errMsg = $e->getMessage();
                         if ($attempt < $maxRetries && (str_contains($errMsg, 'HTTP 503') || str_contains($errMsg, 'cURL error (28)'))) {

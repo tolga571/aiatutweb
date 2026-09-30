@@ -34,6 +34,7 @@ $title = $title ?? __('admin.title');
                     <li class="nav-item"><a class="nav-link" href="?page=admin-payments"><?= __('admin.payments') ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="?page=admin-activity"><?= __('admin.activity') ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="?page=admin-conversations"><?= __('admin.conversations') ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="?page=admin-ai-usage">AI usage &amp; cost</a></li>
                     <li class="nav-item"><a class="nav-link" href="?page=admin-settings"><?= __('admin.settings') ?></a></li>
 <li class="nav-item"><a class="nav-link" href="?page=privacy-policy"><?= __('nav.privacy_policy') ?></a></li>
 <li class="nav-item"><a class="nav-link" href="?page=terms-and-conditions"><?= __('nav.terms_conditions') ?></a></li>

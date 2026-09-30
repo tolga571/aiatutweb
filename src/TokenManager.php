@@ -25,9 +25,13 @@ class TokenManager {
     public function getBaseLimit(string $planStatus): int {
         switch ($planStatus) {
             case 'trial': return 15;
-            case 'starter': return 50;
-            case 'pro': return 500;
-            case 'active': return 1500;
+            // Sized so a user who uses every message still costs at most
+            // ~43% of the plan's net revenue in Gemini fees, budgeting
+            // $0.01/message (measured $0.004-0.011 on gemini-2.5-flash,
+            // 2026-09-30). The admin "AI usage & cost" page tracks the real figure.
+            case 'starter': return 600;
+            case 'pro': return 2000;
+            case 'active': return 6000;
             default: return 0;
         }
     }

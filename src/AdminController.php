@@ -2,6 +2,17 @@
 namespace App\Src;
 
 class AdminController {
+    /**
+     * List price per plan as a monthly amount, USD (yearly prices spread
+     * over 12 months). Must track the prices on the pricing page
+     * (lang/*.php pricing.*_monthly/_yearly) and the live Dodo catalog.
+     */
+    public const MONTHLY_PRICE_USD = [
+        'starter' => ['month' => 15,  'year' => 150 / 12],
+        'pro'     => ['month' => 50,  'year' => 500 / 12],
+        'active'  => ['month' => 150, 'year' => 1500 / 12],
+    ];
+
     private Database $db;
     private \PDO $pdo;
     private array $config;
@@ -153,11 +164,7 @@ class AdminController {
         // truth. This was previously $paidCount * $config['premium_price'],
         // a config key that has never existed, so the dashboard always
         // showed 0 regardless of how many users were actually paying.
-        $monthlyPriceUsd = [
-            'starter' => ['month' => 15,  'year' => 150 / 12],
-            'pro'     => ['month' => 50,  'year' => 500 / 12],
-            'active'  => ['month' => 150, 'year' => 1500 / 12],
-        ];
+        $monthlyPriceUsd = self::MONTHLY_PRICE_USD;
         $planCounts = $this->db->fetchAll(
             'SELECT plan_status, billing_interval, COUNT(*) as cnt FROM users WHERE has_paid = 1 GROUP BY plan_status, billing_interval'
         );
@@ -303,6 +310,30 @@ class AdminController {
         $this->requireAdmin();
         $messages = $this->db->fetchAll('SELECT role, content, translation, correction FROM messages WHERE conversation_id = ? ORDER BY created_at ASC', [$convId]);
         require __DIR__ . '/../views/admin/conversation_detail.php';
+    }
+
+    // ------------------- AI usage -------------------
+    public function aiUsage(): void {
+        $this->requireAdmin();
+        $usage = new AiUsage($this->db);
+        $monthStart = "date_trunc('month', CURRENT_TIMESTAMP)";
+        $periods = [
+            'today' => $usage->totals('CURRENT_DATE'),
+            'week'  => $usage->totals("CURRENT_TIMESTAMP - INTERVAL '7 days'"),
+            'month' => $usage->totals($monthStart),
+        ];
+        $byModel = $usage->byModel($monthStart);
+        $byPlan = $usage->byPlan($monthStart);
+        $topUsers = $usage->topUsers($monthStart);
+        $daily = $usage->daily(14);
+        $dayOfMonth = (int)date('j');
+        $daysInMonth = (int)date('t');
+        $monthCost = (float)($periods['month']['cost'] ?? 0);
+        $projectedMonthCost = $dayOfMonth > 0 ? $monthCost / $dayOfMonth * $daysInMonth : 0;
+        $prices = self::MONTHLY_PRICE_USD;
+        $quota = new TokenManager($this->db);
+        $modelPrices = AiUsage::PRICES;
+        require __DIR__ . '/../views/admin/ai_usage.php';
     }
 
     // ------------------- Settings -------------------

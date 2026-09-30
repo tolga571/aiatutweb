@@ -202,7 +202,13 @@ SEGMENTED RULES:
         $proTip = '';
 
         try {
-            $aiRaw = $gemini->chatWithHistory($message, $history, $systemPrompt, $targetLang);
+            try {
+                $aiRaw = $gemini->chatWithHistory($message, $history, $systemPrompt, $targetLang);
+            } catch (\Throwable $e) {
+                AiUsage::record($this->db, $userId, null, false);
+                throw $e;
+            }
+            AiUsage::record($this->db, $userId, $gemini->getLastUsage(), true);
             $parsed = json_decode($aiRaw, true);
             if ($parsed) {
                 $content             = $parsed['content']             ?? $aiRaw;
