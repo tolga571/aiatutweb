@@ -757,4 +757,5 @@ return [
     'mis.unlearn' => '戻す',
     'mis.practiced' => '%d 回練習',
     'mis.error' => '保存できませんでした。もう一度お試しください。',
+    'auth.account_suspended' => 'このアカウントは停止されています。サポートにお問い合わせください。',
 ];

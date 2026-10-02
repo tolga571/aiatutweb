@@ -757,4 +757,5 @@ return [
     'mis.unlearn' => '移回待复习',
     'mis.practiced' => '已练习 %d 次',
     'mis.error' => '保存失败，请重试。',
+    'auth.account_suspended' => '此账户已被暂停。请联系客服。',
 ];

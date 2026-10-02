@@ -757,4 +757,5 @@ return [
     'mis.unlearn' => 'Remettre à réviser',
     'mis.practiced' => 'révisée %d×',
     'mis.error' => 'Enregistrement impossible — réessaie.',
+    'auth.account_suspended' => 'Ce compte a été suspendu. Contacte le support.',
 ];

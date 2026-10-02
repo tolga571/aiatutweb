@@ -20,6 +20,10 @@ class Auth {
             $this->lastError = __('auth.error_wrong_password');
             return false;
         }
+        if (!empty($user['suspended_at'])) {
+            $this->lastError = __('auth.account_suspended');
+            return false;
+        }
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         

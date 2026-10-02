@@ -131,6 +131,13 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
         <?php endif; ?>
         <div class="page-body">
             <main class="container-xl<?= empty($pageHeader) ? ' legacy' : '' ?>">
+                <?php if (!empty($_SESSION['admin_flash'])): $flash = $_SESSION['admin_flash']; unset($_SESSION['admin_flash']); ?>
+                <div class="alert alert-<?= $flash['type'] === 'success' ? 'success' : 'danger' ?> alert-dismissible d-flex align-items-center gap-2" role="alert">
+                    <i class="ti ti-<?= $flash['type'] === 'success' ? 'circle-check' : 'alert-circle' ?> fs-2"></i>
+                    <div><?= htmlspecialchars($flash['message']) ?></div>
+                    <a class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></a>
+                </div>
+                <?php endif; ?>
                 <?php if (isset($content)) { echo $content; } ?>
             </main>
         </div>

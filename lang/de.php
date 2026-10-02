@@ -757,4 +757,5 @@ return [
     'mis.unlearn' => 'Zurücksetzen',
     'mis.practiced' => '%d× geübt',
     'mis.error' => 'Speichern fehlgeschlagen — bitte erneut versuchen.',
+    'auth.account_suspended' => 'Dieses Konto wurde gesperrt. Bitte wende dich an den Support.',
 ];

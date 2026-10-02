@@ -180,26 +180,148 @@ class AdminController {
         require __DIR__ . '/../views/admin/dashboard.php';
     }
 
-    // ------------------- Users -------------------
-    public function listUsers(int $pageNum = 1, string $search = ''): void {
-        $this->requireAdmin();
-        $perPage = 50;
-        $pageNum = max(1, $pageNum);
-        $offset = ($pageNum - 1) * $perPage;
-        $search = trim($search);
-        $where = '';
-        $params = [];
-        if ($search !== '') {
-            $where = ' WHERE email ILIKE ?';
-            $params[] = '%' . $search . '%';
+    // ------------------- Audit -------------------
+    /** Writes one admin_audit row. Never throws — an audit failure must not block the action. */
+    private function audit(string $action, ?int $targetUserId = null, string $detail = ''): void {
+        try {
+            $this->db->execute(
+                'INSERT INTO admin_audit (admin_id, admin_email, action, target_user_id, detail, ip) VALUES (?, ?, ?, ?, ?, ?)',
+                [$_SESSION['admin_id'] ?? null, $this->currentAdmin['email'] ?? null, $action, $targetUserId, mb_substr($detail, 0, 1000), client_ip()]
+            );
+        } catch (\Throwable $e) {
+            error_log('admin audit failed: ' . $e->getMessage());
         }
-        $totalCount = (int)$this->db->fetchOne('SELECT COUNT(*) as cnt FROM users' . $where, $params)['cnt'];
-        $users = $this->db->fetchAll(
-            'SELECT id, email, name, xp, has_paid, plan_status FROM users' . $where . ' ORDER BY id DESC LIMIT ' . $perPage . ' OFFSET ' . $offset,
-            $params
-        );
-        $totalPages = max(1, (int)ceil($totalCount / $perPage));
+    }
+
+    private function flash(string $type, string $message): void {
+        $_SESSION['admin_flash'] = ['type' => $type, 'message' => $message];
+    }
+
+    // ------------------- Users -------------------
+    public function listUsers(array $query): void {
+        $this->requireAdmin();
+        $filters = [
+            'q' => trim((string)($query['q'] ?? '')),
+            'plan' => (string)($query['plan'] ?? ''),
+            'pay' => (string)($query['pay'] ?? ''),
+            'lang' => (string)($query['lang'] ?? ''),
+            'status' => (string)($query['status'] ?? ''),
+            'sort' => (string)($query['sort'] ?? 'new'),
+        ];
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $result = (new AdminUsers($this->db))->search($filters, $pageNum);
         require __DIR__ . '/../views/admin/users.php';
+    }
+
+    public function userDetail(int $id): void {
+        $this->requireAdmin();
+        $usersSvc = new AdminUsers($this->db);
+        $user = $usersSvc->find($id);
+        if (!$user) {
+            $this->flash('danger', "#{$id} numaralı kullanıcı bulunamadı.");
+            header('Location: ?page=admin-users');
+            exit;
+        }
+        $details = $usersSvc->details($id);
+        $quotaLimit = (new TokenManager($this->db))->getBaseLimit((string)$user['plan_status']);
+        $csrf = $this->generateCsrfToken();
+        $canEdit = ($_SESSION['admin_role'] ?? 'admin') === 'admin';
+        require __DIR__ . '/../views/admin/user_detail.php';
+    }
+
+    /** POST target of every button on the user detail page. */
+    public function userAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        $id = (int)($post['id'] ?? 0);
+        $back = '?page=admin-user&id=' . $id;
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.');
+            header('Location: ' . $back);
+            exit;
+        }
+        $usersSvc = new AdminUsers($this->db);
+        $user = $usersSvc->find($id);
+        if (!$user) {
+            $this->flash('danger', 'Kullanıcı bulunamadı.');
+            header('Location: ?page=admin-users');
+            exit;
+        }
+        $action = (string)($post['action'] ?? '');
+        $value = trim((string)($post['value'] ?? ''));
+        try {
+            switch ($action) {
+                case 'set_plan':
+                    $msg = $usersSvc->setPlan($user, $value);
+                    $this->audit('user_plan_changed', $id, "{$user['plan_status']} -> {$value}");
+                    break;
+                case 'add_bonus':
+                    $msg = $usersSvc->addBonus($id, (int)$value);
+                    $this->audit('user_bonus_added', $id, '+' . (int)$value . ' messages');
+                    break;
+                case 'reset_usage':
+                    $msg = $usersSvc->resetUsage($id);
+                    $this->audit('user_usage_reset', $id);
+                    break;
+                case 'verify_email':
+                    $msg = $usersSvc->verifyEmail($id);
+                    $this->audit('user_email_verified', $id);
+                    break;
+                case 'send_reset':
+                    $token = (new Auth($this->db))->createPasswordResetToken($id);
+                    $resetUrl = 'https://jumplearner.com/?page=reset-password&token=' . urlencode($token);
+                    $sent = (new Mailer($this->config))->send(
+                        $user['email'],
+                        __('auth.reset_email_subject'),
+                        '<p>' . __('auth.reset_email_body') . '</p><p><a href="' . htmlspecialchars($resetUrl) . '">' . htmlspecialchars($resetUrl) . '</a></p>'
+                    );
+                    if (!$sent) {
+                        throw new \RuntimeException('E-posta gönderilemedi (Mailtrap ayarlarını kontrol et).');
+                    }
+                    $msg = 'Şifre sıfırlama bağlantısı ' . $user['email'] . ' adresine gönderildi (1 saat geçerli).';
+                    $this->audit('user_password_reset_sent', $id);
+                    break;
+                case 'suspend':
+                case 'unsuspend':
+                    $msg = $usersSvc->setSuspended($id, $action === 'suspend');
+                    $this->audit($action === 'suspend' ? 'user_suspended' : 'user_unsuspended', $id, $value);
+                    break;
+                case 'delete':
+                    if (mb_strtolower($value) !== mb_strtolower((string)$user['email'])) {
+                        throw new \InvalidArgumentException('Silmek için kullanıcının e-posta adresini aynen yazmalısın.');
+                    }
+                    $this->deleteUser($user);
+                    $this->flash('success', $user['email'] . ' ve tüm verileri silindi.');
+                    header('Location: ?page=admin-users');
+                    exit;
+                default:
+                    throw new \InvalidArgumentException('Bilinmeyen işlem.');
+            }
+            $this->flash('success', $msg);
+        } catch (\InvalidArgumentException | \RuntimeException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ' . $back);
+        exit;
+    }
+
+    /**
+     * Same erasure as the user's own "delete account": stop real billing
+     * first (best effort), then remove the user — everything they own
+     * cascades except token_usage.
+     */
+    private function deleteUser(array $user): void {
+        $id = (int)$user['id'];
+        if (!empty($user['dodo_subscription_id'])) {
+            $dodo = new DodoClient($this->config['dodo_api_key'] ?? '', $this->config['dodo_environment'] ?? 'live');
+            if ($dodo->isConfigured()) {
+                $dodo->cancelSubscription($user['dodo_subscription_id']);
+            }
+        }
+        $this->audit('user_deleted', $id, $user['email'] . ' (' . $user['plan_status'] . ')');
+        ActivityLog::record($this->db, $id, 'account_deleted', null, $user['plan_status'] ?? null, null, "admin deleted user {$id} ({$user['email']})");
+        $this->db->execute('DELETE FROM token_usage WHERE user_id = ?', [$id]);
+        $this->db->execute('DELETE FROM users WHERE id = ?', [$id]);
     }
 
     // ------------------- Admins -------------------
@@ -312,6 +434,9 @@ class AdminController {
 
     public function viewConversation(int $convId): void {
         $this->requireAdmin();
+        // Reading a user's private chat is logged.
+        $owner = $this->db->fetchOne('SELECT user_id FROM conversations WHERE id = ?', [$convId]);
+        $this->audit('conversation_viewed', $owner ? (int)$owner['user_id'] : null, "conversation #{$convId}");
         $messages = $this->db->fetchAll('SELECT role, content, translation, correction FROM messages WHERE conversation_id = ? ORDER BY created_at ASC', [$convId]);
         require __DIR__ . '/../views/admin/conversation_detail.php';
     }

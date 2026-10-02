@@ -49,6 +49,14 @@ $dodoBilling = new \App\Src\DodoBilling($db, $config, $dodoClient);
 $detectedLang = 'en';
 if ($auth->isLoggedIn()) {
     $currentUser = $auth->currentUser();
+    // An admin can suspend an account (or delete it) while its session is
+    // still open — end that session on the next request.
+    if (!$currentUser || !empty($currentUser['suspended_at'])) {
+        $wasSuspended = !empty($currentUser['suspended_at']);
+        $auth->logout();
+        header('Location: ?page=login' . ($wasSuspended ? '&suspended=1' : ''));
+        exit;
+    }
     // Use user's language preference only after onboarding is completed
     if (!empty($currentUser['onboarding_completed'])) {
         $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
@@ -92,6 +100,9 @@ switch ($page) {
         if (isset($_SESSION['login_error'])) {
             $loginError = $_SESSION['login_error'];
             unset($_SESSION['login_error']);
+        }
+        if (!empty($_GET['suspended'])) {
+            $loginError = __('auth.account_suspended');
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $clientIp = client_ip();
@@ -306,6 +317,12 @@ switch ($page) {
                         }
                     }
                     
+                    if (!empty($user['suspended_at'])) {
+                        $_SESSION['login_error'] = __('auth.account_suspended');
+                        header('Location: ?page=login');
+                        exit;
+                    }
+
                     // Log user in
                     session_regenerate_id(true);
                     $_SESSION['user_id'] = $user['id'];
@@ -1186,8 +1203,16 @@ switch ($page) {
         $adminCtrl->dashboard();
         break;
     case 'admin-users':
-        $adminCtrl->listUsers((int)($_GET['p'] ?? 1), (string)($_GET['q'] ?? ''));
+        $adminCtrl->listUsers($_GET);
         break;
+    case 'admin-user':
+        $adminCtrl->userDetail((int)($_GET['id'] ?? 0));
+        break;
+    case 'admin-user-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->userAction($_POST);
+        }
+        header('Location: ?page=admin-users'); exit;
     case 'admin-admins':
         $adminCtrl->listAdmins();
         break;

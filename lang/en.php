@@ -772,4 +772,5 @@ return [
     'mis.unlearn' => 'Move back',
     'mis.practiced' => 'practiced %d×',
     'mis.error' => 'Couldn\'t save — please try again.',
+    'auth.account_suspended' => 'This account has been suspended. Please contact support.',
 ];

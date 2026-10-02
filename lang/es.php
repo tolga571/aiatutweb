@@ -757,4 +757,5 @@ return [
     'mis.unlearn' => 'Volver a repasar',
     'mis.practiced' => 'practicado %d×',
     'mis.error' => 'No se pudo guardar. Inténtalo de nuevo.',
+    'auth.account_suspended' => 'Esta cuenta ha sido suspendida. Ponte en contacto con soporte.',
 ];

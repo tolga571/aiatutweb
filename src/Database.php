@@ -402,6 +402,24 @@ class Database {
             $this->pdo->exec("ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMP DEFAULT NULL");
         } catch (\Exception $e) {
         }
+        // Admin audit trail: who did what to which user. admin_email and
+        // target_user_id are snapshots (no FK) so the trail survives when
+        // the admin or the user is deleted.
+        $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS admin_email TEXT");
+        $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS target_user_id INTEGER");
+        $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS detail TEXT");
+        $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS ip TEXT");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_admin_audit_target ON admin_audit (target_user_id, performed_at DESC)");
+        // The original FK cascaded, deleting an admin's whole history with
+        // them; switch it to SET NULL once.
+        $cascade = $this->pdo->query("SELECT 1 FROM pg_constraint WHERE conname = 'admin_audit_admin_id_fkey' AND confdeltype = 'c'")->fetchColumn();
+        if ($cascade) {
+            $this->pdo->exec("ALTER TABLE admin_audit ALTER COLUMN admin_id DROP NOT NULL");
+            $this->pdo->exec("ALTER TABLE admin_audit DROP CONSTRAINT admin_audit_admin_id_fkey");
+            $this->pdo->exec("ALTER TABLE admin_audit ADD CONSTRAINT admin_audit_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE SET NULL");
+        }
+        // Set by an admin to block sign-in (see index.php / Auth::login).
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS suspended_at TIMESTAMP DEFAULT NULL");
         try {
             // 'admin' (full access) or 'viewer' (read-only — can see every
             // admin page but can't save settings or manage other admins).

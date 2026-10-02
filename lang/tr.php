@@ -772,4 +772,5 @@ return [
     'mis.unlearn' => 'Geri al',
     'mis.practiced' => '%d kez çalışıldı',
     'mis.error' => 'Kaydedilemedi, lütfen tekrar dene.',
+    'auth.account_suspended' => 'Bu hesap askıya alındı. Lütfen destek ekibiyle iletişime geç.',
 ];
