@@ -4,11 +4,19 @@ $config = require __DIR__ . '/../config.php';
 
 use App\Src\Database;
 
-$db = new Database($config['db_url']);
 
-$email = $argv[1] ?? 'admin@example.com';
-$passwordPlain = $argv[2] ?? '12345678';
+// Usage: php scripts/create_admin.php <email> <password> [name]
+// No defaults: a known default password once meant anyone who read this
+// public script could sign in to an admin created without arguments.
+if ($argc < 3 || !filter_var($argv[1], FILTER_VALIDATE_EMAIL) || strlen($argv[2]) < 12) {
+    fwrite(STDERR, "Usage: php scripts/create_admin.php <email> <password, 12+ chars> [name]\n");
+    exit(1);
+}
+$email = $argv[1];
+$passwordPlain = $argv[2];
 $name = $argv[3] ?? 'Admin';
+
+$db = new Database($config['db_url']);
 
 $hash = password_hash($passwordPlain, PASSWORD_DEFAULT);
 
@@ -20,5 +28,5 @@ if ($existing) {
 
 $db->execute('INSERT INTO admins (email, password, name, created_at) VALUES (?, ?, ?, NOW())', [$email, $hash, $name]);
 
-echo "Admin created: email='$email', password='$passwordPlain'\n";
+echo "Admin created: {$email}\n";
 echo "Login at: ?page=admin-login\n";

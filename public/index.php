@@ -271,7 +271,13 @@ switch ($page) {
                 ]);
                 
                 $decoded = json_decode($response->getBody()->getContents(), true);
-                if ($decoded && isset($decoded['aud']) && $decoded['aud'] === $googleClientId) {
+                // The token must be for this app, from Google, and for an
+                // email Google has verified — otherwise a Google account
+                // registered with someone else's address could be linked to
+                // (and sign into) their existing account below.
+                if ($decoded && ($decoded['aud'] ?? '') === $googleClientId
+                    && in_array($decoded['iss'] ?? '', ['accounts.google.com', 'https://accounts.google.com'], true)
+                    && in_array($decoded['email_verified'] ?? false, [true, 'true'], true)) {
                     $data = $decoded;
                 }
             } catch (\Exception $e) {
@@ -377,8 +383,8 @@ switch ($page) {
             header('Location: ?page=' . urlencode($redirect)); exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $native = $_POST['native_lang'] ?? 'en';
-            $target = $_POST['target_lang'] ?? 'en';
+            $native = Auth::pick($_POST['native_lang'] ?? null, Language::supportedLangs(), 'en');
+            $target = Auth::pick($_POST['target_lang'] ?? null, Language::supportedLangs(), 'en');
             if (!csrf_verify($_POST['csrf_token'] ?? null)) {
                 $onboardingError = __('auth.error_generic');
             } elseif ($native === $target) {
@@ -1075,8 +1081,8 @@ switch ($page) {
     case 'dashboard':
         $requirePlan();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['update_preferences'])) {
-            $n_lang = $_POST['native_lang'] ?? 'en';
-            $c_lvl  = $_POST['cefr_level'] ?? 'A1';
+            $n_lang = Auth::pick($_POST['native_lang'] ?? null, Language::supportedLangs(), 'en');
+            $c_lvl  = Auth::pick($_POST['cefr_level'] ?? null, Auth::CEFR_LEVELS, 'A1');
             $dashCurrentUser = $auth->currentUser();
             if (!csrf_verify($_POST['csrf_token'] ?? null)) {
                 $_SESSION['pref_error'] = __('auth.error_generic');

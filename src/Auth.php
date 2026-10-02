@@ -12,12 +12,11 @@ class Auth {
     }
     public function login(string $email, string $password): bool {
         $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
-        if (!$user) {
-            $this->lastError = __('auth.error_email_not_found');
-            return false;
-        }
-        if (!password_verify($password, $user['password'])) {
-            $this->lastError = __('auth.error_wrong_password');
+        // One message for "no such email" and "wrong password" — separate
+        // ones let anyone check which emails have an account here. The
+        // dummy hash keeps the response time the same for both.
+        if (!password_verify($password, $user['password'] ?? '$2y$12$5GzKbBJp.Lli2waBJFd86.JCxXjXQ1mRvuN2dmlrtQP1X0wZ/md0e') || !$user) {
+            $this->lastError = __('auth.invalid_credentials');
             return false;
         }
         if (!empty($user['suspended_at'])) {
@@ -201,7 +200,22 @@ class Auth {
         return $user && $user['onboarding_completed'] == 1;
     }
 
+    public const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    public const LEARNING_GOALS = ['conversation', 'travel', 'work', 'exam'];
+    public const INTEREST_AREAS = ['general', 'tech', 'movies', 'sports', 'business'];
+
+    /** $value if it's one of $allowed, else $default — profile fields only ever hold known values. */
+    public static function pick(?string $value, array $allowed, string $default): string {
+        return in_array($value, $allowed, true) ? $value : $default;
+    }
+
     public function saveOnboarding(int $userId, string $nativeLang, string $targetLang, string $cefrLevel, string $learningGoal, string $interestArea): void {
+        $langs = Language::supportedLangs();
+        $nativeLang = self::pick($nativeLang, $langs, 'en');
+        $targetLang = self::pick($targetLang, $langs, 'en');
+        $cefrLevel = self::pick($cefrLevel, self::CEFR_LEVELS, 'A1');
+        $learningGoal = self::pick($learningGoal, self::LEARNING_GOALS, 'conversation');
+        $interestArea = self::pick($interestArea, self::INTEREST_AREAS, 'general');
         $this->db->execute(
             'UPDATE users SET native_lang=?, target_lang=?, cefr_level=?, learning_goal=?, interest_area=?, onboarding_completed=1 WHERE id=?',
             [$nativeLang, $targetLang, $cefrLevel, $learningGoal, $interestArea, $userId]

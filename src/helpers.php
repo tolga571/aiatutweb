@@ -42,18 +42,65 @@ function csrf_verify(?string $submitted): bool
 }
 
 /**
- * Best-effort client IP, honoring the X-Forwarded-For header set by
- * Railway's proxy (falls back to REMOTE_ADDR when absent/local).
+ * Cloudflare's published edge ranges (cloudflare.com/ips-v4, /ips-v6,
+ * checked 2026-10-02). Only a request whose Railway peer is one of these
+ * actually came through Cloudflare, so only then is CF-Connecting-IP
+ * trustworthy.
+ */
+const CLOUDFLARE_RANGES = [
+    '173.245.48.0/20', '103.21.244.0/22', '103.22.200.0/22', '103.31.4.0/22', '141.101.64.0/18',
+    '108.162.192.0/18', '190.93.240.0/20', '188.114.96.0/20', '197.234.240.0/22', '198.41.128.0/17',
+    '162.158.0.0/15', '104.16.0.0/13', '104.24.0.0/14', '172.64.0.0/13', '131.0.72.0/22',
+    '2400:cb00::/32', '2606:4700::/32', '2803:f800::/32', '2405:b500::/32', '2405:8100::/32',
+    '2a06:98c0::/29', '2c0f:f248::/32',
+];
+
+/** True if $ip (v4 or v6) is inside $cidr. */
+function ip_in_cidr(string $ip, string $cidr): bool
+{
+    [$subnet, $bits] = array_pad(explode('/', $cidr, 2), 2, null);
+    $ipBin = @inet_pton($ip);
+    $subnetBin = @inet_pton($subnet);
+    if ($ipBin === false || $subnetBin === false || strlen($ipBin) !== strlen($subnetBin)) {
+        return false;
+    }
+    $bits = $bits === null ? strlen($ipBin) * 8 : (int)$bits;
+    $bytes = intdiv($bits, 8);
+    if (substr($ipBin, 0, $bytes) !== substr($subnetBin, 0, $bytes)) {
+        return false;
+    }
+    $rest = $bits % 8;
+    if ($rest === 0) {
+        return true;
+    }
+    $mask = (0xff << (8 - $rest)) & 0xff;
+    return (ord($ipBin[$bytes]) & $mask) === (ord($subnetBin[$bytes]) & $mask);
+}
+
+/**
+ * The client's IP, for rate limiting and audit logs.
+ *
+ * X-Forwarded-For used to be trusted here, but its first entry is whatever
+ * the client sends, so anyone could dodge the login limits by sending a new
+ * value per request. Now: Railway's edge sets X-Real-IP to the peer that
+ * connected to it. If that peer is Cloudflare, the real client is in
+ * CF-Connecting-IP (set by Cloudflare); otherwise the request reached
+ * Railway directly and the peer *is* the client. Locally (no Railway edge)
+ * this falls back to REMOTE_ADDR.
  */
 function client_ip(): string
 {
-    $forwarded = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
-    if ($forwarded !== '') {
-        $parts = explode(',', $forwarded);
-        $ip = trim($parts[0]);
-        if (filter_var($ip, FILTER_VALIDATE_IP)) {
-            return $ip;
+    $peer = trim((string)($_SERVER['HTTP_X_REAL_IP'] ?? ''));
+    if (!filter_var($peer, FILTER_VALIDATE_IP)) {
+        return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    }
+    $cf = trim((string)($_SERVER['HTTP_CF_CONNECTING_IP'] ?? ''));
+    if ($cf !== '' && filter_var($cf, FILTER_VALIDATE_IP)) {
+        foreach (CLOUDFLARE_RANGES as $range) {
+            if (ip_in_cidr($peer, $range)) {
+                return $cf;
+            }
         }
     }
-    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    return $peer;
 }

@@ -32,7 +32,8 @@ $levelCounts = [];
 foreach ($db->fetchAll('SELECT level, COUNT(*) AS c FROM vocabulary_words WHERE user_id = ? AND language = ? GROUP BY level', [$currentUser['id'], $targetLang]) as $lr) {
     $levelCounts[$lr['level']] = (int)$lr['c'];
 }
-$cardsJson = json_encode($cards, JSON_UNESCAPED_UNICODE);
+// HEX_* flags: card text (some of it AI-generated) is printed inside a <script> block.
+$cardsJson = json_encode($cards, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 $firstCard = $cards[0] ?? null;
 ?>
 

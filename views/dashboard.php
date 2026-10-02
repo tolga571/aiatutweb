@@ -158,7 +158,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
     <div class="mt-auto">
       <div class="flex items-center gap-2 bg-surface-container border border-outline-variant/20 rounded-xl px-4 py-2.5 text-body-md text-on-surface-variant">
         <?= $targetFlag ?>
-        <?= __('languages.' . strtolower($user['target_lang'] ?? 'en')) ?>
+        <?= htmlspecialchars(__('languages.' . strtolower($user['target_lang'] ?? 'en'))) ?>
       </div>
     </div>
   </aside>

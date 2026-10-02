@@ -9,6 +9,8 @@ encode zstd gzip
 # devtools / the Report-To endpoint) whether the allowlist below actually
 # covers everything the app loads before anyone considers enforcing it.
 header {
+	# Don't advertise the PHP version.
+	-X-Powered-By
 	Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	X-Content-Type-Options "nosniff"
 	X-Frame-Options "SAMEORIGIN"
