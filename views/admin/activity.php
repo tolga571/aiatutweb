@@ -1,75 +1,78 @@
 <?php
-$title = __('admin.activity');
+$title = 'Olay akışı';
+$pageHeader = 'Olay akışı';
+$pagePretitle = number_format($totalCount, 0, ',', '.') . ' abonelik ve hesap olayı';
 
-$eventBadges = [
-    'subscription_started'    => ['label' => 'New subscription',   'bg' => '#1f6f4a', 'fg' => '#eafff2'],
-    'subscription_upgraded'   => ['label' => 'Upgraded',           'bg' => '#1f5f8f', 'fg' => '#eaf5ff'],
-    'subscription_downgraded' => ['label' => 'Downgraded',         'bg' => '#8f6a1f', 'fg' => '#fff6e6'],
-    'downgrade_scheduled'     => ['label' => 'Downgrade scheduled','bg' => '#8f6a1f', 'fg' => '#fff6e6'],
-    'cancellation_requested'  => ['label' => 'Cancellation requested', 'bg' => '#8f3a1f', 'fg' => '#fff1ea'],
-    'subscription_canceled'   => ['label' => 'Canceled',           'bg' => '#8f1f2a', 'fg' => '#ffecee'],
-    'cancellation_resumed'    => ['label' => 'Resumed',            'bg' => '#2a6f6a', 'fg' => '#eafffd'],
-    'refund_requested'        => ['label' => 'Refund requested',   'bg' => '#8f5a1f', 'fg' => '#fff3e6'],
+$e = fn($v) => htmlspecialchars((string)$v);
+$eventLabels = [
+    'subscription_started'    => ['Yeni abonelik', 'green'],
+    'subscription_upgraded'   => ['Yükseltme', 'blue'],
+    'subscription_downgraded' => ['Düşürme', 'yellow'],
+    'downgrade_scheduled'     => ['Düşürme planlandı', 'yellow'],
+    'cancellation_requested'  => ['İptal talebi', 'orange'],
+    'subscription_canceled'   => ['İptal edildi', 'red'],
+    'cancellation_resumed'    => ['İptal geri alındı', 'teal'],
+    'refund_requested'        => ['İade talebi', 'orange'],
+    'account_deleted'         => ['Hesap silindi', 'red'],
 ];
-$providerLabels = ['dodo' => 'Dodo', 'fastspring' => 'FastSpring', 'paddle' => 'Paddle'];
+$planLabels = ['inactive' => 'Pasif', 'trial' => 'Deneme', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
+$providers = ['dodo' => 'Dodo', 'paddle' => 'Paddle (test)', 'fastspring' => 'FastSpring'];
+$qs = fn(array $o) => '?' . http_build_query(array_filter(array_merge(['page' => 'admin-activity'], $filters, $o), fn($v) => $v !== '' && $v !== null));
 
 ob_start();
 ?>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-    <h2 style="margin:0;"><?= __('admin.activity') ?></h2>
-    <span style="color:#9aa0a6;font-size:13px;">
-        <?= (int)$totalCount ?> event<?= $totalCount === 1 ? '' : 's' ?> total
-    </span>
-</div>
-
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Time</th>
-            <th>User</th>
-            <th>Event</th>
-            <th>Provider</th>
-            <th>Plan</th>
-            <th>Detail</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (empty($events)): ?>
-        <tr><td colspan="6" style="text-align:center;color:#9aa0a6;padding:24px;">No activity recorded yet.</td></tr>
-        <?php endif; ?>
-        <?php foreach ($events as $ev):
-            $badge = $eventBadges[$ev['event_type']] ?? ['label' => $ev['event_type'], 'bg' => '#444', 'fg' => '#eee'];
-            $providerLabel = $providerLabels[$ev['provider'] ?? ''] ?? ($ev['provider'] ?: '—');
-        ?>
-        <tr>
-            <td style="white-space:nowrap;font-variant-numeric:tabular-nums;"><?= htmlspecialchars($ev['created_at']) ?></td>
-            <td><?= htmlspecialchars($ev['user_email'] ?? '—') ?></td>
-            <td>
-                <span style="display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;background:<?= $badge['bg'] ?>;color:<?= $badge['fg'] ?>;">
-                    <?= htmlspecialchars($badge['label']) ?>
-                </span>
-            </td>
-            <td><?= htmlspecialchars($providerLabel) ?></td>
-            <td><?= htmlspecialchars(trim(($ev['plan'] ?? '') . ($ev['billing_interval'] ? '/' . $ev['billing_interval'] : '')) ?: '—') ?></td>
-            <td style="color:#9aa0a6;font-size:13px;"><?= htmlspecialchars($ev['detail']) ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-
-<?php if ($totalPages > 1): ?>
-<div style="display:flex;gap:8px;justify-content:center;margin-top:16px;">
-    <?php if ($pageNum > 1): ?>
-        <a href="?page=admin-activity&p=<?= $pageNum - 1 ?>" class="btn btn-sm btn-outline-secondary">&larr; Newer</a>
+<div class="card">
+    <div class="card-header flex-wrap gap-2">
+        <form method="GET" class="d-flex flex-wrap gap-2 ms-auto">
+            <input type="hidden" name="page" value="admin-activity">
+            <select name="type" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                <option value="">Tüm olaylar</option>
+                <?php foreach ($eventTypes as $t): ?>
+                    <option value="<?= $e($t) ?>"<?= $filters['type'] === $t ? ' selected' : '' ?>><?= $e($eventLabels[$t][0] ?? $t) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <select name="provider" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                <option value="">Tüm sağlayıcılar</option>
+                <?php foreach ($providers as $v => $l): ?>
+                    <option value="<?= $v ?>"<?= $filters['provider'] === $v ? ' selected' : '' ?>><?= $l ?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php if ($filters['type'] !== '' || $filters['provider'] !== ''): ?><a href="?page=admin-activity" class="btn btn-sm btn-ghost-secondary">Temizle</a><?php endif; ?>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-hover">
+            <thead><tr><th>Zaman</th><th>Kullanıcı</th><th>Olay</th><th>Sağlayıcı</th><th>Plan</th><th>Detay</th></tr></thead>
+            <tbody>
+            <?php foreach ($events as $ev):
+                [$label, $color] = $eventLabels[$ev['event_type']] ?? [$ev['event_type'], 'secondary']; ?>
+                <tr>
+                    <td class="text-secondary text-nowrap"><?= date('d.m.Y H:i', strtotime($ev['created_at'])) ?></td>
+                    <td class="text-truncate" style="max-width:220px;">
+                        <?php if ($ev['user_id'] && $ev['user_email']): ?>
+                            <a href="?page=admin-user&amp;id=<?= (int)$ev['user_id'] ?>"><?= $e($ev['user_email']) ?></a>
+                        <?php else: ?><span class="text-secondary">silinmiş kullanıcı</span><?php endif; ?>
+                    </td>
+                    <td><span class="badge bg-<?= $color ?>-lt"><?= $e($label) ?></span></td>
+                    <td><?= $e($providers[$ev['provider'] ?? ''] ?? ($ev['provider'] ?: '—')) ?></td>
+                    <td class="text-nowrap"><?= $e($planLabels[$ev['plan'] ?? ''] ?? ($ev['plan'] ?: '—')) ?><?= $ev['billing_interval'] ? ' <span class="text-secondary small">' . ($ev['billing_interval'] === 'year' ? 'yıllık' : 'aylık') . '</span>' : '' ?></td>
+                    <td class="text-secondary small text-truncate" style="max-width:320px;" title="<?= $e($ev['detail']) ?>"><?= $e($ev['detail']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (!$events): ?><tr><td colspan="6" class="text-center text-secondary py-5">Kayıtlı olay yok.</td></tr><?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($totalPages > 1): ?>
+    <div class="card-footer d-flex align-items-center">
+        <p class="m-0 text-secondary small">Sayfa <?= $pageNum ?> / <?= $totalPages ?></p>
+        <ul class="pagination m-0 ms-auto">
+            <li class="page-item<?= $pageNum <= 1 ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum - 1])) ?>"><i class="ti ti-chevron-left"></i> Önceki</a></li>
+            <li class="page-item<?= $pageNum >= $totalPages ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum + 1])) ?>">Sonraki <i class="ti ti-chevron-right"></i></a></li>
+        </ul>
+    </div>
     <?php endif; ?>
-    <span style="align-self:center;color:#9aa0a6;font-size:13px;">Page <?= $pageNum ?> / <?= $totalPages ?></span>
-    <?php if ($pageNum < $totalPages): ?>
-        <a href="?page=admin-activity&p=<?= $pageNum + 1 ?>" class="btn btn-sm btn-outline-secondary">Older &rarr;</a>
-    <?php endif; ?>
 </div>
-<?php endif; ?>
-
 <?php
 $content = ob_get_clean();
 require __DIR__ . '/admin_layout.php';
-?>

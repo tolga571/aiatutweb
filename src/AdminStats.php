@@ -116,11 +116,10 @@ class AdminStats {
         );
         return [
             'manual_cancellations' => $this->db->fetchAll(
-                "SELECT id, email, plan_status, cancel_requested_at FROM users
-                 WHERE cancel_requested_at IS NOT NULL AND cancel_method = 'manual' AND has_paid = 1 ORDER BY cancel_requested_at"
+                'SELECT id, email, plan_status, cancel_requested_at FROM users WHERE ' . AdminRevenue::OPEN_MANUAL_CANCEL . ' ORDER BY cancel_requested_at'
             ),
             'refunds' => $this->db->fetchAll(
-                'SELECT id, email, plan_status, refund_requested_at FROM users WHERE refund_requested_at IS NOT NULL ORDER BY refund_requested_at'
+                'SELECT id, email, plan_status, refund_requested_at FROM users WHERE ' . AdminRevenue::OPEN_REFUND . ' ORDER BY refund_requested_at'
             ),
             'ai_total_24h' => (int)($ai['total'] ?? 0),
             'ai_failed_24h' => (int)($ai['failed'] ?? 0),

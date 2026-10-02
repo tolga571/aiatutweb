@@ -420,6 +420,19 @@ class Database {
         }
         // Set by an admin to block sign-in (see index.php / Auth::login).
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS suspended_at TIMESTAMP DEFAULT NULL");
+        // When an admin closed the refund / manual-cancellation request in
+        // the work queue. A request newer than this reopens it.
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS refund_handled_at TIMESTAMP DEFAULT NULL");
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS cancel_handled_at TIMESTAMP DEFAULT NULL");
+        // One row per day with real (Dodo) MRR, written by AdminRevenue::snapshot()
+        // when an admin opens the panel — MRR history can't be rebuilt after the fact.
+        $this->exec("CREATE TABLE IF NOT EXISTS revenue_snapshots (
+            day DATE PRIMARY KEY,
+            mrr NUMERIC(12,2) NOT NULL DEFAULT 0,
+            real_subscribers INTEGER NOT NULL DEFAULT 0,
+            test_subscribers INTEGER NOT NULL DEFAULT 0,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
         try {
             // 'admin' (full access) or 'viewer' (read-only — can see every
             // admin page but can't save settings or manage other admins).

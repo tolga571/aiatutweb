@@ -126,7 +126,7 @@ ob_start();
             </div>
             <div class="list-group list-group-flush overflow-auto" style="max-height:330px;">
                 <?php foreach ($todos['refunds'] as $r): ?>
-                <a href="?page=admin-payments&amp;q=<?= urlencode($r['email']) ?>" class="list-group-item list-group-item-action">
+                <a href="?page=admin-payments#queue" class="list-group-item list-group-item-action">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot status-dot-animated bg-orange"></span>
                         <div class="text-truncate"><strong>İade talebi</strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['refund_requested_at']) ?></div></div>
@@ -134,7 +134,7 @@ ob_start();
                 </a>
                 <?php endforeach; ?>
                 <?php foreach ($todos['manual_cancellations'] as $r): ?>
-                <a href="?page=admin-payments&amp;q=<?= urlencode($r['email']) ?>" class="list-group-item list-group-item-action">
+                <a href="?page=admin-payments#queue" class="list-group-item list-group-item-action">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot status-dot-animated bg-red"></span>
                         <div class="text-truncate"><strong>Elle iptal gerekli</strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['cancel_requested_at']) ?></div></div>

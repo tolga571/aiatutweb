@@ -17,8 +17,8 @@ $navSections = [
         ['admin-conversations', 'messages', __('admin.conversations')],
     ],
     'Gelir' => [
-        ['admin-payments', 'credit-card', __('admin.payments')],
-        ['admin-activity', 'activity', __('admin.activity')],
+        ['admin-payments', 'credit-card', 'Gelir & abonelikler'],
+        ['admin-activity', 'activity', 'Olay akışı'],
     ],
     'Sistem' => [
         ['admin-ai-usage', 'sparkles', 'AI kullanımı & maliyet'],

@@ -1227,10 +1227,15 @@ switch ($page) {
         }
         header('Location: ?page=admin-admins'); exit;
     case 'admin-payments':
-        $adminCtrl->listPayments((int)($_GET['p'] ?? 1), (string)($_GET['q'] ?? ''));
+        $adminCtrl->revenue($_GET);
         break;
+    case 'admin-revenue-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->revenueAction($_POST);
+        }
+        header('Location: ?page=admin-payments'); exit;
     case 'admin-activity':
-        $adminCtrl->listActivity((int)($_GET['p'] ?? 1));
+        $adminCtrl->listActivity($_GET);
         break;
     case 'admin-conversations':
         $adminCtrl->listConversations();

@@ -167,6 +167,7 @@ class AdminController {
         $range = (int)($_GET['d'] ?? 30);
         $range = in_array($range, [7, 30, 90], true) ? $range : 30;
         $stats = new AdminStats($this->db);
+        (new AdminRevenue($this->db))->snapshot();
         $kpis = $stats->kpis($range);
         $revenue = $stats->revenue();
         $daily = $stats->daily($range);
@@ -385,42 +386,91 @@ class AdminController {
     }
 
     // ------------------- Payments -------------------
-    public function listPayments(int $pageNum = 1, string $search = ''): void {
+    // ------------------- Revenue & subscriptions -------------------
+    public function revenue(array $query): void {
         $this->requireAdmin();
-        $perPage = 50;
-        $pageNum = max(1, $pageNum);
-        $offset = ($pageNum - 1) * $perPage;
-        $search = trim($search);
-        $where = 'WHERE u.has_paid = 1';
-        $params = [];
-        if ($search !== '') {
-            $where .= ' AND u.email ILIKE ?';
-            $params[] = '%' . $search . '%';
+        $rev = new AdminRevenue($this->db);
+        $rev->snapshot();
+        $filters = [
+            'type' => in_array($query['type'] ?? 'real', ['real', 'test', 'all'], true) ? ($query['type'] ?? 'real') : 'real',
+            'status' => (string)($query['status'] ?? ''),
+            'q' => trim((string)($query['q'] ?? '')),
+        ];
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $kpis = $rev->kpis();
+        $history = $rev->history(90);
+        $movements = $rev->monthlyMovements(6);
+        $planMix = $rev->planMix();
+        $queue = $rev->queue();
+        $handled = $rev->recentlyHandled();
+        $renewals = $rev->upcomingRenewals(7);
+        $subs = $rev->subscriptions($filters, $pageNum);
+        $csrf = $this->generateCsrfToken();
+        $canEdit = ($_SESSION['admin_role'] ?? 'admin') === 'admin';
+        require __DIR__ . '/../views/admin/revenue.php';
+    }
+
+    /** Closes a refund / manual-cancellation request from the work queue. */
+    public function revenueAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.');
+            header('Location: ?page=admin-payments');
+            exit;
         }
-        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) as cnt FROM users u {$where}", $params)['cnt'];
-        $payments = $this->db->fetchAll(
-            "SELECT u.id, u.email, u.plan_status, u.has_paid, u.created_at, u.paddle_subscription_id, u.fastspring_subscription_id, u.dodo_subscription_id, u.cancel_requested_at, u.cancel_method, u.next_billed_at, u.pending_plan_change, u.refund_requested_at
-             FROM users u {$where} ORDER BY u.id DESC LIMIT {$perPage} OFFSET {$offset}",
-            $params
-        );
-        $totalPages = max(1, (int)ceil($totalCount / $perPage));
-        require __DIR__ . '/../views/admin/payments.php';
+        $userId = (int)($post['id'] ?? 0);
+        $kind = (string)($post['kind'] ?? '');
+        $outcome = (string)($post['outcome'] ?? '');
+        $outcomes = [
+            'refund' => ['refunded' => 'iade yapıldı', 'declined' => 'iade reddedildi'],
+            'cancel' => ['canceled' => 'sağlayıcıda iptal edildi', 'kept' => 'iptal edilmedi'],
+        ];
+        $note = mb_substr(trim((string)($post['note'] ?? '')), 0, 300);
+        try {
+            if (!isset($outcomes[$kind][$outcome])) {
+                throw new \InvalidArgumentException('Sonuç seçilmeli.');
+            }
+            $msg = (new AdminRevenue($this->db))->resolve($userId, $kind);
+            $this->audit($kind === 'refund' ? 'refund_handled' : 'cancellation_handled', $userId,
+                $outcomes[$kind][$outcome] . ($note !== '' ? ' — ' . $note : ''));
+            $this->flash('success', $msg . ' (' . $outcomes[$kind][$outcome] . ')');
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ?page=admin-payments');
+        exit;
     }
 
     // ------------------- Activity monitor -------------------
-    public function listActivity(int $pageNum = 1): void {
+    public function listActivity(array $query): void {
         $this->requireAdmin();
         $perPage = 50;
-        $pageNum = max(1, $pageNum);
-        $offset = ($pageNum - 1) * $perPage;
-        $totalCount = (int)$this->db->fetchOne('SELECT COUNT(*) as cnt FROM activity_events')['cnt'];
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $filters = [
+            'type' => (string)($query['type'] ?? ''),
+            'provider' => (string)($query['provider'] ?? ''),
+        ];
+        $where = ['TRUE'];
+        $params = [];
+        if ($filters['type'] !== '') {
+            $where[] = 'ae.event_type = ?';
+            $params[] = $filters['type'];
+        }
+        if ($filters['provider'] !== '') {
+            $where[] = 'ae.provider = ?';
+            $params[] = $filters['provider'];
+        }
+        $whereSql = implode(' AND ', $where);
+        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) AS cnt FROM activity_events ae WHERE {$whereSql}", $params)['cnt'];
         $events = $this->db->fetchAll(
-            'SELECT ae.id, ae.event_type, ae.provider, ae.plan, ae.billing_interval, ae.detail, ae.created_at, u.email as user_email
-             FROM activity_events ae
-             LEFT JOIN users u ON u.id = ae.user_id
-             ORDER BY ae.created_at DESC
-             LIMIT ' . $perPage . ' OFFSET ' . $offset
+            "SELECT ae.id, ae.user_id, ae.event_type, ae.provider, ae.plan, ae.billing_interval, ae.detail, ae.created_at, u.email AS user_email
+             FROM activity_events ae LEFT JOIN users u ON u.id = ae.user_id
+             WHERE {$whereSql} ORDER BY ae.created_at DESC
+             LIMIT {$perPage} OFFSET " . (($pageNum - 1) * $perPage),
+            $params
         );
+        $eventTypes = array_column($this->db->fetchAll('SELECT DISTINCT event_type FROM activity_events ORDER BY 1'), 'event_type');
         $totalPages = max(1, (int)ceil($totalCount / $perPage));
         require __DIR__ . '/../views/admin/activity.php';
     }
