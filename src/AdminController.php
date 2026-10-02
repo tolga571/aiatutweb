@@ -358,6 +358,7 @@ class AdminController {
                 'INSERT INTO admins (email, password, name, role) VALUES (?, ?, ?, ?)',
                 [$email, password_hash($password, PASSWORD_BCRYPT), $post['name'] ?? '', $role]
             );
+            $this->audit('admin_created', null, "{$email} ({$role})");
         } catch (\PDOException $e) {
             $_SESSION['admin_admins_error'] = str_contains($e->getMessage(), 'duplicate key')
                 ? 'An admin with that email already exists.'
@@ -380,7 +381,11 @@ class AdminController {
             header('Location: ?page=admin-admins');
             exit;
         }
+        $removed = $this->db->fetchOne('SELECT email FROM admins WHERE id = ?', [$id]);
         $this->db->execute('DELETE FROM admins WHERE id = ?', [$id]);
+        if ($removed) {
+            $this->audit('admin_deleted', null, $removed['email']);
+        }
         header('Location: ?page=admin-admins');
         exit;
     }
@@ -476,18 +481,45 @@ class AdminController {
     }
 
     // ------------------- Conversations -------------------
-    public function listConversations(): void {
+    public function listConversations(array $query): void {
         $this->requireAdmin();
-        $convs = $this->db->fetchAll('SELECT c.id, u.email as user_email, c.topic_id, c.created_at, c.updated_at FROM conversations c JOIN users u ON c.user_id = u.id ORDER BY c.updated_at DESC');
+        $perPage = 50;
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $search = trim((string)($query['q'] ?? ''));
+        $where = 'TRUE';
+        $params = [];
+        if ($search !== '') {
+            $where = '(u.email ILIKE ? OR CAST(c.id AS TEXT) = ?)';
+            $params = ['%' . $search . '%', ltrim($search, '#')];
+        }
+        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM conversations c JOIN users u ON u.id = c.user_id WHERE {$where}", $params)['c'];
+        $convs = $this->db->fetchAll(
+            "SELECT c.id, c.user_id, u.email AS user_email, c.topic_id, c.created_at, c.updated_at,
+                    (SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id AND m.role = 'user') AS user_messages,
+                    (SELECT content FROM messages m WHERE m.conversation_id = c.id ORDER BY m.id LIMIT 1) AS first_message
+             FROM conversations c JOIN users u ON u.id = c.user_id
+             WHERE {$where} ORDER BY c.updated_at DESC LIMIT {$perPage} OFFSET " . (($pageNum - 1) * $perPage),
+            $params
+        );
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
         require __DIR__ . '/../views/admin/conversations.php';
     }
 
     public function viewConversation(int $convId): void {
         $this->requireAdmin();
+        $conv = $this->db->fetchOne(
+            'SELECT c.id, c.user_id, c.topic_id, c.created_at, c.updated_at, u.email AS user_email, u.name AS user_name, u.target_lang, u.native_lang
+             FROM conversations c LEFT JOIN users u ON u.id = c.user_id WHERE c.id = ?',
+            [$convId]
+        );
+        if (!$conv) {
+            $this->flash('danger', "#{$convId} numaralı sohbet bulunamadı.");
+            header('Location: ?page=admin-conversations');
+            exit;
+        }
         // Reading a user's private chat is logged.
-        $owner = $this->db->fetchOne('SELECT user_id FROM conversations WHERE id = ?', [$convId]);
-        $this->audit('conversation_viewed', $owner ? (int)$owner['user_id'] : null, "conversation #{$convId}");
-        $messages = $this->db->fetchAll('SELECT role, content, translation, correction FROM messages WHERE conversation_id = ? ORDER BY created_at ASC', [$convId]);
+        $this->audit('conversation_viewed', (int)$conv['user_id'], "conversation #{$convId}");
+        $messages = $this->db->fetchAll('SELECT role, content, translation, correction, created_at FROM messages WHERE conversation_id = ? ORDER BY created_at ASC, id ASC', [$convId]);
         require __DIR__ . '/../views/admin/conversation_detail.php';
     }
 

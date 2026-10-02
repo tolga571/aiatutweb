@@ -1238,7 +1238,7 @@ switch ($page) {
         $adminCtrl->listActivity($_GET);
         break;
     case 'admin-conversations':
-        $adminCtrl->listConversations();
+        $adminCtrl->listConversations($_GET);
         break;
     case 'admin-conversation':
         $adminCtrl->viewConversation((int)($_GET['conv_id'] ?? 0));

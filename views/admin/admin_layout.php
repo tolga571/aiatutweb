@@ -64,6 +64,9 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
         .kpi-delta { font-size: .75rem; font-weight: 600; }
         .text-up { color: #4ade80; } .text-down { color: #f87171; }
         .page-body { margin-top: 1.25rem; }
+        /* Never let one long word / URL / id push the page wider than the phone. */
+        .page-wrapper { min-width: 0; }
+        main.container-xl { overflow-wrap: break-word; }
         /* Older admin views still use inline grey/orange colours tuned for dark. */
         main.legacy table:not(.table) { width: 100%; }
     </style>

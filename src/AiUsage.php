@@ -76,7 +76,7 @@ class AiUsage {
     public function byPlan(string $since): array {
         return $this->db->fetchAll(
             "SELECT u.plan_status AS plan, COALESCE(u.billing_interval, 'month') AS billing_interval,
-                    COUNT(DISTINCT u.id) FILTER (WHERE u.has_paid = 1) AS paying_users,
+                    COUNT(DISTINCT u.id) FILTER (WHERE u.has_paid = 1 AND u.dodo_subscription_id IS NOT NULL) AS paying_users,
                     COUNT(a.id) AS requests, COALESCE(SUM(a.cost_usd), 0) AS cost
              FROM users u LEFT JOIN ai_usage a ON a.user_id = u.id AND a.created_at >= {$since}
              WHERE u.plan_status <> 'inactive' OR a.id IS NOT NULL

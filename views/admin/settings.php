@@ -14,7 +14,8 @@ ob_start();
     <?php unset($_SESSION['admin_settings_msg']); ?>
 <?php endif; ?>
 
-<form method="POST" action="?page=admin-update-settings" class="grid">
+<div class="card" style="max-width:720px;"><div class="card-body">
+<form method="POST" action="?page=admin-update-settings">
     <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
 
     <div class="form-group mb-3">
@@ -50,6 +51,7 @@ ob_start();
 
     <button type="submit" class="btn btn-primary"><?= __('admin.save_settings') ?></button>
 </form>
+</div></div>
 
 <?php
 $content = ob_get_clean();

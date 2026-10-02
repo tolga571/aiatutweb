@@ -1,26 +1,54 @@
 <?php
 $title = __('admin.conversations');
+$pageHeader = __('admin.conversations');
+$pagePretitle = number_format($totalCount, 0, ',', '.') . ' sohbet · açılan her sohbet kayıt altına alınır';
+$e = fn($v) => htmlspecialchars((string)$v);
+$qs = fn(array $o) => '?' . http_build_query(array_filter(array_merge(['page' => 'admin-conversations', 'q' => $search], $o), fn($v) => $v !== '' && $v !== null));
+
 ob_start();
 ?>
-<h2><?= __('admin.conv_list') ?></h2>
-<table class="table table-hover table-striped">
-    <thead>
-        <tr><th><?= __('admin.id') ?></th><th><?= __('admin.user_col') ?></th><th><?= __('admin.topic_col') ?></th><th><?= __('admin.created_at') ?></th><th><?= __('admin.updated_at') ?></th><th><?= __('admin.detail') ?></th></tr>
-    </thead>
-    <tbody>
-        <?php foreach ($convs as $c): ?>
-            <tr>
-                <td><?= htmlspecialchars($c['id']) ?></td>
-                <td><?= htmlspecialchars($c['user_email']) ?></td>
-                <td><?= htmlspecialchars($c['topic_id'] ?? '-') ?></td>
-                <td><?= htmlspecialchars($c['created_at']) ?></td>
-                <td><?= htmlspecialchars($c['updated_at']) ?></td>
-                <td><a href="?page=admin-conversation&conv_id=<?= (int)$c['id'] ?>" class="btn"><?= __('admin.view') ?></a></td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="card">
+    <div class="card-header">
+        <form method="GET" class="d-flex gap-2 w-100" style="max-width:420px;">
+            <input type="hidden" name="page" value="admin-conversations">
+            <div class="input-icon flex-fill">
+                <span class="input-icon-addon"><i class="ti ti-search"></i></span>
+                <input type="search" name="q" value="<?= $e($search) ?>" class="form-control" placeholder="Kullanıcı e-postası veya #sohbet">
+            </div>
+            <button class="btn btn-primary">Ara</button>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-hover">
+            <thead><tr><th>Sohbet</th><th>Kullanıcı</th><th>Konu</th><th class="text-end">Mesaj</th><th>Son</th><th></th></tr></thead>
+            <tbody>
+            <?php foreach ($convs as $c): ?>
+                <tr>
+                    <td class="text-nowrap">#<?= (int)$c['id'] ?></td>
+                    <td style="min-width:200px;max-width:280px;">
+                        <a href="?page=admin-user&amp;id=<?= (int)$c['user_id'] ?>" class="d-block text-truncate"><?= $e($c['user_email']) ?></a>
+                        <div class="text-secondary small text-truncate"><?= $e(mb_substr((string)$c['first_message'], 0, 80)) ?></div>
+                    </td>
+                    <td><?= $e($c['topic_id'] ?: 'serbest') ?></td>
+                    <td class="text-end"><?= (int)$c['user_messages'] ?></td>
+                    <td class="text-secondary text-nowrap"><?= date('d.m.Y H:i', strtotime($c['updated_at'])) ?></td>
+                    <td class="text-end"><a href="?page=admin-conversation&amp;conv_id=<?= (int)$c['id'] ?>" class="btn btn-sm btn-ghost-primary">Aç <i class="ti ti-chevron-right"></i></a></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (!$convs): ?><tr><td colspan="6" class="text-center text-secondary py-5">Sohbet bulunamadı.</td></tr><?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($totalPages > 1): ?>
+    <div class="card-footer d-flex align-items-center">
+        <p class="m-0 text-secondary small">Sayfa <?= $pageNum ?> / <?= $totalPages ?></p>
+        <ul class="pagination m-0 ms-auto">
+            <li class="page-item<?= $pageNum <= 1 ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum - 1])) ?>"><i class="ti ti-chevron-left"></i></a></li>
+            <li class="page-item<?= $pageNum >= $totalPages ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum + 1])) ?>"><i class="ti ti-chevron-right"></i></a></li>
+        </ul>
+    </div>
+    <?php endif; ?>
+</div>
 <?php
 $content = ob_get_clean();
 require __DIR__ . '/admin_layout.php';
-?>

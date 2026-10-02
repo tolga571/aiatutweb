@@ -1,17 +1,15 @@
 <?php
-$title = 'AI usage & cost';
+$title = 'AI kullanımı & maliyet';
+$pageHeader = 'AI kullanımı & maliyet';
+$pagePretitle = 'Gemini API · ücretli katman fiyatlarıyla, istek başına kayıt';
 $e = fn($v) => htmlspecialchars((string)$v);
-$usd = fn($v, $dec = 2) => '$' . number_format((float)$v, $dec);
-$num = fn($v) => number_format((int)$v);
-$planLabels = ['trial' => 'Trial', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
-$periodLabels = ['today' => 'Today', 'week' => 'Last 7 days', 'month' => 'This month'];
+$usd = fn($v, $dec = 2) => '$' . number_format((float)$v, $dec, ',', '.');
+$num = fn($v) => number_format((int)$v, 0, ',', '.');
+$planLabels = ['trial' => 'Deneme', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium', 'inactive' => 'Pasif'];
+$periodLabels = ['today' => 'Bugün', 'week' => 'Son 7 gün', 'month' => 'Bu ay'];
 
 ob_start();
 ?>
-<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
-    <h2 style="margin:0;">AI usage &amp; cost</h2>
-    <span style="color:#9aa0a6;font-size:13px;">Gemini API, paid-tier prices. Logged per request since this page shipped.</span>
-</div>
 
 <div class="row row-cards mb-4">
     <?php foreach ($periods as $key => $p):
@@ -21,33 +19,34 @@ ob_start();
             <div class="text-secondary"><?= $periodLabels[$key] ?></div>
             <div class="h1 mb-1"><?= $usd($p['cost']) ?></div>
             <div class="text-secondary" style="font-size:13px;">
-                <?= $num($p['requests']) ?> requests<?= (int)$p['failed'] ? ' · <span style="color:#ff8a80;">' . $num($p['failed']) . ' failed</span>' : '' ?><br>
-                <?= $okCount ? $usd((float)$p['cost'] / $okCount, 4) . ' per reply' : '—' ?>
+                <?= $num($p['requests']) ?> istek<?= (int)$p['failed'] ? ' · <span style="color:#ff8a80;">' . $num($p['failed']) . ' hatalı</span>' : '' ?><br>
+                <?= $okCount ? $usd((float)$p['cost'] / $okCount, 4) . ' / yanıt' : '—' ?>
             </div>
         </div></div>
     </div>
     <?php endforeach; ?>
     <div class="col-12 col-md-6 col-lg-3">
         <div class="card card-sm"><div class="card-body">
-            <div class="text-secondary">Projected this month</div>
+            <div class="text-secondary">Ay sonu tahmini</div>
             <div class="h1 mb-1"><?= $usd($projectedMonthCost) ?></div>
-            <div class="text-secondary" style="font-size:13px;">At the pace of the first <?= (int)$dayOfMonth ?> of <?= (int)$daysInMonth ?> days</div>
+            <div class="text-secondary" style="font-size:13px;"><?= (int)$daysInMonth ?> günün ilk <?= (int)$dayOfMonth ?> gününün hızıyla</div>
         </div></div>
     </div>
 </div>
 
-<h3>By plan — this month</h3>
-<table class="table table-hover table-striped mb-4">
-    <thead><tr><th>Plan</th><th>Billing</th><th>Paying users</th><th>Est. monthly revenue</th><th>Quota / user</th><th>AI requests</th><th>AI cost</th><th>AI cost / revenue</th></tr></thead>
+<h3>Plana göre — bu ay <span class="text-secondary small fw-normal">(gelir sadece gerçek Dodo abonelerinden)</span></h3>
+<div class="table-responsive mb-4">
+<table class="table table-hover table-striped">
+    <thead><tr><th>Plan</th><th>Dönem</th><th>Gerçek abone</th><th>Tahmini aylık gelir</th><th>Kota / kişi</th><th>AI isteği</th><th>AI maliyeti</th><th>AI maliyeti / gelir</th></tr></thead>
     <tbody>
-    <?php if (!$byPlan): ?><tr><td colspan="8" style="text-align:center;color:#9aa0a6;padding:20px;">No plans or usage yet.</td></tr><?php endif; ?>
+    <?php if (!$byPlan): ?><tr><td colspan="8" style="text-align:center;color:#9aa0a6;padding:20px;">Henüz plan veya kullanım yok.</td></tr><?php endif; ?>
     <?php foreach ($byPlan as $r):
         $interval = $r['billing_interval'] === 'year' ? 'year' : 'month';
         $revenue = ($prices[$r['plan']][$interval] ?? 0) * (int)$r['paying_users'];
         $share = $revenue > 0 ? (float)$r['cost'] / $revenue * 100 : null; ?>
         <tr>
             <td><?= $e($planLabels[$r['plan']] ?? $r['plan']) ?></td>
-            <td><?= (int)$r['paying_users'] === 0 ? '—' : ($interval === 'year' ? 'Yearly' : 'Monthly') ?></td>
+            <td><?= (int)$r['paying_users'] === 0 ? '—' : ($interval === 'year' ? 'Yıllık' : 'Aylık') ?></td>
             <td><?= $num($r['paying_users']) ?></td>
             <td><?= $revenue > 0 ? $usd($revenue) : '—' ?></td>
             <td><?= $num($quota->getBaseLimit((string)$r['plan'])) ?></td>
@@ -58,42 +57,48 @@ ob_start();
     <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 
 <div class="row">
     <div class="col-12 col-lg-6">
-        <h3>By model — this month</h3>
-        <table class="table table-hover table-striped mb-4">
-            <thead><tr><th>Model</th><th>Requests</th><th>Tokens in</th><th>Tokens out</th><th>Cost</th></tr></thead>
+        <h3>Modele göre — bu ay</h3>
+        <div class="table-responsive mb-4">
+<table class="table table-hover table-striped">
+            <thead><tr><th>Model</th><th>İstek</th><th>Giriş token</th><th>Çıkış token</th><th>Maliyet</th></tr></thead>
             <tbody>
-            <?php if (!$byModel): ?><tr><td colspan="5" style="text-align:center;color:#9aa0a6;padding:20px;">No requests yet.</td></tr><?php endif; ?>
+            <?php if (!$byModel): ?><tr><td colspan="5" style="text-align:center;color:#9aa0a6;padding:20px;">Henüz istek yok.</td></tr><?php endif; ?>
             <?php foreach ($byModel as $r): ?>
                 <tr><td><?= $e($r['model']) ?></td><td><?= $num($r['requests']) ?></td><td><?= $num($r['prompt_tokens']) ?></td><td><?= $num($r['output_tokens']) ?></td><td><?= $usd($r['cost']) ?></td></tr>
             <?php endforeach; ?>
             </tbody>
         </table>
+</div>
     </div>
     <div class="col-12 col-lg-6">
-        <h3>Last 14 days</h3>
-        <table class="table table-hover table-striped mb-4">
-            <thead><tr><th>Day</th><th>Requests</th><th>Failed</th><th>Cost</th></tr></thead>
+        <h3>Son 14 gün</h3>
+        <div class="table-responsive mb-4">
+<table class="table table-hover table-striped">
+            <thead><tr><th>Gün</th><th>İstek</th><th>Hatalı</th><th>Maliyet</th></tr></thead>
             <tbody>
-            <?php if (!$daily): ?><tr><td colspan="4" style="text-align:center;color:#9aa0a6;padding:20px;">No requests yet.</td></tr><?php endif; ?>
+            <?php if (!$daily): ?><tr><td colspan="4" style="text-align:center;color:#9aa0a6;padding:20px;">Henüz istek yok.</td></tr><?php endif; ?>
             <?php foreach ($daily as $r): ?>
                 <tr><td style="font-variant-numeric:tabular-nums;"><?= $e($r['day']) ?></td><td><?= $num($r['requests']) ?></td><td><?= (int)$r['failed'] ? '<span style="color:#ff8a80;">' . $num($r['failed']) . '</span>' : '0' ?></td><td><?= $usd($r['cost']) ?></td></tr>
             <?php endforeach; ?>
             </tbody>
         </table>
+</div>
     </div>
 </div>
 
-<h3>Top users by AI cost — this month</h3>
-<table class="table table-hover table-striped mb-4">
-    <thead><tr><th>User</th><th>Plan</th><th>Requests</th><th>Quota</th><th>Cost</th></tr></thead>
+<h3>En çok AI maliyeti olan kullanıcılar — bu ay</h3>
+<div class="table-responsive mb-4">
+<table class="table table-hover table-striped">
+    <thead><tr><th>Kullanıcı</th><th>Plan</th><th>İstek</th><th>Kota</th><th>Maliyet</th></tr></thead>
     <tbody>
-    <?php if (!$topUsers): ?><tr><td colspan="5" style="text-align:center;color:#9aa0a6;padding:20px;">No requests yet.</td></tr><?php endif; ?>
+    <?php if (!$topUsers): ?><tr><td colspan="5" style="text-align:center;color:#9aa0a6;padding:20px;">Henüz istek yok.</td></tr><?php endif; ?>
     <?php foreach ($topUsers as $r): ?>
         <tr>
-            <td>#<?= (int)$r['id'] ?> <?= $e($r['email']) ?></td>
+            <td><a href="?page=admin-user&amp;id=<?= (int)$r['id'] ?>">#<?= (int)$r['id'] ?> <?= $e($r['email']) ?></a></td>
             <td><?= $e($planLabels[$r['plan_status']] ?? $r['plan_status']) ?></td>
             <td><?= $num($r['requests']) ?></td>
             <td><?= $num($quota->getBaseLimit((string)$r['plan_status'])) ?></td>
@@ -102,13 +107,14 @@ ob_start();
     <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 
 <p style="color:#9aa0a6;font-size:12px;">
-    Prices used (USD per 1M tokens, in / out incl. thinking):
+    Kullanılan fiyatlar (1M token başına USD, giriş / çıkış, düşünme dahil):
     <?php foreach ($modelPrices as $m => $pr): ?>
         <?= $e($m) ?> <?= $usd($pr['in']) ?> / <?= $usd($pr['out']) ?>;
     <?php endforeach; ?>
-    Revenue is list price × current paying users, before payment-provider fees.
+    Gelir = liste fiyatı × şu anki gerçek abone sayısı, ödeme kesintisi öncesi.
 </p>
 <?php
 $content = ob_get_clean();
