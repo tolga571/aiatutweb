@@ -90,9 +90,23 @@ function ip_in_cidr(string $ip, string $cidr): bool
  */
 function client_ip(): string
 {
+    $remote = (string)($_SERVER['REMOTE_ADDR'] ?? '');
     $peer = trim((string)($_SERVER['HTTP_X_REAL_IP'] ?? ''));
     if (!filter_var($peer, FILTER_VALIDATE_IP)) {
-        return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        // Fallback if X-Real-IP is ever absent: when we're behind a private
+        // proxy, the *last* X-Forwarded-For entry is the one that proxy
+        // appended (the client only controls the ones before it). Without
+        // this, every visitor would share the proxy's address and one
+        // person's failed logins would lock everybody out.
+        // GLOBAL_RANGE (PHP 8.2+) also treats Railway's 100.64.0.0/10 as non-public.
+        $remoteIsPrivate = filter_var($remote, FILTER_VALIDATE_IP) && !filter_var($remote, FILTER_VALIDATE_IP, FILTER_FLAG_GLOBAL_RANGE);
+        $xff = array_map('trim', explode(',', (string)($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '')));
+        $last = end($xff);
+        if ($remoteIsPrivate && filter_var($last, FILTER_VALIDATE_IP) && $remote !== '127.0.0.1') {
+            $peer = $last;
+        } else {
+            return $remote ?: 'unknown';
+        }
     }
     $cf = trim((string)($_SERVER['HTTP_CF_CONNECTING_IP'] ?? ''));
     if ($cf !== '' && filter_var($cf, FILTER_VALIDATE_IP)) {
