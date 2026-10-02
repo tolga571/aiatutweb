@@ -13,6 +13,9 @@ class AdminController {
         'active'  => ['month' => 150, 'year' => 1500 / 12],
     ];
 
+    /** Admin sessions end after this long without a request. */
+    private const IDLE_TIMEOUT = 2 * 3600;
+
     private Database $db;
     private \PDO $pdo;
     private array $config;
@@ -30,11 +33,22 @@ class AdminController {
 
     /** Ensure the current user is an admin */
     private function requireAdmin(): void {
+        // The admin panel is Turkish regardless of any site user's language.
+        Language::load('tr');
         $adminId = $_SESSION['admin_id'] ?? null;
         if (!$adminId) {
             header('Location: ?page=admin-login');
             exit;
         }
+        // Admin access shares the site's 90-day session cookie, so it gets
+        // its own idle timeout on top.
+        if (time() - (int)($_SESSION['admin_last_seen'] ?? 0) > self::IDLE_TIMEOUT) {
+            unset($_SESSION['admin_id'], $_SESSION['admin_role'], $_SESSION['admin_last_seen']);
+            $_SESSION['admin_login_error'] = 'Oturum süresi doldu, lütfen tekrar giriş yap.';
+            header('Location: ?page=admin-login');
+            exit;
+        }
+        $_SESSION['admin_last_seen'] = time();
         // optional sanity check that admin still exists
         $admin = $this->db->fetchOne('SELECT * FROM admins WHERE id = ?', [$adminId]);
         if (!$admin) {
@@ -47,7 +61,11 @@ class AdminController {
         // rather than trusting a role cached at login time, so a role
         // change takes effect on the admin's very next click.
         $_SESSION['admin_role'] = $admin['role'] ?? 'admin';
+        $this->currentAdmin = $admin;
     }
+
+    /** The logged-in admin row, set by requireAdmin() (for the layout header). */
+    private ?array $currentAdmin = null;
 
     /** Blocks 'viewer' admins from write actions; call after requireAdmin(). */
     private function requireFullAdmin(): void {
@@ -72,25 +90,15 @@ class AdminController {
 
     // ------------------- Auth -------------------
     public function showLogin(): void {
-        $title = __('admin.login_title');
+        Language::load('tr');
+        if (!empty($_SESSION['admin_id']) && time() - (int)($_SESSION['admin_last_seen'] ?? 0) <= self::IDLE_TIMEOUT) {
+            header('Location: ?page=admin-dashboard');
+            exit;
+        }
         $csrf = $this->generateCsrfToken();
-        ob_start();
-        ?>
-        <h2><?= __('admin.login_heading') ?></h2>
-        <?php if (!empty($_SESSION['admin_login_error'])): ?>
-            <div style="color:#ff6b6b;"> <?= htmlspecialchars($_SESSION['admin_login_error']) ?> </div>
-        <?php unset($_SESSION['admin_login_error']); endif; ?>
-        <form method="POST" action="?page=admin-login">
-            <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
-            <label for="email"><?= __('admin.email') ?></label>
-            <input type="email" id="email" name="email" required style="width:100%;margin:5px 0;">
-            <label for="password"><?= __('admin.password') ?></label>
-            <input type="password" id="password" name="password" required style="width:100%;margin:5px 0;">
-            <button type="submit" style="background:#28a745;color:#fff;padding:8px 16px;border:none;cursor:pointer;"><?= __('admin.login_btn') ?></button>
-        </form>
-        <?php
-        $content = ob_get_clean();
-        require __DIR__ . '/../views/admin/admin_layout.php';
+        $loginError = $_SESSION['admin_login_error'] ?? '';
+        unset($_SESSION['admin_login_error']);
+        require __DIR__ . '/../views/admin/login.php';
     }
 
     /**
@@ -121,31 +129,34 @@ class AdminController {
         $csrf     = $post['csrf'] ?? '';
         $ip       = client_ip();
         if (!$this->validateCsrfToken($csrf)) {
-            $_SESSION['admin_login_error'] = 'Invalid CSRF token.';
+            $_SESSION['admin_login_error'] = 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.';
             header('Location: ?page=admin-login');
             exit;
         }
         if ($this->adminLoginTooManyAttempts($ip)) {
-            $_SESSION['admin_login_error'] = 'Too many login attempts. Please try again later.';
+            $_SESSION['admin_login_error'] = 'Çok fazla başarısız deneme. 15 dakika sonra tekrar dene.';
             header('Location: ?page=admin-login');
             exit;
         }
         $admin = $this->db->fetchOne('SELECT * FROM admins WHERE email = ?', [$email]);
         if ($admin && password_verify($password, $admin['password'])) {
             $this->clearAdminLoginAttempts($ip);
+            // New session id on privilege change (session fixation).
+            session_regenerate_id(true);
             $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_last_seen'] = time();
             header('Location: ?page=admin-dashboard');
             exit;
         }
         $this->recordAdminLoginAttempt($ip);
-        $_SESSION['admin_login_error'] = 'Invalid email or password.';
+        $_SESSION['admin_login_error'] = 'E-posta veya şifre hatalı.';
         header('Location: ?page=admin-login');
         exit;
     }
 
     public function logout(): void {
-        session_start();
-        unset($_SESSION['admin_id']);
+        unset($_SESSION['admin_id'], $_SESSION['admin_role'], $_SESSION['admin_last_seen']);
+        session_regenerate_id(true);
         header('Location: ?page=admin-login');
         exit;
     }
@@ -153,26 +164,19 @@ class AdminController {
     // ------------------- Dashboard -------------------
     public function dashboard(): void {
         $this->requireAdmin();
-        // Simple statistics
-        $userCount = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM users')['cnt'];
-        $paidCount = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM users WHERE has_paid = 1')['cnt'];
-        $msgCount  = $this->db->fetchOne('SELECT COUNT(*) as cnt FROM messages')['cnt'];
-
-        // List price per plan, USD — must track the prices actually shown
-        // on the pricing page (lang/*.php pricing.*_monthly/_yearly) and the
-        // live Dodo product catalog, since that's the current source of
-        // truth. This was previously $paidCount * $config['premium_price'],
-        // a config key that has never existed, so the dashboard always
-        // showed 0 regardless of how many users were actually paying.
-        $monthlyPriceUsd = self::MONTHLY_PRICE_USD;
-        $planCounts = $this->db->fetchAll(
-            'SELECT plan_status, billing_interval, COUNT(*) as cnt FROM users WHERE has_paid = 1 GROUP BY plan_status, billing_interval'
-        );
-        $mrrUsd = 0.0;
-        foreach ($planCounts as $row) {
-            $interval = ($row['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month';
-            $mrrUsd += ($monthlyPriceUsd[$row['plan_status']][$interval] ?? 0) * (int)$row['cnt'];
-        }
+        $range = (int)($_GET['d'] ?? 30);
+        $range = in_array($range, [7, 30, 90], true) ? $range : 30;
+        $stats = new AdminStats($this->db);
+        $kpis = $stats->kpis($range);
+        $revenue = $stats->revenue();
+        $daily = $stats->daily($range);
+        $funnel = $stats->funnel($range);
+        $languages = $stats->languages();
+        $plans = $stats->plans();
+        $todos = $stats->todos();
+        $recentSignups = $stats->recentSignups();
+        $recentEvents = $stats->recentEvents();
+        $admin = $this->currentAdmin;
         require __DIR__ . '/../views/admin/dashboard.php';
     }
 

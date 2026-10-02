@@ -3,7 +3,7 @@ $title = __('admin.conversations');
 ob_start();
 ?>
 <h2><?= __('admin.conv_list') ?></h2>
-<table>
+<table class="table table-hover table-striped">
     <thead>
         <tr><th><?= __('admin.id') ?></th><th><?= __('admin.user_col') ?></th><th><?= __('admin.topic_col') ?></th><th><?= __('admin.created_at') ?></th><th><?= __('admin.updated_at') ?></th><th><?= __('admin.detail') ?></th></tr>
     </thead>

@@ -208,6 +208,9 @@ class Database {
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_created ON ai_usage (created_at)");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_user ON ai_usage (user_id, created_at)");
+        // Admin dashboard time series filter on these.
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_messages_created ON messages (created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_users_created ON users (created_at)");
         $this->exec("CREATE TABLE IF NOT EXISTS alphabet_progress (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
