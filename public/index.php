@@ -1249,9 +1249,25 @@ switch ($page) {
     case 'admin-settings':
         $adminCtrl->settings();
         break;
-    case 'admin-update-settings':
+    case 'admin-health':
+        $adminCtrl->health();
+        break;
+    case 'admin-audit':
+        $adminCtrl->auditLog($_GET);
+        break;
+    case 'admin-2fa':
+        $adminCtrl->twoFactor();
+        break;
+    case 'admin-2fa-action':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminCtrl->updateSettings($_POST);
+            $adminCtrl->twoFactorAction($_POST);
+        }
+        header('Location: ?page=admin-2fa'); exit;
+    case 'admin-login-2fa':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->handleLogin2fa($_POST);
+        } else {
+            $adminCtrl->showLogin2fa();
         }
         break;
     case 'admin-export':

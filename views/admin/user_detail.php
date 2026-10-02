@@ -196,7 +196,7 @@ ob_start();
         </div>
 
         <div class="card">
-            <div class="card-header"><h3 class="card-title"><i class="ti ti-timeline me-1"></i>Geçmiş</h3><span class="card-subtitle ms-2">abonelik olayları ve admin işlemleri</span></div>
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-timeline me-1"></i>Geçmiş</h3><span class="card-subtitle ms-2">abonelik olayları ve admin işlemleri</span><a href="?page=admin-audit&amp;user=<?= $uid ?>" class="ms-auto small">Tüm admin işlemleri</a></div>
             <div class="list-group list-group-flush">
                 <?php foreach ($details['timeline'] as $t): ?>
                 <div class="list-group-item">

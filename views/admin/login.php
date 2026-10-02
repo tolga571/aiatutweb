@@ -40,12 +40,28 @@
         </div>
         <div class="card login-card shadow-lg">
             <div class="card-body p-4 p-sm-5">
-                <h2 class="h3 text-center mb-4">Admin girişi</h2>
+                <?php $is2fa = ($step ?? '') === '2fa'; ?>
+                <h2 class="h3 text-center mb-<?= $is2fa ? '2' : '4' ?>"><?= $is2fa ? 'Doğrulama kodu' : 'Admin girişi' ?></h2>
+                <?php if ($is2fa): ?>
+                    <p class="text-secondary text-center small mb-4"><?= htmlspecialchars($pendingEmail) ?> için authenticator uygulamasındaki 6 haneli kodu gir.</p>
+                <?php endif; ?>
                 <?php if ($loginError !== ''): ?>
                     <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
                         <i class="ti ti-alert-circle fs-2"></i><div><?= htmlspecialchars($loginError) ?></div>
                     </div>
                 <?php endif; ?>
+                <?php if ($is2fa): ?>
+                <form method="POST" action="?page=admin-login-2fa" autocomplete="off">
+                    <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
+                    <div class="mb-4">
+                        <input type="text" name="code" class="form-control form-control-lg text-center" inputmode="numeric" autocomplete="one-time-code"
+                               placeholder="123 456" maxlength="12" required autofocus style="letter-spacing:.3em;font-size:1.4rem;">
+                        <div class="form-hint text-center mt-2">Telefonun yanında değil mi? Yedek kodlarından birini de girebilirsin.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2"><i class="ti ti-shield-check me-1"></i> Doğrula</button>
+                </form>
+                <div class="text-center mt-3"><a href="?page=admin-logout" class="small link-secondary">Vazgeç, başka hesapla gir</a></div>
+                <?php else: ?>
                 <form method="POST" action="?page=admin-login" autocomplete="on" novalidate>
                     <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
                     <div class="mb-3">
@@ -71,6 +87,7 @@
                         <i class="ti ti-login-2 me-1"></i> Giriş yap
                     </button>
                 </form>
+                <?php endif; ?>
             </div>
         </div>
         <div class="text-center text-secondary small mt-3">
@@ -79,7 +96,8 @@
     </div>
 </div>
 <script>
-document.getElementById('toggle-pw').addEventListener('click', function () {
+var pwToggle = document.getElementById('toggle-pw');
+if (pwToggle) pwToggle.addEventListener('click', function () {
     var input = document.getElementById('password');
     var show = input.type === 'password';
     input.type = show ? 'text' : 'password';

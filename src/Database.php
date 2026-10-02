@@ -420,6 +420,11 @@ class Database {
         }
         // Set by an admin to block sign-in (see index.php / Auth::login).
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS suspended_at TIMESTAMP DEFAULT NULL");
+        // Admin two-factor auth (see Totp). totp_backup_codes is a JSON
+        // array of password_hash()es of the single-use backup codes.
+        $this->pdo->exec("ALTER TABLE admins ADD COLUMN IF NOT EXISTS totp_secret TEXT DEFAULT NULL");
+        $this->pdo->exec("ALTER TABLE admins ADD COLUMN IF NOT EXISTS totp_enabled_at TIMESTAMP DEFAULT NULL");
+        $this->pdo->exec("ALTER TABLE admins ADD COLUMN IF NOT EXISTS totp_backup_codes TEXT DEFAULT NULL");
         // When an admin closed the refund / manual-cancellation request in
         // the work queue. A request newer than this reopens it.
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS refund_handled_at TIMESTAMP DEFAULT NULL");

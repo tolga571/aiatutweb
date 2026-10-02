@@ -21,13 +21,15 @@ $navSections = [
         ['admin-activity', 'activity', 'Olay akışı'],
     ],
     'Sistem' => [
+        ['admin-health', 'heart-rate-monitor', 'Sistem sağlığı'],
         ['admin-ai-usage', 'sparkles', 'AI kullanımı & maliyet'],
+        ['admin-audit', 'list-details', 'İşlem kaydı'],
         ['admin-admins', 'shield-lock', __('admin.admins')],
-        ['admin-settings', 'settings', __('admin.settings')],
+        ['admin-settings', 'adjustments', 'Yapılandırma'],
     ],
 ];
 // Detail pages highlight their parent list.
-$activeAlias = ['admin-conversation' => 'admin-conversations'];
+$activeAlias = ['admin-conversation' => 'admin-conversations', 'admin-user' => 'admin-users'];
 $activePage = $activeAlias[$currentPage] ?? $currentPage;
 ?>
 <!DOCTYPE html>
@@ -109,6 +111,9 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                             <div class="text-truncate small fw-semibold"><?= htmlspecialchars($adminRow['email'] ?? '') ?></div>
                             <div class="text-secondary" style="font-size:.7rem;"><?= $adminRole === 'admin' ? 'Tam yetkili' : 'Salt okunur' ?></div>
                         </div>
+                        <a href="?page=admin-2fa" class="btn btn-icon btn-ghost-secondary btn-sm" title="Hesap güvenliği (2FA)" aria-label="Hesap güvenliği (2FA)">
+                            <i class="ti ti-<?= !empty($adminRow['totp_enabled_at']) ? 'shield-check text-green' : 'shield-exclamation text-yellow' ?>"></i>
+                        </a>
                         <a href="?page=admin-logout" class="btn btn-icon btn-ghost-secondary btn-sm" title="<?= htmlspecialchars(__('admin.logout')) ?>" aria-label="<?= htmlspecialchars(__('admin.logout')) ?>">
                             <i class="ti ti-logout"></i>
                         </a>

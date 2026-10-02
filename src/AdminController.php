@@ -141,12 +141,15 @@ class AdminController {
         $admin = $this->db->fetchOne('SELECT * FROM admins WHERE email = ?', [$email]);
         if ($admin && password_verify($password, $admin['password'])) {
             $this->clearAdminLoginAttempts($ip);
-            // New session id on privilege change (session fixation).
-            session_regenerate_id(true);
-            $_SESSION['admin_id'] = $admin['id'];
-            $_SESSION['admin_last_seen'] = time();
-            header('Location: ?page=admin-dashboard');
-            exit;
+            if (!empty($admin['totp_enabled_at'])) {
+                // Password was right; the session only becomes an admin
+                // session after the authenticator code (step 2).
+                session_regenerate_id(true);
+                $_SESSION['admin_2fa_pending'] = ['id' => (int)$admin['id'], 'at' => time()];
+                header('Location: ?page=admin-login-2fa');
+                exit;
+            }
+            $this->completeLogin($admin, 'admin_login');
         }
         $this->recordAdminLoginAttempt($ip);
         $_SESSION['admin_login_error'] = 'E-posta veya şifre hatalı.';
@@ -154,8 +157,86 @@ class AdminController {
         exit;
     }
 
+    /** Final step of a successful sign-in (with or without 2FA). */
+    private function completeLogin(array $admin, string $auditAction): void {
+        // New session id on privilege change (session fixation).
+        session_regenerate_id(true);
+        unset($_SESSION['admin_2fa_pending']);
+        $_SESSION['admin_id'] = $admin['id'];
+        $_SESSION['admin_last_seen'] = time();
+        $this->currentAdmin = $admin;
+        $this->audit($auditAction, null, empty($admin['totp_enabled_at']) ? '2FA kapalı' : '');
+        header('Location: ?page=admin-dashboard');
+        exit;
+    }
+
+    /** Pending 2FA login (password already verified), or null if absent / expired (5 min). */
+    private function pending2fa(): ?array {
+        $p = $_SESSION['admin_2fa_pending'] ?? null;
+        if (!$p || time() - (int)$p['at'] > 300) {
+            unset($_SESSION['admin_2fa_pending']);
+            return null;
+        }
+        return $this->db->fetchOne('SELECT * FROM admins WHERE id = ? AND totp_enabled_at IS NOT NULL', [(int)$p['id']]);
+    }
+
+    public function showLogin2fa(): void {
+        Language::load('tr');
+        $admin = $this->pending2fa();
+        if (!$admin) {
+            $_SESSION['admin_login_error'] = 'Doğrulama süresi doldu, tekrar giriş yap.';
+            header('Location: ?page=admin-login');
+            exit;
+        }
+        $csrf = $this->generateCsrfToken();
+        $loginError = $_SESSION['admin_login_error'] ?? '';
+        unset($_SESSION['admin_login_error']);
+        $step = '2fa';
+        $pendingEmail = $admin['email'];
+        require __DIR__ . '/../views/admin/login.php';
+    }
+
+    public function handleLogin2fa(array $post): void {
+        $admin = $this->pending2fa();
+        $ip = client_ip();
+        if (!$admin) {
+            $_SESSION['admin_login_error'] = 'Doğrulama süresi doldu, tekrar giriş yap.';
+            header('Location: ?page=admin-login');
+            exit;
+        }
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $_SESSION['admin_login_error'] = 'Oturum doğrulanamadı, tekrar dene.';
+            header('Location: ?page=admin-login-2fa');
+            exit;
+        }
+        // Same per-IP budget as the password step (8 tries / 15 min).
+        if ($this->adminLoginTooManyAttempts($ip)) {
+            unset($_SESSION['admin_2fa_pending']);
+            $_SESSION['admin_login_error'] = 'Çok fazla başarısız deneme. 15 dakika sonra tekrar dene.';
+            header('Location: ?page=admin-login');
+            exit;
+        }
+        $code = trim((string)($post['code'] ?? ''));
+        if (Totp::verify((string)$admin['totp_secret'], $code)) {
+            $this->clearAdminLoginAttempts($ip);
+            $this->completeLogin($admin, 'admin_login_2fa');
+        }
+        $remaining = Totp::useBackupCode(json_decode((string)$admin['totp_backup_codes'], true) ?: [], $code);
+        if ($remaining !== null) {
+            $this->db->execute('UPDATE admins SET totp_backup_codes = ? WHERE id = ?', [json_encode($remaining), $admin['id']]);
+            $this->clearAdminLoginAttempts($ip);
+            $this->currentAdmin = $admin;
+            $this->audit('admin_backup_code_used', null, count($remaining) . ' yedek kod kaldı');
+            $this->completeLogin($admin, 'admin_login_2fa');
+        }
+        $this->recordAdminLoginAttempt($ip);
+        $_SESSION['admin_login_error'] = 'Kod hatalı. Uygulamadaki güncel 6 haneli kodu ya da bir yedek kodu gir.';
+        header('Location: ?page=admin-login-2fa');
+        exit;
+    }
+
     public function logout(): void {
-        unset($_SESSION['admin_id'], $_SESSION['admin_role'], $_SESSION['admin_last_seen']);
+        unset($_SESSION['admin_id'], $_SESSION['admin_role'], $_SESSION['admin_last_seen'], $_SESSION['admin_2fa_pending'], $_SESSION['admin_totp_setup']);
         session_regenerate_id(true);
         header('Location: ?page=admin-login');
         exit;
@@ -547,50 +628,119 @@ class AdminController {
         require __DIR__ . '/../views/admin/ai_usage.php';
     }
 
-    // ------------------- Settings -------------------
+    // ------------------- System -------------------
+    /** Read-only configuration status (replaces the old .env editor, which couldn't work on Railway). */
     public function settings(): void {
-        // Full admin only: this page exposes configuration values (and
-        // masked secret values), so read-only viewers must not reach it.
         $this->requireAdmin();
         $this->requireFullAdmin();
-        $csrf = $this->generateCsrfToken();
-        $config = include __DIR__ . '/../config.php';
-        // Variables $csrf and $config are available in the view
+        $groups = (new AdminHealth($this->db, $this->config))->config();
         require __DIR__ . '/../views/admin/settings.php';
     }
 
-    public function updateSettings(array $post): void {
+    public function health(): void {
         $this->requireAdmin();
-        $this->requireFullAdmin();
-        if (!$this->validateCsrfToken($post['csrf'] ?? '')) {
-            $_SESSION['admin_settings_msg'] = 'Invalid CSRF token — settings were not saved.';
-            header('Location: ?page=admin-settings');
+        $h = new AdminHealth($this->db, $this->config);
+        $version = $h->version();
+        $database = $h->database();
+        $webhooks = $h->webhooks();
+        $ai = $h->ai();
+        $security = $h->security();
+        $config = $h->config();
+        require __DIR__ . '/../views/admin/health.php';
+    }
+
+    public function auditLog(array $query): void {
+        $this->requireAdmin();
+        $perPage = 50;
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $filters = ['action' => (string)($query['action'] ?? ''), 'admin' => (string)($query['admin'] ?? ''), 'user' => (int)($query['user'] ?? 0)];
+        $where = ['TRUE'];
+        $params = [];
+        if ($filters['action'] !== '') { $where[] = 'a.action = ?'; $params[] = $filters['action']; }
+        if ($filters['admin'] !== '') { $where[] = 'a.admin_email = ?'; $params[] = $filters['admin']; }
+        if ($filters['user'] > 0) { $where[] = 'a.target_user_id = ?'; $params[] = $filters['user']; }
+        $whereSql = implode(' AND ', $where);
+        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM admin_audit a WHERE {$whereSql}", $params)['c'];
+        $rows = $this->db->fetchAll(
+            "SELECT a.*, u.email AS user_email FROM admin_audit a LEFT JOIN users u ON u.id = a.target_user_id
+             WHERE {$whereSql} ORDER BY a.performed_at DESC LIMIT {$perPage} OFFSET " . (($pageNum - 1) * $perPage),
+            $params
+        );
+        $actions = array_column($this->db->fetchAll('SELECT DISTINCT action FROM admin_audit ORDER BY 1'), 'action');
+        $adminEmails = array_column($this->db->fetchAll('SELECT DISTINCT admin_email FROM admin_audit WHERE admin_email IS NOT NULL ORDER BY 1'), 'admin_email');
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
+        require __DIR__ . '/../views/admin/audit.php';
+    }
+
+    // ------------------- Two-factor auth (own account) -------------------
+    public function twoFactor(): void {
+        $this->requireAdmin();
+        $admin = $this->currentAdmin;
+        $enabled = !empty($admin['totp_enabled_at']);
+        if (!$enabled && empty($_SESSION['admin_totp_setup'])) {
+            $_SESSION['admin_totp_setup'] = Totp::generateSecret();
+        }
+        $setupSecret = $enabled ? null : $_SESSION['admin_totp_setup'];
+        $setupUri = $setupSecret ? Totp::uri($setupSecret, (string)$admin['email']) : null;
+        $backupLeft = count(json_decode((string)($admin['totp_backup_codes'] ?? ''), true) ?: []);
+        $newBackupCodes = $_SESSION['admin_new_backup_codes'] ?? null; // shown exactly once
+        unset($_SESSION['admin_new_backup_codes']);
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/two_factor.php';
+    }
+
+    public function twoFactorAction(array $post): void {
+        $this->requireAdmin();
+        $admin = $this->currentAdmin;
+        $back = '?page=admin-2fa';
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', 'Oturum doğrulanamadı, tekrar dene.');
+            header('Location: ' . $back);
             exit;
         }
-        // Simple .env update (no validation for brevity).
-        // NOTE: PADDLE_WEBHOOK_SECRET is intentionally NOT editable here —
-        // the settings page only shows it masked, and managing the secret
-        // lives in the deployment's environment variables instead.
-        $envPath = __DIR__ . '/../.env';
-        $lines   = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $map = [
-            'PADDLE_PREMIUM_PLAN_PRICE_ID' => $post['premium_price_id'] ?? '',
-            'PADDLE_STARTER_PLAN_PRICE_ID' => $post['starter_price_id'] ?? '',
-            'PADDLE_PRO_PLAN_PRICE_ID'     => $post['pro_price_id'] ?? '',
-            'PADDLE_STARTER_YEARLY_PRICE_ID' => $post['starter_yearly_price_id'] ?? '',
-            'PADDLE_PRO_YEARLY_PRICE_ID'     => $post['pro_yearly_price_id'] ?? '',
-            'PADDLE_PREMIUM_YEARLY_PRICE_ID' => $post['premium_yearly_price_id'] ?? '',
-        ];
-        foreach ($lines as &$line) {
-            foreach ($map as $key => $val) {
-                if (strpos($line, $key . '=') === 0) {
-                    $line = $key . '=' . $val;
+        $code = trim((string)($post['code'] ?? ''));
+        $action = (string)($post['action'] ?? '');
+        if ($action === 'enable') {
+            $secret = (string)($_SESSION['admin_totp_setup'] ?? '');
+            if ($secret === '' || !Totp::verify($secret, $code)) {
+                $this->flash('danger', 'Kod doğrulanamadı. Uygulamadaki güncel kodu gir (telefon saatinin doğru olduğundan emin ol).');
+                header('Location: ' . $back);
+                exit;
+            }
+            [$plain, $hashes] = Totp::backupCodes();
+            $this->db->execute('UPDATE admins SET totp_secret = ?, totp_enabled_at = CURRENT_TIMESTAMP, totp_backup_codes = ? WHERE id = ?', [$secret, json_encode($hashes), $admin['id']]);
+            unset($_SESSION['admin_totp_setup']);
+            $_SESSION['admin_new_backup_codes'] = $plain;
+            $this->audit('admin_2fa_enabled');
+            $this->flash('success', 'İki adımlı doğrulama açıldı. Yedek kodlarını şimdi güvenli bir yere kaydet.');
+        } elseif ($action === 'disable' || $action === 'regenerate') {
+            // A backup code works here too, so a lost phone can still turn 2FA off.
+            $ok = !empty($admin['totp_enabled_at']) && Totp::verify((string)$admin['totp_secret'], $code);
+            if (!$ok && !empty($admin['totp_enabled_at'])) {
+                $remaining = Totp::useBackupCode(json_decode((string)$admin['totp_backup_codes'], true) ?: [], $code);
+                if ($remaining !== null) {
+                    $this->db->execute('UPDATE admins SET totp_backup_codes = ? WHERE id = ?', [json_encode($remaining), $admin['id']]);
+                    $ok = true;
                 }
             }
+            if (!$ok) {
+                $this->flash('danger', 'Kod hatalı; uygulamadaki güncel kodu ya da bir yedek kodu gir.');
+                header('Location: ' . $back);
+                exit;
+            }
+            if ($action === 'disable') {
+                $this->db->execute('UPDATE admins SET totp_secret = NULL, totp_enabled_at = NULL, totp_backup_codes = NULL WHERE id = ?', [$admin['id']]);
+                $this->audit('admin_2fa_disabled');
+                $this->flash('success', 'İki adımlı doğrulama kapatıldı.');
+            } else {
+                [$plain, $hashes] = Totp::backupCodes();
+                $this->db->execute('UPDATE admins SET totp_backup_codes = ? WHERE id = ?', [json_encode($hashes), $admin['id']]);
+                $_SESSION['admin_new_backup_codes'] = $plain;
+                $this->audit('admin_2fa_backup_regenerated');
+                $this->flash('success', 'Yeni yedek kodlar oluşturuldu; eskileri artık geçersiz.');
+            }
         }
-        file_put_contents($envPath, implode("\n", $lines) . "\n");
-        $_SESSION['admin_settings_msg'] = __('admin.settings_saved');
-        header('Location: ?page=admin-settings');
+        header('Location: ' . $back);
         exit;
     }
 

@@ -62,6 +62,13 @@ $funnelSteps = [
 
 ob_start();
 ?>
+<?php if (empty($admin['totp_enabled_at'])): ?>
+<div class="alert alert-warning d-flex flex-wrap align-items-center gap-2" role="alert">
+    <i class="ti ti-shield-exclamation fs-2"></i>
+    <div class="flex-fill">Hesabında <strong>iki adımlı doğrulama kapalı</strong>. Şifren ele geçirilirse panel de ele geçer.</div>
+    <a href="?page=admin-2fa" class="btn btn-warning btn-sm">Şimdi aç</a>
+</div>
+<?php endif; ?>
 <!-- KPI cards -->
 <div class="row row-deck row-cards mb-3">
     <?php

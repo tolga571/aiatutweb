@@ -1,59 +1,46 @@
 <?php
-// views/admin/settings.php
-// Admin settings page – form to edit .env variables
+// Read-only configuration status. Values come from Railway environment
+// variables; change them there (Railway → service → Variables), not here.
+$title = 'Yapılandırma';
+$pageHeader = 'Yapılandırma';
+$pagePretitle = 'Railway ortam değişkenlerinden okunur · gizli anahtarlar gösterilmez';
+$e = fn($v) => htmlspecialchars((string)$v);
+$badge = [
+    'ok' => ['bg-green-lt', 'ti-circle-check', 'Tanımlı'],
+    'warn' => ['bg-yellow-lt', 'ti-alert-triangle', 'Kontrol et'],
+    'missing' => ['bg-red-lt', 'ti-circle-x', 'Eksik'],
+    'info' => ['bg-secondary-lt', 'ti-info-circle', ''],
+];
 
-$title = __('admin.settings');
 ob_start();
 ?>
-<h2 class="my-4"><?= __('admin.settings_title') ?></h2>
-
-<?php if (!empty($_SESSION['admin_settings_msg'])): ?>
-    <div class="alert alert-success" role="alert">
-        <?= htmlspecialchars($_SESSION['admin_settings_msg']) ?>
+<div class="alert alert-info d-flex gap-2 align-items-start">
+    <i class="ti ti-info-circle fs-2"></i>
+    <div>Bu sayfa sadece durumu gösterir. Bir değeri değiştirmek için Railway'de servisin <strong>Variables</strong> sekmesini kullan; değişiklik yeni deploy ile devreye girer.</div>
+</div>
+<div class="row row-cards">
+    <?php foreach ($groups as $group => $items): ?>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header"><h3 class="card-title"><?= $e($group) ?></h3></div>
+            <div class="list-group list-group-flush">
+                <?php foreach ($items as [$label, $status, $value]):
+                    [$cls, $icon, $text] = $badge[$status]; ?>
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <span class="text-break" style="min-width:0;"><?= $e($label) ?></span>
+                    <span class="d-flex align-items-center gap-2 text-end" style="min-width:0;">
+                        <?php if ($value !== null): ?><code class="text-break small"><?= $e($value) ?></code><?php endif; ?>
+                        <?php if ($value === null || $status !== 'info'): ?>
+                            <span class="badge <?= $cls ?>"><i class="ti <?= $icon ?> me-1"></i><?= $value === null && $status === 'info' ? 'Tanımlı değil' : ($text ?: '') ?></span>
+                        <?php endif; ?>
+                    </span>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
     </div>
-    <?php unset($_SESSION['admin_settings_msg']); ?>
-<?php endif; ?>
-
-<div class="card" style="max-width:720px;"><div class="card-body">
-<form method="POST" action="?page=admin-update-settings">
-    <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
-
-    <div class="form-group mb-3">
-        <label for="premium_price_id" class="form-label"><?= __('admin.premium_price_id') ?></label>
-        <input type="text" class="form-control" id="premium_price_id" name="premium_price_id" value="<?= htmlspecialchars($config['paddle_premium_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="starter_price_id" class="form-label"><?= __('admin.starter_price_id') ?></label>
-        <input type="text" class="form-control" id="starter_price_id" name="starter_price_id" value="<?= htmlspecialchars($config['paddle_starter_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="pro_price_id" class="form-label"><?= __('admin.pro_price_id') ?></label>
-        <input type="text" class="form-control" id="pro_price_id" name="pro_price_id" value="<?= htmlspecialchars($config['paddle_pro_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="starter_yearly_price_id" class="form-label"><?= __('admin.starter_yearly_price_id') ?></label>
-        <input type="text" class="form-control" id="starter_yearly_price_id" name="starter_yearly_price_id" value="<?= htmlspecialchars($config['paddle_starter_yearly_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="pro_yearly_price_id" class="form-label"><?= __('admin.pro_yearly_price_id') ?></label>
-        <input type="text" class="form-control" id="pro_yearly_price_id" name="pro_yearly_price_id" value="<?= htmlspecialchars($config['paddle_pro_yearly_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="premium_yearly_price_id" class="form-label"><?= __('admin.premium_yearly_price_id') ?></label>
-        <input type="text" class="form-control" id="premium_yearly_price_id" name="premium_yearly_price_id" value="<?= htmlspecialchars($config['paddle_premium_yearly_price_id'] ?? '') ?>">
-    </div>
-    <div class="form-group mb-3">
-        <label for="webhook_secret" class="form-label"><?= __('admin.webhook_secret') ?></label>
-        <input type="text" class="form-control" id="webhook_secret" name="webhook_secret" readonly
-            value="<?= htmlspecialchars($config['paddle_webhook_secret'] ? (substr($config['paddle_webhook_secret'], 0, 6) . '••••••••••••') : '') ?>" placeholder="Manage via Railway environment variables">
-        <small class="form-text text-muted">Read-only &amp; masked — change the secret via the deployment's environment variables.</small>
-    </div>
-
-    <button type="submit" class="btn btn-primary"><?= __('admin.save_settings') ?></button>
-</form>
-</div></div>
-
+    <?php endforeach; ?>
+</div>
 <?php
 $content = ob_get_clean();
 require __DIR__ . '/admin_layout.php';
-?>
