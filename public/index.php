@@ -911,7 +911,7 @@ switch ($page) {
             ),
         ];
         header('Content-Type: application/json');
-        header('Content-Disposition: attachment; filename="aitut-my-data-' . date('Y-m-d') . '.json"');
+        header('Content-Disposition: attachment; filename="jumplearner-my-data-' . date('Y-m-d') . '.json"');
         echo json_encode($export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         exit;
 

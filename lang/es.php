@@ -83,10 +83,10 @@ return [
     'auth.reset_password_btn' => 'Restablecer contraseña',
     'auth.reset_invalid_token' => 'Este enlace no es válido o ha caducado.',
     'auth.back_to_login' => 'Volver a iniciar sesión',
-    'auth.reset_email_subject' => 'Restablece tu contraseña de AiTut',
+    'auth.reset_email_subject' => 'Restablece tu contraseña de Jumplearner',
     'auth.reset_email_body' => 'Recibimos una solicitud para restablecer tu contraseña. Haz clic en el siguiente enlace para elegir una nueva. Este enlace caduca en 1 hora y solo se puede usar una vez. Si no solicitaste esto, puedes ignorar este correo.',
     'auth.verify_email_subject' => 'Confirma tu dirección de correo',
-    'auth.verify_email_body' => '¡Gracias por registrarte en AiTut! Confirma tu dirección de correo haciendo clic en el siguiente enlace.',
+    'auth.verify_email_body' => '¡Gracias por registrarte en Jumplearner! Confirma tu dirección de correo haciendo clic en el siguiente enlace.',
     'account.wrong_password' => 'Contraseña incorrecta.',
     'account.delete_heading' => 'Eliminar tu cuenta',
     'account.delete_warning' => 'Esto elimina permanentemente tu cuenta, conversaciones y progreso. No se puede deshacer.',
@@ -134,7 +134,7 @@ return [
     'dash.cefr_level' => 'Nivel MCER',
 
     // ── Chat ────────────────────────────────────────────────
-    'chat.page_title' => 'Chat – AiTut',
+    'chat.page_title' => 'Chat – Jumplearner',
     'chat.go_to_chat' => 'Ir al Chat',
     'chat.my_profile' => 'Mi Perfil',
     'chat.profile' => 'Perfil',
@@ -184,7 +184,7 @@ return [
     'chat.documents_link' => 'Documentos',
     'chat.instructions_link' => 'Instrucciones',
     'chat.trial_expired_title' => '¡Tu prueba gratuita ha terminado!',
-    'chat.trial_expired_body' => '¿Disfrutaste practicando con el tutor de IA inteligente de AiTut? Elige un plan para continuar tu viaje de aprendizaje de idiomas sin interrupciones.',
+    'chat.trial_expired_body' => '¿Disfrutaste practicando con el tutor de IA inteligente de Jumplearner? Elige un plan para continuar tu viaje de aprendizaje de idiomas sin interrupciones.',
     'chat.review_chat' => 'Revisar Chat',
     'chat.view_plans' => 'Ver Planes',
     'chat.http_error' => 'Chat fallido (HTTP 503)',
@@ -212,7 +212,7 @@ return [
     'chat.fc_definition_label' => 'Definición',
 
     // ── Flashcards ──────────────────────────────────────────
-    'fc.page_title' => 'Tarjetas – AiTut',
+    'fc.page_title' => 'Tarjetas – Jumplearner',
     'fc.word_list' => 'Lista de palabras',
     'fc.select_word' => 'Selecciona una palabra para aprender:',
     'fc.search_words' => 'Buscar palabras...',
@@ -284,7 +284,7 @@ return [
     'fc.import_success' => 'Se importaron %d palabras nuevas.',
 
     // ── Pricing ─────────────────────────────────────────────
-    'pricing.page_title' => 'Precios – AiTut',
+    'pricing.page_title' => 'Precios – Jumplearner',
     'pricing.heading' => 'Elige tu camino hacia la fluidez',
     'pricing.subtitle' => 'Obtén acceso a lecciones diarias personalizadas, conversaciones con IA evaluadas según el MCER y análisis gramatical inteligente.',
     'pricing.paddle_pending_title' => 'Integración con Paddle pendiente',
@@ -376,7 +376,7 @@ return [
     'pricing.change_error' => 'No pudimos cambiar tu plan. Inténtalo de nuevo o contacta con soporte.',
 
     // ── Dashboard ───────────────────────────────────────────
-    'dash.page_title' => 'Panel – AiTut',
+    'dash.page_title' => 'Panel – Jumplearner',
     'dash.greeting' => 'Hola, %s',
     'dash.keep_momentum' => '¡Mantén el ritmo!',
     'dash.level_xp' => 'Nivel %d',
@@ -398,10 +398,10 @@ return [
     'dash.recent_convs' => 'Conversaciones recientes',
 
     // ── Home ────────────────────────────────────────────────
-    'home.page_title' => 'AiTut – Tutor de idiomas con IA',
+    'home.page_title' => 'Jumplearner – Tutor de idiomas con IA',
     'home.badge' => 'Coach de conversación con IA',
     'home.heading' => 'Aprende cualquier idioma con<br /><span class="text-primary">tu tutor de IA</span>',
-    'home.subtitle' => 'La mayoría de las apps te hacen tocar respuestas de opción múltiple. Con AiTut mantienes conversaciones reales — con correcciones instantáneas y un tutor que se adapta exactamente a tu nivel MCER.',
+    'home.subtitle' => 'La mayoría de las apps te hacen tocar respuestas de opción múltiple. Con Jumplearner mantienes conversaciones reales — con correcciones instantáneas y un tutor que se adapta exactamente a tu nivel MCER.',
     'home.get_started' => 'Empezar gratis',
     'home.continue_learning' => 'Continuar aprendiendo',
     'home.read_blog' => 'Leer el blog',
@@ -413,7 +413,7 @@ return [
     'home.feature_3_desc' => 'Las palabras nuevas de cada conversación se guardan automáticamente para su revisión.',
 
     // ── Chat Tips / Instructions ────────────────────────────
-    'tips.page_title' => 'Instrucciones de Chat – AiTut',
+    'tips.page_title' => 'Instrucciones de Chat – Jumplearner',
     'tips.heading' => 'Instrucciones de Chat',
     'tips.subtitle' => 'Cómo hablar con Kai y aprovechar al máximo tus lecciones.',
     'tips.section_1_title' => '1. ¿Quién es Kai?',
@@ -443,7 +443,7 @@ return [
     'tips.section_4_tip_4' => 'No temas repetir el mismo tema para ganar confianza.',
 
     // ── Footer ──────────────────────────────────────────────
-    'footer.copyright' => '© %d AiTut – Tutor de idiomas con IA',
+    'footer.copyright' => '© %d Jumplearner – Tutor de idiomas con IA',
     'footer.privacy' => 'Política de privacidad',
     'footer.terms' => 'Términos y condiciones',
     'footer.refund' => 'Política de reembolso',
@@ -461,11 +461,11 @@ return [
     'blog.back_to_blog' => 'Volver al blog',
 
     // ── About Page ──────────────────────────────────────────
-    'about.page_title' => 'Acerca de – AiTut',
-    'about.heading' => 'Acerca de AiTut',
+    'about.page_title' => 'Acerca de – Jumplearner',
+    'about.heading' => 'Acerca de Jumplearner',
     'about.tagline' => 'Aprendizaje de idiomas de élite',
     'about.mission_title' => 'Nuestra misión',
-    'about.mission_1' => 'AiTut está diseñado para romper las barreras del idioma proporcionando un compañero de aprendizaje de idiomas con IA altamente adaptativo y personalizado. Aprovechando la tecnología de IA de vanguardia, ayudamos a los estudiantes a desarrollar confianza en el mundo real, ampliar su vocabulario y dominar estilos de conversación a su propio ritmo.',
+    'about.mission_1' => 'Jumplearner está diseñado para romper las barreras del idioma proporcionando un compañero de aprendizaje de idiomas con IA altamente adaptativo y personalizado. Aprovechando la tecnología de IA de vanguardia, ayudamos a los estudiantes a desarrollar confianza en el mundo real, ampliar su vocabulario y dominar estilos de conversación a su propio ritmo.',
     'about.features_title' => 'Características principales',
     'about.feature_1_title' => 'Consciente del MCER',
     'about.feature_1_desc' => 'Nuestro tutor de IA ajusta automáticamente su vocabulario, complejidad gramatical y respuestas según tu nivel de competencia MCER actual (A1 a C2).',
@@ -477,7 +477,7 @@ return [
     'about.feature_4_desc' => 'Practica en cualquier momento y lugar. Tu asistente de idiomas personalizado está siempre en línea para apoyar tu viaje.',
 
     // ── Contact Page ────────────────────────────────────────
-    'contact.page_title' => 'Contacto – AiTut',
+    'contact.page_title' => 'Contacto – Jumplearner',
     'contact.heading' => 'Contáctanos',
     'contact.subtitle' => 'Nos encantaría saber de ti. Rellena el formulario a continuación.',
     'contact.intro' => 'Puedes rellenar el formulario a continuación o contactar directamente a nuestro equipo de soporte.',
@@ -492,11 +492,11 @@ return [
     'contact.email_desc' => 'Normalmente respondemos en un plazo de 24 horas.',
 
     // ── FAQ Page ────────────────────────────────────────────
-    'faq.page_title' => 'FAQ – AiTut',
+    'faq.page_title' => 'FAQ – Jumplearner',
     'faq.heading' => 'FAQ',
-    'faq.subtitle' => 'Encuentra respuestas a preguntas frecuentes sobre AiTut.',
-    'faq.q1' => '¿Qué es AiTut y cómo funciona?',
-    'faq.a1_1' => 'AiTut es un tutor de idiomas conversacional impulsado por IA. Simula escenarios de chat reales, permitiéndote practicar en tu idioma objetivo. Cuando cometes errores, la IA proporciona correcciones y explicaciones instantáneas.',
+    'faq.subtitle' => 'Encuentra respuestas a preguntas frecuentes sobre Jumplearner.',
+    'faq.q1' => '¿Qué es Jumplearner y cómo funciona?',
+    'faq.a1_1' => 'Jumplearner es un tutor de idiomas conversacional impulsado por IA. Simula escenarios de chat reales, permitiéndote practicar en tu idioma objetivo. Cuando cometes errores, la IA proporciona correcciones y explicaciones instantáneas.',
     'faq.q2' => '¿Qué idiomas están soportados?',
     'faq.a2_1' => 'Puedes practicar inglés, español, alemán, francés, chino, japonés, árabe y más. Durante la configuración inicial, puedes seleccionar tu idioma nativo y el idioma objetivo que deseas aprender.',
     'faq.q3' => '¿Cómo se adapta la IA a mi nivel?',
@@ -507,9 +507,9 @@ return [
     'faq.a5_1' => 'Sí, ofrecemos un reembolso completo dentro de los 30 días posteriores a tu primera compra si no estás satisfecho. Por favor, contacta al soporte o lee nuestra página de Política de reembolso para más detalles.',
 
     // ── Privacy Policy ──────────────────────────────────────
-    'privacy.page_title' => 'Política de privacidad – AiTut',
+    'privacy.page_title' => 'Política de privacidad – Jumplearner',
     'privacy.heading' => 'Política de privacidad',
-    'privacy.intro' => 'En AiTut, respetamos tu privacidad y estamos comprometidos a proteger tus datos personales. Esta política de privacidad explica cómo recopilamos, procesamos y protegemos tu información cuando utilizas nuestro servicio.',
+    'privacy.intro' => 'En Jumplearner, respetamos tu privacidad y estamos comprometidos a proteger tus datos personales. Esta política de privacidad explica cómo recopilamos, procesamos y protegemos tu información cuando utilizas nuestro servicio.',
     'privacy.s1_title' => '1. Información que recopilamos',
     'privacy.s1_intro' => 'Recopilamos información para proporcionar una experiencia de aprendizaje de idiomas personalizada:',
     'privacy.s1_1' => '<strong>Información de la cuenta:</strong> Nombre, dirección de correo electrónico, contraseña y fecha de registro.',
@@ -530,29 +530,29 @@ return [
     'privacy.s4_body' => 'Implementamos procedimientos seguros de base de datos y cifrado para proteger tu información. Nuestro servicio cumple con los estándares del Reglamento General de Protección de Datos (RGPD). Tienes derecho a solicitar acceso, corrección o eliminación de tus datos personales en cualquier momento contactando al soporte.',
 
     // ── Terms & Conditions ──────────────────────────────────
-    'terms.page_title' => 'Términos y condiciones – AiTut',
+    'terms.page_title' => 'Términos y condiciones – Jumplearner',
     'terms.heading' => 'Términos y condiciones',
-    'terms.intro' => 'Bienvenido a AiTut. Al acceder o utilizar nuestro sitio web y servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones.',
+    'terms.intro' => 'Bienvenido a Jumplearner. Al acceder o utilizar nuestro sitio web y servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones.',
     'terms.seller_title' => 'Información del vendedor',
-    'terms.seller_body' => 'AiTut es propiedad de y está operado por Tolga Ayberk Gültekin, un vendedor individual (autónomo) con sede en Estambul, Turquía. Para cualquier pregunta sobre estos términos, contáctanos en info@jumplearner.com.',
+    'terms.seller_body' => 'Jumplearner es propiedad de y está operado por Tolga Ayberk Gültekin, un vendedor individual (autónomo) con sede en Estambul, Turquía. Para cualquier pregunta sobre estos términos, contáctanos en info@jumplearner.com.',
     'terms.s1_title' => '1. Uso autorizado',
-    'terms.s1_body' => 'Al usar AiTut, aceptas utilizar el servicio solo para fines personales y no comerciales de aprendizaje de idiomas. No puedes compartir el acceso a tu cuenta ni utilizar el servicio para instrucción de terceros sin permiso explícito.',
+    'terms.s1_body' => 'Al usar Jumplearner, aceptas utilizar el servicio solo para fines personales y no comerciales de aprendizaje de idiomas. No puedes compartir el acceso a tu cuenta ni utilizar el servicio para instrucción de terceros sin permiso explícito.',
     'terms.s2_title' => '2. Restricciones',
     'terms.s2_intro' => 'No puedes intentar:',
-    'terms.s2_1' => 'Ingeniería inversa, descompilar o copiar la base de código o los mecanismos de IA subyacentes de AiTut.',
+    'terms.s2_1' => 'Ingeniería inversa, descompilar o copiar la base de código o los mecanismos de IA subyacentes de Jumplearner.',
     'terms.s2_2' => 'Extraer, automatizar la recuperación de datos o descargar sistemáticamente historiales de chat o registros de vocabulario.',
     'terms.s2_3' => 'Mal usar o sobrecargar los endpoints de IA o protocolos de red de una manera que degrade el rendimiento.',
     'terms.s3_title' => '3. Suspensión de cuenta',
-    'terms.s3_body' => 'AiTut se reserva el derecho de suspender o cancelar cuentas que violen estos términos, intenten actividades de pago fraudulentas o actúen de manera maliciosa hacia la infraestructura de la plataforma.',
+    'terms.s3_body' => 'Jumplearner se reserva el derecho de suspender o cancelar cuentas que violen estos términos, intenten actividades de pago fraudulentas o actúen de manera maliciosa hacia la infraestructura de la plataforma.',
     'terms.s4_title' => '4. Modificaciones',
     'terms.s4_body' => 'Podemos revisar estos términos de vez en cuando. La versión más actualizada siempre se publicará en nuestro sitio web. Al continuar usando el servicio después de que los cambios entren en vigor, aceptas estar sujeto a los términos actualizados.',
 
     // ── Refund Policy ───────────────────────────────────────
-    'refund.page_title' => 'Política de reembolso – AiTut',
+    'refund.page_title' => 'Política de reembolso – Jumplearner',
     'refund.heading' => 'Política de reembolso',
     'refund.intro' => 'Queremos que estés completamente satisfecho con tu viaje de aprendizaje de idiomas. Este documento describe las condiciones de reembolso para nuestros planes de suscripción.',
     'refund.s1_title' => 'Garantía de devolución de 30 días',
-    'refund.s1_body' => 'Si no estás satisfecho con AiTut dentro de los <strong>30 días</strong> posteriores a tu primer pago, contacta al soporte para un reembolso completo.',
+    'refund.s1_body' => 'Si no estás satisfecho con Jumplearner dentro de los <strong>30 días</strong> posteriores a tu primer pago, contacta al soporte para un reembolso completo.',
     'refund.s2_title' => 'Después de 30 días',
     'refund.s2_body' => 'Después de 30 días, los reembolsos se gestionan caso por caso según problemas técnicos, uso de la cuenta y cumplimiento de la plataforma.',
     'refund.s3_title' => 'Cancelar tu suscripción',
@@ -561,7 +561,7 @@ return [
     'refund.s4_body' => 'Para enviar una solicitud, contáctanos a través de nuestra <a href="?page=contact" class="text-primary hover:underline font-medium">Página de contacto</a> o escribe un correo electrónico a info@jumplearner.com con tu dirección de correo electrónico de registro y los detalles de la compra.',
 
     // ── Cookie Policy ───────────────────────────────────────
-    'cookie.page_title' => 'Política de cookies – AiTut',
+    'cookie.page_title' => 'Política de cookies – Jumplearner',
     'cookie.heading' => 'Política de cookies',
     'cookie.intro' => 'Nuestro sitio web utiliza cookies para mejorar tu experiencia de usuario, analizar el tráfico y personalizar el contenido. Al continuar navegando por nuestro sitio web, aceptas nuestro uso de cookies.',
     'cookie.s1_title' => '¿Qué son las cookies?',
@@ -571,15 +571,15 @@ return [
     'cookie.s2_2' => '<strong>Cookies de preferencia:</strong> Se utilizan para recordar tus opciones de aprendizaje, idiomas nativo y objetivo, y nivel.',
     'cookie.s2_3' => '<strong>Cookies de terceros:</strong> Establecidas por componentes como Paddle para gestionar pagos y validación segura de transacciones.',
     'cookie.s3_title' => 'Gestión de cookies',
-    'cookie.s3_body' => 'Puedes restringir o bloquear las cookies usando la configuración de tu navegador. Sin embargo, deshabilitar las cookies esenciales puede impedirte iniciar sesión o usar las funciones interactivas de tutoría de AiTut.',
+    'cookie.s3_body' => 'Puedes restringir o bloquear las cookies usando la configuración de tu navegador. Sin embargo, deshabilitar las cookies esenciales puede impedirte iniciar sesión o usar las funciones interactivas de tutoría de Jumplearner.',
     'cookie.privacy_link' => 'Para obtener información detallada sobre cómo protegemos tus datos personales, consulta nuestra <a href="?page=privacy-policy" class="text-primary hover:underline font-medium">Política de privacidad</a>.',
 
     // ── License Agreement ───────────────────────────────────
-    'license.page_title' => 'Acuerdo de licencia – AiTut',
+    'license.page_title' => 'Acuerdo de licencia – Jumplearner',
     'license.heading' => 'Acuerdo de licencia',
-    'license.intro' => 'Este Acuerdo de Licencia de Usuario Final rige el uso de la aplicación y los servicios de AiTut. Al acceder al servicio, aceptas estos términos.',
+    'license.intro' => 'Este Acuerdo de Licencia de Usuario Final rige el uso de la aplicación y los servicios de Jumplearner. Al acceder al servicio, aceptas estos términos.',
     'license.s1_title' => '1. Concesión de licencia',
-    'license.s1_body' => 'AiTut te otorga una licencia personal, no transferible, no exclusiva y revocable para acceder y usar el servicio únicamente con fines individuales y personales de aprendizaje de idiomas.',
+    'license.s1_body' => 'Jumplearner te otorga una licencia personal, no transferible, no exclusiva y revocable para acceder y usar el servicio únicamente con fines individuales y personales de aprendizaje de idiomas.',
     'license.s2_title' => '2. Limitaciones',
     'license.s2_body' => 'Esta licencia no otorga derechos para redistribuir, copiar, sublicenciar, arrendar, traducir, modificar o explotar comercialmente el servicio o cualquier parte del diseño del sitio web y las salidas del modelo de tutoría.',
     'license.s3_title' => '3. Terminación',
@@ -663,7 +663,7 @@ return [
     'error.generic' => 'Algo salió mal. Inténtalo de nuevo.',
 
     // ── Alphabet ────────────────────────────────────────────
-    'alphabet.page_title' => 'Alfabeto – AiTut',
+    'alphabet.page_title' => 'Alfabeto – Jumplearner',
     'alphabet.subtitle_default' => 'Aprende las letras y sonidos de tu idioma objetivo.',
     'alphabet.subtitle_tr' => 'Aprende las 29 letras del alfabeto turco.',
     'alphabet.subtitle_en' => 'Aprende las 26 letras del alfabeto inglés.',
@@ -720,7 +720,7 @@ return [
     'dash.mistakes' => 'Mis errores',
     'dash.mistakes_title' => 'Repasa tus errores',
     'dash.mistakes_desc' => '%d correcciones de tus chats te esperan. ¡Corrígelas para siempre!',
-    'mis.page_title' => 'Mis errores – AiTut',
+    'mis.page_title' => 'Mis errores – Jumplearner',
     'mis.heading' => 'Mis errores',
     'mis.subtitle' => 'Cada corrección de tus chats llega aquí. Practícalas hasta dominarlas.',
     'mis.stat_active' => 'Por repasar',

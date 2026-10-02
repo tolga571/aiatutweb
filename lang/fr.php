@@ -83,10 +83,10 @@ return [
     'auth.reset_password_btn' => 'Réinitialiser le mot de passe',
     'auth.reset_invalid_token' => 'Ce lien de réinitialisation est invalide ou a expiré.',
     'auth.back_to_login' => 'Retour à la connexion',
-    'auth.reset_email_subject' => 'Réinitialisez votre mot de passe AiTut',
+    'auth.reset_email_subject' => 'Réinitialisez votre mot de passe Jumplearner',
     'auth.reset_email_body' => "Nous avons reçu une demande de réinitialisation de votre mot de passe. Cliquez sur le lien ci-dessous pour en choisir un nouveau. Ce lien expire dans 1 heure et ne peut être utilisé qu'une seule fois. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.",
     'auth.verify_email_subject' => 'Confirmez votre adresse e-mail',
-    'auth.verify_email_body' => 'Merci de vous être inscrit sur AiTut ! Veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous.',
+    'auth.verify_email_body' => 'Merci de vous être inscrit sur Jumplearner ! Veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous.',
     'account.wrong_password' => 'Mot de passe incorrect.',
     'account.delete_heading' => 'Supprimer votre compte',
     'account.delete_warning' => 'Cette action supprime définitivement votre compte, vos conversations et votre progression. Cette action est irréversible.',
@@ -134,7 +134,7 @@ return [
     'dash.cefr_level' => 'Niveau CECRL',
 
     // ── Chat ────────────────────────────────────────────────
-    'chat.page_title' => 'Discussion – AiTut',
+    'chat.page_title' => 'Discussion – Jumplearner',
     'chat.go_to_chat' => 'Aller à la discussion',
     'chat.my_profile' => 'Mon profil',
     'chat.profile' => 'Profil',
@@ -184,7 +184,7 @@ return [
     'chat.documents_link' => 'Documents',
     'chat.instructions_link' => 'Instructions',
     'chat.trial_expired_title' => 'Votre essai gratuit est terminé !',
-    'chat.trial_expired_body' => 'Avez-vous apprécié de pratiquer avec le tuteur IA intelligent d\'AiTut ? Veuillez choisir un forfait pour poursuivre votre apprentissage des langues sans interruption.',
+    'chat.trial_expired_body' => 'Avez-vous apprécié de pratiquer avec le tuteur IA intelligent de Jumplearner ? Veuillez choisir un forfait pour poursuivre votre apprentissage des langues sans interruption.',
     'chat.review_chat' => 'Réviser la discussion',
     'chat.view_plans' => 'Voir les forfaits',
     'chat.http_error' => 'Échec de la discussion (HTTP 503)',
@@ -212,7 +212,7 @@ return [
     'chat.fc_definition_label' => 'Définition',
 
     // ── Flashcards ──────────────────────────────────────────
-    'fc.page_title' => 'Fiches – AiTut',
+    'fc.page_title' => 'Fiches – Jumplearner',
     'fc.word_list' => 'Liste de mots',
     'fc.select_word' => 'Sélectionnez un mot à apprendre :',
     'fc.search_words' => 'Rechercher des mots...',
@@ -284,7 +284,7 @@ return [
     'fc.import_success' => '%d nouveaux mots importés.',
 
     // ── Pricing ─────────────────────────────────────────────
-    'pricing.page_title' => 'Tarifs – AiTut',
+    'pricing.page_title' => 'Tarifs – Jumplearner',
     'pricing.heading' => 'Choisissez votre chemin vers la fluidité',
     'pricing.subtitle' => 'Accédez à des leçons quotidiennes personnalisées, des conversations IA évaluées selon le CECR et une analyse grammaticale intelligente.',
     'pricing.paddle_pending_title' => 'Intégration Paddle en attente',
@@ -376,7 +376,7 @@ return [
     'pricing.change_error' => 'Nous n\'avons pas pu changer votre forfait. Réessayez ou contactez le support.',
 
     // ── Dashboard ───────────────────────────────────────────
-    'dash.page_title' => 'Tableau de bord – AiTut',
+    'dash.page_title' => 'Tableau de bord – Jumplearner',
     'dash.greeting' => 'Bonjour, %s',
     'dash.keep_momentum' => 'Continuez sur votre lancée !',
     'dash.level_xp' => 'Niveau %d',
@@ -398,10 +398,10 @@ return [
     'dash.recent_convs' => 'Conversations récentes',
 
     // ── Home ────────────────────────────────────────────────
-    'home.page_title' => 'AiTut – Tuteur de langue IA',
+    'home.page_title' => 'Jumplearner – Tuteur de langue IA',
     'home.badge' => 'Coach de conversation IA',
     'home.heading' => 'Apprenez n\'importe quelle langue avec<br /><span class="text-primary">votre tuteur IA</span>',
-    'home.subtitle' => 'La plupart des applications vous font cocher des réponses à choix multiples. Avec AiTut, vous avez de vraies conversations — avec des corrections instantanées et un tuteur qui s\'adapte exactement à votre niveau CECR.',
+    'home.subtitle' => 'La plupart des applications vous font cocher des réponses à choix multiples. Avec Jumplearner, vous avez de vraies conversations — avec des corrections instantanées et un tuteur qui s\'adapte exactement à votre niveau CECR.',
     'home.get_started' => 'Commencer gratuitement',
     'home.continue_learning' => 'Continuer à apprendre',
     'home.read_blog' => 'Lire le blog',
@@ -413,7 +413,7 @@ return [
     'home.feature_3_desc' => 'Les nouveaux mots de chaque conversation sont automatiquement enregistrés pour révision.',
 
     // ── Chat Tips / Instructions ────────────────────────────
-    'tips.page_title' => 'Instructions de discussion – AiTut',
+    'tips.page_title' => 'Instructions de discussion – Jumplearner',
     'tips.heading' => 'Instructions de discussion',
     'tips.subtitle' => 'Comment parler à Kai et tirer le meilleur parti de vos leçons.',
     'tips.section_1_title' => '1. Qui est Kai ?',
@@ -443,7 +443,7 @@ return [
     'tips.section_4_tip_4' => 'N\'ayez pas peur de répéter le même sujet pour gagner en confiance.',
 
     // ── Footer ──────────────────────────────────────────────
-    'footer.copyright' => '© %d AiTut – Tuteur de langue IA',
+    'footer.copyright' => '© %d Jumplearner – Tuteur de langue IA',
     'footer.privacy' => 'Politique de confidentialité',
     'footer.terms' => 'Conditions générales',
     'footer.refund' => 'Politique de remboursement',
@@ -461,11 +461,11 @@ return [
     'blog.back_to_blog' => 'Retour au blog',
 
     // ── About Page ──────────────────────────────────────────
-    'about.page_title' => 'À propos – AiTut',
-    'about.heading' => 'À propos d\'AiTut',
+    'about.page_title' => 'À propos – Jumplearner',
+    'about.heading' => 'À propos de Jumplearner',
     'about.tagline' => 'Apprentissage linguistique d\'élite',
     'about.mission_title' => 'Notre mission',
-    'about.mission_1' => 'AiTut est conçu pour briser les barrières linguistiques en offrant un compagnon d\'apprentissage des langues IA hautement adaptatif et personnalisé. En exploitant une technologie d\'IA de pointe, nous aidons les apprenants à développer leur confiance dans le monde réel, à enrichir leur vocabulaire et à maîtriser les styles de conversation à leur propre rythme.',
+    'about.mission_1' => 'Jumplearner est conçu pour briser les barrières linguistiques en offrant un compagnon d\'apprentissage des langues IA hautement adaptatif et personnalisé. En exploitant une technologie d\'IA de pointe, nous aidons les apprenants à développer leur confiance dans le monde réel, à enrichir leur vocabulaire et à maîtriser les styles de conversation à leur propre rythme.',
     'about.features_title' => 'Fonctionnalités principales',
     'about.feature_1_title' => 'Conscient du CECR',
     'about.feature_1_desc' => 'Notre tuteur IA ajuste automatiquement son vocabulaire, sa complexité grammaticale et ses réponses en fonction de votre niveau de compétence CECR actuel (A1 à C2).',
@@ -477,7 +477,7 @@ return [
     'about.feature_4_desc' => 'Pratiquez à tout moment, n\'importe où. Votre assistant linguistique personnalisé est toujours en ligne pour soutenir votre parcours.',
 
     // ── Contact Page ────────────────────────────────────────
-    'contact.page_title' => 'Contact – AiTut',
+    'contact.page_title' => 'Contact – Jumplearner',
     'contact.heading' => 'Contactez-nous',
     'contact.subtitle' => 'Nous aimerions avoir de vos nouvelles. Remplissez le formulaire ci-dessous.',
     'contact.intro' => 'Vous pouvez remplir le formulaire ci-dessous ou contacter directement notre équipe d\'assistance.',
@@ -492,11 +492,11 @@ return [
     'contact.email_desc' => 'Nous répondons généralement sous 24 heures.',
 
     // ── FAQ Page ────────────────────────────────────────────
-    'faq.page_title' => 'FAQ – AiTut',
+    'faq.page_title' => 'FAQ – Jumplearner',
     'faq.heading' => 'FAQ',
-    'faq.subtitle' => 'Trouvez des réponses aux questions fréquentes sur AiTut.',
-    'faq.q1' => 'Qu\'est-ce qu\'AiTut et comment ça fonctionne ?',
-    'faq.a1_1' => 'AiTut est un tuteur de langue conversationnel alimenté par l\'IA. Il simule des scénarios de chat réels, vous permettant de pratiquer dans votre langue cible. Lorsque vous faites des erreurs, l\'IA fournit des corrections et des explications instantanées.',
+    'faq.subtitle' => 'Trouvez des réponses aux questions fréquentes sur Jumplearner.',
+    'faq.q1' => 'Qu\'est-ce que Jumplearner et comment ça fonctionne ?',
+    'faq.a1_1' => 'Jumplearner est un tuteur de langue conversationnel alimenté par l\'IA. Il simule des scénarios de chat réels, vous permettant de pratiquer dans votre langue cible. Lorsque vous faites des erreurs, l\'IA fournit des corrections et des explications instantanées.',
     'faq.q2' => 'Quelles langues sont prises en charge ?',
     'faq.a2_1' => 'Vous pouvez pratiquer l\'anglais, l\'espagnol, l\'allemand, le français, le chinois, le japonais, l\'arabe et plus encore. Lors de l\'inscription, vous pouvez sélectionner votre langue maternelle et la langue cible que vous souhaitez apprendre.',
     'faq.q3' => 'Comment l\'IA s\'adapte-t-elle à mon niveau ?',
@@ -507,9 +507,9 @@ return [
     'faq.a5_1' => 'Oui, nous offrons un remboursement complet sous 30 jours pour votre premier achat si vous n\'êtes pas satisfait. Veuillez contacter l\'assistance ou consulter notre page de politique de remboursement pour plus de détails.',
 
     // ── Privacy Policy ──────────────────────────────────────
-    'privacy.page_title' => 'Politique de confidentialité – AiTut',
+    'privacy.page_title' => 'Politique de confidentialité – Jumplearner',
     'privacy.heading' => 'Politique de confidentialité',
-    'privacy.intro' => 'Chez AiTut, nous respectons votre vie privée et nous nous engageons à protéger vos données personnelles. Cette politique de confidentialité explique comment nous collectons, traitons et protégeons vos informations lorsque vous utilisez notre service.',
+    'privacy.intro' => 'Chez Jumplearner, nous respectons votre vie privée et nous nous engageons à protéger vos données personnelles. Cette politique de confidentialité explique comment nous collectons, traitons et protégeons vos informations lorsque vous utilisez notre service.',
     'privacy.s1_title' => '1. Informations que nous collectons',
     'privacy.s1_intro' => 'Nous collectons des informations pour offrir une expérience d\'apprentissage des langues personnalisée :',
     'privacy.s1_1' => '<strong>Informations du compte :</strong> Nom, adresse e-mail, mot de passe et date d\'inscription.',
@@ -530,29 +530,29 @@ return [
     'privacy.s4_body' => 'Nous déployons des procédures de base de données sécurisées et un chiffrement pour protéger vos informations. Notre service adhère aux normes du Règlement général sur la protection des données (RGPD). Vous avez le droit de demander l\'accès, la rectification ou la suppression de vos données personnelles à tout moment en contactant l\'assistance.',
 
     // ── Terms & Conditions ──────────────────────────────────
-    'terms.page_title' => 'Conditions générales – AiTut',
+    'terms.page_title' => 'Conditions générales – Jumplearner',
     'terms.heading' => 'Conditions générales',
-    'terms.intro' => 'Bienvenue sur AiTut. En accédant à notre site web et à nos services ou en les utilisant, vous acceptez de vous conformer aux conditions générales suivantes.',
+    'terms.intro' => 'Bienvenue sur Jumplearner. En accédant à notre site web et à nos services ou en les utilisant, vous acceptez de vous conformer aux conditions générales suivantes.',
     'terms.seller_title' => 'Informations sur le vendeur',
-    'terms.seller_body' => 'AiTut est détenu et exploité par Tolga Ayberk Gültekin, un vendeur individuel (entrepreneur indépendant) basé à Istanbul, en Turquie. Pour toute question concernant ces conditions, contactez-nous à info@jumplearner.com.',
+    'terms.seller_body' => 'Jumplearner est détenu et exploité par Tolga Ayberk Gültekin, un vendeur individuel (entrepreneur indépendant) basé à Istanbul, en Turquie. Pour toute question concernant ces conditions, contactez-nous à info@jumplearner.com.',
     'terms.s1_title' => '1. Utilisation autorisée',
-    'terms.s1_body' => 'En utilisant AiTut, vous acceptez d\'utiliser le service uniquement à des fins personnelles et non commerciales d\'apprentissage des langues. Vous ne pouvez pas partager l\'accès à votre compte ni utiliser le service pour l\'enseignement à des tiers sans autorisation explicite.',
+    'terms.s1_body' => 'En utilisant Jumplearner, vous acceptez d\'utiliser le service uniquement à des fins personnelles et non commerciales d\'apprentissage des langues. Vous ne pouvez pas partager l\'accès à votre compte ni utiliser le service pour l\'enseignement à des tiers sans autorisation explicite.',
     'terms.s2_title' => '2. Restrictions',
     'terms.s2_intro' => 'Vous ne pouvez pas tenter de :',
-    'terms.s2_1' => 'Rétro-ingénierie, décompilation ou copie de la base de code ou des mécanismes d\'IA sous-jacents d\'AiTut.',
+    'terms.s2_1' => 'Rétro-ingénierie, décompilation ou copie de la base de code ou des mécanismes d\'IA sous-jacents de Jumplearner.',
     'terms.s2_2' => 'Extraire, automatiser la récupération de données ou télécharger systématiquement des historiques de discussion ou des journaux de vocabulaire.',
     'terms.s2_3' => 'Utiliser abusivement ou surcharger les points de terminaison de l\'IA ou les protocoles réseau d\'une manière qui dégrade les performances.',
     'terms.s3_title' => '3. Suspension de compte',
-    'terms.s3_body' => 'AiTut se réserve le droit de suspendre ou de résilier les comptes qui violent ces conditions, tentent des activités de paiement frauduleuses ou agissent de manière malveillante envers l\'infrastructure de la plateforme.',
+    'terms.s3_body' => 'Jumplearner se réserve le droit de suspendre ou de résilier les comptes qui violent ces conditions, tentent des activités de paiement frauduleuses ou agissent de manière malveillante envers l\'infrastructure de la plateforme.',
     'terms.s4_title' => '4. Modifications',
     'terms.s4_body' => 'Nous pouvons réviser ces conditions de temps à autre. La version la plus récente sera toujours publiée sur notre site web. En continuant à utiliser le service après l\'entrée en vigueur des modifications, vous acceptez d\'être lié par les conditions mises à jour.',
 
     // ── Refund Policy ───────────────────────────────────────
-    'refund.page_title' => 'Politique de remboursement – AiTut',
+    'refund.page_title' => 'Politique de remboursement – Jumplearner',
     'refund.heading' => 'Politique de remboursement',
     'refund.intro' => 'Nous voulons que vous soyez entièrement satisfait de votre parcours d\'apprentissage des langues. Ce document décrit les conditions de remboursement de nos formules d\'abonnement.',
     'refund.s1_title' => 'Garantie de remboursement de 30 jours',
-    'refund.s1_body' => 'Si vous n\'êtes pas satisfait d\'AiTut dans les <strong>30 jours</strong> suivant votre premier paiement, contactez l\'assistance pour un remboursement complet.',
+    'refund.s1_body' => 'Si vous n\'êtes pas satisfait de Jumplearner dans les <strong>30 jours</strong> suivant votre premier paiement, contactez l\'assistance pour un remboursement complet.',
     'refund.s2_title' => 'Après 30 jours',
     'refund.s2_body' => 'Après 30 jours, les remboursements sont traités au cas par cas en fonction des problèmes techniques, de l\'utilisation du compte et de la conformité à la plateforme.',
     'refund.s3_title' => 'Annuler votre abonnement',
@@ -561,7 +561,7 @@ return [
     'refund.s4_body' => 'Pour soumettre une demande, veuillez nous contacter via notre <a href="?page=contact" class="text-primary hover:underline font-medium">page de contact</a> ou envoyer un e-mail à info@jumplearner.com avec votre adresse e-mail d\'inscription et les détails d\'achat.',
 
     // ── Cookie Policy ───────────────────────────────────────
-    'cookie.page_title' => 'Politique des cookies – AiTut',
+    'cookie.page_title' => 'Politique des cookies – Jumplearner',
     'cookie.heading' => 'Politique des cookies',
     'cookie.intro' => 'Notre site web utilise des cookies pour améliorer votre expérience utilisateur, analyser le trafic et personnaliser le contenu. En continuant à naviguer sur notre site web, vous acceptez notre utilisation des cookies.',
     'cookie.s1_title' => 'Que sont les cookies ?',
@@ -571,15 +571,15 @@ return [
     'cookie.s2_2' => '<strong>Cookies de préférence :</strong> Utilisés pour mémoriser vos choix d\'apprentissage, vos langues maternelle et cible, et votre niveau.',
     'cookie.s2_3' => '<strong>Cookies tiers :</strong> Définis par des composants comme Paddle pour gérer les paiements et la validation sécurisée des transactions.',
     'cookie.s3_title' => 'Gestion des cookies',
-    'cookie.s3_body' => 'Vous pouvez restreindre ou bloquer les cookies en utilisant les paramètres de votre navigateur. Cependant, la désactivation des cookies essentiels peut vous empêcher de vous connecter ou d\'utiliser les fonctionnalités interactives de tutorat d\'AiTut.',
+    'cookie.s3_body' => 'Vous pouvez restreindre ou bloquer les cookies en utilisant les paramètres de votre navigateur. Cependant, la désactivation des cookies essentiels peut vous empêcher de vous connecter ou d\'utiliser les fonctionnalités interactives de tutorat de Jumplearner.',
     'cookie.privacy_link' => 'Pour des informations détaillées sur la protection de vos données personnelles, veuillez consulter notre <a href="?page=privacy-policy" class="text-primary hover:underline font-medium">Politique de confidentialité</a>.',
 
     // ── License Agreement ───────────────────────────────────
-    'license.page_title' => 'Contrat de licence – AiTut',
+    'license.page_title' => 'Contrat de licence – Jumplearner',
     'license.heading' => 'Contrat de licence',
-    'license.intro' => 'Ce contrat de licence utilisateur final régit votre utilisation de l\'application et des services AiTut. En accédant au service, vous acceptez ces conditions.',
+    'license.intro' => 'Ce contrat de licence utilisateur final régit votre utilisation de l\'application et des services Jumplearner. En accédant au service, vous acceptez ces conditions.',
     'license.s1_title' => '1. Octroi de la licence',
-    'license.s1_body' => 'AiTut vous accorde une licence personnelle, non transférable, non exclusive et révocable pour accéder et utiliser le service à des fins individuelles et personnelles d\'apprentissage des langues uniquement.',
+    'license.s1_body' => 'Jumplearner vous accorde une licence personnelle, non transférable, non exclusive et révocable pour accéder et utiliser le service à des fins individuelles et personnelles d\'apprentissage des langues uniquement.',
     'license.s2_title' => '2. Limitations',
     'license.s2_body' => 'Cette licence n\'accorde pas de droits de redistribution, copie, sous-licence, location, traduction, modification ou exploitation commerciale du service ou de toute partie de la mise en page du site web et des résultats du modèle de tutorat.',
     'license.s3_title' => '3. Résiliation',
@@ -663,7 +663,7 @@ return [
     'error.generic' => 'Quelque chose s\'est mal passé. Veuillez réessayer.',
 
     // ── Alphabet ────────────────────────────────────────────
-    'alphabet.page_title' => 'Alphabet – AiTut',
+    'alphabet.page_title' => 'Alphabet – Jumplearner',
     'alphabet.subtitle_default' => 'Apprends les lettres et les sons de ta langue cible.',
     'alphabet.subtitle_tr' => 'Apprends les 29 lettres de l\'alphabet turc.',
     'alphabet.subtitle_en' => 'Apprends les 26 lettres de l\'alphabet anglais.',
@@ -720,7 +720,7 @@ return [
     'dash.mistakes' => 'Mes erreurs',
     'dash.mistakes_title' => 'Révise tes erreurs',
     'dash.mistakes_desc' => '%d corrections de tes conversations t\'attendent. Corrige-les pour de bon !',
-    'mis.page_title' => 'Mes erreurs – AiTut',
+    'mis.page_title' => 'Mes erreurs – Jumplearner',
     'mis.heading' => 'Mes erreurs',
     'mis.subtitle' => 'Chaque correction de tes conversations arrive ici. Entraîne-toi jusqu\'à ce qu\'elle soit acquise.',
     'mis.stat_active' => 'À réviser',

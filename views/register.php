@@ -1,4 +1,4 @@
-<?php $pageTitle = 'Register – AiTut'; ?>
+<?php $pageTitle = 'Register – Jumplearner'; ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 
 <div class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
@@ -9,7 +9,7 @@
     <div class="text-center mb-8">
       <a href="?page=home" class="inline-flex items-center gap-2 font-bold text-xl mb-6">
         <div class="flex flex-col items-start">
-          <p class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</p>
+          <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>
           <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
         </div>
       </a>

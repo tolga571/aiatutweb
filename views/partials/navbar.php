@@ -4,7 +4,7 @@
   <script src="/js/navbar.js" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex flex-col shrink-0">
-      <p class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</p>
+      <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>
       <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
     </a>
     <?php if (isset($auth) && $auth->isLoggedIn()):
@@ -255,7 +255,7 @@
     class="absolute left-0 right-0 top-0 max-h-[calc(100vh-1.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-1.5rem)] bg-surface-container-high border-b border-outline-variant/20 rounded-b-2xl shadow-2xl flex flex-col overflow-y-auto overscroll-contain">
     <div class="flex items-center justify-between p-4 border-b border-outline-variant/10">
       <a href="?page=home" class="flex flex-col">
-        <span class="font-headline-md text-[18px] font-extrabold text-primary leading-none tracking-tight">AiTut</span>
+        <span class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></span>
         <span class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</span>
       </a>
       <button id="hamburgerCloseBtn"

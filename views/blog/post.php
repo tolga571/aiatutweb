@@ -1,4 +1,4 @@
-<?php $pageTitle = htmlspecialchars($post['title']) . ' – AiTut'; ?>
+<?php $pageTitle = htmlspecialchars($post['title']) . ' – Jumplearner'; ?>
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 

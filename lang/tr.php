@@ -85,10 +85,10 @@ return [
     'auth.reset_password_btn' => 'Şifreyi sıfırla',
     'auth.reset_invalid_token' => 'Bu sıfırlama bağlantısı geçersiz veya süresi dolmuş.',
     'auth.back_to_login' => 'Girişe geri dön',
-    'auth.reset_email_subject' => 'AiTut şifreni sıfırla',
+    'auth.reset_email_subject' => 'Jumplearner şifreni sıfırla',
     'auth.reset_email_body' => 'Şifreni sıfırlamak için bir istek aldık. Yeni bir şifre belirlemek için aşağıdaki bağlantıya tıkla. Bu bağlantı 1 saat içinde geçerliliğini yitirir ve yalnızca bir kez kullanılabilir. Bu isteği sen yapmadıysan bu e-postayı görmezden gelebilirsin.',
     'auth.verify_email_subject' => 'E-posta adresini doğrula',
-    'auth.verify_email_body' => "AiTut'a kaydolduğun için teşekkürler! Lütfen aşağıdaki bağlantıya tıklayarak e-posta adresini doğrula.",
+    'auth.verify_email_body' => "Jumplearner'a kaydolduğun için teşekkürler! Lütfen aşağıdaki bağlantıya tıklayarak e-posta adresini doğrula.",
     'account.wrong_password' => 'Şifre yanlış.',
     'account.delete_heading' => 'Hesabını sil',
     'account.delete_warning' => 'Bu işlem hesabını, konuşmalarını ve ilerlemeni kalıcı olarak siler. Geri alınamaz.',
@@ -134,7 +134,7 @@ return [
     'dash.quota_desc' => '%3$s planınızda %2$d üzerinden %1$d mesajınız kaldı.',
 
     // ── Chat ────────────────────────────────────────────────
-    'chat.page_title' => 'Sohbet – AiTut',
+    'chat.page_title' => 'Sohbet – Jumplearner',
     'chat.go_to_chat' => 'Sohbete Git',
     'chat.my_profile' => 'Profilim',
     'chat.profile' => 'Profil',
@@ -185,7 +185,7 @@ return [
     'chat.documents_link' => 'Dokümanlar',
     'chat.instructions_link' => 'Talimatlar',
     'chat.trial_expired_title' => 'Ücretsiz Deneme Süreniz Sona Erdi!',
-    'chat.trial_expired_body' => 'AiTut\'un akıllı yapay zeka öğretmeniyle pratik yapmaktan keyif aldınız mı? Dil öğrenme yolculuğunuzu kesintisiz sürdürmek için bir plan seçin.',
+    'chat.trial_expired_body' => 'Jumplearner\'ın akıllı yapay zeka öğretmeniyle pratik yapmaktan keyif aldınız mı? Dil öğrenme yolculuğunuzu kesintisiz sürdürmek için bir plan seçin.',
     'chat.review_chat' => 'Sohbeti İncele',
     'chat.keep_reading' => 'Okumaya Devam Et',
     'chat.view_plans' => 'Planları Gör',
@@ -213,7 +213,7 @@ return [
     'chat.fc_definition_label' => 'Tanım',
 
     // ── Flashcards ──────────────────────────────────────────
-    'fc.page_title' => 'Kartlar – AiTut',
+    'fc.page_title' => 'Kartlar – Jumplearner',
     'fc.word_list' => 'Kelime Listesi',
     'fc.select_word' => 'Öğrenmek için bir kelime seçin:',
     'fc.search_words' => 'Kelimeleri ara...',
@@ -289,7 +289,7 @@ return [
     'fc.import_success' => '%d yeni kelime içe aktarıldı.',
 
     // ── Pricing ─────────────────────────────────────────────
-    'pricing.page_title' => 'Fiyatlandırma – AiTut',
+    'pricing.page_title' => 'Fiyatlandırma – Jumplearner',
     'pricing.heading' => 'Akıcılığa giden yolunuzu seçin',
     'pricing.subtitle' => 'Kişiselleştirilmiş günlük derslere, CEFR seviyeli yapay zeka konuşmalarına ve akıllı dil bilgisi analizine erişin.',
     'pricing.paddle_pending_title' => 'Paddle Entegrasyonu Bekleniyor',
@@ -386,7 +386,7 @@ return [
     'pricing.timeout_chat' => 'Sohbete Git',
 
     // ── Dashboard ───────────────────────────────────────────
-    'dash.page_title' => 'Kontrol Paneli – AiTut',
+    'dash.page_title' => 'Kontrol Paneli – Jumplearner',
     'dash.greeting' => 'Merhaba, %s',
     'dash.keep_momentum' => 'Momentumu koruyun!',
     'dash.level_xp' => 'Seviye %d',
@@ -411,10 +411,10 @@ return [
     'dash.level_up_btn' => 'Şimdi Pratik Yap',
 
     // ── Home ────────────────────────────────────────────────
-    'home.page_title' => 'AiTut – AI Dil Öğretmeni',
+    'home.page_title' => 'Jumplearner – AI Dil Öğretmeni',
     'home.badge' => 'AI Konuşma Koçu',
     'home.heading' => 'Herhangi bir dili<br /><span class="text-primary">AI öğretmeninizle</span> öğrenin',
-    'home.subtitle' => 'Çoğu uygulama sana çoktan seçmeli cevaplar tıklattırır. AiTut\'ta gerçek konuşmalar yaparsın — anında düzeltme alır, tam CEFR seviyene uyarlanmış bir öğretmenle çalışırsın.',
+    'home.subtitle' => 'Çoğu uygulama sana çoktan seçmeli cevaplar tıklattırır. Jumplearner\'da gerçek konuşmalar yaparsın — anında düzeltme alır, tam CEFR seviyene uyarlanmış bir öğretmenle çalışırsın.',
     'home.get_started' => 'Ücretsiz başla',
     'home.continue_learning' => 'Öğrenmeye Devam Et',
     'home.read_blog' => 'Blogu oku',
@@ -426,7 +426,7 @@ return [
     'home.feature_3_desc' => 'Her konuşmadaki yeni kelimeler otomatik olarak tekrar için kaydedilir.',
 
     // ── Chat Tips / Instructions ────────────────────────────
-    'tips.page_title' => 'Sohbet Talimatları – AiTut',
+    'tips.page_title' => 'Sohbet Talimatları – Jumplearner',
     'tips.heading' => 'Sohbet Talimatları',
     'tips.subtitle' => 'Kai ile nasıl konuşulur ve derslerden en iyi şekilde nasıl yararlanılır.',
     'tips.section_1_title' => '1. Kai Kimdir?',
@@ -456,7 +456,7 @@ return [
     'tips.section_4_tip_4' => 'Güven kazanmak için aynı konuyu tekrarlamaktan çekinmeyin.',
 
     // ── Footer ──────────────────────────────────────────────
-    'footer.copyright' => '© %d AiTut – AI Dil Öğretmeni',
+    'footer.copyright' => '© %d Jumplearner – AI Dil Öğretmeni',
     'footer.privacy' => 'Gizlilik Politikası',
     'footer.terms' => 'Kullanım Koşulları',
     'footer.refund' => 'İade Politikası',
@@ -474,11 +474,11 @@ return [
     'blog.back_to_blog' => 'Bloga dön',
 
     // ── About Page ──────────────────────────────────────────
-    'about.page_title' => 'Hakkında – AiTut',
-    'about.heading' => 'AiTut Hakkında',
+    'about.page_title' => 'Hakkında – Jumplearner',
+    'about.heading' => 'Jumplearner Hakkında',
     'about.tagline' => 'Elit Dil Öğrenimi',
     'about.mission_title' => 'Misyonumuz',
-    'about.mission_1' => 'AiTut, son teknoloji AI teknolojisini kullanarak son derece uyarlanabilir, kişiselleştirilmiş bir AI dil öğrenme arkadaşı sunarak dil engellerini kırmak için tasarlanmıştır. Öğrencilerin gerçek dünya güveni oluşturmasına, kelime dağarcığını genişletmesine ve kendi hızlarında konuşma stillerinde ustalaşmasına yardımcı oluyoruz.',
+    'about.mission_1' => 'Jumplearner, son teknoloji AI teknolojisini kullanarak son derece uyarlanabilir, kişiselleştirilmiş bir AI dil öğrenme arkadaşı sunarak dil engellerini kırmak için tasarlanmıştır. Öğrencilerin gerçek dünya güveni oluşturmasına, kelime dağarcığını genişletmesine ve kendi hızlarında konuşma stillerinde ustalaşmasına yardımcı oluyoruz.',
     'about.features_title' => 'Temel Özellikler',
     'about.feature_1_title' => 'CEFR Uyumlu',
     'about.feature_1_desc' => 'AI öğretmenimiz, kelime dağarcığını, dil bilgisi karmaşıklığını ve yanıtları mevcut CEFR seviyenize (A1\'den C2\'ye) göre otomatik olarak ayarlar.',
@@ -490,7 +490,7 @@ return [
     'about.feature_4_desc' => 'İstediğiniz zaman, istediğiniz yerde pratik yapın. Kişiselleştirilmiş dil asistanınız yolculuğunuzu desteklemek için her zaman çevrimiçidir.',
 
     // ── Contact Page ────────────────────────────────────────
-    'contact.page_title' => 'İletişim – AiTut',
+    'contact.page_title' => 'İletişim – Jumplearner',
     'contact.heading' => 'Bize Ulaşın',
     'contact.subtitle' => 'Sizden haber almayı çok isteriz. Aşağıdaki formu doldurun.',
     'contact.intro' => 'Aşağıdaki formu doldurabilir veya doğrudan destek ekibimizle iletişime geçebilirsiniz.',
@@ -505,11 +505,11 @@ return [
     'contact.email_desc' => 'Genellikle 24 saat içinde yanıt veriyoruz.',
 
     // ── FAQ Page ────────────────────────────────────────────
-    'faq.page_title' => 'SSS – AiTut',
+    'faq.page_title' => 'SSS – Jumplearner',
     'faq.heading' => 'Sıkça Sorulan Sorular',
-    'faq.subtitle' => 'AiTut hakkında sık sorulan soruların yanıtları.',
-    'faq.q1' => 'AiTut nedir ve nasıl çalışır?',
-    'faq.a1_1' => 'AiTut, AI destekli bir konuşmalı dil öğretmenidir. Gerçek hayattaki sohbet senaryolarını simüle ederek hedef dilinizde pratik yapmanızı sağlar. Hata yaptığınızda, AI anında düzeltmeler ve açıklamalar sağlar.',
+    'faq.subtitle' => 'Jumplearner hakkında sık sorulan soruların yanıtları.',
+    'faq.q1' => 'Jumplearner nedir ve nasıl çalışır?',
+    'faq.a1_1' => 'Jumplearner, AI destekli bir konuşmalı dil öğretmenidir. Gerçek hayattaki sohbet senaryolarını simüle ederek hedef dilinizde pratik yapmanızı sağlar. Hata yaptığınızda, AI anında düzeltmeler ve açıklamalar sağlar.',
     'faq.q2' => 'Hangi diller destekleniyor?',
     'faq.a2_1' => 'İngilizce, İspanyolca, Almanca, Fransızca, Çince, Japonca, Arapça ve daha fazlasında pratik yapabilirsiniz. Kayıt sırasında ana dilinizi ve öğrenmek istediğiniz hedef dili seçebilirsiniz.',
     'faq.q3' => 'AI seviyeme nasıl uyum sağlar?',
@@ -520,9 +520,9 @@ return [
     'faq.a5_1' => 'Evet, memnun kalmamanız durumunda ilk satın alma işleminiz için 30 günlük tam para iade politikamız bulunmaktadır. Destek ekibimizle iletişime geçin veya daha fazla bilgi için İade Politikası sayfamızı okuyun.',
 
     // ── Privacy Policy ──────────────────────────────────────
-    'privacy.page_title' => 'Gizlilik Politikası – AiTut',
+    'privacy.page_title' => 'Gizlilik Politikası – Jumplearner',
     'privacy.heading' => 'Gizlilik Politikası',
-    'privacy.intro' => 'AiTut olarak gizliliğinize saygı duyuyor ve kişisel verilerinizi korumaya kararlıyız. Bu gizlilik politikası, hizmetimizi kullanırken bilgilerinizi nasıl topladığımızı, işlediğimizi ve koruduğumuzu açıklar.',
+    'privacy.intro' => 'Jumplearner olarak gizliliğinize saygı duyuyor ve kişisel verilerinizi korumaya kararlıyız. Bu gizlilik politikası, hizmetimizi kullanırken bilgilerinizi nasıl topladığımızı, işlediğimizi ve koruduğumuzu açıklar.',
     'privacy.s1_title' => '1. Topladığımız Bilgiler',
     'privacy.s1_intro' => 'Kişiselleştirilmiş bir dil öğrenme deneyimi sunmak için bilgi topluyoruz:',
     'privacy.s1_1' => '<strong>Hesap Bilgileri:</strong> Ad, e-posta adresi, şifre ve kayıt tarihi.',
@@ -543,29 +543,29 @@ return [
     'privacy.s4_body' => 'Bilgilerinizi korumak için güvenli veritabanı prosedürleri ve şifreleme kullanıyoruz. Hizmetimiz, Genel Veri Koruma Yönetmeliği (GDPR) standartlarına uygundur. Destek ekibimizle iletişime geçerek kişisel verilerinize erişim, düzeltme veya silme talebinde bulunma hakkına sahipsiniz.',
 
     // ── Terms & Conditions ──────────────────────────────────
-    'terms.page_title' => 'Kullanım Koşulları – AiTut',
+    'terms.page_title' => 'Kullanım Koşulları – Jumplearner',
     'terms.heading' => 'Kullanım Koşulları',
-    'terms.intro' => 'AiTut\'a hoş geldiniz. Web sitemize veya hizmetlerimize erişerek veya bunları kullanarak, aşağıdaki kullanım koşullarına uymayı ve bunlarla bağlı olmayı kabul edersiniz.',
+    'terms.intro' => 'Jumplearner\'a hoş geldiniz. Web sitemize veya hizmetlerimize erişerek veya bunları kullanarak, aşağıdaki kullanım koşullarına uymayı ve bunlarla bağlı olmayı kabul edersiniz.',
     'terms.seller_title' => 'Satıcı Bilgileri',
-    'terms.seller_body' => 'AiTut, İstanbul, Türkiye merkezli bireysel bir satıcı (şahıs) olan Tolga Ayberk Gültekin tarafından sahiplenilmekte ve işletilmektedir. Bu koşullarla ilgili sorularınız için bize info@jumplearner.com adresinden ulaşabilirsiniz.',
+    'terms.seller_body' => 'Jumplearner, İstanbul, Türkiye merkezli bireysel bir satıcı (şahıs) olan Tolga Ayberk Gültekin tarafından sahiplenilmekte ve işletilmektedir. Bu koşullarla ilgili sorularınız için bize info@jumplearner.com adresinden ulaşabilirsiniz.',
     'terms.s1_title' => '1. Yetkili Kullanım',
-    'terms.s1_body' => 'AiTut\'u kullanarak, hizmeti yalnızca kişisel, ticari olmayan dil öğrenme amaçları için kullanmayı kabul edersiniz. Açık izin olmadan hesabınıza erişimi paylaşamaz veya hizmeti üçüncü taraf eğitimi için kullanamazsınız.',
+    'terms.s1_body' => 'Jumplearner\'ı kullanarak, hizmeti yalnızca kişisel, ticari olmayan dil öğrenme amaçları için kullanmayı kabul edersiniz. Açık izin olmadan hesabınıza erişimi paylaşamaz veya hizmeti üçüncü taraf eğitimi için kullanamazsınız.',
     'terms.s2_title' => '2. Kısıtlamalar',
     'terms.s2_intro' => 'Aşağıdakileri yapmaya teşebbüs edemezsiniz:',
-    'terms.s2_1' => 'AiTut\'un kod tabanını veya temel AI mekanizmalarını tersine mühendislik, derleme veya kopyalama.',
+    'terms.s2_1' => 'Jumplearner\'ın kod tabanını veya temel AI mekanizmalarını tersine mühendislik, derleme veya kopyalama.',
     'terms.s2_2' => 'Sohbet geçmişlerini veya kelime kayıtlarını kazıma, veri alımını otomatikleştirme veya sistematik olarak indirme.',
     'terms.s2_3' => 'Performansı düşürecek şekilde AI uç noktalarını veya ağ protokollerini kötüye kullanma veya aşırı yükleme.',
     'terms.s3_title' => '3. Hesap Askıya Alma',
-    'terms.s3_body' => 'AiTut, bu koşulları ihlal eden, sahtekarlık faaliyetlerinde bulunan veya platform altyapısına karşı kötü niyetli hareket eden hesapları askıya alma veya sonlandırma hakkını saklı tutar.',
+    'terms.s3_body' => 'Jumplearner, bu koşulları ihlal eden, sahtekarlık faaliyetlerinde bulunan veya platform altyapısına karşı kötü niyetli hareket eden hesapları askıya alma veya sonlandırma hakkını saklı tutar.',
     'terms.s4_title' => '4. Değişiklikler',
     'terms.s4_body' => 'Bu koşulları zaman zaman revize edebiliriz. En güncel sürüm her zaman web sitemizde yayınlanacaktır. Değişiklikler yürürlüğe girdikten sonra hizmeti kullanmaya devam ederek, güncellenen koşullarla bağlı olmayı kabul edersiniz.',
 
     // ── Refund Policy ───────────────────────────────────────
-    'refund.page_title' => 'İade Politikası – AiTut',
+    'refund.page_title' => 'İade Politikası – Jumplearner',
     'refund.heading' => 'İade Politikası',
     'refund.intro' => 'Dil öğrenme yolculuğunuzdan tamamen memnun kalmanızı istiyoruz. Bu belge, abonelik planlarımız için iade koşullarını özetlemektedir.',
     'refund.s1_title' => '30 Gün Para İade Garantisi',
-    'refund.s1_body' => 'İlk ödemenizden itibaren <strong>30 gün</strong> içinde AiTut\'tan memnun kalmazsanız, tam para iadesi için destek ekibimizle iletişime geçin.',
+    'refund.s1_body' => 'İlk ödemenizden itibaren <strong>30 gün</strong> içinde Jumplearner\'dan memnun kalmazsanız, tam para iadesi için destek ekibimizle iletişime geçin.',
     'refund.s2_title' => '30 Günden Sonra',
     'refund.s2_body' => '30 günden sonra iadeler, teknik sorunlar, hesap kullanımı ve platform uyumluluğuna bağlı olarak duruma göre değerlendirilir.',
     'refund.s3_title' => 'Aboneliğinizi İptal Etme',
@@ -574,7 +574,7 @@ return [
     'refund.s4_body' => 'Talep göndermek için <a href="?page=contact" class="text-primary hover:underline font-medium">İletişim Sayfamız</a> üzerinden bize ulaşın veya kayıtlı e-posta adresinizi ve satın alma bilgilerinizi içeren bir e-postayı info@jumplearner.com adresine gönderin.',
 
     // ── Cookie Policy ───────────────────────────────────────
-    'cookie.page_title' => 'Çerez Politikası – AiTut',
+    'cookie.page_title' => 'Çerez Politikası – Jumplearner',
     'cookie.heading' => 'Çerez Politikası',
     'cookie.intro' => 'Web sitemiz, kullanıcı deneyiminizi geliştirmek, trafiği analiz etmek ve içeriği kişiselleştirmek için çerezler kullanır. Web sitemizde gezinmeye devam ederek çerez kullanımımızı kabul etmiş olursunuz.',
     'cookie.s1_title' => 'Çerezler Nedir?',
@@ -584,15 +584,15 @@ return [
     'cookie.s2_2' => '<strong>Tercih Çerezleri:</strong> Öğrenme seçimlerinizi, ana ve hedef dillerinizi ve seviyenizi hatırlamak için kullanılır.',
     'cookie.s2_3' => '<strong>Üçüncü Taraf Çerezleri:</strong> Ödeme işlemlerini ve güvenli işlem doğrulamasını yönetmek için Paddle gibi bileşenler tarafından ayarlanır.',
     'cookie.s3_title' => 'Çerezleri Yönetme',
-    'cookie.s3_body' => 'Tarayıcı ayarlarınızı kullanarak çerezleri kısıtlayabilir veya engelleyebilirsiniz. Ancak, zorunlu çerezleri devre dışı bırakmak, AiTut\'un etkileşimli özel ders özelliklerini kullanmanızı engelleyebilir.',
+    'cookie.s3_body' => 'Tarayıcı ayarlarınızı kullanarak çerezleri kısıtlayabilir veya engelleyebilirsiniz. Ancak, zorunlu çerezleri devre dışı bırakmak, Jumplearner\'ın etkileşimli özel ders özelliklerini kullanmanızı engelleyebilir.',
     'cookie.privacy_link' => 'Kişisel verilerinizi nasıl koruduğumuz hakkında detaylı bilgi için lütfen <a href="?page=privacy-policy" class="text-primary hover:underline font-medium">Gizlilik Politikamıza</a> bakın.',
 
     // ── License Agreement ───────────────────────────────────
-    'license.page_title' => 'Lisans Sözleşmesi – AiTut',
+    'license.page_title' => 'Lisans Sözleşmesi – Jumplearner',
     'license.heading' => 'Lisans Sözleşmesi',
-    'license.intro' => 'Bu Son Kullanıcı Lisans Sözleşmesi, AiTut uygulamasını ve hizmetlerini kullanımınızı düzenler. Hizmete erişerek bu koşulları kabul etmiş olursunuz.',
+    'license.intro' => 'Bu Son Kullanıcı Lisans Sözleşmesi, Jumplearner uygulamasını ve hizmetlerini kullanımınızı düzenler. Hizmete erişerek bu koşulları kabul etmiş olursunuz.',
     'license.s1_title' => '1. Lisansın Verilmesi',
-    'license.s1_body' => 'AiTut size, hizmeti yalnızca bireysel, kişisel dil öğrenme amaçları için kullanmak üzere kişisel, devredilemez, münhasır olmayan, geri alınabilir bir lisans verir.',
+    'license.s1_body' => 'Jumplearner size, hizmeti yalnızca bireysel, kişisel dil öğrenme amaçları için kullanmak üzere kişisel, devredilemez, münhasır olmayan, geri alınabilir bir lisans verir.',
     'license.s2_title' => '2. Sınırlamalar',
     'license.s2_body' => 'Bu lisans, hizmeti veya web sitesi düzeninin ve özel ders modeli çıktılarının herhangi bir bölümünü yeniden dağıtma, kopyalama, alt lisanslama, kiralama, çevirme, değiştirme veya ticari olarak kullanma hakları vermez.',
     'license.s3_title' => '3. Fesih',
@@ -677,7 +677,7 @@ return [
     'error.generic' => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.',
 
     // ── Alphabet ────────────────────────────────────────────
-    'alphabet.page_title' => 'Alfabe – AiTut',
+    'alphabet.page_title' => 'Alfabe – Jumplearner',
     'alphabet.subtitle_default' => 'Hedef dilinin harflerini ve seslerini öğrenin.',
     'alphabet.subtitle_tr' => 'Türkçe\'nin 29 harfini öğrenin.',
     'alphabet.subtitle_en' => 'İngiliz alfabesinin 26 harfini öğrenin.',
@@ -735,7 +735,7 @@ return [
     'dash.mistakes' => 'Hatalarım',
     'dash.mistakes_title' => 'Hatalarını tekrar et',
     'dash.mistakes_desc' => 'Sohbetlerinden %d düzeltme seni bekliyor. Bir daha yapmamak için çalış!',
-    'mis.page_title' => 'Hatalarım – AiTut',
+    'mis.page_title' => 'Hatalarım – Jumplearner',
     'mis.heading' => 'Hatalarım',
     'mis.subtitle' => 'Sohbetlerinde düzeltilen her hata burada toplanır. Kalıcı olana kadar çalış.',
     'mis.stat_active' => 'Tekrar edilecek',

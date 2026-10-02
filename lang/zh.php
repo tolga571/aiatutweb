@@ -83,10 +83,10 @@ return [
     'auth.reset_password_btn' => '重置密码',
     'auth.reset_invalid_token' => '此重置链接无效或已过期。',
     'auth.back_to_login' => '返回登录',
-    'auth.reset_email_subject' => '重置您的 AiTut 密码',
+    'auth.reset_email_subject' => '重置您的 Jumplearner 密码',
     'auth.reset_email_body' => '我们收到了重置您密码的请求。请点击下方链接设置新密码。此链接将在1小时后失效，且只能使用一次。如果这不是您本人的操作，请忽略此邮件。',
     'auth.verify_email_subject' => '请验证您的邮箱地址',
-    'auth.verify_email_body' => '感谢您注册 AiTut!请点击下方链接验证您的邮箱地址。',
+    'auth.verify_email_body' => '感谢您注册 Jumplearner!请点击下方链接验证您的邮箱地址。',
     'account.wrong_password' => '密码错误。',
     'account.delete_heading' => '删除账户',
     'account.delete_warning' => '此操作将永久删除您的账户、对话记录和学习进度，且无法撤销。',
@@ -134,7 +134,7 @@ return [
     'dash.cefr_level' => 'CEFR 等级',
 
     // ── Chat ────────────────────────────────────────────────
-    'chat.page_title' => '聊天 – AiTut',
+    'chat.page_title' => '聊天 – Jumplearner',
     'chat.go_to_chat' => '进入聊天',
     'chat.my_profile' => '我的资料',
     'chat.profile' => '个人资料',
@@ -184,7 +184,7 @@ return [
     'chat.documents_link' => '文档',
     'chat.instructions_link' => '使用说明',
     'chat.trial_expired_title' => '免费试用已结束！',
-    'chat.trial_expired_body' => '您喜欢使用AiTut的智能AI导师练习吗？请选择一个套餐，继续您的语言学习之旅，不间断。',
+    'chat.trial_expired_body' => '您喜欢使用Jumplearner的智能AI导师练习吗？请选择一个套餐，继续您的语言学习之旅，不间断。',
     'chat.review_chat' => '回顾聊天',
     'chat.view_plans' => '查看套餐',
     'chat.http_error' => '聊天失败（HTTP 503）',
@@ -212,7 +212,7 @@ return [
     'chat.fc_definition_label' => '释义',
 
     // ── Flashcards ──────────────────────────────────────────
-    'fc.page_title' => '单词卡 – AiTut',
+    'fc.page_title' => '单词卡 – Jumplearner',
     'fc.word_list' => '单词列表',
     'fc.select_word' => '选择一个单词来学习：',
     'fc.search_words' => '搜索单词...',
@@ -284,7 +284,7 @@ return [
     'fc.import_success' => '成功导入 %d 个新单词。',
 
     // ── Pricing ─────────────────────────────────────────────
-    'pricing.page_title' => '价格 – AiTut',
+    'pricing.page_title' => '价格 – Jumplearner',
     'pricing.heading' => '选择您的流利之路',
     'pricing.subtitle' => '获取定制每日课程、CEFR分级AI对话和智能语法分析。',
     'pricing.paddle_pending_title' => 'Paddle集成待处理',
@@ -376,7 +376,7 @@ return [
     'pricing.change_error' => '无法切换您的套餐，请重试或联系客服。',
 
     // ── Dashboard ───────────────────────────────────────────
-    'dash.page_title' => '仪表盘 – AiTut',
+    'dash.page_title' => '仪表盘 – Jumplearner',
     'dash.greeting' => '您好，%s',
     'dash.keep_momentum' => '保持势头！',
     'dash.level_xp' => '等级 %d',
@@ -398,10 +398,10 @@ return [
     'dash.recent_convs' => '最近的对话',
 
     // ── Home ────────────────────────────────────────────────
-    'home.page_title' => 'AiTut – AI语言导师',
+    'home.page_title' => 'Jumplearner – AI语言导师',
     'home.badge' => 'AI对话教练',
     'home.heading' => '通过<br /><span class="text-primary">AI导师</span>学习任何语言',
-    'home.subtitle' => '大多数应用只是让你点选多选题答案。AiTut让你进行真实对话——获得即时纠错，并配备完全适应你CEFR水平的AI导师。',
+    'home.subtitle' => '大多数应用只是让你点选多选题答案。Jumplearner让你进行真实对话——获得即时纠错，并配备完全适应你CEFR水平的AI导师。',
     'home.get_started' => '免费开始',
     'home.continue_learning' => '继续学习',
     'home.read_blog' => '阅读博客',
@@ -413,7 +413,7 @@ return [
     'home.feature_3_desc' => '每次对话中的新单词都会自动保存以便复习。',
 
     // ── Chat Tips / Instructions ────────────────────────────
-    'tips.page_title' => '聊天说明 – AiTut',
+    'tips.page_title' => '聊天说明 – Jumplearner',
     'tips.heading' => '聊天说明',
     'tips.subtitle' => '如何与Kai对话并充分利用您的课程。',
     'tips.section_1_title' => '1. Kai是谁？',
@@ -443,7 +443,7 @@ return [
     'tips.section_4_tip_4' => '不要害怕重复同一主题来建立信心。',
 
     // ── Footer ──────────────────────────────────────────────
-    'footer.copyright' => '© %d AiTut – AI语言导师',
+    'footer.copyright' => '© %d Jumplearner – AI语言导师',
     'footer.privacy' => '隐私政策',
     'footer.terms' => '条款与条件',
     'footer.refund' => '退款政策',
@@ -461,11 +461,11 @@ return [
     'blog.back_to_blog' => '返回博客',
 
     // ── About Page ──────────────────────────────────────────
-    'about.page_title' => '关于 – AiTut',
-    'about.heading' => '关于AiTut',
+    'about.page_title' => '关于 – Jumplearner',
+    'about.heading' => '关于Jumplearner',
     'about.tagline' => '精英语言学习',
     'about.mission_title' => '我们的使命',
-    'about.mission_1' => 'AiTut致力于打破语言障碍，提供高度自适应、个性化的AI语言学习伴侣。通过利用最先进的AI技术，我们帮助学习者建立现实世界中的自信，扩展词汇量，并按照自己的节奏掌握对话风格。',
+    'about.mission_1' => 'Jumplearner致力于打破语言障碍，提供高度自适应、个性化的AI语言学习伴侣。通过利用最先进的AI技术，我们帮助学习者建立现实世界中的自信，扩展词汇量，并按照自己的节奏掌握对话风格。',
     'about.features_title' => '核心功能',
     'about.feature_1_title' => 'CEFR感知',
     'about.feature_1_desc' => '我们的AI导师会根据您当前的CEFR语言水平（A1至C2）自动调整词汇、语法复杂度和回复内容。',
@@ -477,7 +477,7 @@ return [
     'about.feature_4_desc' => '随时随地练习。您的个性化语言助手始终在线，支持您的学习之旅。',
 
     // ── Contact Page ────────────────────────────────────────
-    'contact.page_title' => '联系我们 – AiTut',
+    'contact.page_title' => '联系我们 – Jumplearner',
     'contact.heading' => '联系我们',
     'contact.subtitle' => '我们期待您的来信。请填写以下表单。',
     'contact.intro' => '您可以填写下面的表单或直接联系我们的支持团队。',
@@ -492,11 +492,11 @@ return [
     'contact.email_desc' => '我们通常在24小时内回复。',
 
     // ── FAQ Page ────────────────────────────────────────────
-    'faq.page_title' => '常见问题 – AiTut',
+    'faq.page_title' => '常见问题 – Jumplearner',
     'faq.heading' => '常见问题',
-    'faq.subtitle' => '查找关于AiTut的常见问题答案。',
-    'faq.q1' => '什么是AiTut，它是如何工作的？',
-    'faq.a1_1' => 'AiTut是一个AI驱动的对话式语言导师。它模拟真实聊天场景，让您用目标语言练习。当您犯错时，AI会提供即时纠正和解释。',
+    'faq.subtitle' => '查找关于Jumplearner的常见问题答案。',
+    'faq.q1' => '什么是Jumplearner，它是如何工作的？',
+    'faq.a1_1' => 'Jumplearner是一个AI驱动的对话式语言导师。它模拟真实聊天场景，让您用目标语言练习。当您犯错时，AI会提供即时纠正和解释。',
     'faq.q2' => '支持哪些语言？',
     'faq.a2_1' => '您可以练习英语、西班牙语、德语、法语、中文、日语、阿拉伯语等。在引导设置中，您可以选择母语和想要学习的目标语言。',
     'faq.q3' => 'AI如何适应我的水平？',
@@ -507,9 +507,9 @@ return [
     'faq.a5_1' => '是的。对于首次购买，如果您不满意，我们提供30天全额退款政策。请联系支持或阅读我们的退款政策页面了解更多详情。',
 
     // ── Privacy Policy ──────────────────────────────────────
-    'privacy.page_title' => '隐私政策 – AiTut',
+    'privacy.page_title' => '隐私政策 – Jumplearner',
     'privacy.heading' => '隐私政策',
-    'privacy.intro' => '在AiTut，我们尊重您的隐私并致力于保护您的个人数据。本隐私政策说明我们如何收集、处理和保护您在使用我们服务时的信息。',
+    'privacy.intro' => '在Jumplearner，我们尊重您的隐私并致力于保护您的个人数据。本隐私政策说明我们如何收集、处理和保护您在使用我们服务时的信息。',
     'privacy.s1_title' => '1. 我们收集的信息',
     'privacy.s1_intro' => '我们收集信息以提供个性化的语言学习体验：',
     'privacy.s1_1' => '<strong>账号信息：</strong>姓名、邮箱地址、密码和注册日期。',
@@ -530,29 +530,29 @@ return [
     'privacy.s4_body' => '我们部署安全的数据库程序和加密措施来保护您的信息。我们的服务符合《通用数据保护条例》（GDPR）标准。您有权随时联系支持人员请求访问、更正或删除您的个人数据。',
 
     // ── Terms & Conditions ──────────────────────────────────
-    'terms.page_title' => '条款与条件 – AiTut',
+    'terms.page_title' => '条款与条件 – Jumplearner',
     'terms.heading' => '条款与条件',
-    'terms.intro' => '欢迎使用AiTut。通过访问或使用我们的网站和服务，您同意遵守以下条款与条件。',
+    'terms.intro' => '欢迎使用Jumplearner。通过访问或使用我们的网站和服务，您同意遵守以下条款与条件。',
     'terms.seller_title' => '卖家信息',
-    'terms.seller_body' => 'AiTut 由位于土耳其伊斯坦布尔的个体经营者 Tolga Ayberk Gültekin 拥有并运营。如对本条款有任何疑问，请通过 info@jumplearner.com 与我们联系。',
+    'terms.seller_body' => 'Jumplearner 由位于土耳其伊斯坦布尔的个体经营者 Tolga Ayberk Gültekin 拥有并运营。如对本条款有任何疑问，请通过 info@jumplearner.com 与我们联系。',
     'terms.s1_title' => '1. 授权使用',
-    'terms.s1_body' => '使用AiTut即表示您同意仅将服务用于个人、非商业的语言学习目的。未经明确许可，您不得共享账号访问权限或将服务用于第三方教学。',
+    'terms.s1_body' => '使用Jumplearner即表示您同意仅将服务用于个人、非商业的语言学习目的。未经明确许可，您不得共享账号访问权限或将服务用于第三方教学。',
     'terms.s2_title' => '2. 限制',
     'terms.s2_intro' => '您不得尝试：',
-    'terms.s2_1' => '对AiTut的代码库或底层AI机制进行逆向工程、反编译或复制。',
+    'terms.s2_1' => '对Jumplearner的代码库或底层AI机制进行逆向工程、反编译或复制。',
     'terms.s2_2' => '抓取、自动化数据检索或系统化下载聊天历史或词汇记录。',
     'terms.s2_3' => '滥用或过载AI端点或网络协议，导致性能下降。',
     'terms.s3_title' => '3. 账号暂停',
-    'terms.s3_body' => '对于违反这些条款、尝试欺诈支付活动或以恶意行为对待平台基础设施的用户，AiTut保留暂停或终止账号的权利。',
+    'terms.s3_body' => '对于违反这些条款、尝试欺诈支付活动或以恶意行为对待平台基础设施的用户，Jumplearner保留暂停或终止账号的权利。',
     'terms.s4_title' => '4. 修订',
     'terms.s4_body' => '我们可能会不时修订这些条款。最新版本将始终发布在我们的网站上。在变更生效后继续使用服务即表示您同意受更新条款的约束。',
 
     // ── Refund Policy ───────────────────────────────────────
-    'refund.page_title' => '退款政策 – AiTut',
+    'refund.page_title' => '退款政策 – Jumplearner',
     'refund.heading' => '退款政策',
     'refund.intro' => '我们希望您对语言学习之旅完全满意。本文档概述了订阅套餐的退款条件。',
     'refund.s1_title' => '30天退款保证',
-    'refund.s1_body' => '如果您在首次付款后<strong>30天内</strong>对AiTut不满意，请联系支持人员获得全额退款。',
+    'refund.s1_body' => '如果您在首次付款后<strong>30天内</strong>对Jumplearner不满意，请联系支持人员获得全额退款。',
     'refund.s2_title' => '超过30天',
     'refund.s2_body' => '30天后，退款将根据技术问题、账号使用情况和平台合规性逐案处理。',
     'refund.s3_title' => '取消订阅',
@@ -561,7 +561,7 @@ return [
     'refund.s4_body' => '要提交申请，请通过我们的<a href="?page=contact" class="text-primary hover:underline font-medium">联系页面</a>联系我们，或发送包含注册邮箱地址和购买详情的电子邮件至 info@jumplearner.com。',
 
     // ── Cookie Policy ───────────────────────────────────────
-    'cookie.page_title' => 'Cookie政策 – AiTut',
+    'cookie.page_title' => 'Cookie政策 – Jumplearner',
     'cookie.heading' => 'Cookie政策',
     'cookie.intro' => '我们的网站使用Cookie来增强用户体验、分析流量和个性化内容。继续浏览我们的网站即表示您同意我们使用Cookie。',
     'cookie.s1_title' => '什么是Cookie？',
@@ -571,15 +571,15 @@ return [
     'cookie.s2_2' => '<strong>偏好Cookie：</strong>用于记住您的学习选择、母语和目标语言及水平。',
     'cookie.s2_3' => '<strong>第三方Cookie：</strong>由Paddle等组件设置，用于处理支付结账和安全交易验证。',
     'cookie.s3_title' => '管理Cookie',
-    'cookie.s3_body' => '您可以使用浏览器设置限制或阻止Cookie。但是，禁用必要Cookie可能会阻止您登录或使用AiTut的互动辅导功能。',
+    'cookie.s3_body' => '您可以使用浏览器设置限制或阻止Cookie。但是，禁用必要Cookie可能会阻止您登录或使用Jumplearner的互动辅导功能。',
     'cookie.privacy_link' => '有关我们如何保护您个人数据的详细信息，请参阅我们的<a href="?page=privacy-policy" class="text-primary hover:underline font-medium">隐私政策</a>。',
 
     // ── License Agreement ───────────────────────────────────
-    'license.page_title' => '许可协议 – AiTut',
+    'license.page_title' => '许可协议 – Jumplearner',
     'license.heading' => '许可协议',
-    'license.intro' => '本最终用户许可协议管辖您对AiTut应用和服务的使用。访问服务即表示您同意这些条款。',
+    'license.intro' => '本最终用户许可协议管辖您对Jumplearner应用和服务的使用。访问服务即表示您同意这些条款。',
     'license.s1_title' => '1. 许可授予',
-    'license.s1_body' => 'AiTut授予您个人、不可转让、非独占、可撤销的许可，仅用于个人语言学习目的的访问和使用服务。',
+    'license.s1_body' => 'Jumplearner授予您个人、不可转让、非独占、可撤销的许可，仅用于个人语言学习目的的访问和使用服务。',
     'license.s2_title' => '2. 限制',
     'license.s2_body' => '本许可不授予重新分发、复制、再许可、租赁、翻译、修改或商业利用服务或网站布局及辅导模型输出的任何部分的权利。',
     'license.s3_title' => '3. 终止',
@@ -663,7 +663,7 @@ return [
     'error.generic' => '出现问题，请重试。',
 
     // ── Alphabet ────────────────────────────────────────────
-    'alphabet.page_title' => '字母表 – AiTut',
+    'alphabet.page_title' => '字母表 – Jumplearner',
     'alphabet.subtitle_default' => '学习目标语言的字母和发音。',
     'alphabet.subtitle_tr' => '学习土耳其语29个字母。',
     'alphabet.subtitle_en' => '学习英语26个字母。',
@@ -720,7 +720,7 @@ return [
     'dash.mistakes' => '我的错误',
     'dash.mistakes_title' => '复习你的错误',
     'dash.mistakes_desc' => '你的聊天中有 %d 条纠错等待复习。彻底改掉它们！',
-    'mis.page_title' => '我的错误 – AiTut',
+    'mis.page_title' => '我的错误 – Jumplearner',
     'mis.heading' => '我的错误',
     'mis.subtitle' => '聊天中的每一条纠错都会保存在这里。反复练习直到掌握。',
     'mis.stat_active' => '待复习',

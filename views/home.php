@@ -16,7 +16,7 @@
     </div>
 
     <h1 class="font-headline-lg font-extrabold leading-none tracking-tight mb-3">
-      <span class="m-mask"><span data-m="wordmark" data-m-at=".08" class="shine-text text-[clamp(2.75rem,11vw,5.25rem)]">
+      <span class="m-mask"><span data-m="wordmark" data-m-at=".08" class="shine-text text-[clamp(1.9rem,9.5vw,5.25rem)]">
         jumplearner.com
       </span></span>
     </h1>

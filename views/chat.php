@@ -66,7 +66,7 @@ if ($quotaPercent > 75) {
       A
     </div>
     <span
-      class="font-bold text-base text-on-surface tracking-tight group-hover:text-primary transition-colors">AiTut</span>
+      class="font-bold text-base text-on-surface tracking-tight group-hover:text-primary transition-colors">Jumplearner</span>
   </a>
   <div class="hidden md:flex items-center gap-lg">
     <a href="?page=chat"

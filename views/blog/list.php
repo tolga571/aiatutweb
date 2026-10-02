@@ -1,4 +1,4 @@
-<?php $pageTitle = __('blog.heading') . ' – AiTut'; ?>
+<?php $pageTitle = __('blog.heading') . ' – Jumplearner'; ?>
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
 
