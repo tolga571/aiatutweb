@@ -169,11 +169,11 @@ class AdminRevenue {
         } elseif ($kind === 'cancel') {
             $n = $this->db->execute('UPDATE users SET cancel_handled_at = CURRENT_TIMESTAMP WHERE id = ? AND ' . self::OPEN_MANUAL_CANCEL, [$userId]);
         } else {
-            throw new \InvalidArgumentException('Bilinmeyen işlem.');
+            throw new \InvalidArgumentException(t('admin.err_unknown_action'));
         }
         if ($n === 0) {
-            throw new \InvalidArgumentException('Bu talep zaten kapatılmış ya da bulunamadı.');
+            throw new \InvalidArgumentException(t('admin.err_request_closed'));
         }
-        return $kind === 'refund' ? 'İade talebi kapatıldı.' : 'İptal talebi kapatıldı.';
+        return $kind === 'refund' ? t('admin.refund_closed') : t('admin.cancel_closed');
     }
 }

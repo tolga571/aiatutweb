@@ -269,7 +269,7 @@
     <!-- Hamburger Button (mobile) -->
     <button id="hamburgerBtn"
       class="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
-      aria-label="Toggle menu">
+      aria-label="<?= htmlspecialchars(__('nav.toggle_menu')) ?>">
       <span class="material-symbols-outlined text-[24px]">menu</span>
     </button>
   </div>
@@ -288,7 +288,7 @@
       </a>
       <button id="hamburgerCloseBtn"
         class="flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
-        aria-label="Close menu">
+        aria-label="<?= htmlspecialchars(__('nav.close_menu')) ?>">
         <span class="material-symbols-outlined text-[24px]">close</span>
       </button>
     </div>

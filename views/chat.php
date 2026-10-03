@@ -104,7 +104,7 @@ if ($quotaPercent > 75) {
             <a href="?page=dashboard" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
               role="menuitem"><?= __('chat.profile') ?></a>
             <a href="?page=chat" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
-              role="menuitem">Chat</a>
+              role="menuitem"><?= __('nav.chat') ?></a>
             <a href="?page=chat-tips" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
               role="menuitem"><?= __('chat.instructions_link') ?></a>
             <a href="?page=logout" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant text-error"
@@ -494,19 +494,19 @@ if ($quotaPercent > 75) {
         </div>
         <!-- Tabs -->
         <div class="flex bg-surface-container-high rounded-lg p-1 shrink-0 border border-outline-variant/20">
-          <button id="tab-words" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all">Words</button>
-          <button id="tab-sentences" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Sentences</button>
+          <button id="tab-words" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all"><?= __('chat.tab_words') ?></button>
+          <button id="tab-sentences" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all"><?= __('chat.tab_sentences') ?></button>
         </div>
         
         <!-- Content Area -->
         <div class="flex-1 relative min-h-[300px]">
           <!-- Words List -->
           <div id="vocab-words-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar transition-opacity duration-300">
-            <div class="text-center text-[10px] text-outline mt-4">New words will appear here...</div>
+            <div class="text-center text-[10px] text-outline mt-4" data-placeholder><?= __('chat.words_placeholder') ?></div>
           </div>
           <!-- Sentences List -->
           <div id="vocab-sentences-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="text-center text-[10px] text-outline mt-4">Sentences will appear here...</div>
+            <div class="text-center text-[10px] text-outline mt-4" data-placeholder><?= __('chat.sentences_placeholder') ?></div>
           </div>
         </div>
       </div>
@@ -1047,7 +1047,7 @@ if ($quotaPercent > 75) {
       const sentencesListEl = document.getElementById('vocab-sentences-list');
       
       if (words.length && wordsListEl) {
-        if (wordsListEl.innerHTML.includes('New words will appear here')) {
+        if (wordsListEl.querySelector('[data-placeholder]')) {
           wordsListEl.innerHTML = '';
         }
         words.forEach((w, wi) => {
@@ -1066,7 +1066,7 @@ if ($quotaPercent > 75) {
       }
 
       if ((content || translation) && sentencesListEl) {
-         if (sentencesListEl.innerHTML.includes('Sentences will appear here')) {
+         if (sentencesListEl.querySelector('[data-placeholder]')) {
            sentencesListEl.innerHTML = '';
          }
          if (content.length > 10) {
