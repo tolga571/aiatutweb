@@ -29,6 +29,7 @@ $colors = [
     'language_ai_translated' => 'purple',
     'language_ai_cleared' => 'red',
     'ui_string_edited' => 'teal',
+    'lexicon_source_visibility' => 'purple',
 ];
 $labels = [];
 foreach ($colors as $a => $c) {

@@ -1337,6 +1337,17 @@ switch ($page) {
     case 'admin-language-export':
         $adminCtrl->languageExport((string)($_GET['code'] ?? ''));
         break;
+    case 'admin-lexicon':
+        $adminCtrl->lexicon($_GET);
+        break;
+    case 'admin-lexicon-entry':
+        $adminCtrl->lexiconEntry((int)($_GET['id'] ?? 0));
+        break;
+    case 'admin-lexicon-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->lexiconAction($_POST);
+        }
+        header('Location: ?page=admin-lexicon'); exit;
     case 'admin-export':
         $adminCtrl->exportCsv($_GET['type'] ?? '');
         break;

@@ -770,6 +770,63 @@ class AdminController {
         exit;
     }
 
+    // ------------------- Lexicon -------------------
+    public function lexicon(array $query): void {
+        $this->requireAdmin();
+        $lex = new AdminLexicon($this->db);
+        $available = $lex->available();
+        $sources = $available ? $lex->sources() : [];
+        $lexLangs = $available ? $lex->languages() : [];
+        $filters = [
+            'lang' => strtolower((string)($query['lang'] ?? '')),
+            'q' => mb_substr(trim((string)($query['q'] ?? '')), 0, 80),
+            'source' => (int)($query['source'] ?? 0),
+            'exact' => !empty($query['exact']),
+        ];
+        if ($filters['lang'] === '' || !isset($lexLangs[$filters['lang']])) {
+            $filters['lang'] = isset($lexLangs['es']) ? 'es' : (string)array_key_first($lexLangs);
+        }
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $results = null;
+        if ($available && ($filters['q'] !== '' || $filters['source'] > 0)) {
+            $results = $lex->search($filters['lang'], $filters['q'], $filters['source'], $filters['exact'], $pageNum);
+        }
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/lexicon.php';
+    }
+
+    public function lexiconEntry(int $id): void {
+        $this->requireAdmin();
+        $lex = new AdminLexicon($this->db);
+        $data = $lex->available() ? $lex->entry($id) : null;
+        if (!$data) {
+            $this->flash('danger', t('admin.lex_entry_missing'));
+            header('Location: ?page=admin-lexicon');
+            exit;
+        }
+        require __DIR__ . '/../views/admin/lexicon_entry.php';
+    }
+
+    public function lexiconAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ?page=admin-lexicon');
+            exit;
+        }
+        try {
+            $vis = (string)($post['visibility'] ?? '');
+            $code = (new AdminLexicon($this->db))->setVisibility((int)($post['source_id'] ?? 0), $vis);
+            $this->audit('lexicon_source_visibility', null, "{$code}: {$vis}");
+            $this->flash('success', t('admin.lex_visibility_saved', ['code' => $code, 'v' => t('admin.lex_vis_' . $vis)]));
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ?page=admin-lexicon#sources');
+        exit;
+    }
+
     // ------------------- AI usage -------------------
     public function aiUsage(): void {
         $this->requireAdmin();
