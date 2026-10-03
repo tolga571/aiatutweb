@@ -32,7 +32,12 @@ $alphabet = $alphabets[$targetLang] ?? $alphabets['en'];
 $isRtl = ($alphabet['direction'] ?? 'ltr') === 'rtl';
 $isPinyin = ($alphabet['type'] ?? '') === 'pinyin';
 $isSyllabary = ($alphabet['type'] ?? '') === 'syllabary';
-$langNames = ['tr' => 'Türkçe', 'en' => 'English', 'de' => 'Deutsch', 'fr' => 'Français', 'es' => 'Español', 'ar' => 'العربية', 'zh' => '中文', 'ja' => '日本語'];
+$langNames = [];
+foreach (\App\Src\Language::listed('learn', $targetLang) as $code) {
+    if (isset($alphabets[$code])) {
+        $langNames[$code] = \App\Src\Language::nativeName($code);
+    }
+}
 require __DIR__ . '/../partials/head.php';
 require __DIR__ . '/../partials/navbar.php';
 ?>

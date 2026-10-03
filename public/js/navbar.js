@@ -69,6 +69,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Interface-language picker
+  const navUiSwitcher = document.getElementById('nav-ui-switcher');
+  const navUiDrop = document.getElementById('nav-ui-dropdown');
+  if (navUiSwitcher && navUiDrop) {
+    const uiBtn = navUiSwitcher.querySelector('button');
+    uiBtn?.addEventListener('click', function (e) {
+      e.stopPropagation();
+      navUiDrop.classList.toggle('hidden');
+      uiBtn.setAttribute('aria-expanded', !navUiDrop.classList.contains('hidden'));
+    });
+    document.addEventListener('click', function (e) {
+      if (!navUiDrop.classList.contains('hidden') && !navUiSwitcher.contains(e.target)) {
+        navUiDrop.classList.add('hidden');
+        uiBtn?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   // Profile switcher toggle (click-based — group-hover doesn't work on touch)
   const navProfileSwitcher = document.getElementById('nav-profile-switcher');
   const navProfileDrop = document.getElementById('nav-profile-dropdown');

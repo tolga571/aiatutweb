@@ -25,18 +25,14 @@
       <form method="POST" action="?page=onboarding" class="space-y-5" id="onboarding-form">
         <?= csrf_field() ?>
         <?php
-        // Native & target languages: all 8 languages
-        $nativeLangOptions = [
-          'ar'=>['Arabic','sa'],'en'=>['English','us'],
-          'es'=>['Spanish','es'],'zh'=>['Chinese','cn'],'de'=>['German','de'],
-          'fr'=>['French','fr'],'ja'=>['Japanese','jp'],'tr'=>['Turkish','tr'],
-        ];
-        // Target (teachable) languages: all 8
-        $targetLangOptions = [
-          'ar'=>['Arabic','sa'],'en'=>['English','us'],'es'=>['Spanish','es'],
-          'zh'=>['Chinese','cn'],'de'=>['German','de'],'fr'=>['French','fr'],
-          'ja'=>['Japanese','jp'],'tr'=>['Turkish','tr'],
-        ];
+        // Published languages only (see Language); drafts stay reachable by direct link.
+        $nativeLangOptions = [];
+        $targetLangOptions = [];
+        foreach (\App\Src\Language::listed('learn') as $code) {
+          $opt = [htmlspecialchars(\App\Src\Language::displayName($code), ENT_QUOTES), \App\Src\Language::flagCountry($code)];
+          $nativeLangOptions[$code] = $opt;
+          $targetLangOptions[$code] = $opt;
+        }
         ?>
         <div class="grid grid-cols-2 gap-4">
           <div>

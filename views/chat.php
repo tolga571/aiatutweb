@@ -15,8 +15,7 @@ $xpInLevel = $xp % 100;
 $targetFlag = flagImg($currentUser['target_lang'] ?? 'en', 'w-6 h-4');
 $targetLang = strtolower($currentUser['target_lang'] ?? 'en');
 $topics = $chat->getTopics($currentUser['interest_area'] ?? null);
-$langNames = ['en' => 'English', 'de' => 'German', 'fr' => 'French', 'es' => 'Spanish', 'zh' => 'Chinese', 'ja' => 'Japanese', 'ar' => 'Arabic', 'tr' => 'Turkish'];
-$targetLangName = $langNames[$targetLang] ?? strtoupper($targetLang);
+$targetLangName = \App\Src\Language::langName($targetLang);
 $activeConvId = isset($_GET['conv_id']) ? (int) $_GET['conv_id'] : null;
 $userInitial = strtoupper(substr($currentUser['name'] ?? $currentUser['email'] ?? 'U', 0, 1));
 
@@ -291,7 +290,7 @@ if ($quotaPercent > 75) {
           </svg>
         </div>
         <div id="lang-dropdown" class="hidden absolute bottom-full left-0 w-full mb-1 bg-surface-container border border-outline-variant/30 rounded-xl overflow-hidden shadow-lg z-50">
-          <?php foreach(['en','de','fr','es','zh','ja','ar','tr'] as $l): if($l === $targetLang) continue; ?>
+          <?php foreach(\App\Src\Language::listed('learn') as $l): if($l === $targetLang) continue; ?>
           <a href="?page=update_lang&lang=<?= $l ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-on-surface hover:bg-surface-variant transition">
             <?= flagImg($l, 'w-4 h-3') ?>
             <?= __("languages.{$l}") ?>
@@ -362,8 +361,7 @@ if ($quotaPercent > 75) {
           <!-- Center content -->
           <div class="flex-1 flex flex-col items-center justify-center text-center">
             <?php
-            $map = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
-            $country = $map[$targetLang] ?? 'us';
+            $country = \App\Src\Language::flagCountry($targetLang) ?: 'us';
             ?>
             <div style="--i:0"
               class="m-in w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant/30 mb-4 overflow-hidden shadow-lg">

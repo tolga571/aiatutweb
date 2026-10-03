@@ -286,7 +286,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
             <div>
               <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('dash.interface_language') ?></label>
               <select name="native_lang" class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary transition appearance-none">
-                <?php foreach(['en'=>'English', 'de'=>'Deutsch', 'fr'=>'Français', 'es'=>'Español', 'tr'=>'Türkçe', 'zh'=>'中文', 'ja'=>'日本語', 'ar'=>'العربية'] as $code => $name): ?>
+                <?php foreach(\App\Src\Language::listed('ui', $user['native_lang'] ?? null) as $code): $name = htmlspecialchars(\App\Src\Language::nativeName($code)); ?>
                   <option value="<?= $code ?>" <?= ($user['native_lang'] ?? 'en') === $code ? 'selected' : '' ?>><?= $name ?></option>
                 <?php endforeach; ?>
               </select>

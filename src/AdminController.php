@@ -33,8 +33,9 @@ class AdminController {
 
     /** Ensure the current user is an admin */
     private function requireAdmin(): void {
-        // The admin panel is Turkish regardless of any site user's language.
-        Language::load('tr');
+        // The admin panel has its own language (default Turkish), separate
+        // from the site's interface language.
+        Language::load(self::adminLang());
         $adminId = $_SESSION['admin_id'] ?? null;
         if (!$adminId) {
             header('Location: ?page=admin-login');
@@ -64,6 +65,29 @@ class AdminController {
         $this->currentAdmin = $admin;
     }
 
+    public const ADMIN_LANG_COOKIE = 'jl_admin_lang';
+    public const ADMIN_DEFAULT_LANG = 'tr';
+
+    /** The admin panel's interface language: its own cookie, else Turkish. */
+    public static function adminLang(): string {
+        $c = (string)($_COOKIE[self::ADMIN_LANG_COOKIE] ?? '');
+        return ($c !== '' && Language::isUsable($c, 'ui')) ? $c : self::ADMIN_DEFAULT_LANG;
+    }
+
+    /** Switches the admin panel language (?page=admin-lang&lang=xx) and goes back. */
+    public function setAdminLang(string $lang): void {
+        $this->requireAdmin();
+        if (Language::isUsable($lang, 'ui')) {
+            setcookie(self::ADMIN_LANG_COOKIE, $lang, [
+                'expires' => time() + 86400 * 365, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax',
+                'secure' => (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            ]);
+        }
+        $back = (string)($_GET['back'] ?? '');
+        header('Location: ' . (preg_match('/^\?page=admin-[a-z0-9-]+[^\r\n]*$/', $back) ? $back : '?page=admin-dashboard'));
+        exit;
+    }
+
     /** The logged-in admin row, set by requireAdmin() (for the layout header). */
     private ?array $currentAdmin = null;
 
@@ -90,7 +114,7 @@ class AdminController {
 
     // ------------------- Auth -------------------
     public function showLogin(): void {
-        Language::load('tr');
+        Language::load(self::adminLang());
         if (!empty($_SESSION['admin_id']) && time() - (int)($_SESSION['admin_last_seen'] ?? 0) <= self::IDLE_TIMEOUT) {
             header('Location: ?page=admin-dashboard');
             exit;
@@ -181,7 +205,7 @@ class AdminController {
     }
 
     public function showLogin2fa(): void {
-        Language::load('tr');
+        Language::load(self::adminLang());
         $admin = $this->pending2fa();
         if (!$admin) {
             $_SESSION['admin_login_error'] = 'Doğrulama süresi doldu, tekrar giriş yap.';
@@ -602,6 +626,146 @@ class AdminController {
         $this->audit('conversation_viewed', (int)$conv['user_id'], "conversation #{$convId}");
         $messages = $this->db->fetchAll('SELECT role, content, translation, correction, created_at FROM messages WHERE conversation_id = ? ORDER BY created_at ASC, id ASC', [$convId]);
         require __DIR__ . '/../views/admin/conversation_detail.php';
+    }
+
+    // ------------------- Languages & UI strings -------------------
+    public function languages(): void {
+        $this->requireAdmin();
+        $tr = new UiTranslator($this->db);
+        $registry = Language::registry();
+        $coverage = $tr->coverage();
+        $geminiReady = !empty($this->config['gemini_api_key']);
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/languages.php';
+    }
+
+    public function languagesAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ?page=admin-languages');
+            exit;
+        }
+        $tr = new UiTranslator($this->db);
+        $code = strtolower((string)($post['code'] ?? ''));
+        try {
+            switch ((string)($post['action'] ?? '')) {
+                case 'update':
+                    $status = (string)($post['status'] ?? 'draft');
+                    $tr->updateLanguage($code, $status, !empty($post['ui_enabled']), !empty($post['learn_enabled']));
+                    $this->audit('language_updated', null, "{$code}: {$status}" . (empty($post['ui_enabled']) ? ', no UI' : '') . (empty($post['learn_enabled']) ? ', not learnable' : ''));
+                    $this->flash('success', t('admin.lang_saved', ['code' => $code]));
+                    break;
+                case 'add':
+                    $tr->addLanguage($code, (string)($post['name'] ?? ''), (string)($post['native_name'] ?? ''),
+                        (string)($post['flag'] ?? ''), (string)($post['dir'] ?? 'ltr'), (string)($post['speech_locale'] ?? ''));
+                    $this->audit('language_added', null, $code);
+                    $this->flash('success', t('admin.lang_added', ['code' => $code]));
+                    break;
+                case 'clear_ai':
+                    $n = $tr->clearAi($code);
+                    $this->audit('language_ai_cleared', null, "{$code}: {$n} strings");
+                    $this->flash('success', t('admin.lang_ai_cleared', ['n' => $n, 'code' => $code]));
+                    break;
+                default:
+                    throw new \InvalidArgumentException('unknown action');
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ?page=admin-languages');
+        exit;
+    }
+
+    /** JSON: translates one batch of missing strings; the page calls it until remaining = 0. */
+    public function languageTranslate(array $post): void {
+        $this->requireAdmin();
+        header('Content-Type: application/json');
+        if (($_SESSION['admin_role'] ?? 'admin') !== 'admin' || !$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            echo json_encode(['ok' => false, 'error' => t('admin.csrf_failed')]);
+            exit;
+        }
+        $code = strtolower((string)($post['code'] ?? ''));
+        try {
+            $gemini = new GeminiClient($this->config['gemini_api_key'] ?? '', $this->config['gemini_api_key_backup'] ?? '');
+            $r = (new UiTranslator($this->db))->translateBatch($code, $gemini);
+            if ($r['translated'] > 0) {
+                $this->audit('language_ai_translated', null, "{$code}: +{$r['translated']}");
+            }
+            echo json_encode(['ok' => true] + $r);
+        } catch (\Throwable $e) {
+            error_log('languageTranslate: ' . $e->getMessage());
+            echo json_encode(['ok' => false, 'error' => $e instanceof \InvalidArgumentException ? $e->getMessage() : t('admin.lang_ai_failed')]);
+        }
+        exit;
+    }
+
+    public function languageStrings(array $query): void {
+        $this->requireAdmin();
+        $code = strtolower((string)($query['code'] ?? ''));
+        $lang = Language::info($code);
+        if (!$lang) {
+            header('Location: ?page=admin-languages');
+            exit;
+        }
+        $filter = in_array($query['filter'] ?? '', ['missing', 'ai', 'manual'], true) ? $query['filter'] : 'all';
+        $search = mb_substr(trim((string)($query['q'] ?? '')), 0, 100);
+        $rows = (new UiTranslator($this->db))->rows($code, $filter, $search);
+        $perPage = 50;
+        $total = count($rows);
+        $pageNo = max(1, min((int)($query['p'] ?? 1), max(1, (int)ceil($total / $perPage))));
+        $rows = array_slice($rows, ($pageNo - 1) * $perPage, $perPage);
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/language_strings.php';
+    }
+
+    public function languageStringAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        $code = strtolower((string)($post['code'] ?? ''));
+        $back = '?page=admin-language-strings&' . http_build_query([
+            'code' => $code, 'filter' => (string)($post['filter'] ?? 'all'),
+            'q' => (string)($post['q'] ?? ''), 'p' => (int)($post['p'] ?? 1),
+        ]);
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ' . $back);
+            exit;
+        }
+        $key = (string)($post['key'] ?? '');
+        $tr = new UiTranslator($this->db);
+        try {
+            if (($post['action'] ?? '') === 'reset') {
+                $tr->resetString($code, $key);
+            } else {
+                $value = trim((string)($post['value'] ?? ''));
+                if ($value === '') {
+                    throw new \InvalidArgumentException(t('admin.lang_empty_value'));
+                }
+                $tr->setString($code, $key, $value);
+            }
+            $this->audit('ui_string_edited', null, "{$code}:{$key}");
+            $this->flash('success', t('admin.lang_string_saved', ['key' => $key]));
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ' . $back . '#k-' . rawurlencode($key));
+        exit;
+    }
+
+    /** Downloads the merged strings of one language as lang/<code>.json. */
+    public function languageExport(string $code): void {
+        $this->requireAdmin();
+        $code = strtolower($code);
+        if (!Language::info($code)) {
+            http_response_code(404);
+            exit;
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $code . '.json"');
+        echo json_encode((new UiTranslator($this->db))->export($code), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
+        exit;
     }
 
     // ------------------- AI usage -------------------

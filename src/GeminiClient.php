@@ -25,6 +25,13 @@ class GeminiClient {
         $this->apiKeys = $keys;
     }
 
+    /** Overrides the model order, e.g. Flash-Lite first for cheap bulk jobs. */
+    public function useModels(array $models): void {
+        if ($models) {
+            $this->models = array_values($models);
+        }
+    }
+
     public function getLastError(): string {
         return $this->lastError;
     }

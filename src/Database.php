@@ -438,6 +438,48 @@ class Database {
             test_subscribers INTEGER NOT NULL DEFAULT 0,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
+        // Site languages (see Language): status published = listed, draft =
+        // hidden from lists but usable by direct link, disabled = rejected.
+        $this->exec("CREATE TABLE IF NOT EXISTS languages (
+            code TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            native_name TEXT NOT NULL,
+            flag TEXT NOT NULL DEFAULT '',
+            dir TEXT NOT NULL DEFAULT 'ltr',
+            speech_locale TEXT NOT NULL DEFAULT '',
+            status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('published', 'draft', 'disabled')),
+            ui_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+            learn_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+            sort_order INTEGER NOT NULL DEFAULT 100,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+        // Seeded once; after that the admin "Languages" page owns the rows.
+        $this->pdo->exec("INSERT INTO languages (code, name, native_name, flag, dir, speech_locale, status, sort_order) VALUES
+            ('en', 'English',  'English',  'us', 'ltr', 'en-US', 'published', 10),
+            ('de', 'German',   'Deutsch',  'de', 'ltr', 'de-DE', 'published', 20),
+            ('fr', 'French',   'Français', 'fr', 'ltr', 'fr-FR', 'published', 30),
+            ('es', 'Spanish',  'Español',  'es', 'ltr', 'es-ES', 'published', 40),
+            ('zh', 'Chinese',  '中文',      'cn', 'ltr', 'zh-CN', 'published', 50),
+            ('ja', 'Japanese', '日本語',    'jp', 'ltr', 'ja-JP', 'published', 60),
+            ('ar', 'Arabic',   'العربية',  'sa', 'rtl', 'ar-SA', 'published', 70),
+            ('tr', 'Turkish',  'Türkçe',   'tr', 'ltr', 'tr-TR', 'published', 80),
+            ('ru', 'Russian',  'Русский',  'ru', 'ltr', 'ru-RU', 'draft', 90),
+            ('el', 'Greek',    'Ελληνικά', 'gr', 'ltr', 'el-GR', 'draft', 100),
+            ('hi', 'Hindi',    'हिन्दी',     'in', 'ltr', 'hi-IN', 'draft', 110)
+            ON CONFLICT (code) DO NOTHING");
+        // UI strings on top of lang/<code>.json: AI translations and admin
+        // edits. Kept in the DB because Railway's filesystem is reset on deploy.
+        $this->exec("CREATE TABLE IF NOT EXISTS ui_translations (
+            lang TEXT NOT NULL,
+            key TEXT NOT NULL,
+            value TEXT NOT NULL,
+            source TEXT NOT NULL DEFAULT 'manual',
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (lang, key)
+        )");
+        // Interface language the user picked (NULL = follow native_lang).
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS ui_lang TEXT DEFAULT NULL");
         try {
             // 'admin' (full access) or 'viewer' (read-only — can see every
             // admin page but can't save settings or manage other admins).

@@ -45,8 +45,34 @@ $fastspringBilling = new \App\Src\FastSpringBilling($db, $config, $fastspringCli
 $dodoClient = new \App\Src\DodoClient($config['dodo_api_key'] ?? '', $config['dodo_environment'] ?? 'live');
 $dodoBilling = new \App\Src\DodoBilling($db, $config, $dodoClient);
 
-// Initialize language system
-$detectedLang = 'en';
+// Initialize language system. Interface language, most specific first:
+// the user's saved pick (users.ui_lang) > this browser's pick (cookie) >
+// a signed-in user's native language > English.
+Language::boot($db);
+$detectedLang = Language::DEFAULT;
+$uiCookie = (string)($_COOKIE[Language::COOKIE] ?? '');
+if ($uiCookie !== '' && Language::isUsable($uiCookie, 'ui')) {
+    $detectedLang = $uiCookie;
+}
+// ?ui_lang=xx from the language picker: remember it (cookie, and on the
+// account when signed in), then reload the same URL without the parameter.
+if (isset($_GET['ui_lang']) && is_string($_GET['ui_lang'])) {
+    $pick = strtolower($_GET['ui_lang']);
+    if (Language::isUsable($pick, 'ui')) {
+        setcookie(Language::COOKIE, $pick, [
+            'expires' => time() + 86400 * 365, 'path' => '/',
+            'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax',
+        ]);
+        if ($auth->isLoggedIn()) {
+            $db->execute('UPDATE users SET ui_lang = ? WHERE id = ?', [$pick, $auth->userId()]);
+        }
+    }
+    $q = $_GET;
+    unset($q['ui_lang']);
+    $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    header('Location: ' . $path . ($q ? '?' . http_build_query($q) : ''));
+    exit;
+}
 if ($auth->isLoggedIn()) {
     $currentUser = $auth->currentUser();
     // An admin can suspend an account (or delete it) while its session is
@@ -57,9 +83,11 @@ if ($auth->isLoggedIn()) {
         header('Location: ?page=login' . ($wasSuspended ? '&suspended=1' : ''));
         exit;
     }
-    // Use user's language preference only after onboarding is completed
-    if (!empty($currentUser['onboarding_completed'])) {
-        $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
+    if (!empty($currentUser['ui_lang']) && Language::isUsable($currentUser['ui_lang'], 'ui')) {
+        $detectedLang = $currentUser['ui_lang'];
+    } elseif ($uiCookie === '' && !empty($currentUser['onboarding_completed'])
+        && Language::isUsable($currentUser['native_lang'] ?? '', 'ui')) {
+        $detectedLang = $currentUser['native_lang'];
     }
 }
 Language::load($detectedLang);
@@ -409,7 +437,7 @@ switch ($page) {
     case 'update_lang':
         $requireAuth();
         $lang = $_GET['lang'] ?? 'en';
-        if (in_array($lang, ['en','de','fr','es','zh','ja','ar','tr'])) {
+        if (is_string($lang) && Language::isUsable($lang, 'learn')) {
             $currentUser = $auth->currentUser();
             if ($lang === ($currentUser['native_lang'] ?? '')) {
                 header('Location: ?page=chat'); exit;
@@ -1089,7 +1117,13 @@ switch ($page) {
             } elseif ($n_lang === ($dashCurrentUser['target_lang'] ?? '')) {
                 $_SESSION['pref_error'] = __('onboarding.same_lang_error');
             } else {
-                $db->execute('UPDATE users SET native_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $c_lvl, $auth->userId()]);
+                // This picker is labelled "interface language": it sets the UI
+                // language as well as the native language used in translations.
+                $uiPick = Language::isUsable($n_lang, 'ui') ? $n_lang : null;
+                $db->execute('UPDATE users SET native_lang = ?, ui_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $uiPick, $c_lvl, $auth->userId()]);
+                if ($uiPick) {
+                    setcookie(Language::COOKIE, $uiPick, ['expires' => time() + 86400 * 365, 'path' => '/', 'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax']);
+                }
                 $_SESSION['pref_saved'] = true;
             }
             header('Location: ?page=dashboard');
@@ -1275,6 +1309,33 @@ switch ($page) {
         } else {
             $adminCtrl->showLogin2fa();
         }
+        break;
+    case 'admin-lang':
+        $adminCtrl->setAdminLang((string)($_GET['lang'] ?? ''));
+        break;
+    case 'admin-languages':
+        $adminCtrl->languages();
+        break;
+    case 'admin-languages-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->languagesAction($_POST);
+        }
+        header('Location: ?page=admin-languages'); exit;
+    case 'admin-language-translate':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->languageTranslate($_POST);
+        }
+        http_response_code(405); exit;
+    case 'admin-language-strings':
+        $adminCtrl->languageStrings($_GET);
+        break;
+    case 'admin-language-string-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->languageStringAction($_POST);
+        }
+        header('Location: ?page=admin-languages'); exit;
+    case 'admin-language-export':
+        $adminCtrl->languageExport((string)($_GET['code'] ?? ''));
         break;
     case 'admin-export':
         $adminCtrl->exportCsv($_GET['type'] ?? '');

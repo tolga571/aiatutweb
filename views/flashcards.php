@@ -6,13 +6,8 @@ $currentUser = $currentUser ?? $auth->currentUser();
 $targetLang = strtolower($currentUser['target_lang'] ?? 'en');
 $nativeLang = strtolower($currentUser['native_lang'] ?? 'en');
 
-$langNames = [
-    'en' => 'English', 'de' => 'German',
-    'fr' => 'French', 'es' => 'Spanish', 'zh' => 'Chinese',
-    'ja' => 'Japanese', 'ar' => 'Arabic', 'tr' => 'Turkish',
-];
-$targetLangName = $langNames[$targetLang] ?? strtoupper($targetLang);
-$nativeLangName = $langNames[$nativeLang] ?? strtoupper($nativeLang);
+$targetLangName = \App\Src\Language::langName($targetLang);
+$nativeLangName = \App\Src\Language::langName($nativeLang);
 $targetFlag = flagImg($targetLang, 'w-6 h-4');
 $nativeFlag = flagImg($nativeLang, 'w-5 h-4');
 $rtlLangs = ['ar', 'he', 'fa', 'ur'];
