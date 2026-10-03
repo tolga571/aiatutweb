@@ -66,7 +66,7 @@ class AdminHealth {
     public function ai(): array {
         return $this->db->fetchOne(
             "SELECT COUNT(*) AS total, COUNT(*) FILTER (WHERE NOT ok) AS failed,
-                    COUNT(*) FILTER (WHERE model = 'gemini-2.5-flash-lite') AS fallback,
+                    COUNT(*) FILTER (WHERE ok AND model <> 'gemini-2.5-flash') AS fallback,
                     MAX(created_at) FILTER (WHERE ok) AS last_ok, MAX(created_at) FILTER (WHERE NOT ok) AS last_fail,
                     COALESCE(SUM(cost_usd), 0) AS cost
              FROM ai_usage WHERE created_at >= NOW() - INTERVAL '24 hours'"

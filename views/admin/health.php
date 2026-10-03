@@ -108,7 +108,7 @@ ob_start();
                 <?php foreach ([
                     ['İstek', $n($ai['total'] ?? 0)],
                     ['Hatalı', $n($ai['failed'] ?? 0) . ' (%' . number_format($aiRate, 1, ',', '.') . ')'],
-                    ['Yedek modele düşen (Flash-Lite)', $n($ai['fallback'] ?? 0)],
+                    ['Yedek modele düşen', $n($ai['fallback'] ?? 0)],
                     ['Son başarılı yanıt', $date($ai['last_ok'] ?? null) . ' · ' . $ago($ai['last_ok'] ?? null)],
                     ['Son hata', $date($ai['last_fail'] ?? null)],
                     ['Maliyet', '$' . number_format((float)($ai['cost'] ?? 0), 2, ',', '.')],

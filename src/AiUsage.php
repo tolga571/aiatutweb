@@ -9,11 +9,12 @@ namespace App\Src;
 class AiUsage {
     /**
      * USD per 1M tokens, Gemini API paid tier (ai.google.dev/gemini-api/docs/pricing,
-     * checked 2026-09-30). Thinking tokens bill at the output rate. Update
+     * checked 2026-09-30, 3.1 Flash-Lite added 2026-10-03). Thinking tokens bill at the output rate. Update
      * when Google changes prices — old rows keep the cost they were logged with.
      */
     public const PRICES = [
         'gemini-2.5-flash'      => ['in' => 0.30, 'out' => 2.50],
+        'gemini-3.1-flash-lite' => ['in' => 0.25, 'out' => 1.50],
         'gemini-2.5-flash-lite' => ['in' => 0.10, 'out' => 0.40],
         'gemini-2.5-pro'        => ['in' => 1.25, 'out' => 10.00],
     ];

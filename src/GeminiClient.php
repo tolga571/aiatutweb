@@ -3,12 +3,14 @@ namespace App\Src;
 
 class GeminiClient {
     private array $apiKeys;
-    // Tried in order. The fallback is Flash-Lite, not Pro: when Flash is
-    // overloaded, Pro (~4x Flash's price) is usually slow too, while
-    // Flash-Lite answers fast at a fraction of the cost.
+    // Tried in order. The fallback is a Flash-Lite model, not Pro: when
+    // Flash is overloaded, Pro (~4x Flash's price) is usually slow too,
+    // while Flash-Lite answers fast and costs less. gemini-2.5-flash-lite
+    // is listed but refuses new projects ("no longer available to new
+    // users", HTTP 404 — found 2026-10-03), so the fallback is 3.1.
     private array $models = [
         'gemini-2.5-flash',
-        'gemini-2.5-flash-lite',
+        'gemini-3.1-flash-lite',
     ];
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
