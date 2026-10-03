@@ -134,7 +134,7 @@ SEGMENTED RULES:
     public function handleMessage(int $userId, string $message, GeminiClient $gemini, ?int $conversationId = null, ?string $topicId = null): array {
         $remaining = $this->tokenManager->getRemaining($userId);
         if ($this->tokenManager->getRemaining($userId) <= 0) {
-            return ['error' => 'Monthly message limit reached. Check your plan limits!'];
+            return ['error' => 'Monthly message limit reached. Check your plan limits!', 'code' => 'quota_exhausted'];
         }
 
         // Cap user message to prevent token abuse
@@ -144,7 +144,7 @@ SEGMENTED RULES:
 
         $user = $this->db->fetchOne('SELECT * FROM users WHERE id = ?', [$userId]);
         if (!$user) {
-            return ['error' => 'User not found.'];
+            return ['error' => 'User not found.', 'code' => 'not_found'];
         }
 
         $targetLang  = $user['target_lang']  ?? 'en';
@@ -319,6 +319,7 @@ SEGMENTED RULES:
             $isRateLimited = (bool) preg_match('/HTTP 429|RESOURCE_EXHAUSTED|rate.?limit/i', $errorMsg);
             return [
                 'error' => $isRateLimited ? __('chat.error_rate_limited') : __('chat.error_ai_unavailable'),
+                'code' => $isRateLimited ? 'ai_rate_limited' : 'ai_unavailable',
             ];
         }
     }

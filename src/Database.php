@@ -478,6 +478,34 @@ class Database {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (lang, key)
         )");
+        // Mobile app sign-ins (see Api\Tokens): one row per device, only the
+        // SHA-256 of the bearer token is stored. Sliding 90-day expiry like
+        // the web session.
+        $this->exec("CREATE TABLE IF NOT EXISTS api_tokens (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            token_hash TEXT NOT NULL UNIQUE,
+            device TEXT NOT NULL DEFAULT '',
+            platform TEXT NOT NULL DEFAULT '',
+            app_version TEXT NOT NULL DEFAULT '',
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            last_used_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            expires_at TIMESTAMP NOT NULL
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_api_tokens_user ON api_tokens (user_id)");
+        // A user flagging an AI tutor reply as offensive / wrong. Google Play
+        // requires this for apps with AI-generated content.
+        $this->exec("CREATE TABLE IF NOT EXISTS ai_reports (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            message_id INTEGER REFERENCES messages(id) ON DELETE SET NULL,
+            reason TEXT NOT NULL,
+            note TEXT NOT NULL DEFAULT '',
+            message_snapshot TEXT NOT NULL DEFAULT '',
+            source TEXT NOT NULL DEFAULT 'app',
+            status TEXT NOT NULL DEFAULT 'open',
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
         // Interface language the user picked (NULL = follow native_lang).
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS ui_lang TEXT DEFAULT NULL");
         try {

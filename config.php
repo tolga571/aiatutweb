@@ -95,6 +95,13 @@ return [
 
     // Google Sign-In Client ID
     'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',
+    // Extra OAuth client IDs whose Google ID tokens are accepted by the
+    // mobile API (Android / iOS clients), comma-separated. The web client
+    // above is always accepted too.
+    'google_mobile_client_ids' => array_values(array_filter(array_map('trim', explode(',', getenv('GOOGLE_MOBILE_CLIENT_IDS') ?: '')))),
+    // Oldest mobile app version the API still serves; older apps are told to
+    // update (see /api/v1/config).
+    'mobile_min_version' => getenv('MOBILE_MIN_VERSION') ?: '1.0.0',
 
     // Mailtrap Email Sending
     'mailtrap_api_token'      => getenv('MAILTRAP_API_TOKEN') ?: '',
