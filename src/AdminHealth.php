@@ -103,38 +103,38 @@ class AdminHealth {
         $value = fn(string $label, $v, string $status = 'info') => [$label, $status, $set((string)$v) ? (string)$v : '—'];
         $provider = $c['payment_provider'] ?? 'paddle';
         return [
-            'Genel' => [
-                $value('Aktif ödeme sağlayıcısı', $provider, $provider === 'dodo' ? 'ok' : 'warn'),
-                [ 'Veritabanı bağlantısı', $set($c['db_url'] ?? '') ? 'ok' : 'missing', null ],
-                $value('Animasyonlar (MOTION_ENABLED)', ($c['motion_enabled'] ?? true) ? 'açık' : 'kapalı'),
+            t('admin.nav_general') => [
+                $value(t('admin.cfg_active_provider'), $provider, $provider === 'dodo' ? 'ok' : 'warn'),
+                [ t('admin.cfg_db_connection'), $set($c['db_url'] ?? '') ? 'ok' : 'missing', null ],
+                $value(t('admin.cfg_motion'), ($c['motion_enabled'] ?? true) ? t('admin.on') : t('admin.off')),
             ],
-            'Yapay zekâ (Gemini)' => [
+            t('admin.cfg_ai_group') => [
                 $secret('GEMINI_API_KEY', $c['gemini_api_key'] ?? ''),
-                $secret('GEMINI_API_KEY_BACKUP (yedek)', $c['gemini_api_key_backup'] ?? '', 'warn'),
+                $secret(t('admin.cfg_gemini_backup'), $c['gemini_api_key_backup'] ?? '', 'warn'),
             ],
-            'Dodo Payments (canlı)' => [
-                $value('Ortam', $c['dodo_environment'] ?? '', ($c['dodo_environment'] ?? '') === 'live' ? 'ok' : 'warn'),
+            t('admin.cfg_dodo_group') => [
+                $value(t('admin.environment'), $c['dodo_environment'] ?? '', ($c['dodo_environment'] ?? '') === 'live' ? 'ok' : 'warn'),
                 $secret('DODO_API_KEY', $c['dodo_api_key'] ?? ''),
                 $secret('DODO_WEBHOOK_SECRET', $c['dodo_webhook_secret'] ?? ''),
-                $value('Starter aylık / yıllık', ($c['dodo_product_paths']['starter']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['starter']['year'] ?? '')),
-                $value('Pro aylık / yıllık', ($c['dodo_product_paths']['pro']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['pro']['year'] ?? '')),
-                $value('Premium aylık / yıllık', ($c['dodo_product_paths']['active']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['active']['year'] ?? '')),
+                $value(t('admin.cfg_starter_paths'), ($c['dodo_product_paths']['starter']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['starter']['year'] ?? '')),
+                $value(t('admin.cfg_pro_paths'), ($c['dodo_product_paths']['pro']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['pro']['year'] ?? '')),
+                $value(t('admin.cfg_premium_paths'), ($c['dodo_product_paths']['active']['month'] ?? '') . ' / ' . ($c['dodo_product_paths']['active']['year'] ?? '')),
             ],
             'Paddle (test)' => [
-                $value('Ortam', $c['paddle_environment'] ?? '', ($c['paddle_environment'] ?? '') === 'production' ? 'ok' : 'info'),
+                $value(t('admin.environment'), $c['paddle_environment'] ?? '', ($c['paddle_environment'] ?? '') === 'production' ? 'ok' : 'info'),
                 $secret('PADDLE_API_KEY', $c['paddle_api_key'] ?? '', 'info'),
                 $secret('PADDLE_WEBHOOK_SECRET', $c['paddle_webhook_secret'] ?? '', 'info'),
                 $secret('PADDLE_CLIENT_TOKEN', $c['paddle_client_token'] ?? '', 'info'),
             ],
             'FastSpring' => [
-                $value('Ortam', $c['fastspring_environment'] ?? ''),
+                $value(t('admin.environment'), $c['fastspring_environment'] ?? ''),
                 $secret('FASTSPRING_API_USERNAME', $c['fastspring_api_username'] ?? '', 'info'),
                 $secret('FASTSPRING_WEBHOOK_SECRET', $c['fastspring_webhook_secret'] ?? '', 'info'),
             ],
-            'E-posta ve giriş' => [
-                $secret('MAILTRAP_API_TOKEN (doğrulama / şifre sıfırlama e-postaları)', $c['mailtrap_api_token'] ?? ''),
-                $value('Gönderen adres', $c['mail_from_address'] ?? ''),
-                $secret('GOOGLE_CLIENT_ID (Google ile giriş)', $c['google_client_id'] ?? '', 'warn'),
+            t('admin.cfg_mail_group') => [
+                $secret(t('admin.cfg_mailtrap'), $c['mailtrap_api_token'] ?? ''),
+                $value(t('admin.cfg_from_address'), $c['mail_from_address'] ?? ''),
+                $secret(t('admin.cfg_google'), $c['google_client_id'] ?? '', 'warn'),
             ],
         ];
     }

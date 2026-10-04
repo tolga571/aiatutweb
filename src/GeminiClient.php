@@ -25,6 +25,13 @@ class GeminiClient {
         $this->apiKeys = $keys;
     }
 
+    /** Overrides the model order, e.g. Flash-Lite first for cheap bulk jobs. */
+    public function useModels(array $models): void {
+        if ($models) {
+            $this->models = array_values($models);
+        }
+    }
+
     public function getLastError(): string {
         return $this->lastError;
     }
@@ -42,6 +49,35 @@ class GeminiClient {
     }
 
     public function chatWithHistory(string $message, array $history, string $systemPrompt, string $targetLang = 'en'): string {
+        // Local development without an API key: GEMINI_FAKE=1 (only ever set
+        // in a local .env) returns a canned tutor reply so the chat UI —
+        // web and app — can be exercised. Never set on Railway.
+        if (getenv('GEMINI_FAKE') === '1' && str_contains($systemPrompt, '"segmented"')) {
+            $this->lastUsage = ['model' => 'fake', 'prompt_tokens' => 0, 'output_tokens' => 0, 'thought_tokens' => 0];
+            return json_encode([
+                'content' => '¡Hola! Me llamo Kai. ¿Cómo estás hoy?',
+                'phonetic' => 'ˈola me ˈʝamo kai ˈkomo esˈtas ˈoj',
+                'literal_translation' => 'Merhaba! Kendimi çağırıyorum Kai. Nasıl buluyorsun bugün?',
+                'translation' => 'Merhaba! Benim adım Kai. Bugün nasılsın?',
+                'grammar_spotlight' => '**llamarse (ʝaˈmaɾse)** dönüşlü bir fiildir: **me llamo (me ˈʝamo)** = "benim adım".',
+                'pro_tip' => 'İspanyolcada soru cümleleri başta ters soru işaretiyle (¿) başlar.',
+                'correction' => mb_strlen($message) < 4 ? '' : 'Küçük bir düzeltme: "Hola, yo es Ali" yerine "Hola, yo soy Ali".',
+                'corrections' => mb_strlen($message) < 4 ? [] : [['original' => 'yo es', 'corrected' => 'yo soy', 'pronunciation' => 'ʝo soj', 'rule' => 'ser fiili "yo" ile "soy" olur.']],
+                'segmented' => [
+                    ['text' => '¡Hola!', 'pronunciation' => 'ˈola', 'translation' => 'merhaba'],
+                    ['text' => 'Me', 'pronunciation' => 'me', 'translation' => 'kendimi'],
+                    ['text' => 'llamo', 'pronunciation' => 'ˈʝamo', 'translation' => 'çağırırım'],
+                    ['text' => 'Kai.', 'pronunciation' => 'kai', 'translation' => 'Kai'],
+                    ['text' => '¿Cómo', 'pronunciation' => 'ˈkomo', 'translation' => 'nasıl'],
+                    ['text' => 'estás', 'pronunciation' => 'esˈtas', 'translation' => 'sın'],
+                    ['text' => 'hoy?', 'pronunciation' => 'ˈoj', 'translation' => 'bugün'],
+                ],
+                'words' => [
+                    ['word' => 'llamarse', 'pronunciation' => 'ʝaˈmaɾse', 'definition' => 'adı ... olmak'],
+                    ['word' => 'hoy', 'pronunciation' => 'ˈoj', 'definition' => 'bugün'],
+                ],
+            ], JSON_UNESCAPED_UNICODE);
+        }
         $contents = [];
 
         foreach ($history as $msg) {
@@ -63,6 +99,9 @@ class GeminiClient {
         $payload['generationConfig'] = [
             'responseMimeType' => 'application/json',
             'thinkingConfig' => ['thinkingBudget' => 0],
+            // Caps one reply's cost (~$0.01 of output at 2.5 Flash prices).
+            // Normal replies are well under this; it only stops runaways.
+            'maxOutputTokens' => 4096,
         ];
 
         $errors = [];

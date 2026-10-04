@@ -1,30 +1,27 @@
 <?php
 $title = __('admin.dashboard');
 $pageHeader = __('admin.dashboard');
-$pagePretitle = 'Genel bakış · son ' . $range . ' gün';
+$pagePretitle = t('admin.dash_pretitle', ['n' => $range]);
 
 $e = fn($v) => htmlspecialchars((string)$v);
 $n = fn($v, int $dec = 0) => number_format((float)$v, $dec, ',', '.');
 $usd = fn($v, int $dec = 2) => '$' . number_format((float)$v, $dec, ',', '.');
 $date = fn($v) => $v ? date('d.m.Y H:i', strtotime((string)$v)) : '—';
-$planLabels = ['inactive' => 'Pasif', 'trial' => 'Deneme', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
+$planLabels = ['inactive' => t('admin.plan_inactive'), 'trial' => t('admin.plan_trial'), 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
 $planLabel = function (string $plan) use ($planLabels): string {
     [$base, $test] = array_pad(explode(':', $plan, 2), 2, null);
     return ($planLabels[$base] ?? $base) . ($test ? ' (test)' : '');
 };
-$eventLabels = [
-    'subscription_started' => ['Yeni abonelik', 'green'], 'subscription_upgraded' => ['Yükseltme', 'blue'],
-    'subscription_downgraded' => ['Düşürme', 'yellow'], 'downgrade_scheduled' => ['Düşürme planlandı', 'yellow'],
-    'cancellation_requested' => ['İptal talebi', 'orange'], 'subscription_canceled' => ['İptal edildi', 'red'],
-    'cancellation_resumed' => ['İptal geri alındı', 'teal'], 'refund_requested' => ['İade talebi', 'orange'],
-    'account_deleted' => ['Hesap silindi', 'red'],
-];
+$eventLabels = [];
+foreach (['subscription_started' => 'green', 'subscription_upgraded' => 'blue', 'subscription_downgraded' => 'yellow', 'downgrade_scheduled' => 'yellow', 'cancellation_requested' => 'orange', 'subscription_canceled' => 'red', 'cancellation_resumed' => 'teal', 'refund_requested' => 'orange', 'account_deleted' => 'red'] as $type => $color) {
+    $eventLabels[$type] = [t('admin.event_' . $type), $color];
+}
 
 /** Trend badge vs the previous period; $neutral for numbers where "up" isn't good or bad. */
 $delta = function (array $k, bool $neutral = false): string {
     $cur = (float)$k['value']; $prev = (float)$k['previous'];
     if ($prev == 0.0) {
-        return $cur > 0 ? '<span class="kpi-delta text-secondary">önceki dönem: 0</span>' : '';
+        return $cur > 0 ? '<span class="kpi-delta text-secondary">' . htmlspecialchars(t('admin.prev_period_zero')) . '</span>' : '';
     }
     $pct = ($cur - $prev) / $prev * 100;
     $cls = $neutral ? 'text-secondary' : ($pct >= 0 ? 'text-up' : 'text-down');
@@ -36,9 +33,9 @@ $todoCount = count($todos['manual_cancellations']) + count($todos['refunds']);
 $aiFailRate = $todos['ai_total_24h'] ? $todos['ai_failed_24h'] / $todos['ai_total_24h'] * 100 : 0;
 
 ob_start(); ?>
-<div class="btn-group" role="group" aria-label="Tarih aralığı">
+<div class="btn-group" role="group" aria-label="<?= $e(t('admin.date_range')) ?>">
     <?php foreach ([7, 30, 90] as $d): ?>
-        <a href="?page=admin-dashboard&amp;d=<?= $d ?>" class="btn <?= $range === $d ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= $d ?> gün</a>
+        <a href="?page=admin-dashboard&amp;d=<?= $d ?>" class="btn <?= $range === $d ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= $e(t('admin.n_days', ['n' => $d])) ?></a>
     <?php endforeach; ?>
 </div>
 <?php $pageActions = ob_get_clean();
@@ -50,14 +47,14 @@ $chartData = [
     'messages' => array_map(fn($r) => (int)$r['messages'], $daily),
     'aiCost' => array_map(fn($r) => round((float)$r['ai_cost'], 4), $daily),
     'plans' => ['labels' => array_map(fn($r) => $planLabel((string)$r['plan']), $plans), 'values' => array_map(fn($r) => (int)$r['cnt'], $plans)],
-    'langs' => ['labels' => array_map(fn($r) => __('languages.' . $r['lang']), $languages), 'values' => array_map(fn($r) => (int)$r['cnt'], $languages)],
+    'langs' => ['labels' => array_map(fn($r) => \App\Src\Language::displayName($r['lang']), $languages), 'values' => array_map(fn($r) => (int)$r['cnt'], $languages)],
 ];
 $funnelSteps = [
-    ['Kayıt oldu', $funnel['registered'] ?? 0],
-    ['Onboarding tamamladı', $funnel['onboarded'] ?? 0],
-    ['Deneme / plan başlattı', $funnel['started'] ?? 0],
-    ['İlk mesajı gönderdi', $funnel['messaged'] ?? 0],
-    ['Gerçek ödeme (Dodo)', $funnel['paid'] ?? 0],
+    [t('admin.f_registered'), $funnel['registered'] ?? 0],
+    [t('admin.f_onboarded'), $funnel['onboarded'] ?? 0],
+    [t('admin.f_started'), $funnel['started'] ?? 0],
+    [t('admin.f_messaged'), $funnel['messaged'] ?? 0],
+    [t('admin.f_paid'), $funnel['paid'] ?? 0],
 ];
 
 ob_start();
@@ -65,18 +62,18 @@ ob_start();
 <?php if (empty($admin['totp_enabled_at'])): ?>
 <div class="alert alert-warning d-flex flex-wrap align-items-center gap-2" role="alert">
     <i class="ti ti-shield-exclamation fs-2"></i>
-    <div class="flex-fill">Hesabında <strong>iki adımlı doğrulama kapalı</strong>. Şifren ele geçirilirse panel de ele geçer.</div>
-    <a href="?page=admin-2fa" class="btn btn-warning btn-sm">Şimdi aç</a>
+    <div class="flex-fill"><?= t('admin.twofa_nag') ?></div>
+    <a href="?page=admin-2fa" class="btn btn-warning btn-sm"><?= $e(t('admin.turn_on_now')) ?></a>
 </div>
 <?php endif; ?>
 <!-- KPI cards -->
 <div class="row row-deck row-cards mb-3">
     <?php
     $cards = [
-        ['Yeni kayıt', $n($kpis['signups']['value']), $delta($kpis['signups']), 'user-plus', 'primary'],
-        ['Aktif kullanıcı', $n($kpis['active']['value']), $delta($kpis['active']), 'user-check', 'green'],
-        ['Gönderilen mesaj', $n($kpis['messages']['value']), $delta($kpis['messages']), 'message-circle', 'azure'],
-        ['AI maliyeti', $usd($kpis['ai_cost']['value']), $delta($kpis['ai_cost'], true), 'sparkles', 'purple'],
+        [$e(t('admin.new_signups')), $n($kpis['signups']['value']), $delta($kpis['signups']), 'user-plus', 'primary'],
+        [$e(t('admin.active_users')), $n($kpis['active']['value']), $delta($kpis['active']), 'user-check', 'green'],
+        [$e(t('admin.messages_sent')), $n($kpis['messages']['value']), $delta($kpis['messages']), 'message-circle', 'azure'],
+        [$e(t('admin.ai_cost')), $usd($kpis['ai_cost']['value']), $delta($kpis['ai_cost'], true), 'sparkles', 'purple'],
     ];
     foreach ($cards as [$label, $value, $deltaHtml, $icon, $color]): ?>
     <div class="col-6 col-lg-4 col-xl-2">
@@ -97,10 +94,10 @@ ob_start();
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <span class="avatar avatar-sm bg-yellow-lt me-2"><i class="ti ti-currency-dollar"></i></span>
-                    <div class="text-secondary small">Gerçek MRR (Dodo)</div>
+                    <div class="text-secondary small"><?= $e(t('admin.real_mrr_dodo')) ?></div>
                 </div>
                 <div class="h2 mb-1"><?= $usd($revenue['mrr']) ?></div>
-                <div class="kpi-delta text-secondary"><?= $n($revenue['real_subscribers']) ?> gerçek · <?= $n($revenue['test_subscribers']) ?> test abone</div>
+                <div class="kpi-delta text-secondary"><?= $e(t('admin.real_test_subs', ['r' => $n($revenue['real_subscribers']), 't' => $n($revenue['test_subscribers'])])) ?></div>
             </div>
         </div>
     </div>
@@ -109,10 +106,10 @@ ob_start();
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <span class="avatar avatar-sm bg-teal-lt me-2"><i class="ti ti-users"></i></span>
-                    <div class="text-secondary small">Toplam kullanıcı</div>
+                    <div class="text-secondary small"><?= $e(t('admin.total_users')) ?></div>
                 </div>
                 <div class="h2 mb-1"><?= $n($revenue['total_users']) ?></div>
-                <div class="kpi-delta text-secondary"><?= $n($revenue['trials']) ?> denemede</div>
+                <div class="kpi-delta text-secondary"><?= $e(t('admin.n_on_trial', ['n' => $n($revenue['trials'])])) ?></div>
             </div>
         </div>
     </div>
@@ -121,14 +118,14 @@ ob_start();
 <div class="row row-deck row-cards mb-3">
     <div class="col-lg-8">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Kayıtlar ve aktif kullanıcılar</h3></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.signups_active')) ?></h3></div>
             <div class="card-body"><div id="chart-users" style="min-height:280px;"></div></div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Yapılacaklar</h3>
+                <h3 class="card-title"><?= $e(t('admin.todo')) ?></h3>
                 <?php if ($todoCount): ?><span class="badge bg-orange text-white ms-auto"><?= $todoCount ?></span><?php endif; ?>
             </div>
             <div class="list-group list-group-flush overflow-auto" style="max-height:330px;">
@@ -136,7 +133,7 @@ ob_start();
                 <a href="?page=admin-payments#queue" class="list-group-item list-group-item-action">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot status-dot-animated bg-orange"></span>
-                        <div class="text-truncate"><strong>İade talebi</strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['refund_requested_at']) ?></div></div>
+                        <div class="text-truncate"><strong><?= $e(t('admin.event_refund_requested')) ?></strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['refund_requested_at']) ?></div></div>
                     </div>
                 </a>
                 <?php endforeach; ?>
@@ -144,24 +141,24 @@ ob_start();
                 <a href="?page=admin-payments#queue" class="list-group-item list-group-item-action">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot status-dot-animated bg-red"></span>
-                        <div class="text-truncate"><strong>Elle iptal gerekli</strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['cancel_requested_at']) ?></div></div>
+                        <div class="text-truncate"><strong><?= $e(t('admin.manual_cancel_needed')) ?></strong> · <?= $e($r['email']) ?><div class="text-secondary small"><?= $e($planLabel((string)$r['plan_status'])) ?> · <?= $date($r['cancel_requested_at']) ?></div></div>
                     </div>
                 </a>
                 <?php endforeach; ?>
                 <div class="list-group-item">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot <?= $aiFailRate > 5 ? 'status-dot-animated bg-red' : 'bg-green' ?>"></span>
-                        <div><strong>AI hata oranı (24 sa)</strong><div class="text-secondary small"><?= $n($todos['ai_failed_24h']) ?> / <?= $n($todos['ai_total_24h']) ?> istek · %<?= $n($aiFailRate, 1) ?></div></div>
+                        <div><strong><?= $e(t('admin.ai_error_rate_24h')) ?></strong><div class="text-secondary small"><?= $e(t('admin.ai_fail_line', ['f' => $n($todos['ai_failed_24h']), 'n' => $n($todos['ai_total_24h']), 'p' => $n($aiFailRate, 1)])) ?></div></div>
                     </div>
                 </div>
                 <div class="list-group-item">
                     <div class="d-flex align-items-center gap-2">
                         <span class="status-dot <?= $todos['admin_login_fails_24h'] >= 5 ? 'status-dot-animated bg-red' : 'bg-green' ?>"></span>
-                        <div><strong>Başarısız girişler (24 sa)</strong><div class="text-secondary small">Admin: <?= $n($todos['admin_login_fails_24h']) ?> · Kullanıcı: <?= $n($todos['user_login_fails_24h']) ?></div></div>
+                        <div><strong><?= $e(t('admin.failed_logins_24h')) ?></strong><div class="text-secondary small">Admin: <?= $n($todos['admin_login_fails_24h']) ?> · <?= $e(t('admin.user_col')) ?>: <?= $n($todos['user_login_fails_24h']) ?></div></div>
                     </div>
                 </div>
                 <?php if (!$todoCount): ?>
-                <div class="list-group-item text-secondary small"><i class="ti ti-circle-check text-green"></i> Bekleyen iade veya iptal yok.</div>
+                <div class="list-group-item text-secondary small"><i class="ti ti-circle-check text-green"></i> <?= $e(t('admin.no_pending')) ?></div>
                 <?php endif; ?>
             </div>
         </div>
@@ -171,13 +168,13 @@ ob_start();
 <div class="row row-deck row-cards mb-3">
     <div class="col-lg-8">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Mesajlar ve AI maliyeti</h3></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.messages_ai_cost')) ?></h3></div>
             <div class="card-body"><div id="chart-messages" style="min-height:280px;"></div></div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Dönüşüm hunisi</h3><span class="card-subtitle ms-2">son <?= $range ?> günde kayıt olanlar</span></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.funnel')) ?></h3><span class="card-subtitle ms-2"><?= $e(t('admin.funnel_sub', ['n' => $range])) ?></span></div>
             <div class="card-body">
                 <?php $top = max(1, (int)$funnelSteps[0][1]);
                 foreach ($funnelSteps as $i => [$label, $count]):
@@ -186,13 +183,13 @@ ob_start();
                     $step = $i > 0 && $prev > 0 ? $count / $prev * 100 : null; ?>
                 <div class="mb-3">
                     <div class="d-flex justify-content-between small mb-1">
-                        <span><?= $label ?></span>
+                        <span><?= $e($label) ?></span>
                         <span class="fw-semibold"><?= $n($count) ?><?= $step !== null ? ' <span class="text-secondary fw-normal">(%' . $n($step) . ')</span>' : '' ?></span>
                     </div>
                     <div class="progress progress-sm"><div class="progress-bar" style="width: <?= round($pct, 1) ?>%; opacity: <?= 1 - $i * .13 ?>;"></div></div>
                 </div>
                 <?php endforeach; ?>
-                <div class="text-secondary small">Parantez: bir önceki adıma göre geçiş oranı.</div>
+                <div class="text-secondary small"><?= $e(t('admin.funnel_note')) ?></div>
             </div>
         </div>
     </div>
@@ -201,19 +198,19 @@ ob_start();
 <div class="row row-deck row-cards mb-3">
     <div class="col-md-6 col-lg-4">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Plan dağılımı</h3></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.plan_distribution')) ?></h3></div>
             <div class="card-body"><div id="chart-plans" style="min-height:260px;"></div></div>
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Öğrenilen diller</h3></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.languages_learned')) ?></h3></div>
             <div class="card-body"><div id="chart-langs" style="min-height:260px;"></div></div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card">
-            <div class="card-header"><h3 class="card-title">Son kayıtlar</h3><a href="?page=admin-users" class="ms-auto small">Tümü</a></div>
+            <div class="card-header"><h3 class="card-title"><?= $e(t('admin.recent_signups')) ?></h3><a href="?page=admin-users" class="ms-auto small"><?= $e(t('admin.lang_filter_all')) ?></a></div>
             <div class="list-group list-group-flush">
                 <?php foreach ($recentSignups as $u):
                     $isTest = $u['has_paid'] && empty($u['dodo_subscription_id']); ?>
@@ -222,23 +219,23 @@ ob_start();
                         <span class="avatar avatar-sm bg-primary-lt"><?= $e(mb_strtoupper(mb_substr($u['name'] ?: $u['email'], 0, 1))) ?></span>
                         <div class="text-truncate flex-fill" style="min-width:0;">
                             <div class="text-truncate"><?= $e($u['email']) ?></div>
-                            <div class="text-secondary small"><?= $date($u['created_at']) ?> · <?= $e(__('languages.' . ($u['target_lang'] ?: 'en'))) ?></div>
+                            <div class="text-secondary small"><?= $date($u['created_at']) ?> · <?= $e(\App\Src\Language::displayName($u['target_lang'] ?: 'en')) ?></div>
                         </div>
                         <span class="badge <?= $isTest ? 'bg-secondary-lt' : 'bg-primary-lt' ?>"><?= $e($planLabels[$u['plan_status']] ?? $u['plan_status']) ?><?= $isTest ? ' · test' : '' ?></span>
                     </div>
                 </div>
                 <?php endforeach; ?>
-                <?php if (!$recentSignups): ?><div class="list-group-item text-secondary">Henüz kayıt yok.</div><?php endif; ?>
+                <?php if (!$recentSignups): ?><div class="list-group-item text-secondary"><?= $e(t('admin.no_records_yet')) ?></div><?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
 <div class="card mb-3">
-    <div class="card-header"><h3 class="card-title">Son abonelik olayları</h3><a href="?page=admin-activity" class="ms-auto small">Tümü</a></div>
+    <div class="card-header"><h3 class="card-title"><?= $e(t('admin.recent_sub_events')) ?></h3><a href="?page=admin-activity" class="ms-auto small"><?= $e(t('admin.lang_filter_all')) ?></a></div>
     <div class="table-responsive">
         <table class="table table-vcenter card-table">
-            <thead><tr><th>Zaman</th><th>Kullanıcı</th><th>Olay</th><th>Sağlayıcı</th><th>Plan</th></tr></thead>
+            <thead><tr><th><?= $e(t('admin.col_time')) ?></th><th><?= $e(t('admin.user_col')) ?></th><th><?= $e(t('admin.col_event')) ?></th><th><?= $e(t('admin.col_provider')) ?></th><th>Plan</th></tr></thead>
             <tbody>
             <?php foreach ($recentEvents as $ev):
                 [$evLabel, $evColor] = $eventLabels[$ev['event_type']] ?? [$ev['event_type'], 'secondary']; ?>
@@ -250,7 +247,7 @@ ob_start();
                     <td><?= $e($planLabels[$ev['plan']] ?? ($ev['plan'] ?? '—')) ?></td>
                 </tr>
             <?php endforeach; ?>
-            <?php if (!$recentEvents): ?><tr><td colspan="5" class="text-secondary text-center py-4">Henüz olay yok.</td></tr><?php endif; ?>
+            <?php if (!$recentEvents): ?><tr><td colspan="5" class="text-secondary text-center py-4"><?= $e(t('admin.no_events_yet')) ?></td></tr><?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -274,7 +271,7 @@ ob_start();
 
     new ApexCharts(document.getElementById('chart-users'), merge(base, {
         chart: { type: 'area', height: 280 },
-        series: [{ name: 'Aktif kullanıcı', data: d.active }, { name: 'Yeni kayıt', data: d.signups }],
+        series: [{ name: <?= json_encode(t('admin.active_users'), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>, data: d.active }, { name: <?= json_encode(t('admin.new_signups'), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>, data: d.signups }],
         colors: ['#6d8bff', '#4ade80'],
         stroke: { curve: 'smooth', width: 2 },
         fill: { type: 'gradient', gradient: { opacityFrom: .35, opacityTo: 0 } },
@@ -283,7 +280,7 @@ ob_start();
 
     new ApexCharts(document.getElementById('chart-messages'), merge(base, {
         chart: { type: 'line', height: 280 },
-        series: [{ name: 'Mesaj', type: 'column', data: d.messages }, { name: 'AI maliyeti ($)', type: 'line', data: d.aiCost }],
+        series: [{ name: <?= json_encode(t('admin.col_messages'), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>, type: 'column', data: d.messages }, { name: <?= json_encode(t('admin.ai_cost'), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?> + ' ($)', type: 'line', data: d.aiCost }],
         colors: ['#38bdf8', '#c084fc'],
         stroke: { width: [0, 3], curve: 'smooth' },
         plotOptions: { bar: { borderRadius: 3, columnWidth: '60%' } },
@@ -299,7 +296,7 @@ ob_start();
             chart: { type: 'donut', height: 260 },
             series: data.values, labels: data.labels, colors: colors,
             legend: { position: 'bottom' }, stroke: { width: 0 },
-            plotOptions: { pie: { donut: { size: '68%', labels: { show: true, total: { show: true, label: 'Toplam', color: '#94a3b8' } } } } }
+            plotOptions: { pie: { donut: { size: '68%', labels: { show: true, total: { show: true, label: <?= json_encode(t('admin.total'), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>, color: '#94a3b8' } } } } }
         })).render();
     };
     var palette = ['#6d8bff', '#4ade80', '#38bdf8', '#c084fc', '#fbbf24', '#f87171', '#2dd4bf', '#94a3b8', '#f472b6'];

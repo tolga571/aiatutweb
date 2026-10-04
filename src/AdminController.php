@@ -33,8 +33,9 @@ class AdminController {
 
     /** Ensure the current user is an admin */
     private function requireAdmin(): void {
-        // The admin panel is Turkish regardless of any site user's language.
-        Language::load('tr');
+        // The admin panel has its own language (default Turkish), separate
+        // from the site's interface language.
+        Language::load(self::adminLang());
         $adminId = $_SESSION['admin_id'] ?? null;
         if (!$adminId) {
             header('Location: ?page=admin-login');
@@ -44,7 +45,7 @@ class AdminController {
         // its own idle timeout on top.
         if (time() - (int)($_SESSION['admin_last_seen'] ?? 0) > self::IDLE_TIMEOUT) {
             unset($_SESSION['admin_id'], $_SESSION['admin_role'], $_SESSION['admin_last_seen']);
-            $_SESSION['admin_login_error'] = 'Oturum süresi doldu, lütfen tekrar giriş yap.';
+            $_SESSION['admin_login_error'] = t('admin.err_session_expired');
             header('Location: ?page=admin-login');
             exit;
         }
@@ -62,6 +63,29 @@ class AdminController {
         // change takes effect on the admin's very next click.
         $_SESSION['admin_role'] = $admin['role'] ?? 'admin';
         $this->currentAdmin = $admin;
+    }
+
+    public const ADMIN_LANG_COOKIE = 'jl_admin_lang';
+    public const ADMIN_DEFAULT_LANG = 'en';
+
+    /** The admin panel's interface language: its own cookie, else English. */
+    public static function adminLang(): string {
+        $c = (string)($_COOKIE[self::ADMIN_LANG_COOKIE] ?? '');
+        return ($c !== '' && Language::isUsable($c, 'ui')) ? $c : self::ADMIN_DEFAULT_LANG;
+    }
+
+    /** Switches the admin panel language (?page=admin-lang&lang=xx) and goes back. */
+    public function setAdminLang(string $lang): void {
+        $this->requireAdmin();
+        if (Language::isUsable($lang, 'ui')) {
+            setcookie(self::ADMIN_LANG_COOKIE, $lang, [
+                'expires' => time() + 86400 * 365, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax',
+                'secure' => (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            ]);
+        }
+        $back = (string)($_GET['back'] ?? '');
+        header('Location: ' . (preg_match('/^\?page=admin-[a-z0-9-]+[^\r\n]*$/', $back) ? $back : '?page=admin-dashboard'));
+        exit;
     }
 
     /** The logged-in admin row, set by requireAdmin() (for the layout header). */
@@ -90,7 +114,7 @@ class AdminController {
 
     // ------------------- Auth -------------------
     public function showLogin(): void {
-        Language::load('tr');
+        Language::load(self::adminLang());
         if (!empty($_SESSION['admin_id']) && time() - (int)($_SESSION['admin_last_seen'] ?? 0) <= self::IDLE_TIMEOUT) {
             header('Location: ?page=admin-dashboard');
             exit;
@@ -124,17 +148,18 @@ class AdminController {
     }
 
     public function handleLogin(array $post): void {
+        Language::load(self::adminLang());
         $email    = trim($post['email'] ?? '');
         $password = $post['password'] ?? '';
         $csrf     = $post['csrf'] ?? '';
         $ip       = client_ip();
         if (!$this->validateCsrfToken($csrf)) {
-            $_SESSION['admin_login_error'] = 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.';
+            $_SESSION['admin_login_error'] = t('admin.csrf_failed');
             header('Location: ?page=admin-login');
             exit;
         }
         if ($this->adminLoginTooManyAttempts($ip)) {
-            $_SESSION['admin_login_error'] = 'Çok fazla başarısız deneme. 15 dakika sonra tekrar dene.';
+            $_SESSION['admin_login_error'] = t('admin.err_too_many');
             header('Location: ?page=admin-login');
             exit;
         }
@@ -152,7 +177,7 @@ class AdminController {
             $this->completeLogin($admin, 'admin_login');
         }
         $this->recordAdminLoginAttempt($ip);
-        $_SESSION['admin_login_error'] = 'E-posta veya şifre hatalı.';
+        $_SESSION['admin_login_error'] = t('admin.err_bad_login');
         header('Location: ?page=admin-login');
         exit;
     }
@@ -165,7 +190,7 @@ class AdminController {
         $_SESSION['admin_id'] = $admin['id'];
         $_SESSION['admin_last_seen'] = time();
         $this->currentAdmin = $admin;
-        $this->audit($auditAction, null, empty($admin['totp_enabled_at']) ? '2FA kapalı' : '');
+        $this->audit($auditAction, null, empty($admin['totp_enabled_at']) ? t('admin.audit_2fa_off') : '');
         header('Location: ?page=admin-dashboard');
         exit;
     }
@@ -181,10 +206,10 @@ class AdminController {
     }
 
     public function showLogin2fa(): void {
-        Language::load('tr');
+        Language::load(self::adminLang());
         $admin = $this->pending2fa();
         if (!$admin) {
-            $_SESSION['admin_login_error'] = 'Doğrulama süresi doldu, tekrar giriş yap.';
+            $_SESSION['admin_login_error'] = t('admin.err_2fa_expired');
             header('Location: ?page=admin-login');
             exit;
         }
@@ -197,22 +222,23 @@ class AdminController {
     }
 
     public function handleLogin2fa(array $post): void {
+        Language::load(self::adminLang());
         $admin = $this->pending2fa();
         $ip = client_ip();
         if (!$admin) {
-            $_SESSION['admin_login_error'] = 'Doğrulama süresi doldu, tekrar giriş yap.';
+            $_SESSION['admin_login_error'] = t('admin.err_2fa_expired');
             header('Location: ?page=admin-login');
             exit;
         }
         if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
-            $_SESSION['admin_login_error'] = 'Oturum doğrulanamadı, tekrar dene.';
+            $_SESSION['admin_login_error'] = t('admin.csrf_failed');
             header('Location: ?page=admin-login-2fa');
             exit;
         }
         // Same per-IP budget as the password step (8 tries / 15 min).
         if ($this->adminLoginTooManyAttempts($ip)) {
             unset($_SESSION['admin_2fa_pending']);
-            $_SESSION['admin_login_error'] = 'Çok fazla başarısız deneme. 15 dakika sonra tekrar dene.';
+            $_SESSION['admin_login_error'] = t('admin.err_too_many');
             header('Location: ?page=admin-login');
             exit;
         }
@@ -226,11 +252,11 @@ class AdminController {
             $this->db->execute('UPDATE admins SET totp_backup_codes = ? WHERE id = ?', [json_encode($remaining), $admin['id']]);
             $this->clearAdminLoginAttempts($ip);
             $this->currentAdmin = $admin;
-            $this->audit('admin_backup_code_used', null, count($remaining) . ' yedek kod kaldı');
+            $this->audit('admin_backup_code_used', null, t('admin.backup_codes_left', ['n' => count($remaining)]));
             $this->completeLogin($admin, 'admin_login_2fa');
         }
         $this->recordAdminLoginAttempt($ip);
-        $_SESSION['admin_login_error'] = 'Kod hatalı. Uygulamadaki güncel 6 haneli kodu ya da bir yedek kodu gir.';
+        $_SESSION['admin_login_error'] = t('admin.err_bad_code');
         header('Location: ?page=admin-login-2fa');
         exit;
     }
@@ -300,7 +326,7 @@ class AdminController {
         $usersSvc = new AdminUsers($this->db);
         $user = $usersSvc->find($id);
         if (!$user) {
-            $this->flash('danger', "#{$id} numaralı kullanıcı bulunamadı.");
+            $this->flash('danger', t('admin.err_user_id_missing', ['id' => $id]));
             header('Location: ?page=admin-users');
             exit;
         }
@@ -318,14 +344,14 @@ class AdminController {
         $id = (int)($post['id'] ?? 0);
         $back = '?page=admin-user&id=' . $id;
         if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
-            $this->flash('danger', 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.');
+            $this->flash('danger', t('admin.csrf_failed'));
             header('Location: ' . $back);
             exit;
         }
         $usersSvc = new AdminUsers($this->db);
         $user = $usersSvc->find($id);
         if (!$user) {
-            $this->flash('danger', 'Kullanıcı bulunamadı.');
+            $this->flash('danger', t('admin.err_user_missing'));
             header('Location: ?page=admin-users');
             exit;
         }
@@ -358,9 +384,9 @@ class AdminController {
                         '<p>' . __('auth.reset_email_body') . '</p><p><a href="' . htmlspecialchars($resetUrl) . '">' . htmlspecialchars($resetUrl) . '</a></p>'
                     );
                     if (!$sent) {
-                        throw new \RuntimeException('E-posta gönderilemedi (Mailtrap ayarlarını kontrol et).');
+                        throw new \RuntimeException(t('admin.err_mail_failed'));
                     }
-                    $msg = 'Şifre sıfırlama bağlantısı ' . $user['email'] . ' adresine gönderildi (1 saat geçerli).';
+                    $msg = t('admin.reset_sent', ['email' => $user['email']]);
                     $this->audit('user_password_reset_sent', $id);
                     break;
                 case 'suspend':
@@ -370,14 +396,14 @@ class AdminController {
                     break;
                 case 'delete':
                     if (mb_strtolower($value) !== mb_strtolower((string)$user['email'])) {
-                        throw new \InvalidArgumentException('Silmek için kullanıcının e-posta adresini aynen yazmalısın.');
+                        throw new \InvalidArgumentException(t('admin.err_type_email'));
                     }
                     $this->deleteUser($user);
-                    $this->flash('success', $user['email'] . ' ve tüm verileri silindi.');
+                    $this->flash('success', t('admin.user_deleted_done', ['email' => $user['email']]));
                     header('Location: ?page=admin-users');
                     exit;
                 default:
-                    throw new \InvalidArgumentException('Bilinmeyen işlem.');
+                    throw new \InvalidArgumentException(t('admin.err_unknown_action'));
             }
             $this->flash('success', $msg);
         } catch (\InvalidArgumentException | \RuntimeException $e) {
@@ -422,7 +448,7 @@ class AdminController {
         $this->requireAdmin();
         $this->requireFullAdmin();
         if (!$this->validateCsrfToken($post['csrf'] ?? '')) {
-            $_SESSION['admin_admins_error'] = 'Invalid CSRF token.';
+            $_SESSION['admin_admins_error'] = t('admin.csrf_failed');
             header('Location: ?page=admin-admins');
             exit;
         }
@@ -430,7 +456,7 @@ class AdminController {
         $password = $post['password'] ?? '';
         $role = ($post['role'] ?? 'viewer') === 'admin' ? 'admin' : 'viewer';
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 8) {
-            $_SESSION['admin_admins_error'] = 'Enter a valid email and a password of at least 8 characters.';
+            $_SESSION['admin_admins_error'] = t('admin.err_admin_form');
             header('Location: ?page=admin-admins');
             exit;
         }
@@ -442,8 +468,8 @@ class AdminController {
             $this->audit('admin_created', null, "{$email} ({$role})");
         } catch (\PDOException $e) {
             $_SESSION['admin_admins_error'] = str_contains($e->getMessage(), 'duplicate key')
-                ? 'An admin with that email already exists.'
-                : 'Could not create admin.';
+                ? t('admin.err_admin_exists')
+                : t('admin.err_admin_create');
         }
         header('Location: ?page=admin-admins');
         exit;
@@ -453,12 +479,12 @@ class AdminController {
         $this->requireAdmin();
         $this->requireFullAdmin();
         if (!$this->validateCsrfToken($_POST['csrf'] ?? '')) {
-            $_SESSION['admin_admins_error'] = 'Invalid CSRF token.';
+            $_SESSION['admin_admins_error'] = t('admin.csrf_failed');
             header('Location: ?page=admin-admins');
             exit;
         }
         if ($id === (int)($_SESSION['admin_id'] ?? 0)) {
-            $_SESSION['admin_admins_error'] = "You can't remove your own admin account.";
+            $_SESSION['admin_admins_error'] = t('admin.err_remove_self');
             header('Location: ?page=admin-admins');
             exit;
         }
@@ -501,7 +527,7 @@ class AdminController {
         $this->requireAdmin();
         $this->requireFullAdmin();
         if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
-            $this->flash('danger', 'Oturum doğrulanamadı, sayfayı yenileyip tekrar dene.');
+            $this->flash('danger', t('admin.csrf_failed'));
             header('Location: ?page=admin-payments');
             exit;
         }
@@ -509,13 +535,13 @@ class AdminController {
         $kind = (string)($post['kind'] ?? '');
         $outcome = (string)($post['outcome'] ?? '');
         $outcomes = [
-            'refund' => ['refunded' => 'iade yapıldı', 'declined' => 'iade reddedildi'],
-            'cancel' => ['canceled' => 'sağlayıcıda iptal edildi', 'kept' => 'iptal edilmedi'],
+            'refund' => ['refunded' => t('admin.o_refunded'), 'declined' => t('admin.o_refund_declined')],
+            'cancel' => ['canceled' => t('admin.o_canceled'), 'kept' => t('admin.o_kept')],
         ];
         $note = mb_substr(trim((string)($post['note'] ?? '')), 0, 300);
         try {
             if (!isset($outcomes[$kind][$outcome])) {
-                throw new \InvalidArgumentException('Sonuç seçilmeli.');
+                throw new \InvalidArgumentException(t('admin.err_pick_outcome'));
             }
             $msg = (new AdminRevenue($this->db))->resolve($userId, $kind);
             $this->audit($kind === 'refund' ? 'refund_handled' : 'cancellation_handled', $userId,
@@ -594,7 +620,7 @@ class AdminController {
             [$convId]
         );
         if (!$conv) {
-            $this->flash('danger', "#{$convId} numaralı sohbet bulunamadı.");
+            $this->flash('danger', t('admin.err_conv_missing', ['id' => $convId]));
             header('Location: ?page=admin-conversations');
             exit;
         }
@@ -602,6 +628,203 @@ class AdminController {
         $this->audit('conversation_viewed', (int)$conv['user_id'], "conversation #{$convId}");
         $messages = $this->db->fetchAll('SELECT role, content, translation, correction, created_at FROM messages WHERE conversation_id = ? ORDER BY created_at ASC, id ASC', [$convId]);
         require __DIR__ . '/../views/admin/conversation_detail.php';
+    }
+
+    // ------------------- Languages & UI strings -------------------
+    public function languages(): void {
+        $this->requireAdmin();
+        $tr = new UiTranslator($this->db);
+        $registry = Language::registry();
+        $coverage = $tr->coverage();
+        $geminiReady = !empty($this->config['gemini_api_key']);
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/languages.php';
+    }
+
+    public function languagesAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ?page=admin-languages');
+            exit;
+        }
+        $tr = new UiTranslator($this->db);
+        $code = strtolower((string)($post['code'] ?? ''));
+        try {
+            switch ((string)($post['action'] ?? '')) {
+                case 'update':
+                    $status = (string)($post['status'] ?? 'draft');
+                    $tr->updateLanguage($code, $status, !empty($post['ui_enabled']), !empty($post['learn_enabled']));
+                    $this->audit('language_updated', null, "{$code}: {$status}" . (empty($post['ui_enabled']) ? ', no UI' : '') . (empty($post['learn_enabled']) ? ', not learnable' : ''));
+                    $this->flash('success', t('admin.lang_saved', ['code' => $code]));
+                    break;
+                case 'add':
+                    $tr->addLanguage($code, (string)($post['name'] ?? ''), (string)($post['native_name'] ?? ''),
+                        (string)($post['flag'] ?? ''), (string)($post['dir'] ?? 'ltr'), (string)($post['speech_locale'] ?? ''));
+                    $this->audit('language_added', null, $code);
+                    $this->flash('success', t('admin.lang_added', ['code' => $code]));
+                    break;
+                case 'clear_ai':
+                    $n = $tr->clearAi($code);
+                    $this->audit('language_ai_cleared', null, "{$code}: {$n} strings");
+                    $this->flash('success', t('admin.lang_ai_cleared', ['n' => $n, 'code' => $code]));
+                    break;
+                default:
+                    throw new \InvalidArgumentException('unknown action');
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ?page=admin-languages');
+        exit;
+    }
+
+    /** JSON: translates one batch of missing strings; the page calls it until remaining = 0. */
+    public function languageTranslate(array $post): void {
+        $this->requireAdmin();
+        header('Content-Type: application/json');
+        if (($_SESSION['admin_role'] ?? 'admin') !== 'admin' || !$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            echo json_encode(['ok' => false, 'error' => t('admin.csrf_failed')]);
+            exit;
+        }
+        $code = strtolower((string)($post['code'] ?? ''));
+        try {
+            $gemini = new GeminiClient($this->config['gemini_api_key'] ?? '', $this->config['gemini_api_key_backup'] ?? '');
+            $r = (new UiTranslator($this->db))->translateBatch($code, $gemini);
+            if ($r['translated'] > 0) {
+                $this->audit('language_ai_translated', null, "{$code}: +{$r['translated']}");
+            }
+            echo json_encode(['ok' => true] + $r);
+        } catch (\Throwable $e) {
+            error_log('languageTranslate: ' . $e->getMessage());
+            echo json_encode(['ok' => false, 'error' => $e instanceof \InvalidArgumentException ? $e->getMessage() : t('admin.lang_ai_failed')]);
+        }
+        exit;
+    }
+
+    public function languageStrings(array $query): void {
+        $this->requireAdmin();
+        $code = strtolower((string)($query['code'] ?? ''));
+        $lang = Language::info($code);
+        if (!$lang) {
+            header('Location: ?page=admin-languages');
+            exit;
+        }
+        $filter = in_array($query['filter'] ?? '', ['missing', 'ai', 'manual'], true) ? $query['filter'] : 'all';
+        $search = mb_substr(trim((string)($query['q'] ?? '')), 0, 100);
+        $rows = (new UiTranslator($this->db))->rows($code, $filter, $search);
+        $perPage = 50;
+        $total = count($rows);
+        $pageNo = max(1, min((int)($query['p'] ?? 1), max(1, (int)ceil($total / $perPage))));
+        $rows = array_slice($rows, ($pageNo - 1) * $perPage, $perPage);
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/language_strings.php';
+    }
+
+    public function languageStringAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        $code = strtolower((string)($post['code'] ?? ''));
+        $back = '?page=admin-language-strings&' . http_build_query([
+            'code' => $code, 'filter' => (string)($post['filter'] ?? 'all'),
+            'q' => (string)($post['q'] ?? ''), 'p' => (int)($post['p'] ?? 1),
+        ]);
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ' . $back);
+            exit;
+        }
+        $key = (string)($post['key'] ?? '');
+        $tr = new UiTranslator($this->db);
+        try {
+            if (($post['action'] ?? '') === 'reset') {
+                $tr->resetString($code, $key);
+            } else {
+                $value = trim((string)($post['value'] ?? ''));
+                if ($value === '') {
+                    throw new \InvalidArgumentException(t('admin.lang_empty_value'));
+                }
+                $tr->setString($code, $key, $value);
+            }
+            $this->audit('ui_string_edited', null, "{$code}:{$key}");
+            $this->flash('success', t('admin.lang_string_saved', ['key' => $key]));
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ' . $back . '#k-' . rawurlencode($key));
+        exit;
+    }
+
+    /** Downloads the merged strings of one language as lang/<code>.json. */
+    public function languageExport(string $code): void {
+        $this->requireAdmin();
+        $code = strtolower($code);
+        if (!Language::info($code)) {
+            http_response_code(404);
+            exit;
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $code . '.json"');
+        echo json_encode((new UiTranslator($this->db))->export($code), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n";
+        exit;
+    }
+
+    // ------------------- Lexicon -------------------
+    public function lexicon(array $query): void {
+        $this->requireAdmin();
+        $lex = new AdminLexicon($this->db);
+        $available = $lex->available();
+        $sources = $available ? $lex->sources() : [];
+        $lexLangs = $available ? $lex->languages() : [];
+        $filters = [
+            'lang' => strtolower((string)($query['lang'] ?? '')),
+            'q' => mb_substr(trim((string)($query['q'] ?? '')), 0, 80),
+            'source' => (int)($query['source'] ?? 0),
+            'exact' => !empty($query['exact']),
+        ];
+        if ($filters['lang'] === '' || !isset($lexLangs[$filters['lang']])) {
+            $filters['lang'] = isset($lexLangs['es']) ? 'es' : (string)array_key_first($lexLangs);
+        }
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $results = null;
+        if ($available && ($filters['q'] !== '' || $filters['source'] > 0)) {
+            $results = $lex->search($filters['lang'], $filters['q'], $filters['source'], $filters['exact'], $pageNum);
+        }
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/lexicon.php';
+    }
+
+    public function lexiconEntry(int $id): void {
+        $this->requireAdmin();
+        $lex = new AdminLexicon($this->db);
+        $data = $lex->available() ? $lex->entry($id) : null;
+        if (!$data) {
+            $this->flash('danger', t('admin.lex_entry_missing'));
+            header('Location: ?page=admin-lexicon');
+            exit;
+        }
+        require __DIR__ . '/../views/admin/lexicon_entry.php';
+    }
+
+    public function lexiconAction(array $post): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ?page=admin-lexicon');
+            exit;
+        }
+        try {
+            $vis = (string)($post['visibility'] ?? '');
+            $code = (new AdminLexicon($this->db))->setVisibility((int)($post['source_id'] ?? 0), $vis);
+            $this->audit('lexicon_source_visibility', null, "{$code}: {$vis}");
+            $this->flash('success', t('admin.lex_visibility_saved', ['code' => $code, 'v' => t('admin.lex_vis_' . $vis)]));
+        } catch (\InvalidArgumentException $e) {
+            $this->flash('danger', $e->getMessage());
+        }
+        header('Location: ?page=admin-lexicon#sources');
+        exit;
     }
 
     // ------------------- AI usage -------------------
@@ -625,6 +848,8 @@ class AdminController {
         $prices = self::MONTHLY_PRICE_USD;
         $quota = new TokenManager($this->db);
         $modelPrices = AiUsage::PRICES;
+        $budget = (new AbuseGuard($this->db, $GLOBALS['config'] ?? (require __DIR__ . '/../config.php')))->budget();
+        $trialShare = (float)(($GLOBALS['config'] ?? [])['ai_trial_budget_share'] ?? 0.3);
         require __DIR__ . '/../views/admin/ai_usage.php';
     }
 
@@ -694,7 +919,7 @@ class AdminController {
         $admin = $this->currentAdmin;
         $back = '?page=admin-2fa';
         if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
-            $this->flash('danger', 'Oturum doğrulanamadı, tekrar dene.');
+            $this->flash('danger', t('admin.csrf_failed'));
             header('Location: ' . $back);
             exit;
         }
@@ -703,7 +928,7 @@ class AdminController {
         if ($action === 'enable') {
             $secret = (string)($_SESSION['admin_totp_setup'] ?? '');
             if ($secret === '' || !Totp::verify($secret, $code)) {
-                $this->flash('danger', 'Kod doğrulanamadı. Uygulamadaki güncel kodu gir (telefon saatinin doğru olduğundan emin ol).');
+                $this->flash('danger', t('admin.err_code_verify'));
                 header('Location: ' . $back);
                 exit;
             }
@@ -712,7 +937,7 @@ class AdminController {
             unset($_SESSION['admin_totp_setup']);
             $_SESSION['admin_new_backup_codes'] = $plain;
             $this->audit('admin_2fa_enabled');
-            $this->flash('success', 'İki adımlı doğrulama açıldı. Yedek kodlarını şimdi güvenli bir yere kaydet.');
+            $this->flash('success', t('admin.twofa_enabled_done'));
         } elseif ($action === 'disable' || $action === 'regenerate') {
             // A backup code works here too, so a lost phone can still turn 2FA off.
             $ok = !empty($admin['totp_enabled_at']) && Totp::verify((string)$admin['totp_secret'], $code);
@@ -724,20 +949,20 @@ class AdminController {
                 }
             }
             if (!$ok) {
-                $this->flash('danger', 'Kod hatalı; uygulamadaki güncel kodu ya da bir yedek kodu gir.');
+                $this->flash('danger', t('admin.err_bad_code_short'));
                 header('Location: ' . $back);
                 exit;
             }
             if ($action === 'disable') {
                 $this->db->execute('UPDATE admins SET totp_secret = NULL, totp_enabled_at = NULL, totp_backup_codes = NULL WHERE id = ?', [$admin['id']]);
                 $this->audit('admin_2fa_disabled');
-                $this->flash('success', 'İki adımlı doğrulama kapatıldı.');
+                $this->flash('success', t('admin.twofa_disabled_done'));
             } else {
                 [$plain, $hashes] = Totp::backupCodes();
                 $this->db->execute('UPDATE admins SET totp_backup_codes = ? WHERE id = ?', [json_encode($hashes), $admin['id']]);
                 $_SESSION['admin_new_backup_codes'] = $plain;
                 $this->audit('admin_2fa_backup_regenerated');
-                $this->flash('success', 'Yeni yedek kodlar oluşturuldu; eskileri artık geçersiz.');
+                $this->flash('success', t('admin.codes_regenerated'));
             }
         }
         header('Location: ' . $back);

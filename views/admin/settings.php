@@ -1,14 +1,14 @@
 <?php
 // Read-only configuration status. Values come from Railway environment
 // variables; change them there (Railway → service → Variables), not here.
-$title = 'Yapılandırma';
-$pageHeader = 'Yapılandırma';
-$pagePretitle = 'Railway ortam değişkenlerinden okunur · gizli anahtarlar gösterilmez';
+$title = t('admin.nav_settings');
+$pageHeader = t('admin.nav_settings');
+$pagePretitle = t('admin.settings_pretitle');
 $e = fn($v) => htmlspecialchars((string)$v);
 $badge = [
-    'ok' => ['bg-green-lt', 'ti-circle-check', 'Tanımlı'],
-    'warn' => ['bg-yellow-lt', 'ti-alert-triangle', 'Kontrol et'],
-    'missing' => ['bg-red-lt', 'ti-circle-x', 'Eksik'],
+    'ok' => ['bg-green-lt', 'ti-circle-check', t('admin.cfg_set')],
+    'warn' => ['bg-yellow-lt', 'ti-alert-triangle', t('admin.cfg_check')],
+    'missing' => ['bg-red-lt', 'ti-circle-x', t('admin.cfg_missing')],
     'info' => ['bg-secondary-lt', 'ti-info-circle', ''],
 ];
 
@@ -16,7 +16,7 @@ ob_start();
 ?>
 <div class="alert alert-info d-flex gap-2 align-items-start">
     <i class="ti ti-info-circle fs-2"></i>
-    <div>Bu sayfa sadece durumu gösterir. Bir değeri değiştirmek için Railway'de servisin <strong>Variables</strong> sekmesini kullan; değişiklik yeni deploy ile devreye girer.</div>
+    <div><?= t('admin.cfg_readonly_note') ?></div>
 </div>
 <div class="row row-cards">
     <?php foreach ($groups as $group => $items): ?>
@@ -31,7 +31,7 @@ ob_start();
                     <span class="d-flex align-items-center gap-2 text-end" style="min-width:0;">
                         <?php if ($value !== null): ?><code class="text-break small"><?= $e($value) ?></code><?php endif; ?>
                         <?php if ($value === null || $status !== 'info'): ?>
-                            <span class="badge <?= $cls ?>"><i class="ti <?= $icon ?> me-1"></i><?= $value === null && $status === 'info' ? 'Tanımlı değil' : ($text ?: '') ?></span>
+                            <span class="badge <?= $cls ?>"><i class="ti <?= $icon ?> me-1"></i><?= $value === null && $status === 'info' ? t('admin.cfg_not_set') : ($text ?: '') ?></span>
                         <?php endif; ?>
                     </span>
                 </div>
