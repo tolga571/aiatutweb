@@ -67,11 +67,6 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
 
 <main class="flex-1 overflow-y-auto flex flex-col items-center pt-16 pb-12 px-6 bg-radial-gradient">
   <div class="max-w-4xl w-full">
-    <?php if (!empty($_SESSION['pricing_notice'])): ?>
-    <div role="alert" class="mb-8 rounded-xl border border-amber-400/30 bg-amber-400/10 px-5 py-4 text-sm text-amber-100">
-      <?= htmlspecialchars($_SESSION['pricing_notice']) ?>
-    </div>
-    <?php unset($_SESSION['pricing_notice']); endif; ?>
     <div data-m="rise" class="text-center mb-10">
       <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2"><?= __('pricing.heading') ?></h1>
       <p class="text-body-lg text-on-surface-variant max-w-xl mx-auto"><?= __('pricing.subtitle') ?></p>

@@ -17,23 +17,6 @@
       <a href="?page=contact" class="hover:underline py-2 md:py-0"><?= __('footer.contact') ?></a>
       <a href="?page=faq" class="hover:underline py-2 md:py-0"><?= __('footer.faq') ?></a>
     </nav>
-    <?php
-    // Interface-language picker, reachable on every screen size.
-    $footUiLang = \App\Src\Language::currentLang();
-    $footUiLangs = \App\Src\Language::listed('ui', $footUiLang);
-    if (count($footUiLangs) > 1): ?>
-    <label class="mt-2 md:mt-0 flex items-center gap-1.5">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">translate</span>
-      <span class="sr-only"><?= __('nav.interface_language') ?></span>
-      <select aria-label="<?= htmlspecialchars(__('nav.interface_language')) ?>"
-        class="bg-transparent border border-outline-variant/30 rounded-lg py-1 pl-2 pr-7 text-sm text-on-surface-variant focus:outline-none focus:border-primary"
-        onchange="var q=new URLSearchParams(location.search);q.set('ui_lang',this.value);location.search=q.toString();">
-        <?php foreach ($footUiLangs as $l): ?>
-          <option value="<?= $l ?>" <?= $l === $footUiLang ? 'selected' : '' ?>><?= htmlspecialchars(\App\Src\Language::nativeName($l)) ?></option>
-        <?php endforeach; ?>
-      </select>
-    </label>
-    <?php endif; ?>
   </div>
 </footer>
 <!-- Cookie Banner -->

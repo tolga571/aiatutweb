@@ -17,15 +17,6 @@ $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERV
 // Initialize database first (needed for session handler)
 $db = new Database($config['db_url']);
 
-// Mobile app API (/api/v1/...): token-based, so it's handled before any
-// session is started and never sets a cookie. See src/Api/Router.php.
-$apiPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-if (str_starts_with($apiPath, '/api/v1/') || $apiPath === '/api/v1') {
-    Language::boot($db);
-    (new \App\Src\Api\Router($db, $config))->handle($_SERVER['REQUEST_METHOD'] ?? 'GET', substr($apiPath, strlen('/api/v1')));
-    exit;
-}
-
 // Use database-backed sessions so they survive Railway deploys
 // Session stays alive for 90 days of inactivity, refreshed on each visit
 $sessionLifetime = 86400 * 90; // 90 days
@@ -54,39 +45,8 @@ $fastspringBilling = new \App\Src\FastSpringBilling($db, $config, $fastspringCli
 $dodoClient = new \App\Src\DodoClient($config['dodo_api_key'] ?? '', $config['dodo_environment'] ?? 'live');
 $dodoBilling = new \App\Src\DodoBilling($db, $config, $dodoClient);
 
-// Initialize language system. Interface language, most specific first:
-// the user's saved pick (users.ui_lang) > this browser's pick (cookie) >
-// a signed-in user's native language > English.
-Language::boot($db);
-$detectedLang = Language::DEFAULT;
-$uiCookie = (string)($_COOKIE[Language::COOKIE] ?? '');
-if ($uiCookie !== '' && Language::isUsable($uiCookie, 'ui')) {
-    $detectedLang = $uiCookie;
-} else {
-    // Nothing picked yet: follow the browser's language list (most visitors
-    // come from abroad), else English.
-    $uiCookie = '';
-    $detectedLang = Language::fromAcceptLanguage((string)($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '')) ?? Language::DEFAULT;
-}
-// ?ui_lang=xx from the language picker: remember it (cookie, and on the
-// account when signed in), then reload the same URL without the parameter.
-if (isset($_GET['ui_lang']) && is_string($_GET['ui_lang'])) {
-    $pick = strtolower($_GET['ui_lang']);
-    if (Language::isUsable($pick, 'ui')) {
-        setcookie(Language::COOKIE, $pick, [
-            'expires' => time() + 86400 * 365, 'path' => '/',
-            'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax',
-        ]);
-        if ($auth->isLoggedIn()) {
-            $db->execute('UPDATE users SET ui_lang = ? WHERE id = ?', [$pick, $auth->userId()]);
-        }
-    }
-    $q = $_GET;
-    unset($q['ui_lang']);
-    $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-    header('Location: ' . $path . ($q ? '?' . http_build_query($q) : ''));
-    exit;
-}
+// Initialize language system
+$detectedLang = 'en';
 if ($auth->isLoggedIn()) {
     $currentUser = $auth->currentUser();
     // An admin can suspend an account (or delete it) while its session is
@@ -97,11 +57,9 @@ if ($auth->isLoggedIn()) {
         header('Location: ?page=login' . ($wasSuspended ? '&suspended=1' : ''));
         exit;
     }
-    if (!empty($currentUser['ui_lang']) && Language::isUsable($currentUser['ui_lang'], 'ui')) {
-        $detectedLang = $currentUser['ui_lang'];
-    } elseif ($uiCookie === '' && !empty($currentUser['onboarding_completed'])
-        && Language::isUsable($currentUser['native_lang'] ?? '', 'ui')) {
-        $detectedLang = $currentUser['native_lang'];
+    // Use user's language preference only after onboarding is completed
+    if (!empty($currentUser['onboarding_completed'])) {
+        $detectedLang = $currentUser['native_lang'] ?? $currentUser['target_lang'] ?? 'en';
     }
 }
 Language::load($detectedLang);
@@ -133,15 +91,6 @@ $requireAuth = function() use ($auth, $page) {
 $requirePlan = function() use ($auth) {
     if (!$auth->isLoggedIn()) { header('Location: ?page=login'); exit; }
     if (!$auth->hasPaid())    { header('Location: ?page=pricing'); exit; }
-};
-// Flashcard deck language: the one picked on the flashcards page this
-// session, else the user's target language.
-$fcDeckLang = function() use ($auth): string {
-    $picked = (string)($_SESSION['fc_lang'] ?? '');
-    if ($picked !== '' && \App\Src\Language::isUsable($picked, 'learn')) {
-        return $picked;
-    }
-    return $auth->currentUser()['target_lang'] ?? 'en';
 };
 
 switch ($page) {
@@ -184,8 +133,7 @@ switch ($page) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $clientIp = client_ip();
             $errors = [];
-            $abuse = new \App\Src\AbuseGuard($db, $config);
-            if ($auth->tooManyAttempts($clientIp, 'register', 5, 3600) || $abuse->signupBlocked($clientIp)) {
+            if ($auth->tooManyAttempts($clientIp, 'register', 5, 3600)) {
                 $errors[] = __('auth.error_too_many_attempts');
             } else {
                 $auth->recordAttempt($clientIp, 'register');
@@ -215,7 +163,6 @@ switch ($page) {
                 if (empty($errors)) {
                     if ($auth->register($email, $pass, $name)) {
                         $auth->clearAttempts($clientIp, 'register');
-                        $abuse->recordSignup($clientIp);
                         $auth->login($email, $pass);
                         if ($auth->userId()) {
                             $verifyToken = $auth->createEmailVerificationToken($auth->userId());
@@ -315,19 +262,67 @@ switch ($page) {
                 exit;
             }
             
-            $data = Auth::verifyGoogleIdToken($credential, [$googleClientId]);
+            $data = null;
+            
+            try {
+                $client = new \GuzzleHttp\Client();
+                $response = $client->get('https://oauth2.googleapis.com/tokeninfo', [
+                    'query' => ['id_token' => $credential]
+                ]);
+                
+                $decoded = json_decode($response->getBody()->getContents(), true);
+                // The token must be for this app, from Google, and for an
+                // email Google has verified — otherwise a Google account
+                // registered with someone else's address could be linked to
+                // (and sign into) their existing account below.
+                if ($decoded && ($decoded['aud'] ?? '') === $googleClientId
+                    && in_array($decoded['iss'] ?? '', ['accounts.google.com', 'https://accounts.google.com'], true)
+                    && in_array($decoded['email_verified'] ?? false, [true, 'true'], true)) {
+                    $data = $decoded;
+                }
+            } catch (\Exception $e) {
+                // Verification failed
+            }
+            
             if ($data) {
-                $abuse = new \App\Src\AbuseGuard($db, $config);
-                [$user, $created] = $auth->findOrCreateGoogleUser($data, !$abuse->signupBlocked(client_ip()));
-                if ($created) {
-                    $abuse->recordSignup(client_ip());
-                }
-                if (!$user) {
-                    $_SESSION['login_error'] = __('auth.error_too_many_attempts');
-                    header('Location: ?page=login');
-                    exit;
-                }
-                if ($user) {
+                $googleId = $data['sub'] ?? '';
+                $email = trim($data['email'] ?? '');
+                $name = trim($data['name'] ?? '');
+                $picture = trim($data['picture'] ?? '');
+                
+                if (!empty($email)) {
+                    // Check if user exists by google_id
+                    $user = $db->fetchOne('SELECT * FROM users WHERE google_id = ?', [$googleId]);
+                    
+                    if (!$user) {
+                        // Check if user exists by email
+                        $user = $db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
+                        
+                        if ($user) {
+                            // User exists, link Google ID and optionally picture
+                            $db->execute(
+                                'UPDATE users SET google_id = ?, profile_image = COALESCE(profile_image, ?) WHERE id = ?',
+                                [$googleId, $picture ?: null, $user['id']]
+                            );
+                        } else {
+                            // User does not exist, register new user
+                            $randomPassword = bin2hex(random_bytes(16));
+                            $hash = password_hash($randomPassword, PASSWORD_BCRYPT);
+                            
+                            $db->execute(
+                                'INSERT INTO users (email, password, name, google_id, profile_image) VALUES (?, ?, ?, ?, ?)',
+                                [$email, $hash, $name, $googleId, $picture ?: null]
+                            );
+                            
+                            $user = $db->fetchOne('SELECT * FROM users WHERE google_id = ?', [$googleId]);
+                        }
+                    } else {
+                        // If picture is updated or wasn't set, update it
+                        if (!empty($picture) && $user['profile_image'] !== $picture) {
+                            $db->execute('UPDATE users SET profile_image = ? WHERE id = ?', [$picture, $user['id']]);
+                        }
+                    }
+                    
                     if (!empty($user['suspended_at'])) {
                         $_SESSION['login_error'] = __('auth.account_suspended');
                         header('Location: ?page=login');
@@ -337,8 +332,27 @@ switch ($page) {
                     // Log user in
                     session_regenerate_id(true);
                     $_SESSION['user_id'] = $user['id'];
-                    $auth->recordActivity($user);
-
+                    
+                    // Update streak / activity date
+                    $today = date('Y-m-d');
+                    $lastActivity = $user['last_activity_date'] ?? null;
+                    
+                    if ($lastActivity !== $today) {
+                        $yesterday = date('Y-m-d', strtotime('-1 day'));
+                        $streak = (int)($user['streak_count'] ?? 0);
+                        
+                        if ($lastActivity === $yesterday) {
+                            $streak++;
+                        } else {
+                            $streak = 1;
+                        }
+                        
+                        $db->execute(
+                            'UPDATE users SET streak_count = ?, last_activity_date = ? WHERE id = ?',
+                            [$streak, $today, $user['id']]
+                        );
+                    }
+                    
                     if ($auth->hasCompletedOnboarding()) {
                         $redirect = $_GET['redirect'] ?? 'dashboard';
                         header('Location: ?page=' . urlencode($redirect));
@@ -384,9 +398,6 @@ switch ($page) {
                     $_POST['learning_goal'] ?? 'conversation',
                     $_POST['interest_area'] ?? 'general'
                 );
-                if (Language::isUsable($native, 'ui')) {
-                    setcookie(Language::COOKIE, $native, ['expires' => time() + 86400 * 365, 'path' => '/', 'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax']);
-                }
                 $redirect = $_GET['redirect'] ?? 'start-trial';
                 header('Location: ?page=' . urlencode($redirect)); exit;
             }
@@ -398,7 +409,7 @@ switch ($page) {
     case 'update_lang':
         $requireAuth();
         $lang = $_GET['lang'] ?? 'en';
-        if (is_string($lang) && Language::isUsable($lang, 'learn')) {
+        if (in_array($lang, ['en','de','fr','es','zh','ja','ar','tr'])) {
             $currentUser = $auth->currentUser();
             if ($lang === ($currentUser['native_lang'] ?? '')) {
                 header('Location: ?page=chat'); exit;
@@ -537,13 +548,9 @@ switch ($page) {
 
     case 'start-trial':
         $requireAuth();
-        // One free trial per few accounts per network, none for throw-away
-        // mailboxes (AbuseGuard); refused users are sent to the plans.
-        $trialRefusal = (new \App\Src\AbuseGuard($db, $config))->startTrial($auth->currentUser(), client_ip());
-        if ($trialRefusal) {
-            $_SESSION['pricing_notice'] = __('error.' . $trialRefusal);
-            header('Location: ?page=pricing');
-            exit;
+        $curr = $auth->currentUser();
+        if (($curr['plan_status'] ?? 'inactive') === 'inactive') {
+            $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
         }
         header('Location: ?page=chat');
         exit;
@@ -877,7 +884,32 @@ switch ($page) {
 
     case 'account-export':
         $requireAuth();
-        $export = \App\Src\Account::export($db, $auth->userId());
+        $exportUserId = $auth->userId();
+        $exportUser = $auth->currentUser();
+        unset($exportUser['password']);
+        $export = [
+            'exported_at' => date('c'),
+            'profile' => $exportUser,
+            'conversations' => $db->fetchAll('SELECT id, topic_id, topic_label, created_at, updated_at FROM conversations WHERE user_id = ? ORDER BY created_at', [$exportUserId]),
+            'messages' => $db->fetchAll(
+                'SELECT m.id, m.conversation_id, m.role, m.content, m.translation, m.correction, m.created_at
+                 FROM messages m JOIN conversations c ON c.id = m.conversation_id
+                 WHERE c.user_id = ? ORDER BY m.created_at',
+                [$exportUserId]
+            ),
+            'vocabulary_words' => $db->fetchAll('SELECT * FROM vocabulary_words WHERE user_id = ?', [$exportUserId]),
+            'flashcards' => $db->fetchAll('SELECT * FROM user_flashcards WHERE user_id = ?', [$exportUserId]),
+            'alphabet_progress' => $db->fetchAll('SELECT * FROM alphabet_progress WHERE user_id = ?', [$exportUserId]),
+            'mistakes' => $db->fetchAll(
+                'SELECT language, original, corrected, rule, sentence, practice_count, correct_count, learned_at, created_at FROM user_mistakes WHERE user_id = ? ORDER BY created_at',
+                [$exportUserId]
+            ),
+            'learning_notes' => $db->fetchAll('SELECT * FROM learning_notes WHERE user_id = ?', [$exportUserId]),
+            'billing_activity' => $db->fetchAll(
+                'SELECT event_type, provider, plan, billing_interval, detail, created_at FROM activity_events WHERE user_id = ? ORDER BY created_at',
+                [$exportUserId]
+            ),
+        ];
         header('Content-Type: application/json');
         header('Content-Disposition: attachment; filename="jumplearner-my-data-' . date('Y-m-d') . '.json"');
         echo json_encode($export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -905,7 +937,23 @@ switch ($page) {
             header('Location: ?page=account-delete-confirm');
             exit;
         }
-        \App\Src\Account::delete($db, $deleteUser, $dodoClient, $fastspringClient, $paddleClient);
+        $deleteUserId = $auth->userId();
+        // Best-effort: stop future billing before erasing the account a
+        // webhook would otherwise try to reconcile against. Not blocking —
+        // the right to erasure doesn't wait on a provider API call.
+        if (!empty($deleteUser['dodo_subscription_id']) && $dodoClient->isConfigured()) {
+            $dodoClient->cancelSubscription($deleteUser['dodo_subscription_id']);
+        } elseif (!empty($deleteUser['fastspring_subscription_id']) && $fastspringClient->isConfigured()) {
+            $fastspringClient->cancelSubscription($deleteUser['fastspring_subscription_id']);
+        } elseif (!empty($deleteUser['paddle_subscription_id']) && $paddleClient->isConfigured()) {
+            $paddleClient->cancelSubscription($deleteUser['paddle_subscription_id'], 'immediately');
+        }
+        \App\Src\ActivityLog::record($db, $deleteUserId, 'account_deleted', null, $deleteUser['plan_status'] ?? null, null, "user {$deleteUserId} ({$deleteUser['email']}) deleted their own account");
+        // token_usage has no ON DELETE CASCADE from users — every other
+        // user-owned table does, so this is the only manual cleanup needed
+        // before the DELETE below can succeed.
+        $db->execute('DELETE FROM token_usage WHERE user_id = ?', [$deleteUserId]);
+        $db->execute('DELETE FROM users WHERE id = ?', [$deleteUserId]);
         $auth->logout();
         header('Location: ?page=home&account_deleted=1');
         exit;
@@ -913,13 +961,18 @@ switch ($page) {
     case 'flashcards':
         $requirePlan();
         $currentUser = $auth->currentUser();
-        // Deck language: ?lang= (remembered for the session) or the target
-        // language. Studying another language never touches the profile.
-        if (isset($_GET['lang']) && \App\Src\Language::isUsable(strtolower((string)$_GET['lang']), 'learn')) {
-            $_SESSION['fc_lang'] = strtolower((string)$_GET['lang']);
+        // Auto-import static cards if user has none for their target language
+        $vocabCount = $db->fetchOne(
+            'SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id = ? AND language = ?',
+            [$auth->userId(), $currentUser['target_lang'] ?? 'en']
+        );
+        if ((int)($vocabCount['c'] ?? 0) < 50) {
+            $flashcard->importStaticCards(
+                $auth->userId(),
+                $currentUser['target_lang'] ?? 'en',
+                $currentUser['native_lang'] ?? 'en'
+            );
         }
-        $deckLang = $fcDeckLang();
-        $flashcard->ensureStarterDeck($auth->userId(), $deckLang, $currentUser['native_lang'] ?? 'en');
         require __DIR__ . '/../views/flashcards.php';
         break;
 
@@ -927,7 +980,7 @@ switch ($page) {
         $requireAuth();
         header('Content-Type: application/json');
         $fc = new \App\Src\Flashcard($db);
-        echo json_encode($fc->getStats($auth->userId(), $fcDeckLang()));
+        echo json_encode($fc->getStats($auth->userId(), $auth->currentUser()['target_lang'] ?? 'en'));
         exit;
 
     case 'flashcard-due':
@@ -935,14 +988,17 @@ switch ($page) {
         header('Content-Type: application/json');
         $fc = new \App\Src\Flashcard($db);
         $tab = $_GET['tab'] ?? 'due';
-        $lang = $fcDeckLang();
+        $lang = $auth->currentUser()['target_lang'] ?? 'en';
         $userId = $auth->userId();
-
+        
         if ($tab === 'due') {
             echo json_encode($fc->getDueCards($userId, $lang));
+        } elseif ($tab === 'chat') {
+            echo json_encode($fc->getChatWords($userId, $lang));
         } else {
-            $view = in_array($tab, \App\Src\Flashcard::VIEWS, true) ? $tab : 'all';
-            echo json_encode($fc->getAllCards($userId, $lang, $_GET['category'] ?? 'all', $_GET['q'] ?? '', 60, null, $view));
+            $cat = $_GET['category'] ?? 'all';
+            $search = $_GET['q'] ?? '';
+            echo json_encode($fc->getAllCards($userId, $lang, $cat, $search));
         }
         exit;
 
@@ -951,7 +1007,7 @@ switch ($page) {
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = json_decode(file_get_contents('php://input'), true) ?? [];
-            if (isset($input['vocab_id'], $input['quality']) && csrf_verify(is_string($input['csrf_token'] ?? null) ? $input['csrf_token'] : null)) {
+            if (isset($input['vocab_id'], $input['quality'])) {
                 $fc = new \App\Src\Flashcard($db);
                 $result = $fc->reviewCard($auth->userId(), (int)$input['vocab_id'], (int)$input['quality']);
                 echo json_encode($result);
@@ -964,57 +1020,14 @@ switch ($page) {
     case 'flashcard-import':
         $requireAuth();
         header('Content-Type: application/json');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_verify($_POST['csrf_token'] ?? null)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fc = new \App\Src\Flashcard($db);
             $user = $auth->currentUser();
-            $result = $fc->importStaticCards($auth->userId(), $fcDeckLang(), $user['native_lang'] ?? 'en');
+            $result = $fc->importStaticCards($auth->userId(), $user['target_lang'] ?? 'en', $user['native_lang'] ?? 'en');
             echo json_encode(array_merge(['success' => true], $result));
             exit;
         }
         echo json_encode(['success' => false]);
-        exit;
-
-    case 'flashcard-card':
-        // Create / edit / delete / favourite / learned for one card. JSON in
-        // and out, CSRF-checked, never a 5xx (Cloudflare would eat the body).
-        $requirePlan();
-        header('Content-Type: application/json');
-        $cardIn = json_decode(file_get_contents('php://input'), true);
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($cardIn) || !csrf_verify($cardIn['csrf_token'] ?? null)) {
-            echo json_encode(['success' => false, 'error' => 'invalid_request', 'message' => __('fc.err_generic')]);
-            exit;
-        }
-        $fc = new \App\Src\Flashcard($db);
-        $cardId = (int)($cardIn['id'] ?? 0);
-        $fields = is_array($cardIn['card'] ?? null) ? $cardIn['card'] : [];
-        switch ((string)($cardIn['action'] ?? '')) {
-            case 'create':
-                $r = $fc->createCard($auth->userId(), $fcDeckLang(), $fields);
-                break;
-            case 'update':
-                $r = $fc->updateCard($auth->userId(), $cardId, $fields);
-                break;
-            case 'delete':
-                $r = $fc->deleteCard($auth->userId(), $cardId) ? ['deleted' => true] : ['error' => 'not_found'];
-                break;
-            case 'favorite':
-                $c = $fc->setFavorite($auth->userId(), $cardId, !empty($cardIn['on']));
-                $r = $c ? ['card' => $c] : ['error' => 'not_found'];
-                break;
-            case 'learned':
-                $c = $fc->setLearned($auth->userId(), $cardId, !empty($cardIn['on']));
-                $r = $c ? ['card' => $c] : ['error' => 'not_found'];
-                break;
-            default:
-                $r = ['error' => 'invalid_request'];
-        }
-        if (!empty($r['error'])) {
-            $key = 'fc.err_' . $r['error'];
-            $msg = __($key);
-            echo json_encode(['success' => false, 'error' => $r['error'], 'message' => $msg === $key ? __('fc.err_generic') : $msg] + array_intersect_key($r, ['existing_id' => 1]));
-        } else {
-            echo json_encode(['success' => true] + $r);
-        }
         exit;
 
     case 'flashcard-import-pack':
@@ -1030,7 +1043,7 @@ switch ($page) {
         $packUser = $auth->currentUser();
         $packResult = (new \App\Src\Flashcard($db))->importPack(
             $auth->userId(),
-            $fcDeckLang(),
+            $packUser['target_lang'] ?? 'en',
             $packUser['native_lang'] ?? 'en',
             (string)($_POST['level'] ?? '')
         );
@@ -1076,13 +1089,7 @@ switch ($page) {
             } elseif ($n_lang === ($dashCurrentUser['target_lang'] ?? '')) {
                 $_SESSION['pref_error'] = __('onboarding.same_lang_error');
             } else {
-                // This picker is labelled "interface language": it sets the UI
-                // language as well as the native language used in translations.
-                $uiPick = Language::isUsable($n_lang, 'ui') ? $n_lang : null;
-                $db->execute('UPDATE users SET native_lang = ?, ui_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $uiPick, $c_lvl, $auth->userId()]);
-                if ($uiPick) {
-                    setcookie(Language::COOKIE, $uiPick, ['expires' => time() + 86400 * 365, 'path' => '/', 'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax']);
-                }
+                $db->execute('UPDATE users SET native_lang = ?, cefr_level = ? WHERE id = ?', [$n_lang, $c_lvl, $auth->userId()]);
                 $_SESSION['pref_saved'] = true;
             }
             header('Location: ?page=dashboard');
@@ -1120,11 +1127,6 @@ switch ($page) {
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input  = json_decode(file_get_contents('php://input'), true) ?? [];
-            if (!csrf_verify(is_string($input['csrf_token'] ?? null) ? $input['csrf_token'] : null)) {
-                header('Content-Type: application/json');
-                echo json_encode(['error' => __('error.session_expired')]);
-                exit;
-            }
             $userId = $auth->userId();
             $msg    = trim($input['message'] ?? '');
             $convId = isset($input['conversationId']) ? (int)$input['conversationId'] : null;
@@ -1274,44 +1276,6 @@ switch ($page) {
             $adminCtrl->showLogin2fa();
         }
         break;
-    case 'admin-lang':
-        $adminCtrl->setAdminLang((string)($_GET['lang'] ?? ''));
-        break;
-    case 'admin-languages':
-        $adminCtrl->languages();
-        break;
-    case 'admin-languages-action':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminCtrl->languagesAction($_POST);
-        }
-        header('Location: ?page=admin-languages'); exit;
-    case 'admin-language-translate':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminCtrl->languageTranslate($_POST);
-        }
-        http_response_code(405); exit;
-    case 'admin-language-strings':
-        $adminCtrl->languageStrings($_GET);
-        break;
-    case 'admin-language-string-action':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminCtrl->languageStringAction($_POST);
-        }
-        header('Location: ?page=admin-languages'); exit;
-    case 'admin-language-export':
-        $adminCtrl->languageExport((string)($_GET['code'] ?? ''));
-        break;
-    case 'admin-lexicon':
-        $adminCtrl->lexicon($_GET);
-        break;
-    case 'admin-lexicon-entry':
-        $adminCtrl->lexiconEntry((int)($_GET['id'] ?? 0));
-        break;
-    case 'admin-lexicon-action':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminCtrl->lexiconAction($_POST);
-        }
-        header('Location: ?page=admin-lexicon'); exit;
     case 'admin-export':
         $adminCtrl->exportCsv($_GET['type'] ?? '');
         break;

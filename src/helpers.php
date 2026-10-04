@@ -12,19 +12,6 @@ function __(string $key, string $default = ''): string
 }
 
 /**
- * Translation with placeholders: t('fc.cards_due', ['n' => 5]) replaces {n}.
- * Same strings as __(); the JavaScript twin is window.t() (views/partials/head.php).
- */
-function t(string $key, array $vars = []): string
-{
-    $s = Language::get($key, $key);
-    foreach ($vars as $k => $v) {
-        $s = str_replace('{' . $k . '}', (string)$v, $s);
-    }
-    return $s;
-}
-
-/**
  * Returns the current CSRF token, generating one for this session if needed.
  */
 function csrf_token(): string

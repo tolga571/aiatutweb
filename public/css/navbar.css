@@ -84,7 +84,3 @@
 .pages-menu-item:hover .pages-menu-desc {
     color: color-mix(in srgb, var(--color-on-surface-variant, #938f99) 80%, var(--color-primary, #6750a4));
 }
-
-/* Icon-only centre links when the translated labels don't fit (navbar.js). */
-#nav-center.nav-compact .nav-label { display: none; }
-#nav-center.nav-compact .nav-link { padding-left: 0.6rem; padding-right: 0.6rem; }

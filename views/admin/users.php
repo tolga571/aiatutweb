@@ -1,11 +1,11 @@
 <?php
 $title = __('admin.users');
 $pageHeader = __('admin.users');
-$pagePretitle = t('admin.users_pretitle', ['n' => number_format($result['total'], 0, ',', '.')]);
-$pageActions = '<a href="?page=admin-export&amp;type=users" class="btn btn-outline-secondary"><i class="ti ti-download me-1"></i>' . htmlspecialchars(t('admin.csv_download_short')) . '</a>';
+$pagePretitle = number_format($result['total'], 0, ',', '.') . ' kullanıcı';
+$pageActions = '<a href="?page=admin-export&amp;type=users" class="btn btn-outline-secondary"><i class="ti ti-download me-1"></i>CSV indir</a>';
 
 $e = fn($v) => htmlspecialchars((string)$v);
-$planLabels = ['inactive' => t('admin.plan_inactive'), 'trial' => t('admin.plan_trial'), 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
+$planLabels = ['inactive' => 'Pasif', 'trial' => 'Deneme', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
 $planColors = ['inactive' => 'secondary', 'trial' => 'yellow', 'starter' => 'blue', 'pro' => 'purple', 'active' => 'orange'];
 $langs = \App\Src\Language::supportedLangs();
 $qs = function (array $override) use ($filters): string {
@@ -26,36 +26,36 @@ ob_start();
         <form method="GET" class="row g-2 align-items-end">
             <input type="hidden" name="page" value="admin-users">
             <div class="col-12 col-lg-4">
-                <label class="form-label small text-secondary"><?= $e(t('admin.search')) ?></label>
+                <label class="form-label small text-secondary">Ara</label>
                 <div class="input-icon">
                     <span class="input-icon-addon"><i class="ti ti-search"></i></span>
-                    <input type="search" name="q" value="<?= $e($filters['q']) ?>" class="form-control" placeholder="<?= $e(t('admin.users_search_ph')) ?>">
+                    <input type="search" name="q" value="<?= $e($filters['q']) ?>" class="form-control" placeholder="E-posta, isim veya #ID">
                 </div>
             </div>
             <div class="col-6 col-md-3 col-lg">
                 <label class="form-label small text-secondary">Plan</label>
-                <?= $select('plan', ['' => t('admin.lang_filter_all')] + $planLabels, $filters['plan']) ?>
+                <?= $select('plan', ['' => 'Tümü'] + $planLabels, $filters['plan']) ?>
             </div>
             <div class="col-6 col-md-3 col-lg">
-                <label class="form-label small text-secondary"><?= $e(t('admin.payment_col')) ?></label>
-                <?= $select('pay', ['' => t('admin.lang_filter_all'), 'real' => t('admin.pay_real'), 'test' => 'Test', 'free' => t('admin.pay_free')], $filters['pay']) ?>
+                <label class="form-label small text-secondary">Ödeme</label>
+                <?= $select('pay', ['' => 'Tümü', 'real' => 'Gerçek (Dodo)', 'test' => 'Test', 'free' => 'Ödemesiz'], $filters['pay']) ?>
             </div>
             <div class="col-6 col-md-3 col-lg">
-                <label class="form-label small text-secondary"><?= $e(t('admin.learning_lang')) ?></label>
-                <?= $select('lang', ['' => t('admin.lang_filter_all')] + array_combine($langs, array_map(fn($l) => \App\Src\Language::displayName($l), $langs)), $filters['lang']) ?>
+                <label class="form-label small text-secondary">Öğrendiği dil</label>
+                <?= $select('lang', ['' => 'Tümü'] + array_combine($langs, array_map(fn($l) => __('languages.' . $l), $langs)), $filters['lang']) ?>
             </div>
             <div class="col-6 col-md-3 col-lg">
-                <label class="form-label small text-secondary"><?= $e(t('admin.status')) ?></label>
-                <?= $select('status', ['' => t('admin.lang_filter_all'), 'suspended' => t('admin.suspended'), 'unverified' => t('admin.email_unverified')], $filters['status']) ?>
+                <label class="form-label small text-secondary">Durum</label>
+                <?= $select('status', ['' => 'Tümü', 'suspended' => 'Askıda', 'unverified' => 'E-posta doğrulanmamış'], $filters['status']) ?>
             </div>
             <div class="col-6 col-md-3 col-lg">
-                <label class="form-label small text-secondary"><?= $e(t('admin.sort')) ?></label>
-                <?= $select('sort', ['new' => t('admin.sort_new'), 'old' => t('admin.sort_old'), 'active' => t('admin.last_active'), 'messages' => t('admin.sort_messages')], $filters['sort']) ?>
+                <label class="form-label small text-secondary">Sırala</label>
+                <?= $select('sort', ['new' => 'En yeni', 'old' => 'En eski', 'active' => 'Son aktif', 'messages' => 'En çok mesaj'], $filters['sort']) ?>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary"><i class="ti ti-filter me-1"></i><?= $e(t('admin.apply')) ?></button>
+                <button class="btn btn-primary"><i class="ti ti-filter me-1"></i>Uygula</button>
                 <?php if (array_filter(array_diff_key($filters, ['sort' => 1]))): ?>
-                    <a href="?page=admin-users" class="btn btn-ghost-secondary"><?= $e(t('admin.clear')) ?></a>
+                    <a href="?page=admin-users" class="btn btn-ghost-secondary">Temizle</a>
                 <?php endif; ?>
             </div>
         </form>
@@ -66,7 +66,7 @@ ob_start();
     <div class="table-responsive">
         <table class="table table-vcenter card-table table-hover">
             <thead>
-                <tr><th><?= $e(t('admin.user_col')) ?></th><th>Plan</th><th><?= $e(t('admin.col_language')) ?></th><th class="text-end"><?= $e(t('admin.col_messages')) ?></th><th><?= $e(t('admin.last_active')) ?></th><th><?= $e(t('admin.col_signup')) ?></th><th></th></tr>
+                <tr><th>Kullanıcı</th><th>Plan</th><th>Dil</th><th class="text-end">Mesaj</th><th>Son aktif</th><th>Kayıt</th><th></th></tr>
             </thead>
             <tbody>
             <?php foreach ($result['rows'] as $u):
@@ -85,29 +85,29 @@ ob_start();
                     </td>
                     <td class="text-nowrap">
                         <span class="badge bg-<?= $planColors[$u['plan_status']] ?? 'secondary' ?>-lt"><?= $e($planLabels[$u['plan_status']] ?? $u['plan_status']) ?></span>
-                        <?php if ($isTest): ?><span class="badge bg-secondary text-white" title="<?= $e(t('admin.test_badge_help')) ?>">TEST</span><?php endif; ?>
-                        <?php if ($isReal): ?><span class="badge bg-green-lt" title="<?= $e(t('admin.real_dodo_sub')) ?>">Dodo</span><?php endif; ?>
-                        <?php if (!empty($u['suspended_at'])): ?><span class="badge bg-red-lt"><?= $e(t('admin.suspended')) ?></span><?php endif; ?>
+                        <?php if ($isTest): ?><span class="badge bg-secondary text-white" title="Ödemesi Dodo'dan değil (Paddle sandbox / elle verilmiş)">TEST</span><?php endif; ?>
+                        <?php if ($isReal): ?><span class="badge bg-green-lt" title="Gerçek Dodo aboneliği">Dodo</span><?php endif; ?>
+                        <?php if (!empty($u['suspended_at'])): ?><span class="badge bg-red-lt">Askıda</span><?php endif; ?>
                     </td>
                     <td class="text-nowrap"><?= $e(strtoupper((string)$u['native_lang'])) ?> → <?= $e(strtoupper((string)$u['target_lang'])) ?></td>
                     <td class="text-end"><?= number_format((int)$u['message_count'], 0, ',', '.') ?></td>
                     <td class="text-secondary text-nowrap"><?= $u['last_activity_date'] ? date('d.m.Y', strtotime($u['last_activity_date'])) : '—' ?></td>
                     <td class="text-secondary text-nowrap"><?= date('d.m.Y', strtotime($u['created_at'])) ?></td>
-                    <td class="text-end"><a href="<?= $url ?>" class="btn btn-sm btn-ghost-primary"><?= $e(t('admin.detail')) ?> <i class="ti ti-chevron-right"></i></a></td>
+                    <td class="text-end"><a href="<?= $url ?>" class="btn btn-sm btn-ghost-primary">Detay <i class="ti ti-chevron-right"></i></a></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$result['rows']): ?>
-                <tr><td colspan="7" class="text-center text-secondary py-5"><i class="ti ti-user-search fs-1 d-block mb-2"></i><?= $e(t('admin.no_users_match')) ?></td></tr>
+                <tr><td colspan="7" class="text-center text-secondary py-5"><i class="ti ti-user-search fs-1 d-block mb-2"></i>Bu filtrelere uyan kullanıcı yok.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
     <?php if ($result['pages'] > 1): ?>
     <div class="card-footer d-flex align-items-center">
-        <p class="m-0 text-secondary small"><?= $e(t('admin.page_of', ['p' => $pageNum, 'pages' => $result['pages']])) ?></p>
+        <p class="m-0 text-secondary small">Sayfa <?= $pageNum ?> / <?= $result['pages'] ?></p>
         <ul class="pagination m-0 ms-auto">
-            <li class="page-item<?= $pageNum <= 1 ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum - 1])) ?>"><i class="ti ti-chevron-left"></i> <?= $e(t('admin.prev_page')) ?></a></li>
-            <li class="page-item<?= $pageNum >= $result['pages'] ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum + 1])) ?>"><?= $e(t('admin.next_page')) ?> <i class="ti ti-chevron-right"></i></a></li>
+            <li class="page-item<?= $pageNum <= 1 ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum - 1])) ?>"><i class="ti ti-chevron-left"></i> Önceki</a></li>
+            <li class="page-item<?= $pageNum >= $result['pages'] ? ' disabled' : '' ?>"><a class="page-link" href="<?= $e($qs(['p' => $pageNum + 1])) ?>">Sonraki <i class="ti ti-chevron-right"></i></a></li>
         </ul>
     </div>
     <?php endif; ?>

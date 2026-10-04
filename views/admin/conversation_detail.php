@@ -1,9 +1,9 @@
 <?php
 $e = fn($v) => htmlspecialchars((string)$v);
-$title = t('admin.conv_title', ['id' => (int)$conv['id']]);
-$pageHeader = $title;
-$pagePretitle = t('admin.conv_pretitle', ['topic' => $conv['topic_id'] ?: t('admin.topic_free_chat'), 'n' => count($messages)]);
-$pageActions = '<a href="?page=admin-conversations" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>' . $e(t('admin.conversations')) . '</a>';
+$title = 'Sohbet #' . (int)$conv['id'];
+$pageHeader = 'Sohbet #' . (int)$conv['id'];
+$pagePretitle = ($conv['topic_id'] ?: 'serbest sohbet') . ' · ' . count($messages) . ' mesaj';
+$pageActions = '<a href="?page=admin-conversations" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Sohbetler</a>';
 
 ob_start();
 ?>
@@ -26,13 +26,13 @@ ob_start();
         <div class="flex-fill" style="min-width:0;">
             <?php if ($conv['user_email']): ?>
                 <a href="?page=admin-user&amp;id=<?= (int)$conv['user_id'] ?>" class="fw-semibold d-block text-truncate"><?= $e($conv['user_email']) ?></a>
-            <?php else: ?><span class="text-secondary"><?= $e(t('admin.deleted_user')) ?></span><?php endif; ?>
+            <?php else: ?><span class="text-secondary">silinmiş kullanıcı</span><?php endif; ?>
             <div class="text-secondary small">
                 <?= $e(strtoupper((string)$conv['native_lang'])) ?> → <?= $e(strtoupper((string)$conv['target_lang'])) ?>
-                · <?= $e(t('admin.conv_started_last', ['start' => date('d.m.Y H:i', strtotime($conv['created_at'])), 'last' => date('d.m.Y H:i', strtotime($conv['updated_at']))])) ?>
+                · başladı <?= date('d.m.Y H:i', strtotime($conv['created_at'])) ?> · son <?= date('d.m.Y H:i', strtotime($conv['updated_at'])) ?>
             </div>
         </div>
-        <span class="badge bg-yellow-lt" title="<?= $e(t('admin.view_logged_help')) ?>"><i class="ti ti-eye"></i> <?= $e(t('admin.view_logged')) ?></span>
+        <span class="badge bg-yellow-lt" title="Bu görüntüleme admin işlem kaydına yazıldı"><i class="ti ti-eye"></i> görüntüleme kaydedildi</span>
     </div>
 </div>
 
@@ -47,12 +47,12 @@ ob_start();
             <div class="chat-text"><?= $e($m['content']) ?></div>
             <?php if (!$isUser && ($m['translation'] || $m['correction'])): ?>
             <div class="chat-extra">
-                <?php if ($m['translation']): ?><div><span class="text-secondary"><?= $e(t('admin.translation')) ?>:</span> <?= $e($m['translation']) ?></div><?php endif; ?>
-                <?php if ($m['correction']): ?><div class="text-orange"><span class="text-secondary"><?= $e(t('admin.correction')) ?>:</span> <?= $e($m['correction']) ?></div><?php endif; ?>
+                <?php if ($m['translation']): ?><div><span class="text-secondary">Çeviri:</span> <?= $e($m['translation']) ?></div><?php endif; ?>
+                <?php if ($m['correction']): ?><div class="text-orange"><span class="text-secondary">Düzeltme:</span> <?= $e($m['correction']) ?></div><?php endif; ?>
             </div>
             <?php endif; ?>
         </div>
-        <div class="chat-meta"><?= $e($isUser ? t('admin.user_col') : t('admin.ai_tutor')) ?> · <?= date('d.m.Y H:i', strtotime($m['created_at'])) ?></div>
+        <div class="chat-meta"><?= $isUser ? 'Kullanıcı' : 'AI öğretmen' ?> · <?= date('d.m.Y H:i', strtotime($m['created_at'])) ?></div>
     </div>
     <?php endforeach; ?>
 </div>

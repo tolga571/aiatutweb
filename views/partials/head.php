@@ -324,20 +324,6 @@ if ($motionOn): ?>
 <?php endif; ?>
 <script defer src="<?= $motionVer('js/motion.js') ?>"></script>
 <?php endif; ?>
-<?php
-// UI strings for JavaScript: window.t('key', {name: value}). Every page gets
-// the common.* and js.* keys; a view can ask for more namespaces by setting
-// $i18nJs = ['fc.', ...] before including this file.
-$i18nForJs = \App\Src\Language::forJs(array_merge(['common.', 'js.', 'languages.'], $i18nJs ?? []));
-?>
-<script>
-window.I18N = <?= json_encode($i18nForJs, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
-window.t = function (key, vars) {
-  var s = Object.prototype.hasOwnProperty.call(window.I18N, key) ? window.I18N[key] : key;
-  if (vars) { for (var k in vars) { s = s.split('{' + k + '}').join(String(vars[k])); } }
-  return s;
-};
-</script>
 </head>
 <?php
 $isAppPage = in_array($_GET['page'] ?? 'home', ['chat', 'flashcards', 'dashboard']);

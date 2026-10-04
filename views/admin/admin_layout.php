@@ -9,37 +9,31 @@ $adminRow = isset($this) && property_exists($this, 'currentAdmin') ? $this->curr
 $adminRole = $_SESSION['admin_role'] ?? 'admin';
 
 $navSections = [
-    t('admin.nav_general') => [
-        ['admin-dashboard', 'layout-dashboard', t('admin.dashboard')],
+    'Genel' => [
+        ['admin-dashboard', 'layout-dashboard', __('admin.dashboard')],
     ],
-    t('admin.users') => [
-        ['admin-users', 'users', t('admin.users')],
-        ['admin-conversations', 'messages', t('admin.conversations')],
+    'Kullanıcılar' => [
+        ['admin-users', 'users', __('admin.users')],
+        ['admin-conversations', 'messages', __('admin.conversations')],
     ],
-    t('admin.nav_revenue') => [
-        ['admin-payments', 'credit-card', t('admin.nav_payments')],
-        ['admin-activity', 'activity', t('admin.nav_activity')],
+    'Gelir' => [
+        ['admin-payments', 'credit-card', 'Gelir & abonelikler'],
+        ['admin-activity', 'activity', 'Olay akışı'],
     ],
-    t('admin.nav_content') => [
-        ['admin-languages', 'language', t('admin.nav_languages')],
-        ['admin-lexicon', 'vocabulary', t('admin.nav_lexicon')],
-    ],
-    t('admin.nav_system') => [
-        ['admin-health', 'heart-rate-monitor', t('admin.nav_health')],
-        ['admin-ai-usage', 'sparkles', t('admin.nav_ai_usage')],
-        ['admin-audit', 'list-details', t('admin.nav_audit')],
-        ['admin-admins', 'shield-lock', t('admin.admins')],
-        ['admin-settings', 'adjustments', t('admin.nav_settings')],
+    'Sistem' => [
+        ['admin-health', 'heart-rate-monitor', 'Sistem sağlığı'],
+        ['admin-ai-usage', 'sparkles', 'AI kullanımı & maliyet'],
+        ['admin-audit', 'list-details', 'İşlem kaydı'],
+        ['admin-admins', 'shield-lock', __('admin.admins')],
+        ['admin-settings', 'adjustments', 'Yapılandırma'],
     ],
 ];
 // Detail pages highlight their parent list.
-$activeAlias = ['admin-conversation' => 'admin-conversations', 'admin-user' => 'admin-users', 'admin-language-strings' => 'admin-languages', 'admin-lexicon-entry' => 'admin-lexicon'];
-$adminUiLang = \App\Src\Language::currentLang();
-$adminBack = '?' . http_build_query($_GET);
+$activeAlias = ['admin-conversation' => 'admin-conversations', 'admin-user' => 'admin-users'];
 $activePage = $activeAlias[$currentPage] ?? $currentPage;
 ?>
 <!DOCTYPE html>
-<html lang="<?= htmlspecialchars($adminUiLang) ?>" dir="<?= \App\Src\Language::dir() ?>" data-bs-theme="dark">
+<html lang="tr" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -83,7 +77,7 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
 <div class="page">
     <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="<?= htmlspecialchars(t('admin.menu')) ?>">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Menü">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="?page=admin-dashboard" class="navbar-brand navbar-brand-autodark py-lg-3">
@@ -102,35 +96,25 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                         </li>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
-                    <li class="nav-section"><?= htmlspecialchars(t('admin.nav_site')) ?></li>
+                    <li class="nav-section">Site</li>
                     <li class="nav-item">
                         <a class="nav-link" href="/" target="_blank" rel="noopener">
                             <span class="nav-link-icon"><i class="ti ti-external-link fs-2"></i></span>
-                            <span class="nav-link-title"><?= htmlspecialchars(t('admin.open_site')) ?></span>
+                            <span class="nav-link-title">Siteyi aç</span>
                         </a>
                     </li>
                 </ul>
                 <div class="mt-auto p-3 border-top" style="border-color:var(--tblr-border-color)!important;">
-                    <label class="d-flex align-items-center gap-2 mb-2 small text-secondary">
-                        <i class="ti ti-language"></i>
-                        <span class="visually-hidden"><?= htmlspecialchars(t('admin.ui_language')) ?></span>
-                        <select class="form-select form-select-sm" aria-label="<?= htmlspecialchars(t('admin.ui_language')) ?>"
-                            onchange="location.href='?page=admin-lang&lang='+encodeURIComponent(this.value)+'&back='+encodeURIComponent(<?= htmlspecialchars(json_encode($adminBack)) ?>)">
-                            <?php foreach (\App\Src\Language::listed('ui', $adminUiLang) as $l): ?>
-                            <option value="<?= $l ?>" <?= $l === $adminUiLang ? 'selected' : '' ?>><?= htmlspecialchars(\App\Src\Language::nativeName($l)) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </label>
                     <div class="d-flex align-items-center gap-2">
                         <span class="avatar avatar-sm bg-primary-lt"><i class="ti ti-user"></i></span>
                         <div class="flex-fill text-truncate" style="min-width:0;">
                             <div class="text-truncate small fw-semibold"><?= htmlspecialchars($adminRow['email'] ?? '') ?></div>
-                            <div class="text-secondary" style="font-size:.7rem;"><?= htmlspecialchars($adminRole === 'admin' ? t('admin.role_full') : t('admin.role_readonly')) ?></div>
+                            <div class="text-secondary" style="font-size:.7rem;"><?= $adminRole === 'admin' ? 'Tam yetkili' : 'Salt okunur' ?></div>
                         </div>
-                        <a href="?page=admin-2fa" class="btn btn-icon btn-ghost-secondary btn-sm" title="<?= htmlspecialchars(t('admin.account_security')) ?>" aria-label="<?= htmlspecialchars(t('admin.account_security')) ?>">
+                        <a href="?page=admin-2fa" class="btn btn-icon btn-ghost-secondary btn-sm" title="Hesap güvenliği (2FA)" aria-label="Hesap güvenliği (2FA)">
                             <i class="ti ti-<?= !empty($adminRow['totp_enabled_at']) ? 'shield-check text-green' : 'shield-exclamation text-yellow' ?>"></i>
                         </a>
-                        <a href="?page=admin-logout" class="btn btn-icon btn-ghost-secondary btn-sm" title="<?= htmlspecialchars(t('admin.logout')) ?>" aria-label="<?= htmlspecialchars(t('admin.logout')) ?>">
+                        <a href="?page=admin-logout" class="btn btn-icon btn-ghost-secondary btn-sm" title="<?= htmlspecialchars(__('admin.logout')) ?>" aria-label="<?= htmlspecialchars(__('admin.logout')) ?>">
                             <i class="ti ti-logout"></i>
                         </a>
                     </div>
@@ -159,7 +143,7 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                 <div class="alert alert-<?= $flash['type'] === 'success' ? 'success' : 'danger' ?> alert-dismissible d-flex align-items-center gap-2" role="alert">
                     <i class="ti ti-<?= $flash['type'] === 'success' ? 'circle-check' : 'alert-circle' ?> fs-2"></i>
                     <div><?= htmlspecialchars($flash['message']) ?></div>
-                    <a class="btn-close" data-bs-dismiss="alert" aria-label="<?= htmlspecialchars(t('admin.close')) ?>"></a>
+                    <a class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></a>
                 </div>
                 <?php endif; ?>
                 <?php if (isset($content)) { echo $content; } ?>

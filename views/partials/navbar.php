@@ -1,7 +1,7 @@
 <nav
   class="relative w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-lg h-14 grid grid-cols-[1fr_auto_1fr] items-center z-50 shrink-0">
-  <link rel="stylesheet" href="/css/navbar.css?v=2">
-  <script src="/js/navbar.js?v=3" defer></script>
+  <link rel="stylesheet" href="/css/navbar.css">
+  <script src="/js/navbar.js" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex flex-col shrink-0">
       <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>
@@ -25,23 +25,23 @@
     <?php endif; ?>
   </div>
 
-  <div id="nav-center" class="hidden lg:flex items-center justify-center gap-base shrink-0 col-start-2">
+  <div class="hidden lg:flex items-center justify-center gap-base shrink-0 col-start-2">
     <a href="?page=home"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">home</span>
-      <span class="nav-label"><?= __('nav.home') ?></span>
+      <span class="material-symbols-outlined text-[18px]">home</span>
+      <span><?= __('nav.home') ?></span>
     </a>
     <a href="?page=chat"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">forum</span>
-      <span class="nav-label"><?= __('nav.chat') ?></span>
+      <span class="material-symbols-outlined text-[18px]">forum</span>
+      <span><?= __('nav.chat') ?></span>
     </a>
     <div class="relative inline-block">
       <button type="button" id="pagesBtn"
         class="nav-link pages-btn flex items-center gap-xs text-on-surface-variant px-lg py-2 hover:text-primary hover:bg-surface-variant/40 transition-colors rounded-full border border-outline-variant/20 bg-surface-container-high/60 shadow-sm"
         aria-haspopup="true" aria-expanded="false">
         <span class="material-symbols-outlined text-[18px]">web</span>
-        <span class="nav-label font-semibold"><?= __('nav.pages') ?></span>
+        <span class="font-semibold"><?= __('nav.pages') ?></span>
         <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
       </button>
       <div id="pagesMenu"
@@ -147,52 +147,24 @@
     </div>
     <a href="?page=flashcards"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">style</span>
-      <span class="nav-label"><?= __('nav.flashcards') ?></span>
+      <span class="material-symbols-outlined text-[18px]">style</span>
+      <span><?= __('nav.flashcards') ?></span>
     </a>
     <a href="?page=pricing"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">payments</span>
-      <span class="nav-label"><?= __('nav.pricing') ?></span>
+      <span class="material-symbols-outlined text-[18px]">payments</span>
+      <span><?= __('nav.pricing') ?></span>
     </a>
   </div>
 
-  <?php
-  // Interface-language picker: published UI languages, for guests too.
-  // Links keep the current query and add ui_lang (index.php stores it and
-  // redirects back without it).
-  $navUiLang = \App\Src\Language::currentLang();
-  $navUiLinks = [];
-  foreach (\App\Src\Language::listed('ui', $navUiLang) as $l) {
-    $navUiLinks[$l] = '?' . http_build_query(array_merge(array_diff_key($_GET, ['ui_lang' => 1]), ['ui_lang' => $l]));
-  }
-  ?>
-  <div id="nav-right" class="flex items-center justify-end gap-md min-w-0 justify-self-end col-start-3">
-    <!-- Interface language -->
-    <div class="relative hidden xl:inline-block text-left" id="nav-ui-switcher" title="<?= htmlspecialchars(__('nav.interface_language')) ?>">
-      <button type="button" aria-haspopup="true" aria-expanded="false" aria-label="<?= htmlspecialchars(__('nav.interface_language')) ?>"
-        class="flex items-center gap-1 p-1.5 pr-2 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-pointer text-on-surface-variant">
-        <span class="material-symbols-outlined text-[18px]">translate</span>
-        <span class="text-[11px] font-semibold uppercase"><?= htmlspecialchars($navUiLang) ?></span>
-      </button>
-      <div id="nav-ui-dropdown" class="hidden absolute right-0 pt-2 w-44 z-50">
-        <div class="rounded-xl shadow-lg border border-outline-variant/20 bg-surface-container-high overflow-hidden max-h-80 overflow-y-auto">
-          <?php foreach ($navUiLinks as $l => $href): ?>
-            <a href="<?= htmlspecialchars($href) ?>" lang="<?= $l ?>" <?= $l === $navUiLang ? 'aria-current="true"' : '' ?>
-              class="flex items-center justify-between gap-2 px-3 py-2.5 text-xs transition <?= $l === $navUiLang ? 'text-primary font-semibold bg-primary/10' : 'text-on-surface hover:bg-surface-variant' ?>">
-              <span><?= htmlspecialchars(\App\Src\Language::nativeName($l)) ?></span>
-              <span class="text-[10px] uppercase text-outline"><?= $l ?></span>
-            </a>
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </div>
+  <div class="flex items-center justify-end gap-md min-w-0 justify-self-end col-start-3">
     <?php if (isset($auth) && $auth->isLoggedIn()):
       $currUser = $auth->currentUser();
       $plan = $currUser['plan_status'] ?? 'inactive';
       $navTargetLang = strtolower($currUser['target_lang'] ?? 'en');
       $navNativeLang = strtolower($currUser['native_lang'] ?? 'en');
-      $navTargetCountry = \App\Src\Language::flagCountry($navTargetLang) ?: 'us';
+      $navLangMap = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
+      $navTargetCountry = $navLangMap[$navTargetLang] ?? 'us';
       ?>
       <!-- Language Switcher -->
       <div class="relative hidden lg:inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?>">
@@ -204,7 +176,7 @@
         </button>
         <div id="nav-lang-dropdown" class="hidden absolute right-0 pt-2 w-40 z-50">
           <div class="rounded-xl shadow-lg border border-outline-variant/20 bg-surface-container-high overflow-hidden">
-            <?php foreach (\App\Src\Language::listed('learn') as $l): $c = \App\Src\Language::flagCountry($l);
+            <?php foreach (['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'] as $l => $c):
               if ($l === $navTargetLang)
                 continue; ?>
               <a href="?page=update_lang&lang=<?= $l ?>"
@@ -269,7 +241,7 @@
     <!-- Hamburger Button (mobile) -->
     <button id="hamburgerBtn"
       class="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
-      aria-label="<?= htmlspecialchars(__('nav.toggle_menu')) ?>">
+      aria-label="Toggle menu">
       <span class="material-symbols-outlined text-[24px]">menu</span>
     </button>
   </div>
@@ -288,7 +260,7 @@
       </a>
       <button id="hamburgerCloseBtn"
         class="flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
-        aria-label="<?= htmlspecialchars(__('nav.close_menu')) ?>">
+        aria-label="Close menu">
         <span class="material-symbols-outlined text-[24px]">close</span>
       </button>
     </div>
@@ -323,10 +295,7 @@
         <div class="flex gap-1.5 overflow-x-auto -mx-1 px-1 pb-1 [scrollbar-width:none]">
           <?php
           // current language first, so the highlighted chip is never scrolled out of view
-          $navLangs = [];
-          foreach (\App\Src\Language::listed('learn', $navTargetLang) as $l) {
-            $navLangs[$l] = \App\Src\Language::flagCountry($l);
-          }
+          $navLangs = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
           if (isset($navLangs[$navTargetLang])) {
             $navLangs = [$navTargetLang => $navLangs[$navTargetLang]] + $navLangs;
           }
@@ -407,18 +376,6 @@
           <span class="material-symbols-outlined text-[16px] shrink-0">contract</span>
           <span class="min-w-0"><?= __('nav.license_agreement') ?></span>
         </a>
-      </div>
-    </div>
-
-    <div class="px-4 pt-3 border-t border-outline-variant/10">
-      <p class="mb-2 text-[11px] font-semibold uppercase tracking-wider text-outline"><?= __('nav.interface_language') ?></p>
-      <div class="flex gap-1.5 overflow-x-auto -mx-1 px-1 pb-1 [scrollbar-width:none]">
-        <?php foreach ($navUiLinks as $l => $href): $isCur = $l === $navUiLang; ?>
-          <a href="<?= $isCur ? '#' : htmlspecialchars($href) ?>" lang="<?= $l ?>" <?= $isCur ? 'aria-current="true"' : '' ?>
-            class="shrink-0 rounded-full border px-2.5 py-1.5 text-xs transition-colors <?= $isCur ? 'border-primary/50 bg-primary/15 text-primary font-semibold' : 'border-outline-variant/20 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50' ?>">
-            <?= htmlspecialchars(\App\Src\Language::nativeName($l)) ?>
-          </a>
-        <?php endforeach; ?>
       </div>
     </div>
 

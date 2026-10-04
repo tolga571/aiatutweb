@@ -119,36 +119,36 @@ class AdminUsers {
 
     public function setPlan(array $user, string $plan): string {
         if (!in_array($plan, self::PLANS, true)) {
-            throw new \InvalidArgumentException(t('admin.invalid_plan'));
+            throw new \InvalidArgumentException('Geçersiz plan.');
         }
         if (!empty($user['dodo_subscription_id']) && (int)$user['has_paid'] === 1) {
             // A real subscription is billed by Dodo; changing it here would
             // only desync the app from what the customer pays for.
-            throw new \InvalidArgumentException(t('admin.has_real_sub'));
+            throw new \InvalidArgumentException('Bu kullanıcının gerçek Dodo aboneliği var. Plan değişikliği kullanıcının kendi hesabından ya da Dodo panelinden yapılmalı.');
         }
         $paid = in_array($plan, self::PAID_PLANS, true) ? 1 : 0;
         $this->db->execute('UPDATE users SET plan_status = ?, has_paid = ? WHERE id = ?', [$plan, $paid, $user['id']]);
-        return t('admin.plan_updated', ['plan' => $plan]) . ($paid ? ' ' . t('admin.granted_by_hand') : '');
+        return 'Plan güncellendi: ' . $plan . ($paid ? ' (elle verildi, gelire sayılmaz)' : '');
     }
 
     public function addBonus(int $userId, int $amount): string {
         if ($amount < 1 || $amount > 10000) {
-            throw new \InvalidArgumentException(t('admin.bonus_range'));
+            throw new \InvalidArgumentException('Bonus 1 ile 10.000 arasında olmalı.');
         }
         (new TokenManager($this->db))->getRemaining($userId); // make sure this month's row exists
         $this->db->execute('UPDATE token_usage SET bonus_limit = bonus_limit + ? WHERE user_id = ?', [$amount, $userId]);
-        return t('admin.bonus_added', ['n' => $amount]);
+        return "{$amount} bonus mesaj eklendi (ay sonunda sıfırlanır).";
     }
 
     public function resetUsage(int $userId): string {
         (new TokenManager($this->db))->getRemaining($userId);
         $this->db->execute('UPDATE token_usage SET used_this_month = 0 WHERE user_id = ?', [$userId]);
-        return t('admin.usage_reset_done');
+        return 'Bu ayın mesaj kullanımı sıfırlandı.';
     }
 
     public function verifyEmail(int $userId): string {
         $this->db->execute('UPDATE users SET email_verified_at = COALESCE(email_verified_at, CURRENT_TIMESTAMP) WHERE id = ?', [$userId]);
-        return t('admin.email_marked_verified');
+        return 'E-posta doğrulandı olarak işaretlendi.';
     }
 
     public function setSuspended(int $userId, bool $suspend): string {
@@ -161,6 +161,6 @@ class AdminUsers {
                 ['%user_id|i:' . $userId . ';%', '%user_id|s:' . strlen((string)$userId) . ':"' . $userId . '";%']
             );
         }
-        return $suspend ? t('admin.account_suspended_done') : t('admin.account_reopened');
+        return $suspend ? 'Hesap askıya alındı, açık oturumları kapatıldı.' : 'Hesap yeniden açıldı.';
     }
 }

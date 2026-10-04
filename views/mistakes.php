@@ -170,7 +170,7 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
       'error' => __('mis.error'),
   ], $jsonFlags) ?>;
   var csrf = <?= json_encode(csrf_token(), $jsonFlags) ?>;
-  var speechLang = <?= json_encode(\App\Src\Language::speechLocale($targetLang)) ?>;
+  var speechLang = <?= json_encode(['en' => 'en-US', 'de' => 'de-DE', 'fr' => 'fr-FR', 'es' => 'es-ES', 'zh' => 'zh-CN', 'ja' => 'ja-JP', 'ar' => 'ar-SA', 'tr' => 'tr-TR'][$targetLang] ?? 'en-US') ?>;
   var SESSION_SIZE = 10;
 
   var $ = function (id) { return document.getElementById(id); };

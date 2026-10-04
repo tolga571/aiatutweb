@@ -2,19 +2,16 @@
 $e = fn($v) => htmlspecialchars((string)$v);
 $n = fn($v, int $dec = 0) => number_format((float)$v, $dec, ',', '.');
 $date = fn($v, string $fmt = 'd.m.Y H:i') => $v ? date($fmt, strtotime((string)$v)) : '—';
-$planLabels = ['inactive' => t('admin.plan_inactive'), 'trial' => t('admin.plan_trial'), 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
+$planLabels = ['inactive' => 'Pasif', 'trial' => 'Deneme', 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];
 $planColors = ['inactive' => 'secondary', 'trial' => 'yellow', 'starter' => 'blue', 'pro' => 'purple', 'active' => 'orange'];
-// Timeline label: subscription events and admin actions share the labels
-// of the event feed (admin.event_*) and the audit log (admin.audit_*).
-$actionLabel = function (string $a): string {
-    foreach (['admin.event_', 'admin.audit_'] as $prefix) {
-        $s = t($prefix . $a);
-        if ($s !== $prefix . $a) {
-            return $s;
-        }
-    }
-    return $a;
-};
+$actionLabels = [
+    'subscription_started' => 'Yeni abonelik', 'subscription_upgraded' => 'Plan yükseltti', 'subscription_downgraded' => 'Plan düşürdü',
+    'downgrade_scheduled' => 'Düşürme planlandı', 'cancellation_requested' => 'İptal talebi', 'subscription_canceled' => 'Abonelik iptal',
+    'cancellation_resumed' => 'İptal geri alındı', 'refund_requested' => 'İade talebi', 'account_deleted' => 'Hesap silindi',
+    'user_plan_changed' => 'Admin planı değiştirdi', 'user_bonus_added' => 'Admin bonus mesaj verdi', 'user_usage_reset' => 'Admin kullanımı sıfırladı',
+    'user_email_verified' => 'Admin e-postayı doğruladı', 'user_password_reset_sent' => 'Admin şifre sıfırlama gönderdi',
+    'user_suspended' => 'Admin hesabı askıya aldı', 'user_unsuspended' => 'Admin hesabı açtı', 'conversation_viewed' => 'Admin sohbeti görüntüledi',
+];
 
 $u = $user;
 $uid = (int)$u['id'];
@@ -26,10 +23,10 @@ $quotaTotal = $quotaLimit + $details['quota']['bonus'];
 $quotaPct = $quotaTotal > 0 ? min(100, $details['quota']['used'] / $quotaTotal * 100) : 0;
 $c = $details['counts'];
 
-$title = ($u['name'] ?: $u['email']) . ' · ' . t('admin.user_col');
+$title = ($u['name'] ?: $u['email']) . ' · Kullanıcı';
 $pageHeader = $u['name'] ?: $u['email'];
-$pagePretitle = t('admin.user_col') . ' #' . $uid;
-$pageActions = '<a href="?page=admin-users" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>' . $e(t('admin.users')) . '</a>';
+$pagePretitle = 'Kullanıcı #' . $uid;
+$pageActions = '<a href="?page=admin-users" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Kullanıcılar</a>';
 
 /** One small POST form posting to admin-user-action. */
 $form = function (string $action, string $inner, string $confirm = '') use ($csrf, $uid, $e): string {
@@ -52,22 +49,22 @@ ob_start();
                 <div class="text-secondary text-break"><?= $e($u['email']) ?></div>
                 <div class="mt-3 d-flex flex-wrap gap-1 justify-content-center">
                     <span class="badge bg-<?= $planColors[$u['plan_status']] ?? 'secondary' ?>-lt"><?= $e($planLabels[$u['plan_status']] ?? $u['plan_status']) ?></span>
-                    <?php if ($isReal): ?><span class="badge bg-green-lt"><?= $e(t('admin.real_subscriber_dodo')) ?></span><?php endif; ?>
+                    <?php if ($isReal): ?><span class="badge bg-green-lt">Gerçek abone · Dodo</span><?php endif; ?>
                     <?php if ($isTest): ?><span class="badge bg-secondary text-white">TEST</span><?php endif; ?>
-                    <?php if (!empty($u['suspended_at'])): ?><span class="badge bg-red-lt"><?= $e(t('admin.suspended')) ?> · <?= $date($u['suspended_at'], 'd.m.Y') ?></span><?php endif; ?>
-                    <?php if (empty($u['email_verified_at'])): ?><span class="badge bg-yellow-lt"><?= $e(t('admin.email_unverified')) ?></span><?php endif; ?>
+                    <?php if (!empty($u['suspended_at'])): ?><span class="badge bg-red-lt">Askıda · <?= $date($u['suspended_at'], 'd.m.Y') ?></span><?php endif; ?>
+                    <?php if (empty($u['email_verified_at'])): ?><span class="badge bg-yellow-lt">E-posta doğrulanmadı</span><?php endif; ?>
                     <?php if (!empty($u['google_id'])): ?><span class="badge bg-azure-lt"><i class="ti ti-brand-google"></i> Google</span><?php endif; ?>
                 </div>
             </div>
             <div class="list-group list-group-flush small">
                 <?php foreach ([
-                    [$e(t('admin.native_to_target')), strtoupper((string)$u['native_lang']) . ' → ' . strtoupper((string)$u['target_lang']) . ' (' . \App\Src\Language::displayName($u['target_lang'] ?: 'en') . ')'],
-                    [$e(t('admin.level')), $u['cefr_level'] ?: '—'],
-                    [$e(t('admin.goal_interest')), ($u['learning_goal'] ?: '—') . ' · ' . ($u['interest_area'] ?: '—')],
-                    ['Onboarding', (int)$u['onboarding_completed'] ? t('admin.completed') : t('admin.not_completed')],
-                    [$e(t('admin.xp_streak')), $n($u['xp']) . ' XP · ' . t('admin.n_days', ['n' => (int)$u['streak_count']])],
-                    [$e(t('admin.last_active')), $date($u['last_activity_date'], 'd.m.Y')],
-                    [$e(t('admin.col_signup')), $date($u['created_at'])],
+                    ['Ana dil → hedef', strtoupper((string)$u['native_lang']) . ' → ' . strtoupper((string)$u['target_lang']) . ' (' . __('languages.' . ($u['target_lang'] ?: 'en')) . ')'],
+                    ['Seviye', $u['cefr_level'] ?: '—'],
+                    ['Hedef / ilgi', ($u['learning_goal'] ?: '—') . ' · ' . ($u['interest_area'] ?: '—')],
+                    ['Onboarding', (int)$u['onboarding_completed'] ? 'Tamamlandı' : 'Tamamlanmadı'],
+                    ['XP · seri', $n($u['xp']) . ' XP · ' . (int)$u['streak_count'] . ' gün'],
+                    ['Son aktif', $date($u['last_activity_date'], 'd.m.Y')],
+                    ['Kayıt', $date($u['created_at'])],
                 ] as [$label, $value]): ?>
                 <div class="list-group-item d-flex justify-content-between gap-3">
                     <span class="text-secondary"><?= $label ?></span><span class="text-end"><?= $e($value) ?></span>
@@ -81,10 +78,10 @@ ob_start();
     <div class="col-lg-8">
         <div class="row row-cards mb-3">
             <?php foreach ([
-                [$e(t('admin.col_messages')), $n($c['messages'] ?? 0), 'message-circle', 'azure'],
-                [$e(t('admin.conversations')), $n($c['conversations'] ?? 0), 'messages', 'primary'],
-                [$e(t('admin.words')), $n($c['words'] ?? 0) . ' <span class="text-secondary small">(' . $e(t('admin.n_mastered', ['n' => $n($c['mastered'] ?? 0)])) . ')</span>', 'cards', 'green'],
-                [$e(t('admin.mistakes')), $n($c['mistakes_open'] ?? 0) . ' <span class="text-secondary small">' . $e(t('admin.open_learned', ['n' => $n($c['mistakes_learned'] ?? 0)])) . '</span>', 'edit', 'red'],
+                ['Mesaj', $n($c['messages'] ?? 0), 'message-circle', 'azure'],
+                ['Sohbet', $n($c['conversations'] ?? 0), 'messages', 'primary'],
+                ['Kelime', $n($c['words'] ?? 0) . ' <span class="text-secondary small">(' . $n($c['mastered'] ?? 0) . ' ezber)</span>', 'cards', 'green'],
+                ['Hata', $n($c['mistakes_open'] ?? 0) . ' <span class="text-secondary small">açık · ' . $n($c['mistakes_learned'] ?? 0) . ' öğrenildi</span>', 'edit', 'red'],
             ] as [$label, $value, $icon, $color]): ?>
             <div class="col-6 col-md-3">
                 <div class="card card-sm"><div class="card-body">
@@ -98,16 +95,16 @@ ob_start();
         <div class="row row-cards mb-3">
             <div class="col-md-6">
                 <div class="card h-100">
-                    <div class="card-header"><h3 class="card-title"><i class="ti ti-credit-card me-1"></i><?= $e(t('admin.subscription')) ?></h3></div>
+                    <div class="card-header"><h3 class="card-title"><i class="ti ti-credit-card me-1"></i>Abonelik</h3></div>
                     <div class="list-group list-group-flush small">
                         <?php foreach ([
-                            [$e(t('admin.col_provider')), $provider],
-                            [$e(t('admin.subscription_id')), $subId ?: '—'],
-                            [$e(t('admin.period')), ($u['billing_interval'] ?? 'month') === 'year' ? t('admin.yearly_cap') : t('admin.monthly_cap')],
-                            [$e(t('admin.next_payment')), $date($u['next_billed_at'] ?? null, 'd.m.Y')],
-                            [$e(t('admin.pending_change')), $u['pending_plan_change'] ? ($planLabels[$u['pending_plan_change']] ?? $u['pending_plan_change']) : '—'],
-                            [$e(t('admin.event_cancellation_requested')), $u['cancel_requested_at'] ? $date($u['cancel_requested_at']) . ' (' . ($u['cancel_method'] === 'manual' ? t('admin.must_do_manually') : 'API') . ')' : '—'],
-                            [$e(t('admin.event_refund_requested')), $date($u['refund_requested_at'] ?? null)],
+                            ['Sağlayıcı', $provider],
+                            ['Abonelik ID', $subId ?: '—'],
+                            ['Dönem', ($u['billing_interval'] ?? 'month') === 'year' ? 'Yıllık' : 'Aylık'],
+                            ['Sonraki ödeme', $date($u['next_billed_at'] ?? null, 'd.m.Y')],
+                            ['Bekleyen değişiklik', $u['pending_plan_change'] ? ($planLabels[$u['pending_plan_change']] ?? $u['pending_plan_change']) : '—'],
+                            ['İptal talebi', $u['cancel_requested_at'] ? $date($u['cancel_requested_at']) . ' (' . ($u['cancel_method'] === 'manual' ? 'elle yapılmalı' : 'API') . ')' : '—'],
+                            ['İade talebi', $date($u['refund_requested_at'] ?? null)],
                         ] as [$label, $value]): ?>
                         <div class="list-group-item d-flex justify-content-between gap-3"><span class="text-secondary"><?= $label ?></span><span class="text-end text-break"><?= $e($value) ?></span></div>
                         <?php endforeach; ?>
@@ -116,17 +113,17 @@ ob_start();
             </div>
             <div class="col-md-6">
                 <div class="card h-100">
-                    <div class="card-header"><h3 class="card-title"><i class="ti ti-bolt me-1"></i><?= $e(t('admin.usage_this_month')) ?></h3></div>
+                    <div class="card-header"><h3 class="card-title"><i class="ti ti-bolt me-1"></i>Bu ayki kullanım</h3></div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-1">
-                            <span><?= $e(t('admin.quota_used', ['used' => $n($details['quota']['used']), 'total' => $n($quotaTotal)])) ?></span>
-                            <span class="text-secondary"><?= $e(t('admin.n_left', ['n' => $n($details['quota']['remaining'])])) ?></span>
+                            <span><?= $n($details['quota']['used']) ?> / <?= $n($quotaTotal) ?> mesaj</span>
+                            <span class="text-secondary"><?= $n($details['quota']['remaining']) ?> kaldı</span>
                         </div>
                         <div class="progress mb-2"><div class="progress-bar <?= $quotaPct >= 90 ? 'bg-red' : '' ?>" style="width: <?= round($quotaPct, 1) ?>%"></div></div>
-                        <div class="text-secondary small mb-3"><?= $e(t('admin.plan_limit', ['n' => $n($quotaLimit)])) ?><?= $details['quota']['bonus'] ? ' + ' . $n($details['quota']['bonus']) . ' bonus' : '' ?></div>
-                        <div class="d-flex justify-content-between small"><span class="text-secondary"><?= $e(t('admin.ai_cost_month')) ?></span><span>$<?= $n($details['ai']['month_cost'] ?? 0, 4) ?></span></div>
-                        <div class="d-flex justify-content-between small"><span class="text-secondary"><?= $e(t('admin.ai_cost_total')) ?></span><span>$<?= $n($details['ai']['total_cost'] ?? 0, 4) ?></span></div>
-                        <div class="d-flex justify-content-between small"><span class="text-secondary"><?= $e(t('admin.ai_requests_failed')) ?></span><span><?= $n($details['ai']['requests'] ?? 0) ?> / <?= $n($details['ai']['failed'] ?? 0) ?></span></div>
+                        <div class="text-secondary small mb-3">Plan limiti <?= $n($quotaLimit) ?><?= $details['quota']['bonus'] ? ' + ' . $n($details['quota']['bonus']) . ' bonus' : '' ?></div>
+                        <div class="d-flex justify-content-between small"><span class="text-secondary">AI maliyeti (bu ay)</span><span>$<?= $n($details['ai']['month_cost'] ?? 0, 4) ?></span></div>
+                        <div class="d-flex justify-content-between small"><span class="text-secondary">AI maliyeti (toplam)</span><span>$<?= $n($details['ai']['total_cost'] ?? 0, 4) ?></span></div>
+                        <div class="d-flex justify-content-between small"><span class="text-secondary">AI isteği / hatalı</span><span><?= $n($details['ai']['requests'] ?? 0) ?> / <?= $n($details['ai']['failed'] ?? 0) ?></span></div>
                     </div>
                 </div>
             </div>
@@ -134,31 +131,31 @@ ob_start();
 
         <?php if ($canEdit): ?>
         <div class="card mb-3">
-            <div class="card-header"><h3 class="card-title"><i class="ti ti-tool me-1"></i><?= $e(t('admin.actions')) ?></h3><span class="card-subtitle ms-2"><?= $e(t('admin.every_action_logged')) ?></span></div>
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-tool me-1"></i>İşlemler</h3><span class="card-subtitle ms-2">her işlem kayıt altına alınır</span></div>
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label"><?= $e(t('admin.change_plan')) ?></label>
+                        <label class="form-label">Planı değiştir</label>
                         <?php if ($isReal): ?>
-                            <div class="text-secondary small"><?= $e(t('admin.has_real_sub')) ?></div>
+                            <div class="text-secondary small">Gerçek Dodo aboneliği var; plan kullanıcının kendi hesabından veya Dodo panelinden değişmeli.</div>
                         <?php else: ?>
-                            <?= $form('set_plan', '<select name="value" class="form-select w-auto">' . implode('', array_map(fn($p) => '<option value="' . $p . '"' . ($p === $u['plan_status'] ? ' selected' : '') . '>' . $e($planLabels[$p]) . '</option>', array_keys($planLabels))) . '</select><button class="btn btn-primary">' . $e(t('admin.lang_save')) . '</button>', t('admin.change_plan_confirm')) ?>
+                            <?= $form('set_plan', '<select name="value" class="form-select w-auto">' . implode('', array_map(fn($p) => '<option value="' . $p . '"' . ($p === $u['plan_status'] ? ' selected' : '') . '>' . $planLabels[$p] . '</option>', array_keys($planLabels))) . '</select><button class="btn btn-primary">Kaydet</button>', 'Plan değiştirilsin mi? Ücretli plan elle verilirse gelire sayılmaz.') ?>
                         <?php endif; ?>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label"><?= $e(t('admin.give_bonus')) ?> <span class="text-secondary small"><?= $e(t('admin.resets_month_end')) ?></span></label>
-                        <?= $form('add_bonus', '<input type="number" name="value" min="1" max="10000" value="50" class="form-control w-auto" style="max-width:110px"><button class="btn btn-primary">' . $e(t('admin.add')) . '</button>') ?>
+                        <label class="form-label">Bonus mesaj ver <span class="text-secondary small">(ay sonunda sıfırlanır)</span></label>
+                        <?= $form('add_bonus', '<input type="number" name="value" min="1" max="10000" value="50" class="form-control w-auto" style="max-width:110px"><button class="btn btn-primary">Ekle</button>') ?>
                     </div>
                     <div class="col-12 d-flex flex-wrap gap-2">
-                        <?= $form('reset_usage', '<button class="btn btn-outline-secondary"><i class="ti ti-refresh me-1"></i>' . $e(t('admin.reset_usage_btn')) . '</button>', t('admin.reset_usage_confirm')) ?>
+                        <?= $form('reset_usage', '<button class="btn btn-outline-secondary"><i class="ti ti-refresh me-1"></i>Bu ayın kullanımını sıfırla</button>', 'Bu ayın mesaj kullanımı sıfırlansın mı?') ?>
                         <?php if (empty($u['email_verified_at'])): ?>
-                            <?= $form('verify_email', '<button class="btn btn-outline-secondary"><i class="ti ti-mail-check me-1"></i>' . $e(t('admin.mark_verified')) . '</button>') ?>
+                            <?= $form('verify_email', '<button class="btn btn-outline-secondary"><i class="ti ti-mail-check me-1"></i>E-postayı doğrulandı yap</button>') ?>
                         <?php endif; ?>
-                        <?= $form('send_reset', '<button class="btn btn-outline-secondary"><i class="ti ti-key me-1"></i>' . $e(t('admin.send_reset_btn')) . '</button>', t('admin.send_reset_confirm', ['email' => $u['email']])) ?>
+                        <?= $form('send_reset', '<button class="btn btn-outline-secondary"><i class="ti ti-key me-1"></i>Şifre sıfırlama e-postası gönder</button>', $u['email'] . ' adresine şifre sıfırlama bağlantısı gönderilsin mi?') ?>
                         <?php if (empty($u['suspended_at'])): ?>
-                            <?= $form('suspend', '<input type="hidden" name="value" value=""><button class="btn btn-outline-warning"><i class="ti ti-ban me-1"></i>' . $e(t('admin.suspend_btn')) . '</button>', t('admin.suspend_confirm')) ?>
+                            <?= $form('suspend', '<input type="hidden" name="value" value=""><button class="btn btn-outline-warning"><i class="ti ti-ban me-1"></i>Askıya al</button>', 'Hesap askıya alınsın mı? Kullanıcı giriş yapamaz ve açık oturumu kapanır.') ?>
                         <?php else: ?>
-                            <?= $form('unsuspend', '<button class="btn btn-outline-success"><i class="ti ti-lock-open me-1"></i>' . $e(t('admin.unsuspend_btn')) . '</button>') ?>
+                            <?= $form('unsuspend', '<button class="btn btn-outline-success"><i class="ti ti-lock-open me-1"></i>Askıyı kaldır</button>') ?>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -166,53 +163,53 @@ ob_start();
             <div class="card-footer" style="background:rgba(248,113,113,.06)">
                 <div class="d-flex flex-wrap align-items-center gap-3">
                     <div class="flex-fill">
-                        <div class="fw-semibold text-red"><i class="ti ti-alert-triangle me-1"></i><?= $e(t('admin.delete_user')) ?></div>
-                        <div class="text-secondary small"><?= $e($isReal ? t('admin.delete_user_help_real') : t('admin.delete_user_help')) ?></div>
+                        <div class="fw-semibold text-red"><i class="ti ti-alert-triangle me-1"></i>Kullanıcıyı sil</div>
+                        <div class="text-secondary small">Tüm sohbetler, kelimeler ve hatalar kalıcı olarak silinir<?= $isReal ? '; gerçek Dodo aboneliği iptal edilir' : '' ?>. Geri alınamaz.</div>
                     </div>
-                    <?= $form('delete', '<input type="text" name="value" class="form-control" style="max-width:240px" placeholder="' . $e(t('admin.type_email_confirm')) . '" autocomplete="off"><button class="btn btn-danger">' . $e(t('admin.delete')) . '</button>', t('admin.delete_user_confirm')) ?>
+                    <?= $form('delete', '<input type="text" name="value" class="form-control" style="max-width:240px" placeholder="Onay için e-postayı yaz" autocomplete="off"><button class="btn btn-danger">Sil</button>', 'Bu kullanıcı ve tüm verileri kalıcı olarak silinecek. Emin misin?') ?>
                 </div>
             </div>
         </div>
         <?php else: ?>
-        <div class="alert alert-info"><?= $e(t('admin.readonly_hidden')) ?></div>
+        <div class="alert alert-info">Salt okunur admin hesabısın; işlemler gizlendi.</div>
         <?php endif; ?>
 
         <div class="card mb-3">
-            <div class="card-header"><h3 class="card-title"><i class="ti ti-messages me-1"></i><?= $e(t('admin.recent_convs')) ?></h3></div>
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-messages me-1"></i>Son sohbetler</h3></div>
             <div class="table-responsive">
                 <table class="table table-vcenter card-table">
-                    <thead><tr><th><?= $e(t('admin.topic_col')) ?></th><th><?= $e(t('admin.first_message')) ?></th><th class="text-end"><?= $e(t('admin.col_messages')) ?></th><th><?= $e(t('admin.col_last')) ?></th><th></th></tr></thead>
+                    <thead><tr><th>Konu</th><th>İlk mesaj</th><th class="text-end">Mesaj</th><th>Son</th><th></th></tr></thead>
                     <tbody>
                     <?php foreach ($details['conversations'] as $cv): ?>
                         <tr>
-                            <td><?= $e($cv['topic_id'] ?: t('admin.topic_free')) ?></td>
+                            <td><?= $e($cv['topic_id'] ?: 'serbest') ?></td>
                             <td class="text-secondary text-truncate" style="max-width:260px;"><?= $e(mb_substr((string)$cv['first_message'], 0, 80)) ?></td>
                             <td class="text-end"><?= (int)$cv['user_messages'] ?></td>
                             <td class="text-secondary text-nowrap"><?= $date($cv['updated_at']) ?></td>
-                            <td class="text-end"><a class="btn btn-sm btn-ghost-primary" href="?page=admin-conversation&amp;conv_id=<?= (int)$cv['id'] ?>" title="<?= $e(t('admin.view_is_logged')) ?>"><?= $e(t('admin.open')) ?></a></td>
+                            <td class="text-end"><a class="btn btn-sm btn-ghost-primary" href="?page=admin-conversation&amp;conv_id=<?= (int)$cv['id'] ?>" title="Görüntüleme kayıt altına alınır">Aç</a></td>
                         </tr>
                     <?php endforeach; ?>
-                    <?php if (!$details['conversations']): ?><tr><td colspan="5" class="text-center text-secondary py-4"><?= $e(t('admin.no_convs_yet')) ?></td></tr><?php endif; ?>
+                    <?php if (!$details['conversations']): ?><tr><td colspan="5" class="text-center text-secondary py-4">Henüz sohbet yok.</td></tr><?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header"><h3 class="card-title"><i class="ti ti-timeline me-1"></i><?= $e(t('admin.history')) ?></h3><span class="card-subtitle ms-2"><?= $e(t('admin.history_sub')) ?></span><a href="?page=admin-audit&amp;user=<?= $uid ?>" class="ms-auto small"><?= $e(t('admin.all_admin_actions')) ?></a></div>
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-timeline me-1"></i>Geçmiş</h3><span class="card-subtitle ms-2">abonelik olayları ve admin işlemleri</span><a href="?page=admin-audit&amp;user=<?= $uid ?>" class="ms-auto small">Tüm admin işlemleri</a></div>
             <div class="list-group list-group-flush">
                 <?php foreach ($details['timeline'] as $t): ?>
                 <div class="list-group-item">
                     <div class="d-flex gap-2 align-items-start">
                         <span class="avatar avatar-xs <?= $t['kind'] === 'admin' ? 'bg-purple-lt' : 'bg-blue-lt' ?>"><i class="ti ti-<?= $t['kind'] === 'admin' ? 'shield' : 'receipt' ?>"></i></span>
                         <div class="flex-fill">
-                            <div><?= $e($actionLabel($t['action'])) ?><?= $t['detail'] ? ' <span class="text-secondary small">· ' . $e($t['detail']) . '</span>' : '' ?></div>
+                            <div><?= $e($actionLabels[$t['action']] ?? $t['action']) ?><?= $t['detail'] ? ' <span class="text-secondary small">· ' . $e($t['detail']) . '</span>' : '' ?></div>
                             <div class="text-secondary small"><?= $date($t['at']) ?><?= $t['admin_email'] ? ' · ' . $e($t['admin_email']) : '' ?></div>
                         </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
-                <?php if (!$details['timeline']): ?><div class="list-group-item text-secondary"><?= $e(t('admin.no_events')) ?></div><?php endif; ?>
+                <?php if (!$details['timeline']): ?><div class="list-group-item text-secondary">Kayıtlı olay yok.</div><?php endif; ?>
             </div>
         </div>
     </div>

@@ -8,14 +8,6 @@ return [
     'gemini_api_key' => getenv('GEMINI_API_KEY') ?: '',
     'gemini_api_key_backup' => getenv('GEMINI_API_KEY_BACKUP') ?: '',
     'daily_token_limit' => 1000,
-
-    // Hard monthly cap on Gemini spend in USD (see AbuseGuard; default $50
-    // until this month's real cost has been checked). When this
-    // month's logged cost reaches it, the AI tutor pauses for everyone
-    // until the 1st; free trials pause earlier, at AI_TRIAL_BUDGET_SHARE of
-    // it. Admins are e-mailed at 50/80/100 %. 0 turns the cap off.
-    'ai_monthly_budget_usd' => (float)(getenv('AI_MONTHLY_BUDGET_USD') !== false && getenv('AI_MONTHLY_BUDGET_USD') !== '' ? getenv('AI_MONTHLY_BUDGET_USD') : 50),
-    'ai_trial_budget_share' => (float)(getenv('AI_TRIAL_BUDGET_SHARE') ?: 0.3),
     'payment_required' => true,
 
     // Kill switch for the site-wide motion layer (public/css/motion.css,
@@ -103,13 +95,6 @@ return [
 
     // Google Sign-In Client ID
     'google_client_id'        => getenv('GOOGLE_CLIENT_ID') ?: '',
-    // Extra OAuth client IDs whose Google ID tokens are accepted by the
-    // mobile API (Android / iOS clients), comma-separated. The web client
-    // above is always accepted too.
-    'google_mobile_client_ids' => array_values(array_filter(array_map('trim', explode(',', getenv('GOOGLE_MOBILE_CLIENT_IDS') ?: '')))),
-    // Oldest mobile app version the API still serves; older apps are told to
-    // update (see /api/v1/config).
-    'mobile_min_version' => getenv('MOBILE_MIN_VERSION') ?: '1.0.0',
 
     // Mailtrap Email Sending
     'mailtrap_api_token'      => getenv('MAILTRAP_API_TOKEN') ?: '',

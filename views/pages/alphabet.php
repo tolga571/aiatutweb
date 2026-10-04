@@ -13,10 +13,8 @@ if ($isLoggedIn) {
     $nativeLang = $u['native_lang'] ?? null;
 }
 $requestedLang = $_GET['target'] ?? null;
-// Only languages the site offers for learning (a switched-off language's
-// alphabet stays out of reach, even by URL).
-$targetLang = ($requestedLang && isset($alphabets[$requestedLang]) && \App\Src\Language::isUsable($requestedLang, 'learn')) ? $requestedLang : $accountTargetLang;
-if (!isset($alphabets[$targetLang]) || !\App\Src\Language::isUsable($targetLang, 'learn')) {
+$targetLang = ($requestedLang && isset($alphabets[$requestedLang])) ? $requestedLang : $accountTargetLang;
+if (!isset($alphabets[$targetLang])) {
     $targetLang = 'en';
 }
 
@@ -34,12 +32,7 @@ $alphabet = $alphabets[$targetLang] ?? $alphabets['en'];
 $isRtl = ($alphabet['direction'] ?? 'ltr') === 'rtl';
 $isPinyin = ($alphabet['type'] ?? '') === 'pinyin';
 $isSyllabary = ($alphabet['type'] ?? '') === 'syllabary';
-$langNames = [];
-foreach (\App\Src\Language::listed('learn', $targetLang) as $code) {
-    if (isset($alphabets[$code])) {
-        $langNames[$code] = \App\Src\Language::nativeName($code);
-    }
-}
+$langNames = ['tr' => 'Türkçe', 'en' => 'English', 'de' => 'Deutsch', 'fr' => 'Français', 'es' => 'Español', 'ar' => 'العربية', 'zh' => '中文', 'ja' => '日本語'];
 require __DIR__ . '/../partials/head.php';
 require __DIR__ . '/../partials/navbar.php';
 ?>

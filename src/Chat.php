@@ -22,11 +22,8 @@ class Chat {
         'smalltalk'  => ['en' => 'Talk about weather and hobbies',  'label' => 'Small talk'],
     ];
 
-    private array $config;
-
     public function __construct(Database $db, array $config) {
         $this->db = $db;
-        $this->config = $config;
         $this->tokenManager = new TokenManager($db);
     }
 
@@ -45,13 +42,6 @@ class Chat {
             $topics['biz_meeting'] = ['en' => 'Participate in a business meeting', 'label' => 'Business Meeting'];
             $topics['biz_negotiation'] = ['en' => 'Negotiate a contract', 'label' => 'Negotiation'];
         }
-        // Shown in the user's language on the web and in the app; the
-        // English 'en' text stays as is because it goes into the AI prompt.
-        foreach ($topics as $id => &$topic) {
-            $topic['title'] = Language::get('chat.topic_title_' . $id, $topic['en']);
-            $topic['description'] = Language::get('chat.topic_' . $id, $topic['title']);
-        }
-        unset($topic);
         return $topics;
     }
 
@@ -144,7 +134,7 @@ SEGMENTED RULES:
     public function handleMessage(int $userId, string $message, GeminiClient $gemini, ?int $conversationId = null, ?string $topicId = null): array {
         $remaining = $this->tokenManager->getRemaining($userId);
         if ($this->tokenManager->getRemaining($userId) <= 0) {
-            return ['error' => 'Monthly message limit reached. Check your plan limits!', 'code' => 'quota_exhausted'];
+            return ['error' => 'Monthly message limit reached. Check your plan limits!'];
         }
 
         // Cap user message to prevent token abuse
@@ -154,17 +144,8 @@ SEGMENTED RULES:
 
         $user = $this->db->fetchOne('SELECT * FROM users WHERE id = ?', [$userId]);
         if (!$user) {
-            return ['error' => 'User not found.', 'code' => 'not_found'];
+            return ['error' => 'User not found.'];
         }
-
-        // Speed and spend limits (same for the website and the app).
-        $guard = new AbuseGuard($this->db, $this->config);
-        $isTrial = ($user['plan_status'] ?? '') === 'trial';
-        $ip = client_ip();
-        if ($refusal = $guard->chatRefusal($userId, $ip, $isTrial)) {
-            return ['error' => Language::get('error.' . $refusal, 'Please slow down and try again in a moment.'), 'code' => $refusal];
-        }
-        $guard->recordChat($userId, $ip, $isTrial);
 
         $targetLang  = $user['target_lang']  ?? 'en';
         $nativeLang  = $user['native_lang']  ?? 'en';
@@ -179,11 +160,7 @@ SEGMENTED RULES:
         $history = [];
         if ($conversationId) {
             $conv = $this->db->fetchOne('SELECT id FROM conversations WHERE id = ? AND user_id = ?', [$conversationId, $userId]);
-            if (!$conv) {
-                // Not this user's conversation: start a new one instead of
-                // writing the reply into someone else's (ids are guessable).
-                $conversationId = null;
-            } else {
+            if ($conv) {
                 $history = $this->db->fetchAll(
                     'SELECT role, content, translation FROM (
                         SELECT role, content, translation, id FROM messages
@@ -232,7 +209,6 @@ SEGMENTED RULES:
                 throw $e;
             }
             AiUsage::record($this->db, $userId, $gemini->getLastUsage(), true);
-            $guard->checkBudgetAlerts();
             $parsed = json_decode($aiRaw, true);
             if ($parsed) {
                 $content             = $parsed['content']             ?? $aiRaw;
@@ -343,7 +319,6 @@ SEGMENTED RULES:
             $isRateLimited = (bool) preg_match('/HTTP 429|RESOURCE_EXHAUSTED|rate.?limit/i', $errorMsg);
             return [
                 'error' => $isRateLimited ? __('chat.error_rate_limited') : __('chat.error_ai_unavailable'),
-                'code' => $isRateLimited ? 'ai_rate_limited' : 'ai_unavailable',
             ];
         }
     }

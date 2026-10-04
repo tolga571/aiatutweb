@@ -4,7 +4,11 @@
  * Usage: <?= flagImg('en') ?>  or  <?= flagImg('de', 'w-6 h-4') ?>
  */
 function flagImg(string $lang, string $class = 'w-5 h-3.5'): string {
-    $country = \App\Src\Language::flagCountry($lang) ?: null;
+    $map = [
+        'en' => 'us', 'de' => 'de', 'fr' => 'fr',
+        'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr',
+    ];
+    $country = $map[strtolower($lang)] ?? null;
     if (!$country) return '<span class="text-sm">🌐</span>';
     $alt = strtoupper($lang) . ' flag';
     return '<img src="https://flagcdn.com/' . $country . '.svg"'

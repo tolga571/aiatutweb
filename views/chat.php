@@ -15,10 +15,18 @@ $xpInLevel = $xp % 100;
 $targetFlag = flagImg($currentUser['target_lang'] ?? 'en', 'w-6 h-4');
 $targetLang = strtolower($currentUser['target_lang'] ?? 'en');
 $topics = $chat->getTopics($currentUser['interest_area'] ?? null);
-$targetLangName = \App\Src\Language::langName($targetLang);
+$langNames = ['en' => 'English', 'de' => 'German', 'fr' => 'French', 'es' => 'Spanish', 'zh' => 'Chinese', 'ja' => 'Japanese', 'ar' => 'Arabic', 'tr' => 'Turkish'];
+$targetLangName = $langNames[$targetLang] ?? strtoupper($targetLang);
 $activeConvId = isset($_GET['conv_id']) ? (int) $_GET['conv_id'] : null;
 $userInitial = strtoupper(substr($currentUser['name'] ?? $currentUser['email'] ?? 'U', 0, 1));
 
+$topicDescriptions = [
+  'cafe' => __('chat.topic_cafe'),
+  'hotel' => __('chat.topic_hotel'),
+  'interview' => __('chat.topic_interview'),
+  'daily' => __('chat.topic_daily'),
+  'smalltalk' => __('chat.topic_smalltalk'),
+];
 
 // Quota / remaining rights
 $quotaRemaining = $quotaRemaining ?? 0;
@@ -52,9 +60,13 @@ if ($quotaPercent > 75) {
 <!-- Refined Compact Top Navigation -->
 <nav
   class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-md sm:px-xl h-14 flex items-center justify-between z-50 shrink-0">
-  <a href="?page=home" class="flex flex-col shrink-0 group" aria-label="Jumplearner">
-    <span class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight group-hover:opacity-80 transition-opacity"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></span>
-    <span class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</span>
+  <a href="?page=home" class="flex items-center gap-sm group shrink-0">
+    <div
+      class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md group-hover:opacity-80 transition-opacity">
+      A
+    </div>
+    <span
+      class="font-bold text-base text-on-surface tracking-tight group-hover:text-primary transition-colors">Jumplearner</span>
   </a>
   <div class="hidden md:flex items-center gap-lg">
     <a href="?page=chat"
@@ -93,7 +105,7 @@ if ($quotaPercent > 75) {
             <a href="?page=dashboard" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
               role="menuitem"><?= __('chat.profile') ?></a>
             <a href="?page=chat" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
-              role="menuitem"><?= __('nav.chat') ?></a>
+              role="menuitem">Chat</a>
             <a href="?page=chat-tips" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant"
               role="menuitem"><?= __('chat.instructions_link') ?></a>
             <a href="?page=logout" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-variant text-error"
@@ -279,7 +291,7 @@ if ($quotaPercent > 75) {
           </svg>
         </div>
         <div id="lang-dropdown" class="hidden absolute bottom-full left-0 w-full mb-1 bg-surface-container border border-outline-variant/30 rounded-xl overflow-hidden shadow-lg z-50">
-          <?php foreach(\App\Src\Language::listed('learn') as $l): if($l === $targetLang) continue; ?>
+          <?php foreach(['en','de','fr','es','zh','ja','ar','tr'] as $l): if($l === $targetLang) continue; ?>
           <a href="?page=update_lang&lang=<?= $l ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-on-surface hover:bg-surface-variant transition">
             <?= flagImg($l, 'w-4 h-3') ?>
             <?= __("languages.{$l}") ?>
@@ -350,7 +362,8 @@ if ($quotaPercent > 75) {
           <!-- Center content -->
           <div class="flex-1 flex flex-col items-center justify-center text-center">
             <?php
-            $country = \App\Src\Language::flagCountry($targetLang) ?: 'us';
+            $map = ['en' => 'us', 'de' => 'de', 'fr' => 'fr', 'es' => 'es', 'zh' => 'cn', 'ja' => 'jp', 'ar' => 'sa', 'tr' => 'tr'];
+            $country = $map[$targetLang] ?? 'us';
             ?>
             <div style="--i:0"
               class="m-in w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant/30 mb-4 overflow-hidden shadow-lg">
@@ -368,9 +381,9 @@ if ($quotaPercent > 75) {
               <button style="--i:<?= 3 + $topicIdx++ ?>"
                 class="m-in topic-chip flex flex-col text-left bg-surface-container-high border border-outline-variant/20 hover:border-primary/50 text-on-surface-variant hover:text-on-surface p-md rounded-xl transition-all h-full"
                 data-topic="<?= $id ?>">
-                <div class="font-bold text-xs text-on-surface mb-1"><?= htmlspecialchars($t['title']) ?></div>
+                <div class="font-bold text-xs text-on-surface mb-1"><?= htmlspecialchars($t['en']) ?></div>
                 <div class="text-[10px] text-outline leading-normal">
-                  <?= htmlspecialchars($t['description']) ?></div>
+                  <?= htmlspecialchars($topicDescriptions[$id] ?? $t['en']) ?></div>
               </button>
             <?php endforeach; ?>
           </div>
@@ -483,19 +496,19 @@ if ($quotaPercent > 75) {
         </div>
         <!-- Tabs -->
         <div class="flex bg-surface-container-high rounded-lg p-1 shrink-0 border border-outline-variant/20">
-          <button id="tab-words" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all"><?= __('chat.tab_words') ?></button>
-          <button id="tab-sentences" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all"><?= __('chat.tab_sentences') ?></button>
+          <button id="tab-words" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary shadow-sm transition-all">Words</button>
+          <button id="tab-sentences" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Sentences</button>
         </div>
         
         <!-- Content Area -->
         <div class="flex-1 relative min-h-[300px]">
           <!-- Words List -->
           <div id="vocab-words-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar transition-opacity duration-300">
-            <div class="text-center text-[10px] text-outline mt-4" data-placeholder><?= __('chat.words_placeholder') ?></div>
+            <div class="text-center text-[10px] text-outline mt-4">New words will appear here...</div>
           </div>
           <!-- Sentences List -->
           <div id="vocab-sentences-list" class="flex flex-col gap-sm absolute inset-0 overflow-y-auto chat-scrollbar opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="text-center text-[10px] text-outline mt-4" data-placeholder><?= __('chat.sentences_placeholder') ?></div>
+            <div class="text-center text-[10px] text-outline mt-4">Sentences will appear here...</div>
           </div>
         </div>
       </div>
@@ -581,7 +594,6 @@ if ($quotaPercent > 75) {
     let isLoading = false;
     let loadingCounter = 0;
     const TARGET_LANG = '<?= $targetLang ?>';
-    const CSRF_TOKEN = <?= json_encode(csrf_token()) ?>;
     const UI_LANG = '<?= App\Src\Language::currentLang() ?>';
     const KAI_LABEL = '<?= addslashes(__('chat.kai')) ?>';
     const RTL_LANGS = ['ar', 'he', 'fa', 'ur'];
@@ -718,7 +730,7 @@ if ($quotaPercent > 75) {
       fetch('?page=chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, conversationId: conversationId, topicId: topicId, csrf_token: CSRF_TOKEN })
+        body: JSON.stringify({ message: msg, conversationId: conversationId, topicId: topicId })
       })
         .then(r => r.text().then(text => ({ ok: r.ok, status: r.status, text: text })))
         .then(function(result) {
@@ -1037,13 +1049,13 @@ if ($quotaPercent > 75) {
       const sentencesListEl = document.getElementById('vocab-sentences-list');
       
       if (words.length && wordsListEl) {
-        if (wordsListEl.querySelector('[data-placeholder]')) {
+        if (wordsListEl.innerHTML.includes('New words will appear here')) {
           wordsListEl.innerHTML = '';
         }
         words.forEach((w, wi) => {
           const pron = w.pronunciation ? `<span class="text-[10px] text-outline ml-1 italic">(${escHtml(w.pronunciation)})</span>` : '';
           const html = `
-          <div class="${animate ? 'm-in ' : ''}relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" ${animate ? `style="--i:${wi}"` : ''} onclick="speakText(${escAttr(JSON.stringify(String(w.word || '')))})">
+          <div class="${animate ? 'm-in ' : ''}relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" ${animate ? `style="--i:${wi}"` : ''} onclick="speakText('${escAttr(w.word)}')">
             <span class="material-symbols-outlined absolute top-2 right-2 text-[14px] text-outline group-hover:text-primary transition-colors">volume_up</span>
             <div class="flex justify-between items-start pr-5">
               <strong class="text-primary text-sm">${escHtml(w.word)}</strong>
@@ -1056,13 +1068,13 @@ if ($quotaPercent > 75) {
       }
 
       if ((content || translation) && sentencesListEl) {
-         if (sentencesListEl.querySelector('[data-placeholder]')) {
+         if (sentencesListEl.innerHTML.includes('Sentences will appear here')) {
            sentencesListEl.innerHTML = '';
          }
          if (content.length > 10) {
            const html = `
            <div class="${animate ? 'm-in ' : ''}bg-surface-container p-sm rounded-xl border border-outline-variant/20 group relative">
-             <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText(${escAttr(JSON.stringify(String(content || '')))})">
+             <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText('${escAttr(content)}')">
                <span class="material-symbols-outlined text-[14px]">volume_up</span>
              </button>
              <div class="text-sm text-on-surface pr-6 relative z-0" dir="${textDir}">${escHtml(content)}</div>
@@ -1363,9 +1375,7 @@ if ($quotaPercent > 75) {
       if (!str) return '';
       const parts = String(str).split(/\*\*(.+?)\*\*/);
       return parts.map((part, i) => {
-        // *single* asterisks (the tutor sometimes uses them) become italics
-        // instead of showing up literally.
-        const safe = escHtml(part).replace(/\*([^*\n]+?)\*/g, '<em>$1</em>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />');
+        const safe = escHtml(part).replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />');
         return i % 2 === 1 ? `<span class="${highlightClass}">${safe}</span>` : safe;
       }).join('');
     }
