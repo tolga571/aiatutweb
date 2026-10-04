@@ -167,6 +167,34 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, vocab_id)
         )");
+        // Flashcards v2: favourites, a free-text note, manual "I know this"
+        // (learned_at — also set when SM-2 reaches mastered) and a marker
+        // for languages whose starter deck was already added, so cards the
+        // user deleted don't come back on the next visit.
+        $this->pdo->exec("ALTER TABLE vocabulary_words ADD COLUMN IF NOT EXISTS is_favorite BOOLEAN NOT NULL DEFAULT FALSE");
+        $this->pdo->exec("ALTER TABLE vocabulary_words ADD COLUMN IF NOT EXISTS note TEXT NOT NULL DEFAULT ''");
+        $this->pdo->exec("ALTER TABLE vocabulary_words ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NULL");
+        $this->pdo->exec("ALTER TABLE user_flashcards ADD COLUMN IF NOT EXISTS learned_at TIMESTAMP DEFAULT NULL");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_vocabulary_words_user_lang ON vocabulary_words (user_id, language)");
+        // Abuse limits (AbuseGuard): which IP each free trial came from, and
+        // small app-wide flags such as "budget alert already sent this month".
+        $this->exec("CREATE TABLE IF NOT EXISTS trial_grants (
+            user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+            ip TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_trial_grants_ip ON trial_grants (ip, created_at)");
+        $this->exec("CREATE TABLE IF NOT EXISTS app_state (
+            key TEXT PRIMARY KEY,
+            value TEXT,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE TABLE IF NOT EXISTS flashcard_decks (
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            language TEXT NOT NULL,
+            seeded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (user_id, language)
+        )");
         // "My mistakes" notebook: one row per chat correction, copied out of
         // messages.metadata by Mistakes::sync(). (message_id, position) keeps
         // a re-sync from duplicating rows; deleting the conversation (or the
@@ -231,6 +259,7 @@ class Database {
             type TEXT NOT NULL,
             attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
         // Dedup for FastSpring webhook deliveries: retries resend the same
         // event id, so this is what actually decides "have I processed this

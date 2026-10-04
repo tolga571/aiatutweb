@@ -129,6 +129,15 @@ $requirePlan = function() use ($auth) {
     if (!$auth->isLoggedIn()) { header('Location: ?page=login'); exit; }
     if (!$auth->hasPaid())    { header('Location: ?page=pricing'); exit; }
 };
+// Flashcard deck language: the one picked on the flashcards page this
+// session, else the user's target language.
+$fcDeckLang = function() use ($auth): string {
+    $picked = (string)($_SESSION['fc_lang'] ?? '');
+    if ($picked !== '' && \App\Src\Language::isUsable($picked, 'learn')) {
+        return $picked;
+    }
+    return $auth->currentUser()['target_lang'] ?? 'en';
+};
 
 switch ($page) {
 
@@ -170,7 +179,8 @@ switch ($page) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $clientIp = client_ip();
             $errors = [];
-            if ($auth->tooManyAttempts($clientIp, 'register', 5, 3600)) {
+            $abuse = new \App\Src\AbuseGuard($db, $config);
+            if ($auth->tooManyAttempts($clientIp, 'register', 5, 3600) || $abuse->signupBlocked($clientIp)) {
                 $errors[] = __('auth.error_too_many_attempts');
             } else {
                 $auth->recordAttempt($clientIp, 'register');
@@ -200,6 +210,7 @@ switch ($page) {
                 if (empty($errors)) {
                     if ($auth->register($email, $pass, $name)) {
                         $auth->clearAttempts($clientIp, 'register');
+                        $abuse->recordSignup($clientIp);
                         $auth->login($email, $pass);
                         if ($auth->userId()) {
                             $verifyToken = $auth->createEmailVerificationToken($auth->userId());
@@ -301,7 +312,16 @@ switch ($page) {
             
             $data = Auth::verifyGoogleIdToken($credential, [$googleClientId]);
             if ($data) {
-                [$user] = $auth->findOrCreateGoogleUser($data);
+                $abuse = new \App\Src\AbuseGuard($db, $config);
+                [$user, $created] = $auth->findOrCreateGoogleUser($data, !$abuse->signupBlocked(client_ip()));
+                if ($created) {
+                    $abuse->recordSignup(client_ip());
+                }
+                if (!$user) {
+                    $_SESSION['login_error'] = __('auth.error_too_many_attempts');
+                    header('Location: ?page=login');
+                    exit;
+                }
                 if ($user) {
                     if (!empty($user['suspended_at'])) {
                         $_SESSION['login_error'] = __('auth.account_suspended');
@@ -509,9 +529,13 @@ switch ($page) {
 
     case 'start-trial':
         $requireAuth();
-        $curr = $auth->currentUser();
-        if (($curr['plan_status'] ?? 'inactive') === 'inactive') {
-            $db->execute('UPDATE users SET plan_status = ? WHERE id = ?', ['trial', $auth->userId()]);
+        // One free trial per few accounts per network, none for throw-away
+        // mailboxes (AbuseGuard); refused users are sent to the plans.
+        $trialRefusal = (new \App\Src\AbuseGuard($db, $config))->startTrial($auth->currentUser(), client_ip());
+        if ($trialRefusal) {
+            $_SESSION['pricing_notice'] = __('error.' . $trialRefusal);
+            header('Location: ?page=pricing');
+            exit;
         }
         header('Location: ?page=chat');
         exit;
@@ -881,18 +905,13 @@ switch ($page) {
     case 'flashcards':
         $requirePlan();
         $currentUser = $auth->currentUser();
-        // Auto-import static cards if user has none for their target language
-        $vocabCount = $db->fetchOne(
-            'SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id = ? AND language = ?',
-            [$auth->userId(), $currentUser['target_lang'] ?? 'en']
-        );
-        if ((int)($vocabCount['c'] ?? 0) < 50) {
-            $flashcard->importStaticCards(
-                $auth->userId(),
-                $currentUser['target_lang'] ?? 'en',
-                $currentUser['native_lang'] ?? 'en'
-            );
+        // Deck language: ?lang= (remembered for the session) or the target
+        // language. Studying another language never touches the profile.
+        if (isset($_GET['lang']) && \App\Src\Language::isUsable(strtolower((string)$_GET['lang']), 'learn')) {
+            $_SESSION['fc_lang'] = strtolower((string)$_GET['lang']);
         }
+        $deckLang = $fcDeckLang();
+        $flashcard->ensureStarterDeck($auth->userId(), $deckLang, $currentUser['native_lang'] ?? 'en');
         require __DIR__ . '/../views/flashcards.php';
         break;
 
@@ -900,7 +919,7 @@ switch ($page) {
         $requireAuth();
         header('Content-Type: application/json');
         $fc = new \App\Src\Flashcard($db);
-        echo json_encode($fc->getStats($auth->userId(), $auth->currentUser()['target_lang'] ?? 'en'));
+        echo json_encode($fc->getStats($auth->userId(), $fcDeckLang()));
         exit;
 
     case 'flashcard-due':
@@ -908,17 +927,14 @@ switch ($page) {
         header('Content-Type: application/json');
         $fc = new \App\Src\Flashcard($db);
         $tab = $_GET['tab'] ?? 'due';
-        $lang = $auth->currentUser()['target_lang'] ?? 'en';
+        $lang = $fcDeckLang();
         $userId = $auth->userId();
-        
+
         if ($tab === 'due') {
             echo json_encode($fc->getDueCards($userId, $lang));
-        } elseif ($tab === 'chat') {
-            echo json_encode($fc->getChatWords($userId, $lang));
         } else {
-            $cat = $_GET['category'] ?? 'all';
-            $search = $_GET['q'] ?? '';
-            echo json_encode($fc->getAllCards($userId, $lang, $cat, $search));
+            $view = in_array($tab, \App\Src\Flashcard::VIEWS, true) ? $tab : 'all';
+            echo json_encode($fc->getAllCards($userId, $lang, $_GET['category'] ?? 'all', $_GET['q'] ?? '', 60, null, $view));
         }
         exit;
 
@@ -927,7 +943,7 @@ switch ($page) {
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = json_decode(file_get_contents('php://input'), true) ?? [];
-            if (isset($input['vocab_id'], $input['quality'])) {
+            if (isset($input['vocab_id'], $input['quality']) && csrf_verify(is_string($input['csrf_token'] ?? null) ? $input['csrf_token'] : null)) {
                 $fc = new \App\Src\Flashcard($db);
                 $result = $fc->reviewCard($auth->userId(), (int)$input['vocab_id'], (int)$input['quality']);
                 echo json_encode($result);
@@ -940,14 +956,57 @@ switch ($page) {
     case 'flashcard-import':
         $requireAuth();
         header('Content-Type: application/json');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_verify($_POST['csrf_token'] ?? null)) {
             $fc = new \App\Src\Flashcard($db);
             $user = $auth->currentUser();
-            $result = $fc->importStaticCards($auth->userId(), $user['target_lang'] ?? 'en', $user['native_lang'] ?? 'en');
+            $result = $fc->importStaticCards($auth->userId(), $fcDeckLang(), $user['native_lang'] ?? 'en');
             echo json_encode(array_merge(['success' => true], $result));
             exit;
         }
         echo json_encode(['success' => false]);
+        exit;
+
+    case 'flashcard-card':
+        // Create / edit / delete / favourite / learned for one card. JSON in
+        // and out, CSRF-checked, never a 5xx (Cloudflare would eat the body).
+        $requirePlan();
+        header('Content-Type: application/json');
+        $cardIn = json_decode(file_get_contents('php://input'), true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($cardIn) || !csrf_verify($cardIn['csrf_token'] ?? null)) {
+            echo json_encode(['success' => false, 'error' => 'invalid_request', 'message' => __('fc.err_generic')]);
+            exit;
+        }
+        $fc = new \App\Src\Flashcard($db);
+        $cardId = (int)($cardIn['id'] ?? 0);
+        $fields = is_array($cardIn['card'] ?? null) ? $cardIn['card'] : [];
+        switch ((string)($cardIn['action'] ?? '')) {
+            case 'create':
+                $r = $fc->createCard($auth->userId(), $fcDeckLang(), $fields);
+                break;
+            case 'update':
+                $r = $fc->updateCard($auth->userId(), $cardId, $fields);
+                break;
+            case 'delete':
+                $r = $fc->deleteCard($auth->userId(), $cardId) ? ['deleted' => true] : ['error' => 'not_found'];
+                break;
+            case 'favorite':
+                $c = $fc->setFavorite($auth->userId(), $cardId, !empty($cardIn['on']));
+                $r = $c ? ['card' => $c] : ['error' => 'not_found'];
+                break;
+            case 'learned':
+                $c = $fc->setLearned($auth->userId(), $cardId, !empty($cardIn['on']));
+                $r = $c ? ['card' => $c] : ['error' => 'not_found'];
+                break;
+            default:
+                $r = ['error' => 'invalid_request'];
+        }
+        if (!empty($r['error'])) {
+            $key = 'fc.err_' . $r['error'];
+            $msg = __($key);
+            echo json_encode(['success' => false, 'error' => $r['error'], 'message' => $msg === $key ? __('fc.err_generic') : $msg] + array_intersect_key($r, ['existing_id' => 1]));
+        } else {
+            echo json_encode(['success' => true] + $r);
+        }
         exit;
 
     case 'flashcard-import-pack':
@@ -963,7 +1022,7 @@ switch ($page) {
         $packUser = $auth->currentUser();
         $packResult = (new \App\Src\Flashcard($db))->importPack(
             $auth->userId(),
-            $packUser['target_lang'] ?? 'en',
+            $fcDeckLang(),
             $packUser['native_lang'] ?? 'en',
             (string)($_POST['level'] ?? '')
         );
@@ -1053,6 +1112,11 @@ switch ($page) {
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input  = json_decode(file_get_contents('php://input'), true) ?? [];
+            if (!csrf_verify(is_string($input['csrf_token'] ?? null) ? $input['csrf_token'] : null)) {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => __('error.session_expired')]);
+                exit;
+            }
             $userId = $auth->userId();
             $msg    = trim($input['message'] ?? '');
             $convId = isset($input['conversationId']) ? (int)$input['conversationId'] : null;

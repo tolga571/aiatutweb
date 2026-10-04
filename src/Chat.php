@@ -22,8 +22,11 @@ class Chat {
         'smalltalk'  => ['en' => 'Talk about weather and hobbies',  'label' => 'Small talk'],
     ];
 
+    private array $config;
+
     public function __construct(Database $db, array $config) {
         $this->db = $db;
+        $this->config = $config;
         $this->tokenManager = new TokenManager($db);
     }
 
@@ -154,6 +157,15 @@ SEGMENTED RULES:
             return ['error' => 'User not found.', 'code' => 'not_found'];
         }
 
+        // Speed and spend limits (same for the website and the app).
+        $guard = new AbuseGuard($this->db, $this->config);
+        $isTrial = ($user['plan_status'] ?? '') === 'trial';
+        $ip = client_ip();
+        if ($refusal = $guard->chatRefusal($userId, $ip, $isTrial)) {
+            return ['error' => Language::get('error.' . $refusal, 'Please slow down and try again in a moment.'), 'code' => $refusal];
+        }
+        $guard->recordChat($userId, $ip, $isTrial);
+
         $targetLang  = $user['target_lang']  ?? 'en';
         $nativeLang  = $user['native_lang']  ?? 'en';
         $cefrLevel   = $user['cefr_level']   ?? 'A1';
@@ -167,7 +179,11 @@ SEGMENTED RULES:
         $history = [];
         if ($conversationId) {
             $conv = $this->db->fetchOne('SELECT id FROM conversations WHERE id = ? AND user_id = ?', [$conversationId, $userId]);
-            if ($conv) {
+            if (!$conv) {
+                // Not this user's conversation: start a new one instead of
+                // writing the reply into someone else's (ids are guessable).
+                $conversationId = null;
+            } else {
                 $history = $this->db->fetchAll(
                     'SELECT role, content, translation FROM (
                         SELECT role, content, translation, id FROM messages
@@ -216,6 +232,7 @@ SEGMENTED RULES:
                 throw $e;
             }
             AiUsage::record($this->db, $userId, $gemini->getLastUsage(), true);
+            $guard->checkBudgetAlerts();
             $parsed = json_decode($aiRaw, true);
             if ($parsed) {
                 $content             = $parsed['content']             ?? $aiRaw;

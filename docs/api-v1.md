@@ -48,11 +48,20 @@ remove them. A breaking change means `/api/v2`. Raise `MOBILE_MIN_VERSION`
 | GET | `/conversations/{id}` | plan | messages (AI ones include corrections, words, segmented…) |
 | POST | `/chat` | plan | `message, conversation_id?, topic_id?` → same result as the web chat + `message_id` |
 | POST | `/messages/{id}/report` | user | `reason: offensive|harmful|wrong|other, note?` (Play AI policy) → `ai_reports` |
-| GET | `/flashcards/stats` | plan | tops up the starter deck like the web page |
-| GET | `/flashcards` | plan | `?tab=due|chat|all&category=&q=&level=` |
+| GET | `/flashcards/languages` | plan | learnable languages with the user's card count each |
+| GET | `/flashcards/stats` | plan | adds the starter deck the first time a language is opened; also `favorites, learned, mine` |
+| GET | `/flashcards` | plan | `?tab=due|all|favorites|learned|mine|chat&category=&q=&level=&offset=` (60 per page) |
+| POST | `/flashcards` | plan | create: `word*, translation, pronunciation, example, example_translation, category, note, level, is_favorite` → `{card}`; 409 `duplicate` + `existing_id` |
+| GET/PATCH/DELETE | `/flashcards/{id}` | plan | read / edit (same fields) / delete one of the user's cards |
+| POST | `/flashcards/{id}/favorite` | plan | `on: bool` |
+| POST | `/flashcards/{id}/learned` | plan | `on: bool` — "I know this"; off puts it back in review |
 | GET | `/flashcards/categories` | plan | |
-| POST | `/flashcards/review` | plan | `vocab_id, quality (0-5)` |
+| POST | `/flashcards/review` | plan | `vocab_id, quality (0-3)`; reaching mastered also marks it learned |
 | GET/POST | `/flashcards/packs` | plan | list / add `level` |
+
+Every flashcard endpoint takes `lang` (query or body) to work on another
+language's deck; anything not learnable falls back to the user's target
+language. Errors: `word_required`, `too_long`, `duplicate`, `not_found`.
 | GET | `/mistakes` | plan | |
 | POST | `/mistakes/{id}/review` | plan | `action` (same as web) |
 | GET | `/alphabet` | – | `?lang=`; `learned` filled when signed in |

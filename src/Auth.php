@@ -91,7 +91,8 @@ class Auth {
      * The account for verified Google claims: found by Google ID, else by
      * email (and linked), else created. Returns [user row, created?].
      */
-    public function findOrCreateGoogleUser(array $claims): array {
+    /** $allowCreate = false: sign existing users in but don't create a new account (returns [null, false]). */
+    public function findOrCreateGoogleUser(array $claims, bool $allowCreate = true): array {
         $googleId = (string)($claims['sub'] ?? '');
         $email = trim((string)($claims['email'] ?? ''));
         $name = trim((string)($claims['name'] ?? ''));
@@ -105,6 +106,8 @@ class Auth {
                     'UPDATE users SET google_id = ?, profile_image = COALESCE(profile_image, ?) WHERE id = ?',
                     [$googleId, $picture ?: null, $user['id']]
                 );
+            } elseif (!$allowCreate) {
+                return [null, false];
             } else {
                 $this->db->execute(
                     'INSERT INTO users (email, password, name, google_id, profile_image) VALUES (?, ?, ?, ?, ?)',
@@ -212,7 +215,24 @@ class Auth {
         // and so should the app sign-ins made with the old password.
         $this->db->execute("UPDATE password_resets SET used_at = CURRENT_TIMESTAMP WHERE user_id = ? AND used_at IS NULL", [$row['user_id']]);
         $this->db->execute('DELETE FROM api_tokens WHERE user_id = ?', [$row['user_id']]);
+        $this->endWebSessions((int)$row['user_id']);
         return true;
+    }
+
+    /**
+     * Signs the user out of every browser (e.g. after a password reset, so a
+     * stolen session dies with the old password). Sessions are serialized
+     * PHP data in the sessions table; "user_id|i:N;" is matched only at the
+     * start or after a previous value, so "admin_user_id" can't match.
+     */
+    public function endWebSessions(int $userId): void {
+        // The id may have been stored as an int or as a numeric string.
+        foreach (['user_id|i:' . $userId . ';', 'user_id|s:' . strlen((string)$userId) . ':"' . $userId . '";'] as $needle) {
+            $this->db->execute(
+                "DELETE FROM sessions WHERE data LIKE ? OR data LIKE ? OR data LIKE ?",
+                [$needle . '%', '%;' . $needle . '%', '%}' . $needle . '%']
+            );
+        }
     }
 
     /** Creates an email verification token for the given user (24 hour expiry). Returns the plaintext token to embed in the link. */

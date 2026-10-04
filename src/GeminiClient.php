@@ -99,6 +99,9 @@ class GeminiClient {
         $payload['generationConfig'] = [
             'responseMimeType' => 'application/json',
             'thinkingConfig' => ['thinkingBudget' => 0],
+            // Caps one reply's cost (~$0.01 of output at 2.5 Flash prices).
+            // Normal replies are well under this; it only stops runaways.
+            'maxOutputTokens' => 4096,
         ];
 
         $errors = [];

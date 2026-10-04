@@ -1,6 +1,7 @@
 <?php
 namespace App\Src\Api;
 
+use App\Src\AbuseGuard;
 use App\Src\Account;
 use App\Src\Auth;
 use App\Src\Chat;
@@ -60,7 +61,7 @@ class Router
         // Token auth, no cookies: any origin may call it (the Expo web
         // preview runs on another origin).
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: Authorization, Content-Type, X-App-Lang, X-App-Version, X-App-Platform');
+        header('Access-Control-Allow-Headers: Authorization, Content-Type, If-None-Match, X-App-Lang, X-App-Version, X-App-Platform');
         header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
         if ($method === 'OPTIONS') {
             http_response_code(204);
@@ -110,10 +111,17 @@ class Router
 
             ['GET', 'flashcards/stats', 'flashcardStats', 'plan'],
             ['GET', 'flashcards/categories', 'flashcardCategories', 'plan'],
+            ['GET', 'flashcards/languages', 'flashcardLanguages', 'plan'],
             ['GET', 'flashcards', 'flashcards', 'plan'],
+            ['POST', 'flashcards', 'flashcardCreate', 'plan'],
             ['POST', 'flashcards/review', 'flashcardReview', 'plan'],
             ['GET', 'flashcards/packs', 'flashcardPacks', 'plan'],
             ['POST', 'flashcards/packs', 'flashcardImportPack', 'plan'],
+            ['GET', 'flashcards/(\d+)', 'flashcard', 'plan'],
+            ['PATCH', 'flashcards/(\d+)', 'flashcardUpdate', 'plan'],
+            ['DELETE', 'flashcards/(\d+)', 'flashcardDelete', 'plan'],
+            ['POST', 'flashcards/(\d+)/favorite', 'flashcardFavorite', 'plan'],
+            ['POST', 'flashcards/(\d+)/learned', 'flashcardLearned', 'plan'],
 
             ['GET', 'mistakes', 'mistakes', 'plan'],
             ['POST', 'mistakes/(\d+)/review', 'mistakeReview', 'plan'],
@@ -226,7 +234,8 @@ class Router
     private function register(): void
     {
         $ip = client_ip();
-        if ($this->auth->tooManyAttempts($ip, 'register', 5, 3600)) {
+        $abuse = new AbuseGuard($this->db, $this->config);
+        if ($this->auth->tooManyAttempts($ip, 'register', 5, 3600) || $abuse->signupBlocked($ip)) {
             throw new ApiError('rate_limited', t('auth.error_too_many_attempts'), 429);
         }
         $this->auth->recordAttempt($ip, 'register');
@@ -253,6 +262,7 @@ class Router
             throw new ApiError('registration_failed', $this->auth->lastError ?: t('auth.registration_failed'), 422);
         }
         $this->auth->clearAttempts($ip, 'register');
+        $abuse->recordSignup($ip);
         $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
         $verifyToken = $this->auth->createEmailVerificationToken((int)$user['id']);
         $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
@@ -273,9 +283,13 @@ class Router
         if (!$claims) {
             throw new ApiError('invalid_credentials', t('auth.invalid_credentials'), 401);
         }
-        [$user, $created] = $this->auth->findOrCreateGoogleUser($claims);
+        $abuse = new AbuseGuard($this->db, $this->config);
+        [$user, $created] = $this->auth->findOrCreateGoogleUser($claims, !$abuse->signupBlocked(client_ip()));
+        if ($created) {
+            $abuse->recordSignup(client_ip());
+        }
         if (!$user) {
-            throw new ApiError('server_error', t('api.server_error'), 200);
+            throw new ApiError('too_many_attempts', t('auth.error_too_many_attempts'), 429);
         }
         if (!empty($user['suspended_at'])) {
             throw new ApiError('account_suspended', t('auth.account_suspended'), 403);
@@ -404,7 +418,10 @@ class Router
 
     private function startTrial(): void
     {
-        $this->db->execute("UPDATE users SET plan_status = 'trial' WHERE id = ? AND COALESCE(plan_status, 'inactive') = 'inactive'", [$this->user['id']]);
+        $refusal = (new AbuseGuard($this->db, $this->config))->startTrial($this->user, client_ip());
+        if ($refusal) {
+            throw new ApiError($refusal, t('error.' . $refusal), 403);
+        }
         $this->user = $this->freshUser((int)$this->user['id']);
         $this->ok(['user' => $this->userPayload($this->user)]);
     }
@@ -426,7 +443,7 @@ class Router
                 'messages' => $count('SELECT COUNT(*) AS c FROM messages WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id = ?)', [$uid]),
                 'words' => $count('SELECT COUNT(*) AS c FROM vocabulary_words WHERE user_id = ?', [$uid]),
                 'words_today' => $count('SELECT COUNT(*) AS c FROM vocabulary_words WHERE user_id = ? AND date(created_at) = CURRENT_DATE', [$uid]),
-                'cards_due' => $count('SELECT COUNT(*) AS c FROM user_flashcards WHERE user_id = ? AND next_review <= CURRENT_TIMESTAMP', [$uid]),
+                'cards_due' => $count('SELECT COUNT(*) AS c FROM user_flashcards WHERE user_id = ? AND learned_at IS NULL AND next_review <= CURRENT_TIMESTAMP', [$uid]),
                 'cards_mastered' => $count("SELECT COUNT(*) AS c FROM user_flashcards WHERE user_id = ? AND status = 'mastered'", [$uid]),
                 'mistakes_open' => $count('SELECT COUNT(*) AS c FROM user_mistakes WHERE user_id = ? AND language = ? AND learned_at IS NULL', [$uid, $lang]),
             ],
@@ -488,7 +505,12 @@ class Router
         $result = (new Chat($this->db, $this->config))->handleMessage($uid, $message, $gemini, $convId, $topic);
         if (!empty($result['error'])) {
             $code = $result['code'] ?? 'chat_failed';
-            throw new ApiError($code, $code === 'quota_exhausted' ? t('api.quota_exhausted') : $result['error'], $code === 'quota_exhausted' ? 403 : 200);
+            $status = match (true) {
+                $code === 'quota_exhausted', str_ends_with($code, '_paused') => 403,
+                str_starts_with($code, 'rate_'), $code === 'trial_ip_daily' => 429,
+                default => 200, // never a 5xx: Cloudflare would replace the body
+            };
+            throw new ApiError($code, $code === 'quota_exhausted' ? t('api.quota_exhausted') : $result['error'], $status);
         }
         $result['message_id'] = (int)($this->db->fetchOne(
             "SELECT id FROM messages WHERE conversation_id = ? AND role = 'ai' ORDER BY id DESC LIMIT 1",
@@ -522,45 +544,110 @@ class Router
 
     // ── Flashcards ────────────────────────────────────────────
 
-    /** Same as the web flashcards page: top up the starter deck below 50 cards. */
-    private function ensureStarterDeck(Flashcard $fc): void
+    /**
+     * The deck language: ?lang= / body "lang" when it is a learnable
+     * language, else the user's target language. Lets people study cards in
+     * any language without changing their profile.
+     */
+    private function deckLang(): string
     {
-        $lang = $this->user['target_lang'] ?? 'en';
-        $n = (int)($this->db->fetchOne('SELECT COUNT(*) AS c FROM vocabulary_words WHERE user_id = ? AND language = ?', [$this->user['id'], $lang])['c'] ?? 0);
-        if ($n < 50) {
-            $fc->importStaticCards((int)$this->user['id'], $lang, $this->user['native_lang'] ?? 'en');
+        $want = strtolower((string)($_GET['lang'] ?? $this->str('lang')));
+        if ($want !== '' && Language::isUsable($want, 'learn')) {
+            return $want;
         }
+        return $this->user['target_lang'] ?? 'en';
+    }
+
+    /** Starter deck the first time a language is opened (see Flashcard::ensureStarterDeck). */
+    private function ensureStarterDeck(Flashcard $fc, string $lang): void
+    {
+        $fc->ensureStarterDeck((int)$this->user['id'], $lang, $this->user['native_lang'] ?? 'en');
     }
 
     private function flashcardStats(): void
     {
         $fc = new Flashcard($this->db);
-        $this->ensureStarterDeck($fc);
-        $this->ok($fc->getStats((int)$this->user['id'], $this->user['target_lang'] ?? 'en'));
+        $lang = $this->deckLang();
+        $this->ensureStarterDeck($fc, $lang);
+        $this->ok($fc->getStats((int)$this->user['id'], $lang) + ['lang' => $lang]);
     }
 
     private function flashcardCategories(): void
     {
-        $this->ok(['categories' => (new Flashcard($this->db))->getCategories((int)$this->user['id'], $this->user['target_lang'] ?? 'en')]);
+        $this->ok(['categories' => (new Flashcard($this->db))->getCategories((int)$this->user['id'], $this->deckLang())]);
     }
 
-    /** ?tab=due|chat|all (&category=&q=&level= for "all"). */
+    private function flashcardLanguages(): void
+    {
+        $learn = Language::listed('learn', $this->user['target_lang'] ?? null);
+        $this->ok([
+            'current' => $this->user['target_lang'] ?? 'en',
+            'languages' => (new Flashcard($this->db))->getLanguages((int)$this->user['id'], $learn),
+        ]);
+    }
+
+    /** ?tab=due|all|favorites|learned|mine|chat (&category=&q=&level=&offset=&lang=). */
     private function flashcards(): void
     {
         $fc = new Flashcard($this->db);
-        $this->ensureStarterDeck($fc);
+        $lang = $this->deckLang();
+        $this->ensureStarterDeck($fc, $lang);
         $uid = (int)$this->user['id'];
-        $lang = $this->user['target_lang'] ?? 'en';
         $tab = (string)($_GET['tab'] ?? 'due');
         if ($tab === 'due') {
             $cards = $fc->getDueCards($uid, $lang);
-        } elseif ($tab === 'chat') {
-            $cards = $fc->getChatWords($uid, $lang);
         } else {
+            $view = in_array($tab, Flashcard::VIEWS, true) ? $tab : 'all';
             $level = isset($_GET['level']) && in_array($_GET['level'], Flashcard::PACK_LEVELS, true) ? $_GET['level'] : null;
-            $cards = $fc->getAllCards($uid, $lang, (string)($_GET['category'] ?? 'all'), (string)($_GET['q'] ?? ''), 60, $level);
+            $cards = $fc->getAllCards($uid, $lang, (string)($_GET['category'] ?? 'all'), (string)($_GET['q'] ?? ''), 60, $level, $view, (int)($_GET['offset'] ?? 0));
         }
-        $this->ok(['cards' => $cards]);
+        $this->ok(['cards' => $cards, 'lang' => $lang]);
+    }
+
+    private function cardResult(array $r): void
+    {
+        if (!empty($r['error'])) {
+            $status = $r['error'] === 'not_found' ? 404 : ($r['error'] === 'duplicate' ? 409 : 422);
+            $extra = isset($r['existing_id']) ? ['existing_id' => $r['existing_id']] : [];
+            throw new ApiError($r['error'], t('fc.err_' . $r['error']), $status, $extra);
+        }
+        $this->ok(['card' => $r['card']]);
+    }
+
+    private function flashcardCreate(): void
+    {
+        $this->cardResult((new Flashcard($this->db))->createCard((int)$this->user['id'], $this->deckLang(), $this->input));
+    }
+
+    private function flashcard(string $id): void
+    {
+        $card = (new Flashcard($this->db))->getCard((int)$this->user['id'], (int)$id);
+        $this->cardResult($card ? ['card' => $card] : ['error' => 'not_found']);
+    }
+
+    private function flashcardUpdate(string $id): void
+    {
+        $this->cardResult((new Flashcard($this->db))->updateCard((int)$this->user['id'], (int)$id, $this->input));
+    }
+
+    private function flashcardDelete(string $id): void
+    {
+        if (!(new Flashcard($this->db))->deleteCard((int)$this->user['id'], (int)$id)) {
+            throw new ApiError('not_found', t('fc.err_not_found'), 404);
+        }
+        $this->ok(['deleted' => true]);
+    }
+
+    private function flashcardFavorite(string $id): void
+    {
+        $card = (new Flashcard($this->db))->setFavorite((int)$this->user['id'], (int)$id, !empty($this->input['on']));
+        $this->cardResult($card ? ['card' => $card] : ['error' => 'not_found']);
+    }
+
+    private function flashcardLearned(string $id): void
+    {
+        $card = (new Flashcard($this->db))->setLearned((int)$this->user['id'], (int)$id, !empty($this->input['on']));
+        $this->cardResult($card ? ['card' => $card] : ['error' => 'not_found']);
     }
 
     private function flashcardReview(): void
@@ -569,18 +656,22 @@ class Router
         if (!isset($this->input['vocab_id']) || $quality < 0 || $quality > 5) {
             throw new ApiError('validation', t('api.invalid_value'), 422);
         }
-        $this->ok((new Flashcard($this->db))->reviewCard((int)$this->user['id'], (int)$this->input['vocab_id'], $quality));
+        $r = (new Flashcard($this->db))->reviewCard((int)$this->user['id'], (int)$this->input['vocab_id'], $quality);
+        if (empty($r['success'])) {
+            throw new ApiError('not_found', t('fc.err_not_found'), 404);
+        }
+        $this->ok($r);
     }
 
     private function flashcardPacks(): void
     {
-        $this->ok(['packs' => (new Flashcard($this->db))->getPacks((int)$this->user['id'], $this->user['target_lang'] ?? 'en')]);
+        $this->ok(['packs' => (new Flashcard($this->db))->getPacks((int)$this->user['id'], $this->deckLang())]);
     }
 
     private function flashcardImportPack(): void
     {
         $r = (new Flashcard($this->db))->importPack(
-            (int)$this->user['id'], $this->user['target_lang'] ?? 'en', $this->user['native_lang'] ?? 'en', $this->str('level')
+            (int)$this->user['id'], $this->deckLang(), $this->user['native_lang'] ?? 'en', $this->str('level')
         );
         if (!empty($r['error'])) {
             throw new ApiError('validation', (string)$r['error'], 422);

@@ -11,6 +11,23 @@ $periodLabels = ['today' => t('admin.today'), 'week' => t('admin.last_7d'), 'mon
 ob_start();
 ?>
 
+<?php if ($budget > 0):
+    $pctUsed = min(100, $monthCost / $budget * 100);
+    $state = $monthCost >= $budget ? ['danger', t('admin.budget_state_paused')]
+        : ($monthCost >= $budget * $trialShare ? ['warning', t('admin.budget_state_trials_paused')] : ['success', t('admin.budget_state_ok')]); ?>
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+            <div class="subheader"><?= $e(t('admin.budget_title')) ?></div>
+            <span class="badge bg-<?= $state[0] ?>-lt"><?= $e($state[1]) ?></span>
+        </div>
+        <div class="h2 mb-2"><?= $usd($monthCost) ?> <span class="text-secondary fs-4">/ <?= $usd($budget) ?></span></div>
+        <div class="progress progress-sm mb-2"><div class="progress-bar bg-<?= $state[0] ?>" style="width: <?= round($pctUsed, 1) ?>%"></div></div>
+        <div class="text-secondary small"><?= $e(t('admin.budget_hint', ['trial' => $usd($budget * $trialShare)])) ?></div>
+    </div>
+</div>
+<?php endif; ?>
+
 <div class="row row-cards mb-4">
     <?php foreach ($periods as $key => $p):
         $okCount = (int)$p['requests'] - (int)$p['failed']; ?>

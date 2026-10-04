@@ -20,7 +20,7 @@ $vocabCount = $db->fetchOne('SELECT COUNT(*) as c FROM vocabulary_words WHERE us
 $recentConvs = $db->fetchAll('SELECT id, updated_at, (SELECT content FROM messages WHERE conversation_id=conversations.id ORDER BY created_at ASC LIMIT 1) as title FROM conversations WHERE user_id=? ORDER BY updated_at DESC LIMIT 5', [$auth->userId()]);
 $streak = (int)($user['streak_count'] ?? 0);
 $wordsToday = $db->fetchOne("SELECT COUNT(*) as c FROM vocabulary_words WHERE user_id=? AND date(created_at) = " . $db->dateNow(), [$auth->userId()])['c'] ?? 0;
-$dueCount = $db->fetchOne("SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND next_review <= " . $db->now(), [$auth->userId()])['c'] ?? 0;
+$dueCount = $db->fetchOne("SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND learned_at IS NULL AND next_review <= " . $db->now(), [$auth->userId()])['c'] ?? 0;
 $masteredCount = $db->fetchOne("SELECT COUNT(*) as c FROM user_flashcards WHERE user_id=? AND status='mastered'", [$auth->userId()])['c'] ?? 0;
 $mistakesDue = (int)($db->fetchOne('SELECT COUNT(*) as c FROM user_mistakes WHERE user_id=? AND language=? AND learned_at IS NULL', [$auth->userId(), $user['target_lang'] ?? 'en'])['c'] ?? 0);
 $tips = [

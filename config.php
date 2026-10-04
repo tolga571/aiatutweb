@@ -8,6 +8,13 @@ return [
     'gemini_api_key' => getenv('GEMINI_API_KEY') ?: '',
     'gemini_api_key_backup' => getenv('GEMINI_API_KEY_BACKUP') ?: '',
     'daily_token_limit' => 1000,
+
+    // Hard monthly cap on Gemini spend in USD (see AbuseGuard). When this
+    // month's logged cost reaches it, the AI tutor pauses for everyone
+    // until the 1st; free trials pause earlier, at AI_TRIAL_BUDGET_SHARE of
+    // it. Admins are e-mailed at 50/80/100 %. 0 turns the cap off.
+    'ai_monthly_budget_usd' => (float)(getenv('AI_MONTHLY_BUDGET_USD') !== false && getenv('AI_MONTHLY_BUDGET_USD') !== '' ? getenv('AI_MONTHLY_BUDGET_USD') : 20),
+    'ai_trial_budget_share' => (float)(getenv('AI_TRIAL_BUDGET_SHARE') ?: 0.3),
     'payment_required' => true,
 
     // Kill switch for the site-wide motion layer (public/css/motion.css,

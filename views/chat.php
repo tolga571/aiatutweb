@@ -52,13 +52,9 @@ if ($quotaPercent > 75) {
 <!-- Refined Compact Top Navigation -->
 <nav
   class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-md sm:px-xl h-14 flex items-center justify-between z-50 shrink-0">
-  <a href="?page=home" class="flex items-center gap-sm group shrink-0">
-    <div
-      class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg shadow-md group-hover:opacity-80 transition-opacity">
-      A
-    </div>
-    <span
-      class="font-bold text-base text-on-surface tracking-tight group-hover:text-primary transition-colors">Jumplearner</span>
+  <a href="?page=home" class="flex flex-col shrink-0 group" aria-label="Jumplearner">
+    <span class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight group-hover:opacity-80 transition-opacity"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></span>
+    <span class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</span>
   </a>
   <div class="hidden md:flex items-center gap-lg">
     <a href="?page=chat"
@@ -585,6 +581,7 @@ if ($quotaPercent > 75) {
     let isLoading = false;
     let loadingCounter = 0;
     const TARGET_LANG = '<?= $targetLang ?>';
+    const CSRF_TOKEN = <?= json_encode(csrf_token()) ?>;
     const UI_LANG = '<?= App\Src\Language::currentLang() ?>';
     const KAI_LABEL = '<?= addslashes(__('chat.kai')) ?>';
     const RTL_LANGS = ['ar', 'he', 'fa', 'ur'];
@@ -721,7 +718,7 @@ if ($quotaPercent > 75) {
       fetch('?page=chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, conversationId: conversationId, topicId: topicId })
+        body: JSON.stringify({ message: msg, conversationId: conversationId, topicId: topicId, csrf_token: CSRF_TOKEN })
       })
         .then(r => r.text().then(text => ({ ok: r.ok, status: r.status, text: text })))
         .then(function(result) {
@@ -1046,7 +1043,7 @@ if ($quotaPercent > 75) {
         words.forEach((w, wi) => {
           const pron = w.pronunciation ? `<span class="text-[10px] text-outline ml-1 italic">(${escHtml(w.pronunciation)})</span>` : '';
           const html = `
-          <div class="${animate ? 'm-in ' : ''}relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" ${animate ? `style="--i:${wi}"` : ''} onclick="speakText('${escAttr(w.word)}')">
+          <div class="${animate ? 'm-in ' : ''}relative bg-surface-container hover:bg-surface-container-high p-sm rounded-xl border border-outline-variant/20 transition-colors group cursor-pointer" ${animate ? `style="--i:${wi}"` : ''} onclick="speakText(${escAttr(JSON.stringify(String(w.word || '')))})">
             <span class="material-symbols-outlined absolute top-2 right-2 text-[14px] text-outline group-hover:text-primary transition-colors">volume_up</span>
             <div class="flex justify-between items-start pr-5">
               <strong class="text-primary text-sm">${escHtml(w.word)}</strong>
@@ -1065,7 +1062,7 @@ if ($quotaPercent > 75) {
          if (content.length > 10) {
            const html = `
            <div class="${animate ? 'm-in ' : ''}bg-surface-container p-sm rounded-xl border border-outline-variant/20 group relative">
-             <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText('${escAttr(content)}')">
+             <button type="button" class="absolute top-2 right-2 text-outline hover:text-primary transition-colors z-10" onclick="speakText(${escAttr(JSON.stringify(String(content || '')))})">
                <span class="material-symbols-outlined text-[14px]">volume_up</span>
              </button>
              <div class="text-sm text-on-surface pr-6 relative z-0" dir="${textDir}">${escHtml(content)}</div>
@@ -1366,7 +1363,9 @@ if ($quotaPercent > 75) {
       if (!str) return '';
       const parts = String(str).split(/\*\*(.+?)\*\*/);
       return parts.map((part, i) => {
-        const safe = escHtml(part).replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />');
+        // *single* asterisks (the tutor sometimes uses them) become italics
+        // instead of showing up literally.
+        const safe = escHtml(part).replace(/\*([^*\n]+?)\*/g, '<em>$1</em>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />');
         return i % 2 === 1 ? `<span class="${highlightClass}">${safe}</span>` : safe;
       }).join('');
     }

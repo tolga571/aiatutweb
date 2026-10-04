@@ -848,6 +848,8 @@ class AdminController {
         $prices = self::MONTHLY_PRICE_USD;
         $quota = new TokenManager($this->db);
         $modelPrices = AiUsage::PRICES;
+        $budget = (new AbuseGuard($this->db, $GLOBALS['config'] ?? (require __DIR__ . '/../config.php')))->budget();
+        $trialShare = (float)(($GLOBALS['config'] ?? [])['ai_trial_budget_share'] ?? 0.3);
         require __DIR__ . '/../views/admin/ai_usage.php';
     }
 
