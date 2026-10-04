@@ -446,7 +446,7 @@ class Router
         $topics = (new Chat($this->db, $this->config))->getTopics($this->user['interest_area'] ?? null);
         $out = [];
         foreach ($topics as $id => $t) {
-            $out[] = ['id' => $id, 'label' => $t['label'] ?? $id, 'description' => $t['en'] ?? ''];
+            $out[] = ['id' => $id, 'label' => $t['title'], 'description' => $t['description']];
         }
         $this->ok(['topics' => $out]);
     }

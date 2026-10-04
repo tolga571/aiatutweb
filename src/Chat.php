@@ -42,6 +42,13 @@ class Chat {
             $topics['biz_meeting'] = ['en' => 'Participate in a business meeting', 'label' => 'Business Meeting'];
             $topics['biz_negotiation'] = ['en' => 'Negotiate a contract', 'label' => 'Negotiation'];
         }
+        // Shown in the user's language on the web and in the app; the
+        // English 'en' text stays as is because it goes into the AI prompt.
+        foreach ($topics as $id => &$topic) {
+            $topic['title'] = Language::get('chat.topic_title_' . $id, $topic['en']);
+            $topic['description'] = Language::get('chat.topic_' . $id, $topic['title']);
+        }
+        unset($topic);
         return $topics;
     }
 

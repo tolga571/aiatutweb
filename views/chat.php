@@ -19,13 +19,6 @@ $targetLangName = \App\Src\Language::langName($targetLang);
 $activeConvId = isset($_GET['conv_id']) ? (int) $_GET['conv_id'] : null;
 $userInitial = strtoupper(substr($currentUser['name'] ?? $currentUser['email'] ?? 'U', 0, 1));
 
-$topicDescriptions = [
-  'cafe' => __('chat.topic_cafe'),
-  'hotel' => __('chat.topic_hotel'),
-  'interview' => __('chat.topic_interview'),
-  'daily' => __('chat.topic_daily'),
-  'smalltalk' => __('chat.topic_smalltalk'),
-];
 
 // Quota / remaining rights
 $quotaRemaining = $quotaRemaining ?? 0;
@@ -379,9 +372,9 @@ if ($quotaPercent > 75) {
               <button style="--i:<?= 3 + $topicIdx++ ?>"
                 class="m-in topic-chip flex flex-col text-left bg-surface-container-high border border-outline-variant/20 hover:border-primary/50 text-on-surface-variant hover:text-on-surface p-md rounded-xl transition-all h-full"
                 data-topic="<?= $id ?>">
-                <div class="font-bold text-xs text-on-surface mb-1"><?= htmlspecialchars($t['en']) ?></div>
+                <div class="font-bold text-xs text-on-surface mb-1"><?= htmlspecialchars($t['title']) ?></div>
                 <div class="text-[10px] text-outline leading-normal">
-                  <?= htmlspecialchars($topicDescriptions[$id] ?? $t['en']) ?></div>
+                  <?= htmlspecialchars($t['description']) ?></div>
               </button>
             <?php endforeach; ?>
           </div>
