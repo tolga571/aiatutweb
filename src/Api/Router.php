@@ -705,7 +705,7 @@ class Router
     {
         $alphabets = require __DIR__ . '/../../data/alphabets.php';
         $lang = (string)($_GET['lang'] ?? ($this->user['target_lang'] ?? 'en'));
-        if (!isset($alphabets[$lang])) {
+        if (!isset($alphabets[$lang]) || !Language::isUsable($lang, 'learn')) {
             throw new ApiError('not_found', t('api.not_found'), 404);
         }
         $learned = $this->user

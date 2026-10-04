@@ -13,6 +13,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
   toggleMenu('pagesBtn', 'pagesMenu');
 
+  // Long translations (German, Russian, Armenian…) can make the centre links
+  // run into the language picker / sign-in button. When they would touch,
+  // switch the centre links to icons only (each keeps its name as a tooltip
+  // and for screen readers).
+  const navCenter = document.getElementById('nav-center');
+  const navRight = document.getElementById('nav-right');
+  if (navCenter && navRight) {
+    navCenter.querySelectorAll('.nav-link').forEach(function (a) {
+      const label = a.querySelector('.nav-label');
+      if (label && !a.getAttribute('aria-label')) a.setAttribute('title', label.textContent.trim());
+    });
+    const fit = function () {
+      navCenter.classList.remove('nav-compact');
+      if (navCenter.offsetParent === null) return; // hidden below lg (hamburger menu)
+      const c = navCenter.getBoundingClientRect();
+      const r = navRight.getBoundingClientRect();
+      const left = navCenter.parentElement.firstElementChild.getBoundingClientRect();
+      if (c.right > r.left - 12 || c.left < left.right + 12) navCenter.classList.add('nav-compact');
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  }
+
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const hamburgerCloseBtn = document.getElementById('hamburgerCloseBtn');
   const mobileMenu = document.getElementById('mobileMenu');

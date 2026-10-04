@@ -32,7 +32,10 @@ class Language
         ['code' => 'zh', 'name' => 'Chinese',  'native_name' => '中文',      'flag' => 'cn', 'dir' => 'ltr', 'speech_locale' => 'zh-CN', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
         ['code' => 'ja', 'name' => 'Japanese', 'native_name' => '日本語',    'flag' => 'jp', 'dir' => 'ltr', 'speech_locale' => 'ja-JP', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
         ['code' => 'ar', 'name' => 'Arabic',   'native_name' => 'العربية',  'flag' => 'sa', 'dir' => 'rtl', 'speech_locale' => 'ar-SA', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
-        ['code' => 'tr', 'name' => 'Turkish',  'native_name' => 'Türkçe',   'flag' => 'tr', 'dir' => 'ltr', 'speech_locale' => 'tr-TR', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
+        ['code' => 'ru', 'name' => 'Russian',  'native_name' => 'Русский',  'flag' => 'ru', 'dir' => 'ltr', 'speech_locale' => 'ru-RU', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
+        ['code' => 'el', 'name' => 'Greek',    'native_name' => 'Ελληνικά', 'flag' => 'gr', 'dir' => 'ltr', 'speech_locale' => 'el-GR', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
+        ['code' => 'hi', 'name' => 'Hindi',    'native_name' => 'हिन्दी',     'flag' => 'in', 'dir' => 'ltr', 'speech_locale' => 'hi-IN', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
+        ['code' => 'hy', 'name' => 'Armenian', 'native_name' => 'Հայերեն',  'flag' => 'am', 'dir' => 'ltr', 'speech_locale' => 'hy-AM', 'status' => 'published', 'ui_enabled' => true, 'learn_enabled' => true],
     ];
 
     private static ?Database $db = null;
@@ -41,6 +44,35 @@ class Language
     private static array $english = [];
     private static bool $loaded = false;
     private static string $currentLang = self::DEFAULT;
+
+    /**
+     * The first interface language from an Accept-Language header
+     * ("ru-RU,ru;q=0.9,en;q=0.8") that the site offers, or null.
+     */
+    public static function fromAcceptLanguage(string $header): ?string
+    {
+        $prefs = [];
+        foreach (explode(',', $header) as $i => $part) {
+            $bits = explode(';', trim($part));
+            $code = strtolower(substr(trim($bits[0]), 0, 2));
+            $q = 1.0;
+            foreach (array_slice($bits, 1) as $param) {
+                if (str_starts_with(trim($param), 'q=')) {
+                    $q = (float)substr(trim($param), 2);
+                }
+            }
+            if ($code !== '' && $q > 0) {
+                $prefs[] = [$q, -$i, $code];
+            }
+        }
+        rsort($prefs);
+        foreach ($prefs as [, , $code]) {
+            if (self::isUsable($code, 'ui')) {
+                return $code;
+            }
+        }
+        return null;
+    }
 
     public static function boot(Database $db): void
     {

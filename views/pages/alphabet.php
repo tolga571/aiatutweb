@@ -13,8 +13,10 @@ if ($isLoggedIn) {
     $nativeLang = $u['native_lang'] ?? null;
 }
 $requestedLang = $_GET['target'] ?? null;
-$targetLang = ($requestedLang && isset($alphabets[$requestedLang])) ? $requestedLang : $accountTargetLang;
-if (!isset($alphabets[$targetLang])) {
+// Only languages the site offers for learning (a switched-off language's
+// alphabet stays out of reach, even by URL).
+$targetLang = ($requestedLang && isset($alphabets[$requestedLang]) && \App\Src\Language::isUsable($requestedLang, 'learn')) ? $requestedLang : $accountTargetLang;
+if (!isset($alphabets[$targetLang]) || !\App\Src\Language::isUsable($targetLang, 'learn')) {
     $targetLang = 'en';
 }
 

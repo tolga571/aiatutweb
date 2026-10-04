@@ -492,11 +492,24 @@ class Database {
             ('zh', 'Chinese',  '中文',      'cn', 'ltr', 'zh-CN', 'published', 50),
             ('ja', 'Japanese', '日本語',    'jp', 'ltr', 'ja-JP', 'published', 60),
             ('ar', 'Arabic',   'العربية',  'sa', 'rtl', 'ar-SA', 'published', 70),
-            ('tr', 'Turkish',  'Türkçe',   'tr', 'ltr', 'tr-TR', 'published', 80),
-            ('ru', 'Russian',  'Русский',  'ru', 'ltr', 'ru-RU', 'draft', 90),
-            ('el', 'Greek',    'Ελληνικά', 'gr', 'ltr', 'el-GR', 'draft', 100),
-            ('hi', 'Hindi',    'हिन्दी',     'in', 'ltr', 'hi-IN', 'draft', 110)
+            ('tr', 'Turkish',  'Türkçe',   'tr', 'ltr', 'tr-TR', 'disabled', 80),
+            ('ru', 'Russian',  'Русский',  'ru', 'ltr', 'ru-RU', 'published', 90),
+            ('el', 'Greek',    'Ελληνικά', 'gr', 'ltr', 'el-GR', 'published', 100),
+            ('hi', 'Hindi',    'हिन्दी',     'in', 'ltr', 'hi-IN', 'published', 110),
+            ('hy', 'Armenian', 'Հայերեն',  'am', 'ltr', 'hy-AM', 'published', 120)
             ON CONFLICT (code) DO NOTHING");
+        // One-time registry changes for databases seeded before them
+        // (2026-10-04): the site is for international learners — Turkish is
+        // switched off entirely (interface and learning), and Russian, Greek,
+        // Hindi and Armenian go live. Runs once, so later admin edits stick.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'languages_rev_2'")->fetchColumn()) {
+            $this->pdo->exec("UPDATE languages SET status = 'disabled', ui_enabled = FALSE, learn_enabled = FALSE, updated_at = CURRENT_TIMESTAMP WHERE code = 'tr'");
+            $this->pdo->exec("UPDATE languages SET status = 'published', ui_enabled = TRUE, learn_enabled = TRUE, updated_at = CURRENT_TIMESTAMP WHERE code IN ('ru', 'el', 'hi')");
+            $this->pdo->exec("INSERT INTO languages (code, name, native_name, flag, dir, speech_locale, status, sort_order) VALUES
+                ('hy', 'Armenian', 'Հայերեն', 'am', 'ltr', 'hy-AM', 'published', 120) ON CONFLICT (code) DO NOTHING");
+            $this->pdo->exec("UPDATE users SET ui_lang = NULL WHERE ui_lang = 'tr'");
+            $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('languages_rev_2', '1') ON CONFLICT (key) DO NOTHING");
+        }
         // UI strings on top of lang/<code>.json: AI translations and admin
         // edits. Kept in the DB because Railway's filesystem is reset on deploy.
         $this->exec("CREATE TABLE IF NOT EXISTS ui_translations (

@@ -62,6 +62,11 @@ $detectedLang = Language::DEFAULT;
 $uiCookie = (string)($_COOKIE[Language::COOKIE] ?? '');
 if ($uiCookie !== '' && Language::isUsable($uiCookie, 'ui')) {
     $detectedLang = $uiCookie;
+} else {
+    // Nothing picked yet: follow the browser's language list (most visitors
+    // come from abroad), else English.
+    $uiCookie = '';
+    $detectedLang = Language::fromAcceptLanguage((string)($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '')) ?? Language::DEFAULT;
 }
 // ?ui_lang=xx from the language picker: remember it (cookie, and on the
 // account when signed in), then reload the same URL without the parameter.
@@ -379,6 +384,9 @@ switch ($page) {
                     $_POST['learning_goal'] ?? 'conversation',
                     $_POST['interest_area'] ?? 'general'
                 );
+                if (Language::isUsable($native, 'ui')) {
+                    setcookie(Language::COOKIE, $native, ['expires' => time() + 86400 * 365, 'path' => '/', 'secure' => $isHttps, 'httponly' => false, 'samesite' => 'Lax']);
+                }
                 $redirect = $_GET['redirect'] ?? 'start-trial';
                 header('Location: ?page=' . urlencode($redirect)); exit;
             }

@@ -66,9 +66,9 @@ class AdminController {
     }
 
     public const ADMIN_LANG_COOKIE = 'jl_admin_lang';
-    public const ADMIN_DEFAULT_LANG = 'tr';
+    public const ADMIN_DEFAULT_LANG = 'en';
 
-    /** The admin panel's interface language: its own cookie, else Turkish. */
+    /** The admin panel's interface language: its own cookie, else English. */
     public static function adminLang(): string {
         $c = (string)($_COOKIE[self::ADMIN_LANG_COOKIE] ?? '');
         return ($c !== '' && Language::isUsable($c, 'ui')) ? $c : self::ADMIN_DEFAULT_LANG;

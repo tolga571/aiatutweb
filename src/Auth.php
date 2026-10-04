@@ -309,9 +309,12 @@ class Auth {
         $cefrLevel = self::pick($cefrLevel, self::CEFR_LEVELS, 'A1');
         $learningGoal = self::pick($learningGoal, self::LEARNING_GOALS, 'conversation');
         $interestArea = self::pick($interestArea, self::INTEREST_AREAS, 'general');
+        // The site then speaks the user's native language (when the interface
+        // is available in it); they can still switch it later.
+        $uiLang = Language::isUsable($nativeLang, 'ui') ? $nativeLang : Language::DEFAULT;
         $this->db->execute(
-            'UPDATE users SET native_lang=?, target_lang=?, cefr_level=?, learning_goal=?, interest_area=?, onboarding_completed=1 WHERE id=?',
-            [$nativeLang, $targetLang, $cefrLevel, $learningGoal, $interestArea, $userId]
+            'UPDATE users SET native_lang=?, target_lang=?, cefr_level=?, learning_goal=?, interest_area=?, ui_lang=?, onboarding_completed=1 WHERE id=?',
+            [$nativeLang, $targetLang, $cefrLevel, $learningGoal, $interestArea, $uiLang, $userId]
         );
     }
 

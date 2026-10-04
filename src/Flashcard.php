@@ -453,7 +453,7 @@ class Flashcard {
 
     /** CEFR levels a vocabulary pack can be added for, in display order. */
     public const PACK_LEVELS = ['A1', 'A2', 'B1', 'B2'];
-    private const NATIVE_LANGS = ['en', 'de', 'fr', 'es', 'zh', 'ja', 'ar', 'tr'];
+    private const NATIVE_LANGS = ['en', 'de', 'fr', 'es', 'zh', 'ja', 'ar', 'ru', 'el', 'hi', 'hy'];
 
     /**
      * Loads the extra vocabulary pack for a language (data/vocab/<lang>.json,

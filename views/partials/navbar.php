@@ -1,7 +1,7 @@
 <nav
   class="relative w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-lg h-14 grid grid-cols-[1fr_auto_1fr] items-center z-50 shrink-0">
-  <link rel="stylesheet" href="/css/navbar.css">
-  <script src="/js/navbar.js?v=2" defer></script>
+  <link rel="stylesheet" href="/css/navbar.css?v=2">
+  <script src="/js/navbar.js?v=3" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex flex-col shrink-0">
       <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>
@@ -25,23 +25,23 @@
     <?php endif; ?>
   </div>
 
-  <div class="hidden lg:flex items-center justify-center gap-base shrink-0 col-start-2">
+  <div id="nav-center" class="hidden lg:flex items-center justify-center gap-base shrink-0 col-start-2">
     <a href="?page=home"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]">home</span>
-      <span><?= __('nav.home') ?></span>
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">home</span>
+      <span class="nav-label"><?= __('nav.home') ?></span>
     </a>
     <a href="?page=chat"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]">forum</span>
-      <span><?= __('nav.chat') ?></span>
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">forum</span>
+      <span class="nav-label"><?= __('nav.chat') ?></span>
     </a>
     <div class="relative inline-block">
       <button type="button" id="pagesBtn"
         class="nav-link pages-btn flex items-center gap-xs text-on-surface-variant px-lg py-2 hover:text-primary hover:bg-surface-variant/40 transition-colors rounded-full border border-outline-variant/20 bg-surface-container-high/60 shadow-sm"
         aria-haspopup="true" aria-expanded="false">
         <span class="material-symbols-outlined text-[18px]">web</span>
-        <span class="font-semibold"><?= __('nav.pages') ?></span>
+        <span class="nav-label font-semibold"><?= __('nav.pages') ?></span>
         <span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
       </button>
       <div id="pagesMenu"
@@ -147,13 +147,13 @@
     </div>
     <a href="?page=flashcards"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]">style</span>
-      <span><?= __('nav.flashcards') ?></span>
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">style</span>
+      <span class="nav-label"><?= __('nav.flashcards') ?></span>
     </a>
     <a href="?page=pricing"
       class="nav-link flex items-center gap-xs text-on-surface-variant px-md py-1.5 hover:text-primary transition-colors rounded-full">
-      <span class="material-symbols-outlined text-[18px]">payments</span>
-      <span><?= __('nav.pricing') ?></span>
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">payments</span>
+      <span class="nav-label"><?= __('nav.pricing') ?></span>
     </a>
   </div>
 
@@ -167,7 +167,7 @@
     $navUiLinks[$l] = '?' . http_build_query(array_merge(array_diff_key($_GET, ['ui_lang' => 1]), ['ui_lang' => $l]));
   }
   ?>
-  <div class="flex items-center justify-end gap-md min-w-0 justify-self-end col-start-3">
+  <div id="nav-right" class="flex items-center justify-end gap-md min-w-0 justify-self-end col-start-3">
     <!-- Interface language -->
     <div class="relative hidden xl:inline-block text-left" id="nav-ui-switcher" title="<?= htmlspecialchars(__('nav.interface_language')) ?>">
       <button type="button" aria-haspopup="true" aria-expanded="false" aria-label="<?= htmlspecialchars(__('nav.interface_language')) ?>"
