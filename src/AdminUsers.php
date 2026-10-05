@@ -115,7 +115,7 @@ class AdminUsers {
         ];
     }
 
-    // ── Actions. Each returns a short Turkish result line for the flash message. ──
+    // ── Actions. Each returns a short result line for the flash message. ──
 
     public function setPlan(array $user, string $plan): string {
         if (!in_array($plan, self::PLANS, true)) {

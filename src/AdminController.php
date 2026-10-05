@@ -33,7 +33,7 @@ class AdminController {
 
     /** Ensure the current user is an admin */
     private function requireAdmin(): void {
-        // The admin panel has its own language (default Turkish), separate
+        // The admin panel has its own language (default English), separate
         // from the site's interface language.
         Language::load(self::adminLang());
         $adminId = $_SESSION['admin_id'] ?? null;

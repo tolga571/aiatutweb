@@ -33,17 +33,25 @@
           $nativeLangOptions[$code] = $opt;
           $targetLangOptions[$code] = $opt;
         }
+        // Starting picks: someone sent back here to pick their native
+        // language again keeps the language they were already learning.
+        $obUser = $auth->currentUser() ?: [];
+        $obTarget = isset($targetLangOptions[$obUser['target_lang'] ?? '']) ? $obUser['target_lang'] : 'es';
+        $obNative = \App\Src\Language::currentLang();
+        if ($obNative === $obTarget || !isset($nativeLangOptions[$obNative])) {
+            $obNative = $obTarget === 'en' ? 'es' : 'en';
+        }
         ?>
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('onboarding.native_lang') ?></label>
             <div class="relative">
               <div id="native-display" class="flex items-center gap-2 w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface cursor-pointer hover:border-primary/50 transition" onclick="toggleDropdown('native')">
-                <img id="native-flag" src="https://flagcdn.com/us.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
-                <span id="native-label"><?= htmlspecialchars(\App\Src\Language::displayName('en')) ?></span>
+                <img id="native-flag" src="https://flagcdn.com/<?= $nativeLangOptions[$obNative][1] ?>.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
+                <span id="native-label"><?= $nativeLangOptions[$obNative][0] ?></span>
                 <svg class="ml-auto w-4 h-4 text-outline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
-              <input type="hidden" name="native_lang" id="native-val" value="en" />
+              <input type="hidden" name="native_lang" id="native-val" value="<?= $obNative ?>" />
               <div id="native-dropdown" class="hidden absolute z-20 mt-1 w-full bg-surface-container border border-outline-variant/30 rounded-xl shadow-xl overflow-hidden">
                 <?php foreach ($nativeLangOptions as $code => [$name, $country]): ?>
                   <div class="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-variant cursor-pointer text-body-md text-on-surface transition"
@@ -59,11 +67,11 @@
             <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('onboarding.target_lang') ?></label>
             <div class="relative">
               <div id="target-display" class="flex items-center gap-2 w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface cursor-pointer hover:border-primary/50 transition" onclick="toggleDropdown('target')">
-                <img id="target-flag" src="https://flagcdn.com/es.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
-                <span id="target-label"><?= htmlspecialchars(\App\Src\Language::displayName('es')) ?></span>
+                <img id="target-flag" src="https://flagcdn.com/<?= $targetLangOptions[$obTarget][1] ?>.svg" class="w-5 h-3.5 rounded-[2px] object-cover" />
+                <span id="target-label"><?= $targetLangOptions[$obTarget][0] ?></span>
                 <svg class="ml-auto w-4 h-4 text-outline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </div>
-              <input type="hidden" name="target_lang" id="target-val" value="es" />
+              <input type="hidden" name="target_lang" id="target-val" value="<?= $obTarget ?>" />
               <div id="target-dropdown" class="hidden absolute z-20 mt-1 w-full bg-surface-container border border-outline-variant/30 rounded-xl shadow-xl overflow-hidden">
                 <?php foreach ($targetLangOptions as $code => [$name, $country]): ?>
                   <div class="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-variant cursor-pointer text-body-md text-on-surface transition"

@@ -492,7 +492,6 @@ class Database {
             ('zh', 'Chinese',  '中文',      'cn', 'ltr', 'zh-CN', 'published', 50),
             ('ja', 'Japanese', '日本語',    'jp', 'ltr', 'ja-JP', 'published', 60),
             ('ar', 'Arabic',   'العربية',  'sa', 'rtl', 'ar-SA', 'published', 70),
-            ('tr', 'Turkish',  'Türkçe',   'tr', 'ltr', 'tr-TR', 'disabled', 80),
             ('ru', 'Russian',  'Русский',  'ru', 'ltr', 'ru-RU', 'published', 90),
             ('el', 'Greek',    'Ελληνικά', 'gr', 'ltr', 'el-GR', 'published', 100),
             ('hi', 'Hindi',    'हिन्दी',     'in', 'ltr', 'hi-IN', 'published', 110),
@@ -570,6 +569,36 @@ class Database {
             // access they already had.
             $this->pdo->exec("ALTER TABLE admins ADD COLUMN role TEXT NOT NULL DEFAULT 'admin'");
         } catch (\Exception $e) {
+        }
+        // Turkish leaves the data too (2026-10-05), not just the lists:
+        // nobody learns Turkish any more, Turkish natives learning another
+        // language get English explanations, and Turkish natives learning
+        // English (English can't be both) pick their native language again
+        // through onboarding. Turkish-language study data can't be opened
+        // any more, so it goes. Last step on purpose — every table above
+        // exists by now — and, like languages_rev_2, all or nothing and
+        // never fatal.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'languages_rev_3'")->fetchColumn()) {
+            $this->pdo->beginTransaction();
+            try {
+                $this->pdo->exec("UPDATE users SET target_lang = CASE WHEN native_lang = 'en' THEN 'es' ELSE 'en' END WHERE target_lang = 'tr'");
+                $this->pdo->exec("UPDATE users SET native_lang = 'en' WHERE native_lang = 'tr' AND target_lang <> 'en'");
+                $this->pdo->exec("UPDATE users SET native_lang = NULL, onboarding_completed = 0 WHERE native_lang = 'tr'");
+                $this->pdo->exec("UPDATE users SET ui_lang = NULL WHERE ui_lang = 'tr'");
+                $this->pdo->exec("DELETE FROM vocabulary_words WHERE language = 'tr'");
+                $this->pdo->exec("DELETE FROM flashcard_decks WHERE language = 'tr'");
+                $this->pdo->exec("DELETE FROM user_mistakes WHERE language = 'tr'");
+                $this->pdo->exec("DELETE FROM alphabet_progress WHERE lang = 'tr'");
+                $this->pdo->exec("DELETE FROM ui_translations WHERE lang = 'tr'");
+                $this->pdo->exec("DELETE FROM languages WHERE code = 'tr'");
+                $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('languages_rev_3', '1') ON CONFLICT (key) DO NOTHING");
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('languages_rev_3 failed (will retry next request): ' . $e->getMessage());
+            }
         }
     }
 

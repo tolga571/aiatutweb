@@ -132,6 +132,10 @@ $requireAuth = function() use ($auth, $page) {
 };
 $requirePlan = function() use ($auth) {
     if (!$auth->isLoggedIn()) { header('Location: ?page=login'); exit; }
+    // Also catches people already signed in who were sent back to pick
+    // their native language (see Database languages_rev_3). Onboarding then
+    // goes on to start-trial, which passes anyone with a plan to the chat.
+    if (!$auth->hasCompletedOnboarding()) { header('Location: ?page=onboarding'); exit; }
     if (!$auth->hasPaid())    { header('Location: ?page=pricing'); exit; }
 };
 // Flashcard deck language: the one picked on the flashcards page this

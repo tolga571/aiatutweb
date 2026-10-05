@@ -11,7 +11,6 @@ return array (
       'example' => 'Hello! How are you doing today?',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -26,7 +25,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsınız?',
         'en' => 'Hello! How are you doing today?',
         'de' => 'Hello! How are you doing today?',
         'fr' => 'Hello! How are you doing today?',
@@ -49,7 +47,6 @@ return array (
       'example' => 'Goodbye, see you tomorrow!',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Güle güle',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -64,7 +61,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hoşça kal, yarın görüşmek üzere!',
         'en' => 'Goodbye, see you tomorrow!',
         'de' => 'Goodbye, see you tomorrow!',
         'fr' => 'Goodbye, see you tomorrow!',
@@ -87,7 +83,6 @@ return array (
       'example' => 'Could you give me a glass of water, please?',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -102,7 +97,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bana bir bardak su verebilir misiniz, lütfen?',
         'en' => 'Could you give me a glass of water, please?',
         'de' => 'Could you give me a glass of water, please?',
         'fr' => 'Could you give me a glass of water, please?',
@@ -125,7 +119,6 @@ return array (
       'example' => 'Thank you for the delicious dinner.',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -140,7 +133,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Lezzetli akşam yemeği için teşekkür ederim.',
         'en' => 'Thank you for the delicious dinner.',
         'de' => 'Thank you for the delicious dinner.',
         'fr' => 'Thank you for the delicious dinner.',
@@ -163,7 +155,6 @@ return array (
       'example' => 'Do you prefer still or sparkling water?',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -178,7 +169,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gazsız mı yoksa maden suyu mu tercih edersiniz?',
         'en' => 'Do you prefer still or sparkling water?',
         'de' => 'Do you prefer still or sparkling water?',
         'fr' => 'Do you prefer still or sparkling water?',
@@ -201,7 +191,6 @@ return array (
       'example' => 'I bought some fresh bread from the bakery.',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -216,7 +205,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Fırından taze ekmek aldım.',
         'en' => 'I bought some fresh bread from the bakery.',
         'de' => 'I bought some fresh bread from the bakery.',
         'fr' => 'I bought some fresh bread from the bakery.',
@@ -239,7 +227,6 @@ return array (
       'example' => 'An apple a day keeps the doctor away.',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -254,7 +241,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günde bir elma doktoru uzak tutar.',
         'en' => 'An apple a day keeps the doctor away.',
         'de' => 'An apple a day keeps the doctor away.',
         'fr' => 'An apple a day keeps the doctor away.',
@@ -277,7 +263,6 @@ return array (
       'example' => 'Would you like some milk in your tea?',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -292,7 +277,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çayınıza biraz süt ister misiniz?',
         'en' => 'Would you like some milk in your tea?',
         'de' => 'Would you like some milk in your tea?',
         'fr' => 'Would you like some milk in your tea?',
@@ -315,7 +299,6 @@ return array (
       'example' => 'I usually drink black coffee in the morning.',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -330,7 +313,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları genellikle sade kahve içerim.',
         'en' => 'I usually drink black coffee in the morning.',
         'de' => 'I usually drink black coffee in the morning.',
         'fr' => 'I usually drink black coffee in the morning.',
@@ -353,7 +335,6 @@ return array (
       'example' => 'He always has hot tea with honey when sick.',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -368,7 +349,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hasta olduğunda her zaman ballı sıcak çay içer.',
         'en' => 'He always has hot tea with honey when sick.',
         'de' => 'He always has hot tea with honey when sick.',
         'fr' => 'He always has hot tea with honey when sick.',
@@ -391,7 +371,6 @@ return array (
       'example' => 'They have a big house near the forest.',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -406,7 +385,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ormanın yakınında büyük bir evleri var.',
         'en' => 'They have a big house near the forest.',
         'de' => 'They have a big house near the forest.',
         'fr' => 'They have a big house near the forest.',
@@ -429,7 +407,6 @@ return array (
       'example' => 'My bedroom is the quietest place in the house.',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -444,7 +421,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
         'en' => 'My bedroom is the quietest place in the house.',
         'de' => 'My bedroom is the quietest place in the house.',
         'fr' => 'My bedroom is the quietest place in the house.',
@@ -467,7 +443,6 @@ return array (
       'example' => 'Don\'t forget to lock the front door.',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -482,7 +457,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Dış kapıyı kilitlemeyi unutmayın.',
         'en' => 'Don\'t forget to lock the front door.',
         'de' => 'Don\'t forget to lock the front door.',
         'fr' => 'Don\'t forget to lock the front door.',
@@ -505,7 +479,6 @@ return array (
       'example' => 'Please open the window to let fresh air in.',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -520,7 +493,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Taze havanın içeri girmesi için lütfen pencereyi açın.',
         'en' => 'Please open the window to let fresh air in.',
         'de' => 'Please open the window to let fresh air in.',
         'fr' => 'Please open the window to let fresh air in.',
@@ -543,7 +515,6 @@ return array (
       'example' => 'Spending time with family is important to me.',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -558,7 +529,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
         'en' => 'Spending time with family is important to me.',
         'de' => 'Spending time with family is important to me.',
         'fr' => 'Spending time with family is important to me.',
@@ -581,7 +551,6 @@ return array (
       'example' => 'My father taught me how to ride a bicycle.',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -596,7 +565,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
         'en' => 'My father taught me how to ride a bicycle.',
         'de' => 'My father taught me how to ride a bicycle.',
         'fr' => 'My father taught me how to ride a bicycle.',
@@ -619,7 +587,6 @@ return array (
       'example' => 'Her mother cooks delicious traditional dishes.',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -634,7 +601,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Onun annesi lezzetli geleneksel yemekler yapar.',
         'en' => 'Her mother cooks delicious traditional dishes.',
         'de' => 'Her mother cooks delicious traditional dishes.',
         'fr' => 'Her mother cooks delicious traditional dishes.',
@@ -657,7 +623,6 @@ return array (
       'example' => 'A friend in need is a friend indeed.',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -672,7 +637,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi dost kara günde belli olur.',
         'en' => 'A friend in need is a friend indeed.',
         'de' => 'A friend in need is a friend indeed.',
         'fr' => 'A friend in need is a friend indeed.',
@@ -695,7 +659,6 @@ return array (
       'example' => 'The children walk to school together.',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -710,7 +673,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula birlikte yürürler.',
         'en' => 'The children walk to school together.',
         'de' => 'The children walk to school together.',
         'fr' => 'The children walk to school together.',
@@ -733,7 +695,6 @@ return array (
       'example' => 'I am reading an interesting book about history.',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -748,7 +709,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
         'en' => 'I am reading an interesting book about history.',
         'de' => 'I am reading an interesting book about history.',
         'fr' => 'I am reading an interesting book about history.',
@@ -771,7 +731,6 @@ return array (
       'example' => 'Do you have a spare pencil I could borrow?',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -786,7 +745,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ödünç alabileceğim yedek bir kaleminiz var mı?',
         'en' => 'Do you have a spare pencil I could borrow?',
         'de' => 'Do you have a spare pencil I could borrow?',
         'fr' => 'Do you have a spare pencil I could borrow?',
@@ -809,7 +767,6 @@ return array (
       'example' => 'Let\'s gather around the table for dinner.',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -824,7 +781,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
         'en' => 'Let\'s gather around the table for dinner.',
         'de' => 'Let\'s gather around the table for dinner.',
         'fr' => 'Let\'s gather around the table for dinner.',
@@ -847,7 +803,6 @@ return array (
       'example' => 'Please pull up a chair and join us.',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -862,7 +817,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Lütfen bir sandalye çekin ve bize katılın.',
         'en' => 'Please pull up a chair and join us.',
         'de' => 'Please pull up a chair and join us.',
         'fr' => 'Please pull up a chair and join us.',
@@ -885,7 +839,6 @@ return array (
       'example' => 'Time flies when you are having fun.',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -900,7 +853,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eğlenirken zaman su gibi akar.',
         'en' => 'Time flies when you are having fun.',
         'de' => 'Time flies when you are having fun.',
         'fr' => 'Time flies when you are having fun.',
@@ -923,7 +875,6 @@ return array (
       'example' => 'It was a sunny and beautiful day.',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -938,7 +889,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Güneşli ve güzel bir gündü.',
         'en' => 'It was a sunny and beautiful day.',
         'de' => 'It was a sunny and beautiful day.',
         'fr' => 'It was a sunny and beautiful day.',
@@ -961,7 +911,6 @@ return array (
       'example' => 'The stars are shining brightly tonight.',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -976,7 +925,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
         'en' => 'The stars are shining brightly tonight.',
         'de' => 'The stars are shining brightly tonight.',
         'fr' => 'The stars are shining brightly tonight.',
@@ -999,7 +947,6 @@ return array (
       'example' => 'I like to go for a run in the morning.',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -1014,7 +961,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
         'en' => 'I like to go for a run in the morning.',
         'de' => 'I like to go for a run in the morning.',
         'fr' => 'I like to go for a run in the morning.',
@@ -1037,7 +983,6 @@ return array (
       'example' => 'Next week we are going on holiday.',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -1052,7 +997,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
         'en' => 'Next week we are going on holiday.',
         'de' => 'Next week we are going on holiday.',
         'fr' => 'Next week we are going on holiday.',
@@ -1075,7 +1019,6 @@ return array (
       'example' => 'February is the shortest month of the year.',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -1090,7 +1033,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Şubat yılın en kısa ayıdır.',
         'en' => 'February is the shortest month of the year.',
         'de' => 'February is the shortest month of the year.',
         'fr' => 'February is the shortest month of the year.',
@@ -1113,7 +1055,6 @@ return array (
       'example' => 'They have lived abroad for one year.',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -1128,7 +1069,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
         'en' => 'They have lived abroad for one year.',
         'de' => 'They have lived abroad for one year.',
         'fr' => 'They have lived abroad for one year.',
@@ -1151,7 +1091,6 @@ return array (
       'example' => 'Istanbul is a historic and dynamic city.',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -1166,7 +1105,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
         'en' => 'Istanbul is a historic and dynamic city.',
         'de' => 'Istanbul is a historic and dynamic city.',
         'fr' => 'Istanbul is a historic and dynamic city.',
@@ -1189,7 +1127,6 @@ return array (
       'example' => 'Which country would you like to visit next?',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -1204,7 +1141,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sonraki ziyaret etmek istediğiniz ülke hangisidir?',
         'en' => 'Which country would you like to visit next?',
         'de' => 'Which country would you like to visit next?',
         'fr' => 'Which country would you like to visit next?',
@@ -1227,7 +1163,6 @@ return array (
       'example' => 'The road to success is paved with hard work.',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -1242,7 +1177,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
         'en' => 'The road to success is paved with hard work.',
         'de' => 'The road to success is paved with hard work.',
         'fr' => 'The road to success is paved with hard work.',
@@ -1265,7 +1199,6 @@ return array (
       'example' => 'The train leaves from platform three.',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -1280,7 +1213,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
         'en' => 'The train leaves from platform three.',
         'de' => 'The train leaves from platform three.',
         'fr' => 'The train leaves from platform three.',
@@ -1303,7 +1235,6 @@ return array (
       'example' => 'She drives a hybrid car to save fuel.',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -1318,7 +1249,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
         'en' => 'She drives a hybrid car to save fuel.',
         'de' => 'She drives a hybrid car to save fuel.',
         'fr' => 'She drives a hybrid car to save fuel.',
@@ -1341,7 +1271,6 @@ return array (
       'example' => 'Make sure you keep your ticket for inspection.',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -1356,7 +1285,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kontrol için biletinizi sakladığınızdan emin olun.',
         'en' => 'Make sure you keep your ticket for inspection.',
         'de' => 'Make sure you keep your ticket for inspection.',
         'fr' => 'Make sure you keep your ticket for inspection.',
@@ -1379,7 +1307,6 @@ return array (
       'example' => 'We booked a quiet hotel by the sea.',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -1394,7 +1321,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
         'en' => 'We booked a quiet hotel by the sea.',
         'de' => 'We booked a quiet hotel by the sea.',
         'fr' => 'We booked a quiet hotel by the sea.',
@@ -1417,7 +1343,6 @@ return array (
       'example' => 'Money can buy comfort but not happiness.',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -1432,7 +1357,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
         'en' => 'Money can buy comfort but not happiness.',
         'de' => 'Money can buy comfort but not happiness.',
         'fr' => 'Money can buy comfort but not happiness.',
@@ -1455,7 +1379,6 @@ return array (
       'example' => 'This boutique shop sells handmade clothes.',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -1470,7 +1393,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu butik mağaza el yapımı kıyafetler satıyor.',
         'en' => 'This boutique shop sells handmade clothes.',
         'de' => 'This boutique shop sells handmade clothes.',
         'fr' => 'This boutique shop sells handmade clothes.',
@@ -1493,7 +1415,6 @@ return array (
       'example' => 'The price of the smartphone has dropped.',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -1508,7 +1429,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
         'en' => 'The price of the smartphone has dropped.',
         'de' => 'The price of the smartphone has dropped.',
         'fr' => 'The price of the smartphone has dropped.',
@@ -1531,7 +1451,6 @@ return array (
       'example' => 'Local street food is delicious and cheap.',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -1546,7 +1465,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
         'en' => 'Local street food is delicious and cheap.',
         'de' => 'Local street food is delicious and cheap.',
         'fr' => 'Local street food is delicious and cheap.',
@@ -1569,7 +1487,6 @@ return array (
       'example' => 'Eating out every day is very expensive.',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -1584,7 +1501,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
         'en' => 'Eating out every day is very expensive.',
         'de' => 'Eating out every day is very expensive.',
         'fr' => 'Eating out every day is very expensive.',
@@ -1607,7 +1523,6 @@ return array (
       'example' => 'We were so happy to hear the good news.',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -1622,7 +1537,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
         'en' => 'We were so happy to hear the good news.',
         'de' => 'We were so happy to hear the good news.',
         'fr' => 'We were so happy to hear the good news.',
@@ -1645,7 +1559,6 @@ return array (
       'example' => 'The movie had a very sad ending.',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -1660,7 +1573,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
         'en' => 'The movie had a very sad ending.',
         'de' => 'The movie had a very sad ending.',
         'fr' => 'The movie had a very sad ending.',
@@ -1683,7 +1595,6 @@ return array (
       'example' => 'I feel tired after the long flight.',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -1698,7 +1609,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
         'en' => 'I feel tired after the long flight.',
         'de' => 'I feel tired after the long flight.',
         'fr' => 'I feel tired after the long flight.',
@@ -1721,7 +1631,6 @@ return array (
       'example' => 'The coffee is still too hot to drink.',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -1736,7 +1645,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve içmek için hala çok sıcak.',
         'en' => 'The coffee is still too hot to drink.',
         'de' => 'The coffee is still too hot to drink.',
         'fr' => 'The coffee is still too hot to drink.',
@@ -1759,7 +1667,6 @@ return array (
       'example' => 'It gets very cold here in the winter.',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -1774,7 +1681,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın buralar çok soğuk olur.',
         'en' => 'It gets very cold here in the winter.',
         'de' => 'It gets very cold here in the winter.',
         'fr' => 'It gets very cold here in the winter.',
@@ -1797,7 +1703,6 @@ return array (
       'example' => 'He bought a new laptop for university.',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -1812,7 +1717,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
         'en' => 'He bought a new laptop for university.',
         'de' => 'He bought a new laptop for university.',
         'fr' => 'He bought a new laptop for university.',
@@ -1835,7 +1739,6 @@ return array (
       'example' => 'This old town has a charming atmosphere.',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -1850,7 +1753,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
         'en' => 'This old town has a charming atmosphere.',
         'de' => 'This old town has a charming atmosphere.',
         'fr' => 'This old town has a charming atmosphere.',
@@ -1873,7 +1775,6 @@ return array (
       'example' => 'A mother\'s love for her child is infinite.',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -1888,7 +1789,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
         'en' => 'A mother\'s love for her child is infinite.',
         'de' => 'A mother\'s love for her child is infinite.',
         'fr' => 'A mother\'s love for her child is infinite.',
@@ -1914,7 +1814,6 @@ return array (
       'example' => 'Hallo! Wie geht es dir heute?',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -1929,7 +1828,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsın?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hallo! Wie geht es dir heute?',
         'fr' => 'Hello! How are you today?',
@@ -1952,7 +1850,6 @@ return array (
       'example' => 'Auf Wiedersehen, bis zum nächsten Mal!',
       'translations' => 
       array (
-        'tr' => 'Görüşmek üzere',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -1967,7 +1864,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Görüşmek üzere, bir dahaki sefere kadar!',
         'en' => 'Goodbye, until next time!',
         'de' => 'Auf Wiedersehen, bis zum nächsten Mal!',
         'fr' => 'Goodbye, until next time!',
@@ -1990,7 +1886,6 @@ return array (
       'example' => 'Ein Glas Wasser, bitte.',
       'translations' => 
       array (
-        'tr' => 'Lütfen / Rica ederim',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -2005,7 +1900,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir bardak su lütfen.',
         'en' => 'A glass of water, please.',
         'de' => 'Ein Glas Wasser, bitte.',
         'fr' => 'A glass of water, please.',
@@ -2028,7 +1922,6 @@ return array (
       'example' => 'Vielen Dank für Ihre Hilfe.',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -2043,7 +1936,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yardımınız için çok teşekkür ederim.',
         'en' => 'Thank you very much for your help.',
         'de' => 'Vielen Dank für Ihre Hilfe.',
         'fr' => 'Thank you very much for your help.',
@@ -2066,7 +1958,6 @@ return array (
       'example' => 'Wasser ist lebenswichtig.',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -2081,7 +1972,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Su hayati önem taşır.',
         'en' => 'Water is essential for life.',
         'de' => 'Wasser ist lebenswichtig.',
         'fr' => 'Water is essential for life.',
@@ -2104,7 +1994,6 @@ return array (
       'example' => 'Frisches Brot schmeckt am besten.',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -2119,7 +2008,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Taze ekmek en lezzetlisidir.',
         'en' => 'Fresh bread tastes best.',
         'de' => 'Frisches Brot schmeckt am besten.',
         'fr' => 'Fresh bread tastes best.',
@@ -2142,7 +2030,6 @@ return array (
       'example' => 'Ein Apfel ist ein gesunder Snack.',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -2157,7 +2044,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Elma sağlıklı bir atıştırmalıktır.',
         'en' => 'An apple is a healthy snack.',
         'de' => 'Ein Apfel ist ein gesunder Snack.',
         'fr' => 'An apple is a healthy snack.',
@@ -2180,7 +2066,6 @@ return array (
       'example' => 'Möchtest du Milch in deinen Kaffee?',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -2195,7 +2080,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahvene süt ister misin?',
         'en' => 'Would you like milk in your coffee?',
         'de' => 'Möchtest du Milch in deinen Kaffee?',
         'fr' => 'Would you like milk in your coffee?',
@@ -2218,7 +2102,6 @@ return array (
       'example' => 'Morgens trinke ich eine Tasse Kaffee.',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -2233,7 +2116,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları bir fincan kahve içerim.',
         'en' => 'In the morning I drink a cup of coffee.',
         'de' => 'Morgens trinke ich eine Tasse Kaffee.',
         'fr' => 'In the morning I drink a cup of coffee.',
@@ -2256,7 +2138,6 @@ return array (
       'example' => 'Heißer Tee wärmt an kalten Tagen.',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -2271,7 +2152,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sıcak çay soğuk günlerde ısıtır.',
         'en' => 'Hot tea warms on cold days.',
         'de' => 'Heißer Tee wärmt an kalten Tagen.',
         'fr' => 'Hot tea warms on cold days.',
@@ -2294,7 +2174,6 @@ return array (
       'example' => 'Das Haus hat ein rotes Dach.',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -2309,7 +2188,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Evin kırmızı bir çatısı var.',
         'en' => 'The house has a red roof.',
         'de' => 'Das Haus hat ein rotes Dach.',
         'fr' => 'The house has a red roof.',
@@ -2332,7 +2210,6 @@ return array (
       'example' => 'Mein Zimmer ist immer aufgeräumt.',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -2347,7 +2224,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Odam her zaman topludur.',
         'en' => 'My room is always tidy.',
         'de' => 'Mein Zimmer ist immer aufgeräumt.',
         'fr' => 'My room is always tidy.',
@@ -2370,7 +2246,6 @@ return array (
       'example' => 'Bitte schließe die Tür leise.',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -2385,7 +2260,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Lütfen kapıyı sessizce kapat.',
         'en' => 'Please close the door quietly.',
         'de' => 'Bitte schließe die Tür leise.',
         'fr' => 'Please close the door quietly.',
@@ -2408,7 +2282,6 @@ return array (
       'example' => 'Kannst du das Fenster öffnen?',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -2423,7 +2296,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Pencereyi açabilir misin?',
         'en' => 'Can you open the window?',
         'de' => 'Kannst du das Fenster öffnen?',
         'fr' => 'Can you open the window?',
@@ -2446,7 +2318,6 @@ return array (
       'example' => 'Ich liebe meine Familie über alles.',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -2461,7 +2332,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ailemi her şeyden çok seviyorum.',
         'en' => 'I love my family above all else.',
         'de' => 'Ich liebe meine Familie über alles.',
         'fr' => 'I love my family above all else.',
@@ -2484,7 +2354,6 @@ return array (
       'example' => 'Mein Vater arbeitet als Ingenieur.',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -2499,7 +2368,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam mühendis olarak çalışıyor.',
         'en' => 'My father works as an engineer.',
         'de' => 'Mein Vater arbeitet als Ingenieur.',
         'fr' => 'My father works as an engineer.',
@@ -2522,7 +2390,6 @@ return array (
       'example' => 'Meine Mutter kocht fantastisch.',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -2537,7 +2404,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Annem harika yemek pişirir.',
         'en' => 'My mother cooks fantastically.',
         'de' => 'Meine Mutter kocht fantastisch.',
         'fr' => 'My mother cooks fantastically.',
@@ -2560,7 +2426,6 @@ return array (
       'example' => 'Er ist mein bester Freund.',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -2575,7 +2440,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'O benim en iyi arkadaşım.',
         'en' => 'He is my best friend.',
         'de' => 'Er ist mein bester Freund.',
         'fr' => 'He is my best friend.',
@@ -2598,7 +2462,6 @@ return array (
       'example' => 'Die Kinder gehen gerne in die Schule.',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -2613,7 +2476,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula gitmeyi seviyor.',
         'en' => 'The children like going to school.',
         'de' => 'Die Kinder gehen gerne in die Schule.',
         'fr' => 'The children like going to school.',
@@ -2636,7 +2498,6 @@ return array (
       'example' => 'Das Buch liegt auf dem Schreibtisch.',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -2651,7 +2512,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kitap çalışma masasının üzerinde duruyor.',
         'en' => 'The book is on the desk.',
         'de' => 'Das Buch liegt auf dem Schreibtisch.',
         'fr' => 'The book is on the desk.',
@@ -2674,7 +2534,6 @@ return array (
       'example' => 'Ich brauche einen Stift zum Schreiben.',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -2689,7 +2548,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yazmak için bir kaleme ihtiyacım var.',
         'en' => 'I need a pen to write.',
         'de' => 'Ich brauche einen Stift zum Schreiben.',
         'fr' => 'I need a pen to write.',
@@ -2712,7 +2570,6 @@ return array (
       'example' => 'Der Tisch ist festlich gedeckt.',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -2727,7 +2584,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Masa bayram havasında donatılmış.',
         'en' => 'The table is festively set.',
         'de' => 'Der Tisch ist festlich gedeckt.',
         'fr' => 'The table is festively set.',
@@ -2750,7 +2606,6 @@ return array (
       'example' => 'Nimm dir einen Stuhl und setz dich.',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -2765,7 +2620,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kendine bir sandalye al ve otur.',
         'en' => 'Take a chair and sit down.',
         'de' => 'Nimm dir einen Stuhl und setz dich.',
         'fr' => 'Take a chair and sit down.',
@@ -2788,7 +2642,6 @@ return array (
       'example' => 'Die Zeit vergeht wie im Flug.',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -2803,7 +2656,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Zaman uçup gidiyor.',
         'en' => 'Time flies by.',
         'de' => 'Die Zeit vergeht wie im Flug.',
         'fr' => 'Time flies by.',
@@ -2826,7 +2678,6 @@ return array (
       'example' => 'Guten Tag, Herr Müller!',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -2841,7 +2692,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi günler, Bay Müller!',
         'en' => 'Good day, Mr. Müller!',
         'de' => 'Guten Tag, Herr Müller!',
         'fr' => 'Good day, Mr. Müller!',
@@ -2864,7 +2714,6 @@ return array (
       'example' => 'Gute Nacht und schlaf gut!',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -2879,7 +2728,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi geceler ve iyi uykular!',
         'en' => 'Good night and sleep well!',
         'de' => 'Gute Nacht und schlaf gut!',
         'fr' => 'Good night and sleep well!',
@@ -2902,7 +2750,6 @@ return array (
       'example' => 'Guten Morgen, alle zusammen!',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -2917,7 +2764,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günaydın herkese!',
         'en' => 'Good morning, everyone!',
         'de' => 'Guten Morgen, alle zusammen!',
         'fr' => 'Good morning, everyone!',
@@ -2940,7 +2786,6 @@ return array (
       'example' => 'Nächste Woche fahre ich in den Urlaub.',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -2955,7 +2800,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyorum.',
         'en' => 'Next week I am going on vacation.',
         'de' => 'Nächste Woche fahre ich in den Urlaub.',
         'fr' => 'Next week I am going on vacation.',
@@ -2978,7 +2822,6 @@ return array (
       'example' => 'Ein Monat hat vier Wochen.',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -2993,7 +2836,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir ay dört haftadır.',
         'en' => 'A month has four weeks.',
         'de' => 'Ein Monat hat vier Wochen.',
         'fr' => 'A month has four weeks.',
@@ -3016,7 +2858,6 @@ return array (
       'example' => 'Dieses Jahr war voller Überraschungen.',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -3031,7 +2872,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu yıl sürprizlerle doluydu.',
         'en' => 'This year was full of surprises.',
         'de' => 'Dieses Jahr war voller Überraschungen.',
         'fr' => 'This year was full of surprises.',
@@ -3054,7 +2894,6 @@ return array (
       'example' => 'München ist eine schöne Stadt.',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -3069,7 +2908,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Münih güzel bir şehirdir.',
         'en' => 'Munich is a beautiful city.',
         'de' => 'München ist eine schöne Stadt.',
         'fr' => 'Munich is a beautiful city.',
@@ -3092,7 +2930,6 @@ return array (
       'example' => 'Aus welchem Land kommen Sie?',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -3107,7 +2944,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hangi ülkeden geliyorsunuz?',
         'en' => 'Which country are you from?',
         'de' => 'Aus welchem Land kommen Sie?',
         'fr' => 'Which country are you from?',
@@ -3130,7 +2966,6 @@ return array (
       'example' => 'Kennen Sie den Weg zum Bahnhof?',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -3145,7 +2980,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstasyona giden yolu biliyor musunuz?',
         'en' => 'Do you know the way to the station?',
         'de' => 'Kennen Sie den Weg zum Bahnhof?',
         'fr' => 'Do you know the way to the station?',
@@ -3168,7 +3002,6 @@ return array (
       'example' => 'Der Zug hat zehn Minuten Verspätung.',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -3183,7 +3016,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Trenin on dakika gecikmesi var.',
         'en' => 'The train has a ten-minute delay.',
         'de' => 'Der Zug hat zehn Minuten Verspätung.',
         'fr' => 'The train has a ten-minute delay.',
@@ -3206,7 +3038,6 @@ return array (
       'example' => 'Sein neues Auto fährt elektrisch.',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -3221,7 +3052,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Onun yeni arabası elektrikli.',
         'en' => 'His new car runs on electricity.',
         'de' => 'Sein neues Auto fährt elektrisch.',
         'fr' => 'His new car runs on electricity.',
@@ -3244,7 +3074,6 @@ return array (
       'example' => 'Ich muss mein Ticket entwerten.',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -3259,7 +3088,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Biletimi onaylatmam gerekiyor.',
         'en' => 'I need to validate my ticket.',
         'de' => 'Ich muss mein Ticket entwerten.',
         'fr' => 'I need to validate my ticket.',
@@ -3282,7 +3110,6 @@ return array (
       'example' => 'Das Hotel liegt direkt am Fluss.',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -3297,7 +3124,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Otel doğrudan nehrin kıyısında yer alıyor.',
         'en' => 'The hotel is located directly on the river.',
         'de' => 'Das Hotel liegt direkt am Fluss.',
         'fr' => 'The hotel is located directly on the river.',
@@ -3320,7 +3146,6 @@ return array (
       'example' => 'Geld allein macht nicht glücklich.',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -3335,7 +3160,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para tek başına mutluluk getirmez.',
         'en' => 'Money alone does not make you happy.',
         'de' => 'Geld allein macht nicht glücklich.',
         'fr' => 'Money alone does not make you happy.',
@@ -3358,7 +3182,6 @@ return array (
       'example' => 'Der Laden schließt um 20 Uhr.',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -3373,7 +3196,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Mağaza saat 20:00\'de kapanıyor.',
         'en' => 'The shop closes at 8 PM.',
         'de' => 'Der Laden schließt um 20 Uhr.',
         'fr' => 'The shop closes at 8 PM.',
@@ -3396,7 +3218,6 @@ return array (
       'example' => 'Der Preis für Kaffee ist gestiegen.',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -3411,7 +3232,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve fiyatı yükseldi.',
         'en' => 'The price of coffee has risen.',
         'de' => 'Der Preis für Kaffee ist gestiegen.',
         'fr' => 'The price of coffee has risen.',
@@ -3434,7 +3254,6 @@ return array (
       'example' => 'Dieses Angebot ist wirklich billig.',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -3449,7 +3268,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu teklif gerçekten ucuz.',
         'en' => 'This offer is really cheap.',
         'de' => 'Dieses Angebot ist wirklich billig.',
         'fr' => 'This offer is really cheap.',
@@ -3472,7 +3290,6 @@ return array (
       'example' => 'Die Miete in Großstädten ist teuer.',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -3487,7 +3304,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Büyük şehirlerde kira pahalıdır.',
         'en' => 'Rent in big cities is expensive.',
         'de' => 'Die Miete in Großstädten ist teuer.',
         'fr' => 'Rent in big cities is expensive.',
@@ -3510,7 +3326,6 @@ return array (
       'example' => 'Kinder machen uns glücklich.',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -3525,7 +3340,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar bizi mutlu eder.',
         'en' => 'Children make us happy.',
         'de' => 'Kinder machen uns glücklich.',
         'fr' => 'Children make us happy.',
@@ -3548,7 +3362,6 @@ return array (
       'example' => 'Der traurige Film rührte mich zu Tränen.',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -3563,7 +3376,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hüzünlü film beni gözyaşlarına boğdu.',
         'en' => 'The sad movie moved me to tears.',
         'de' => 'Der traurige Film rührte mich zu Tränen.',
         'fr' => 'The sad movie moved me to tears.',
@@ -3586,7 +3398,6 @@ return array (
       'example' => 'Nach dem Sport bin ich immer müde.',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -3601,7 +3412,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Spordan sonra her zaman yorgun olurum.',
         'en' => 'After exercising I am always tired.',
         'de' => 'Nach dem Sport bin ich immer müde.',
         'fr' => 'After exercising I am always tired.',
@@ -3624,7 +3434,6 @@ return array (
       'example' => 'Der Sommer in Rom ist sehr heiß.',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -3639,7 +3448,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Roma\'da yaz mevsimi çok sıcaktır.',
         'en' => 'The summer in Rome is very hot.',
         'de' => 'Der Sommer in Rom ist sehr heiß.',
         'fr' => 'The summer in Rome is very hot.',
@@ -3662,7 +3470,6 @@ return array (
       'example' => 'Im Winter wird es sehr kalt.',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -3677,7 +3484,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın hava çok soğuk olur.',
         'en' => 'In winter it gets very cold.',
         'de' => 'Im Winter wird es sehr kalt.',
         'fr' => 'In winter it gets very cold.',
@@ -3700,7 +3506,6 @@ return array (
       'example' => 'Ich wünsche dir ein schönes neues Auto.',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -3715,7 +3520,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sana güzel yeni bir araba dilerim.',
         'en' => 'I wish you a nice new car.',
         'de' => 'Ich wünsche dir ein schönes neues Auto.',
         'fr' => 'I wish you a nice new car.',
@@ -3738,7 +3542,6 @@ return array (
       'example' => 'Das alte Schloss fasziniert Touristen.',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -3753,7 +3556,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eski şato turistleri büyülüyor.',
         'en' => 'The old castle fascinates tourists.',
         'de' => 'Das alte Schloss fasziniert Touristen.',
         'fr' => 'The old castle fascinates tourists.',
@@ -3776,7 +3578,6 @@ return array (
       'example' => 'Liebe auf den ersten Blick gibt es wirklich.',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -3791,7 +3592,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İlk görüşte aşk gerçekten vardır.',
         'en' => 'Love at first sight really exists.',
         'de' => 'Liebe auf den ersten Blick gibt es wirklich.',
         'fr' => 'Love at first sight really exists.',
@@ -3817,7 +3617,6 @@ return array (
       'example' => 'Bonjour ! Comment allez-vous aujourd\'hui ?',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -3832,7 +3631,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsınız?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hello! How are you today?',
         'fr' => 'Bonjour ! Comment allez-vous aujourd\'hui ?',
@@ -3855,7 +3653,6 @@ return array (
       'example' => 'Au revoir, à la semaine prochaine !',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Görüşmek üzere',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -3870,7 +3667,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Görüşmek üzere, haftaya görüşürüz!',
         'en' => 'Goodbye, see you next week!',
         'de' => 'Goodbye, see you next week!',
         'fr' => 'Au revoir, à la semaine prochaine !',
@@ -3893,7 +3689,6 @@ return array (
       'example' => 'L\'addition, s\'il vous plaît.',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -3908,7 +3703,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hesap lütfen.',
         'en' => 'The check, please.',
         'de' => 'The check, please.',
         'fr' => 'L\'addition, s\'il vous plaît.',
@@ -3931,7 +3725,6 @@ return array (
       'example' => 'Merci pour votre hospitalité chaleureuse.',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -3946,7 +3739,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sıcak misafirperverliğiniz için teşekkür ederim.',
         'en' => 'Thank you for your warm hospitality.',
         'de' => 'Thank you for your warm hospitality.',
         'fr' => 'Merci pour votre hospitalité chaleureuse.',
@@ -3969,7 +3761,6 @@ return array (
       'example' => 'Je préfère boire de l\'eau plate.',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -3984,7 +3775,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gazsız su içmeyi tercih ederim.',
         'en' => 'I prefer to drink still water.',
         'de' => 'I prefer to drink still water.',
         'fr' => 'Je préfère boire de l\'eau plate.',
@@ -4007,7 +3797,6 @@ return array (
       'example' => 'Nous achetons une baguette de pain frais.',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -4022,7 +3811,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Taze bir baget ekmek alıyoruz.',
         'en' => 'We buy a baguette of fresh bread.',
         'de' => 'We buy a baguette of fresh bread.',
         'fr' => 'Nous achetons une baguette de pain frais.',
@@ -4045,7 +3833,6 @@ return array (
       'example' => 'La pomme est mon fruit préféré.',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -4060,7 +3847,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Elma benim en sevdiğim meyvedir.',
         'en' => 'The apple is my favorite fruit.',
         'de' => 'The apple is my favorite fruit.',
         'fr' => 'La pomme est mon fruit préféré.',
@@ -4083,7 +3869,6 @@ return array (
       'example' => 'Il boit un verre de lait chaque matin.',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -4098,7 +3883,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her sabah bir bardak süt içer.',
         'en' => 'He drinks a glass of milk every morning.',
         'de' => 'He drinks a glass of milk every morning.',
         'fr' => 'Il boit un verre de lait chaque matin.',
@@ -4121,7 +3905,6 @@ return array (
       'example' => 'Je ne peux pas commencer ma journée sans café.',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -4136,7 +3919,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günüme kahve içmeden başlayamam.',
         'en' => 'I cannot start my day without coffee.',
         'de' => 'I cannot start my day without coffee.',
         'fr' => 'Je ne peux pas commencer ma journée sans café.',
@@ -4159,7 +3941,6 @@ return array (
       'example' => 'Le thé à la menthe est très rafraîchissant.',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -4174,7 +3955,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Naneli çay çok ferahlatıcıdır.',
         'en' => 'Mint tea is very refreshing.',
         'de' => 'Mint tea is very refreshing.',
         'fr' => 'Le thé à la menthe est très rafraîchissant.',
@@ -4197,7 +3977,6 @@ return array (
       'example' => 'Ma maison se trouve près de la plage.',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -4212,7 +3991,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Evim plajın yakınında bulunuyor.',
         'en' => 'My house is near the beach.',
         'de' => 'My house is near the beach.',
         'fr' => 'Ma maison se trouve près de la plage.',
@@ -4235,7 +4013,6 @@ return array (
       'example' => 'Ma chambre a une vue magnifique.',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -4250,7 +4027,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Odamın harika bir manzarası var.',
         'en' => 'My room has a magnificent view.',
         'de' => 'My room has a magnificent view.',
         'fr' => 'Ma chambre a une vue magnifique.',
@@ -4273,7 +4049,6 @@ return array (
       'example' => 'Veuillez fermer la porte derrière vous.',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -4288,7 +4063,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Lütfen arkasından kapıyı kapatın.',
         'en' => 'Please close the door behind you.',
         'de' => 'Please close the door behind you.',
         'fr' => 'Veuillez fermer la porte derrière vous.',
@@ -4311,7 +4085,6 @@ return array (
       'example' => 'J\'ouvre la fenêtre pour aérer la pièce.',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -4326,7 +4099,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Odayı havalandırmak için pencereyi açıyorum.',
         'en' => 'I open the window to air out the room.',
         'de' => 'I open the window to air out the room.',
         'fr' => 'J\'ouvre la fenêtre pour aérer la pièce.',
@@ -4349,7 +4121,6 @@ return array (
       'example' => 'Toute ma famille se réunit pour Noël.',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -4364,7 +4135,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tüm ailem Noel için bir araya geliyor.',
         'en' => 'My whole family gathers for Christmas.',
         'de' => 'My whole family gathers for Christmas.',
         'fr' => 'Toute ma famille se réunit pour Noël.',
@@ -4387,7 +4157,6 @@ return array (
       'example' => 'Mon père est médecin à l\'hôpital.',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -4402,7 +4171,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam hastanede doktordur.',
         'en' => 'My father is a doctor at the hospital.',
         'de' => 'My father is a doctor at the hospital.',
         'fr' => 'Mon père est médecin à l\'hôpital.',
@@ -4425,7 +4193,6 @@ return array (
       'example' => 'Ma mère jardine dans notre cour.',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -4440,7 +4207,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Annem bahçemizde bahçıvanlık yapıyor.',
         'en' => 'My mother gardens in our yard.',
         'de' => 'My mother gardens in our yard.',
         'fr' => 'Ma mère jardine dans notre cour.',
@@ -4463,7 +4229,6 @@ return array (
       'example' => 'C\'est un ami d\'enfance de mon frère.',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -4478,7 +4243,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'O, kardeşimin çocukluk arkadaşıdır.',
         'en' => 'He is a childhood friend of my brother.',
         'de' => 'He is a childhood friend of my brother.',
         'fr' => 'C\'est un ami d\'enfance de mon frère.',
@@ -4501,7 +4265,6 @@ return array (
       'example' => 'L\'école primaire est juste au coin.',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -4516,7 +4279,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İlkokul hemen köşededir.',
         'en' => 'The elementary school is just around the corner.',
         'de' => 'The elementary school is just around the corner.',
         'fr' => 'L\'école primaire est juste au coin.',
@@ -4539,7 +4301,6 @@ return array (
       'example' => 'Ce livre raconte une histoire d\'aventure.',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -4554,7 +4315,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu kitap bir macera hikayesini anlatıyor.',
         'en' => 'This book tells an adventure story.',
         'de' => 'This book tells an adventure story.',
         'fr' => 'Ce livre raconte une histoire d\'aventure.',
@@ -4577,7 +4337,6 @@ return array (
       'example' => 'J\'écris mes notes avec un stylo bleu.',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -4592,7 +4351,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Notlarımı mavi bir kalemle yazıyorum.',
         'en' => 'I write my notes with a blue pen.',
         'de' => 'I write my notes with a blue pen.',
         'fr' => 'J\'écris mes notes avec un stylo bleu.',
@@ -4615,7 +4373,6 @@ return array (
       'example' => 'Mettez les assiettes sur la table.',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -4630,7 +4387,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tabakları masanın üzerine koyun.',
         'en' => 'Put the plates on the table.',
         'de' => 'Put the plates on the table.',
         'fr' => 'Mettez les assiettes sur la table.',
@@ -4653,7 +4409,6 @@ return array (
       'example' => 'Installez-vous confortablement sur cette chaise.',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -4668,7 +4423,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu sandalyeye rahatça oturun.',
         'en' => 'Sit comfortably on this chair.',
         'de' => 'Sit comfortably on this chair.',
         'fr' => 'Installez-vous confortablement sur cette chaise.',
@@ -4691,7 +4445,6 @@ return array (
       'example' => 'Le temps guérit toutes les blessures.',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -4706,7 +4459,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Zaman bütün yaraları iyileştirir.',
         'en' => 'Time heals all wounds.',
         'de' => 'Time heals all wounds.',
         'fr' => 'Le temps guérit toutes les blessures.',
@@ -4729,7 +4481,6 @@ return array (
       'example' => 'Je travaille cinq jours par semaine.',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -4744,7 +4495,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Haftada beş gün çalışıyorum.',
         'en' => 'I work five days a week.',
         'de' => 'I work five days a week.',
         'fr' => 'Je travaille cinq jours par semaine.',
@@ -4767,7 +4517,6 @@ return array (
       'example' => 'Le phare guide les bateaux la nuit.',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -4782,7 +4531,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz feneri geceleri gemilere yol gösterir.',
         'en' => 'The lighthouse guides boats at night.',
         'de' => 'The lighthouse guides boats at night.',
         'fr' => 'Le phare guide les bateaux la nuit.',
@@ -4805,7 +4553,6 @@ return array (
       'example' => 'Le matin, l\'air est pur et frais.',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -4820,7 +4567,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları hava temiz ve serindir.',
         'en' => 'In the morning, the air is pure and fresh.',
         'de' => 'In the morning, the air is pure and fresh.',
         'fr' => 'Le matin, l\'air est pur et frais.',
@@ -4843,7 +4589,6 @@ return array (
       'example' => 'La semaine prochaine sera très chargée.',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -4858,7 +4603,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta çok yoğun olacak.',
         'en' => 'Next week will be very busy.',
         'de' => 'Next week will be very busy.',
         'fr' => 'La semaine prochaine sera très chargée.',
@@ -4881,7 +4625,6 @@ return array (
       'example' => 'Ce mois de juillet est particulièrement ensoleillé.',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -4896,7 +4639,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu temmuz ayı özellikle güneşli.',
         'en' => 'This July is particularly sunny.',
         'de' => 'This July is particularly sunny.',
         'fr' => 'Ce mois de juillet est particulièrement ensoleillé.',
@@ -4919,7 +4661,6 @@ return array (
       'example' => 'Bonne année, santé et bonheur !',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -4934,7 +4675,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Mutlu yıllar, sağlık ve mutluluk dilerim!',
         'en' => 'Happy new year, health and happiness!',
         'de' => 'Happy new year, health and happiness!',
         'fr' => 'Bonne année, santé et bonheur !',
@@ -4957,7 +4697,6 @@ return array (
       'example' => 'Paris est la ville de la lumière.',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -4972,7 +4711,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Paris ışık şehridir.',
         'en' => 'Paris is the City of Light.',
         'de' => 'Paris is the City of Light.',
         'fr' => 'Paris est la ville de la lumière.',
@@ -4995,7 +4733,6 @@ return array (
       'example' => 'La France est un pays d\'art et d\'histoire.',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -5010,7 +4747,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Fransa bir sanat ve tarih ülkesidir.',
         'en' => 'France is a country of art and history.',
         'de' => 'France is a country of art and history.',
         'fr' => 'La France est un pays d\'art et d\'histoire.',
@@ -5033,7 +4769,6 @@ return array (
       'example' => 'Ce chemin mène directement au château.',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -5048,7 +4783,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu yol doğrudan şatoya çıkar.',
         'en' => 'This path leads directly to the castle.',
         'de' => 'This path leads directly to the castle.',
         'fr' => 'Ce chemin mène directement au château.',
@@ -5071,7 +4805,6 @@ return array (
       'example' => 'Le train à grande vitesse est très rapide.',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -5086,7 +4819,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hızlı tren çok seridir.',
         'en' => 'The high-speed train is very fast.',
         'de' => 'The high-speed train is very fast.',
         'fr' => 'Le train à grande vitesse est très rapide.',
@@ -5109,7 +4841,6 @@ return array (
       'example' => 'Il lave sa voiture tous les week-ends.',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -5124,7 +4855,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her hafta sonu arabasını yıkar.',
         'en' => 'He washes his car every weekend.',
         'de' => 'He washes his car every weekend.',
         'fr' => 'Il lave sa voiture tous les week-ends.',
@@ -5147,7 +4877,6 @@ return array (
       'example' => 'J\'ai acheté un billet de concert en ligne.',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -5162,7 +4891,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İnternetten bir konser bileti satın aldım.',
         'en' => 'I bought a concert ticket online.',
         'de' => 'I bought a concert ticket online.',
         'fr' => 'J\'ai acheté un billet de concert en ligne.',
@@ -5185,7 +4913,6 @@ return array (
       'example' => 'L\'hôtel offre un excellent service client.',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -5200,7 +4927,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Otel mükemmel bir müşteri hizmeti sunuyor.',
         'en' => 'The hotel offers excellent customer service.',
         'de' => 'The hotel offers excellent customer service.',
         'fr' => 'L\'hôtel offre un excellent service client.',
@@ -5223,7 +4949,6 @@ return array (
       'example' => 'L\'argent ne fait pas le bonheur.',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -5238,7 +4963,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para mutluluk getirmez.',
         'en' => 'Money does not bring happiness.',
         'de' => 'Money does not bring happiness.',
         'fr' => 'L\'argent ne fait pas le bonheur.',
@@ -5261,7 +4985,6 @@ return array (
       'example' => 'Ce magasin de jouets est paradisiaque.',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -5276,7 +4999,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu oyuncak mağazası cennet gibi.',
         'en' => 'This toy store is heavenly.',
         'de' => 'This toy store is heavenly.',
         'fr' => 'Ce magasin de jouets est paradisiaque.',
@@ -5299,7 +5021,6 @@ return array (
       'example' => 'Quel est le prix de cette montre ?',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -5314,7 +5035,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu saatin fiyatı nedir?',
         'en' => 'What is the price of this watch?',
         'de' => 'What is the price of this watch?',
         'fr' => 'Quel est le prix de cette montre ?',
@@ -5337,7 +5057,6 @@ return array (
       'example' => 'Les vêtements ici sont très bon marché.',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'Bon marché',
@@ -5352,7 +5071,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Buradaki kıyafetler çok ucuzdur.',
         'en' => 'The clothes here are very cheap.',
         'de' => 'The clothes here are very cheap.',
         'fr' => 'Les vêtements ici sont très bon marché.',
@@ -5375,7 +5093,6 @@ return array (
       'example' => 'Ce parfum de luxe est très cher.',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'Cher',
@@ -5390,7 +5107,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu lüks parfüm çok pahalıdır.',
         'en' => 'This luxury perfume is very expensive.',
         'de' => 'This luxury perfume is very expensive.',
         'fr' => 'Ce parfum de luxe est très cher.',
@@ -5413,7 +5129,6 @@ return array (
       'example' => 'Ils sont heureux ensemble depuis des années.',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'Heureux',
@@ -5428,7 +5143,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yıllardır birlikte mutlular.',
         'en' => 'They have been happy together for years.',
         'de' => 'They have been happy together for years.',
         'fr' => 'Ils sont heureux ensemble depuis des années.',
@@ -5451,7 +5165,6 @@ return array (
       'example' => 'La chanson triste me rappelle de vieux souvenirs.',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'Triste',
@@ -5466,7 +5179,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hüzünlü şarkı bana eski hatıraları hatırlatıyor.',
         'en' => 'The sad song reminds me of old memories.',
         'de' => 'The sad song reminds me of old memories.',
         'fr' => 'La chanson triste me rappelle de vieux souvenirs.',
@@ -5489,7 +5201,6 @@ return array (
       'example' => 'Je me sens fatigué après cette longue journée.',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'Fatigué',
@@ -5504,7 +5215,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu uzun günün ardından yorgun hissediyorum.',
         'en' => 'I feel tired after this long day.',
         'de' => 'I feel tired after this long day.',
         'fr' => 'Je me sens fatigué après cette longue journée.',
@@ -5527,7 +5237,6 @@ return array (
       'example' => 'Le thé chaud me fait du bien.',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'Chaud',
@@ -5542,7 +5251,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sıcak çay bana iyi geliyor.',
         'en' => 'Hot tea does me good.',
         'de' => 'Hot tea does me good.',
         'fr' => 'Le thé chaud me fait du bien.',
@@ -5565,7 +5273,6 @@ return array (
       'example' => 'En hiver, le vent du nord est très froid.',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'Froid',
@@ -5580,7 +5287,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın kuzey rüzgarı çok soğuk olur.',
         'en' => 'In winter, the north wind is very cold.',
         'de' => 'In winter, the north wind is very cold.',
         'fr' => 'En hiver, le vent du nord est très froid.',
@@ -5603,7 +5309,6 @@ return array (
       'example' => 'J\'ai un nouveau projet pour mon travail.',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'Nouveau',
@@ -5618,7 +5323,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İşim için yeni bir projem var.',
         'en' => 'I have a new project for my work.',
         'de' => 'I have a new project for my work.',
         'fr' => 'J\'ai un nouveau projet pour mon travail.',
@@ -5641,7 +5345,6 @@ return array (
       'example' => 'Ce vieux chêne a plus de cent ans.',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'Vieux',
@@ -5656,7 +5359,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski meşe yüz yaşından büyüktür.',
         'en' => 'This old oak tree is over a hundred years old.',
         'de' => 'This old oak tree is over a hundred years old.',
         'fr' => 'Ce vieux chêne a plus de cent ans.',
@@ -5679,7 +5381,6 @@ return array (
       'example' => 'L\'amour filial est inestimable.',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'Amour',
@@ -5694,7 +5395,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Evlat sevgisi paha biçilemez.',
         'en' => 'Filial love is priceless.',
         'de' => 'Filial love is priceless.',
         'fr' => 'L\'amour filial est inestimable.',
@@ -5720,7 +5420,6 @@ return array (
       'example' => '¡Hola! ¿Cómo estás hoy?',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -5735,7 +5434,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsın?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hello! How are you today?',
         'fr' => 'Hello! How are you today?',
@@ -5758,7 +5456,6 @@ return array (
       'example' => '¡Adiós, nos vemos mañana!',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Güle güle',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -5773,7 +5470,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hoşça kal, yarın görüşürüz!',
         'en' => 'Goodbye, see you tomorrow!',
         'de' => 'Goodbye, see you tomorrow!',
         'fr' => 'Goodbye, see you tomorrow!',
@@ -5796,7 +5492,6 @@ return array (
       'example' => 'Un vaso de agua, por favor.',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -5811,7 +5506,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir bardak su, lütfen.',
         'en' => 'A glass of water, please.',
         'de' => 'A glass of water, please.',
         'fr' => 'A glass of water, please.',
@@ -5834,7 +5528,6 @@ return array (
       'example' => 'Muchas gracias por tu ayuda.',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -5849,7 +5542,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yardımın için çok teşekkür ederim.',
         'en' => 'Thank you very much for your help.',
         'de' => 'Thank you very much for your help.',
         'fr' => 'Thank you very much for your help.',
@@ -5872,7 +5564,6 @@ return array (
       'example' => '¿Prefieres agua con gas o sin gas?',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -5887,7 +5578,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gazlı mı yoksa gazsız su mu tercih edersin?',
         'en' => 'Do you prefer sparkling or still water?',
         'de' => 'Do you prefer sparkling or still water?',
         'fr' => 'Do you prefer sparkling or still water?',
@@ -5910,7 +5600,6 @@ return array (
       'example' => 'Compré pan fresco en la panadería.',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -5925,7 +5614,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Fırından taze ekmek aldım.',
         'en' => 'I bought fresh bread at the bakery.',
         'de' => 'I bought fresh bread at the bakery.',
         'fr' => 'I bought fresh bread at the bakery.',
@@ -5948,7 +5636,6 @@ return array (
       'example' => 'Una manzana al día mantiene al médico lejos.',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -5963,7 +5650,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günde bir elma doktoru uzak tutar.',
         'en' => 'An apple a day keeps the doctor away.',
         'de' => 'An apple a day keeps the doctor away.',
         'fr' => 'An apple a day keeps the doctor away.',
@@ -5986,7 +5672,6 @@ return array (
       'example' => '¿Quieres un poco de leche en tu café?',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -6001,7 +5686,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahvene biraz süt ister misin?',
         'en' => 'Do you want some milk in your coffee?',
         'de' => 'Do you want some milk in your coffee?',
         'fr' => 'Do you want some milk in your coffee?',
@@ -6024,7 +5708,6 @@ return array (
       'example' => 'Normalmente tomo café negro por la mañana.',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -6039,7 +5722,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları genellikle sade kahve içerim.',
         'en' => 'I usually drink black coffee in the morning.',
         'de' => 'I usually drink black coffee in the morning.',
         'fr' => 'I usually drink black coffee in the morning.',
@@ -6062,7 +5744,6 @@ return array (
       'example' => 'Él siempre toma té caliente con miel.',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -6077,7 +5758,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'O her zaman ballı sıcak çay içer.',
         'en' => 'He always drinks hot tea with honey.',
         'de' => 'He always drinks hot tea with honey.',
         'fr' => 'He always drinks hot tea with honey.',
@@ -6100,7 +5780,6 @@ return array (
       'example' => 'Tienen una casa grande cerca del bosque.',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -6115,7 +5794,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ormanın yakınında büyük bir evleri var.',
         'en' => 'They have a big house near the forest.',
         'de' => 'They have a big house near the forest.',
         'fr' => 'They have a big house near the forest.',
@@ -6138,7 +5816,6 @@ return array (
       'example' => 'Mi dormitorio es el lugar más tranquilo.',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -6153,7 +5830,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
         'en' => 'My bedroom is the quietest place.',
         'de' => 'My bedroom is the quietest place.',
         'fr' => 'My bedroom is the quietest place.',
@@ -6176,7 +5852,6 @@ return array (
       'example' => 'No olvides cerrar la puerta con llave.',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -6191,7 +5866,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kapıyı kilitlemeyi unutma.',
         'en' => 'Don\'t forget to lock the door.',
         'de' => 'Don\'t forget to lock the door.',
         'fr' => 'Don\'t forget to lock the door.',
@@ -6214,7 +5888,6 @@ return array (
       'example' => 'Abre la ventana para que entre aire fresco.',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -6229,7 +5902,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Temiz hava için pencereyi aç.',
         'en' => 'Open the window to let in fresh air.',
         'de' => 'Open the window to let in fresh air.',
         'fr' => 'Open the window to let in fresh air.',
@@ -6252,7 +5924,6 @@ return array (
       'example' => 'Pasar tiempo con la familia es importante.',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -6267,7 +5938,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
         'en' => 'Spending time with family is important.',
         'de' => 'Spending time with family is important.',
         'fr' => 'Spending time with family is important.',
@@ -6290,7 +5960,6 @@ return array (
       'example' => 'Mi padre me enseñó a montar en bicicleta.',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -6305,7 +5974,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
         'en' => 'My father taught me to ride a bicycle.',
         'de' => 'My father taught me to ride a bicycle.',
         'fr' => 'My father taught me to ride a bicycle.',
@@ -6328,7 +5996,6 @@ return array (
       'example' => 'Su madre cocina platos tradicionales deliciosos.',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -6343,7 +6010,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Onun annesi lezzetli geleneksel yemekler yapar.',
         'en' => 'His mother cooks delicious traditional dishes.',
         'de' => 'His mother cooks delicious traditional dishes.',
         'fr' => 'His mother cooks delicious traditional dishes.',
@@ -6366,7 +6032,6 @@ return array (
       'example' => 'Un amigo en necesidad es un amigo de verdad.',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -6381,7 +6046,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi dost kara günde belli olur.',
         'en' => 'A friend in need is a friend indeed.',
         'de' => 'A friend in need is a friend indeed.',
         'fr' => 'A friend in need is a friend indeed.',
@@ -6404,7 +6068,6 @@ return array (
       'example' => 'Los niños caminan a la escuela juntos.',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -6419,7 +6082,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula birlikte yürürler.',
         'en' => 'The children walk to school together.',
         'de' => 'The children walk to school together.',
         'fr' => 'The children walk to school together.',
@@ -6442,7 +6104,6 @@ return array (
       'example' => 'Estoy leyendo un libro interesante de historia.',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -6457,7 +6118,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
         'en' => 'I am reading an interesting history book.',
         'de' => 'I am reading an interesting history book.',
         'fr' => 'I am reading an interesting history book.',
@@ -6480,7 +6140,6 @@ return array (
       'example' => '¿Tienes un lápiz extra que pueda tomar prestado?',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -6495,7 +6154,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ödünç alabileceğim yedek bir kalemin var mı?',
         'en' => 'Do you have an extra pencil I can borrow?',
         'de' => 'Do you have an extra pencil I can borrow?',
         'fr' => 'Do you have an extra pencil I can borrow?',
@@ -6518,7 +6176,6 @@ return array (
       'example' => 'Reunámonos alrededor de la mesa para cenar.',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -6533,7 +6190,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
         'en' => 'Let\'s gather around the table for dinner.',
         'de' => 'Let\'s gather around the table for dinner.',
         'fr' => 'Let\'s gather around the table for dinner.',
@@ -6556,7 +6212,6 @@ return array (
       'example' => 'Toma una silla y únete a nosotros.',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -6571,7 +6226,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sandalye al ve bize katıl.',
         'en' => 'Take a chair and join us.',
         'de' => 'Take a chair and join us.',
         'fr' => 'Take a chair and join us.',
@@ -6594,7 +6248,6 @@ return array (
       'example' => 'El tiempo vuela cuando te diviertes.',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -6609,7 +6262,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eğlenirken zaman su gibi akar.',
         'en' => 'Time flies when you have fun.',
         'de' => 'Time flies when you have fun.',
         'fr' => 'Time flies when you have fun.',
@@ -6632,7 +6284,6 @@ return array (
       'example' => 'Fue un día soleado y hermoso.',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -6647,7 +6298,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Güneşli ve güzel bir gündü.',
         'en' => 'It was a sunny and beautiful day.',
         'de' => 'It was a sunny and beautiful day.',
         'fr' => 'It was a sunny and beautiful day.',
@@ -6670,7 +6320,6 @@ return array (
       'example' => 'Las estrellas brillan intensamente esta noche.',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -6685,7 +6334,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
         'en' => 'The stars shine brightly tonight.',
         'de' => 'The stars shine brightly tonight.',
         'fr' => 'The stars shine brightly tonight.',
@@ -6708,7 +6356,6 @@ return array (
       'example' => 'Me gusta salir a correr por la mañana.',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -6723,7 +6370,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
         'en' => 'I like to go running in the morning.',
         'de' => 'I like to go running in the morning.',
         'fr' => 'I like to go running in the morning.',
@@ -6746,7 +6392,6 @@ return array (
       'example' => 'La próxima semana nos vamos de vacaciones.',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -6761,7 +6406,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
         'en' => 'Next week we are going on vacation.',
         'de' => 'Next week we are going on vacation.',
         'fr' => 'Next week we are going on vacation.',
@@ -6784,7 +6428,6 @@ return array (
       'example' => 'Febrero es el mes más corto del año.',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -6799,7 +6442,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Şubat yılın en kısa ayıdır.',
         'en' => 'February is the shortest month of the year.',
         'de' => 'February is the shortest month of the year.',
         'fr' => 'February is the shortest month of the year.',
@@ -6822,7 +6464,6 @@ return array (
       'example' => 'Han vivido en el extranjero por un año.',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -6837,7 +6478,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
         'en' => 'They have lived abroad for a year.',
         'de' => 'They have lived abroad for a year.',
         'fr' => 'They have lived abroad for a year.',
@@ -6860,7 +6500,6 @@ return array (
       'example' => 'Estambul es una ciudad histórica y dinámica.',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -6875,7 +6514,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
         'en' => 'Istanbul is a historic and dynamic city.',
         'de' => 'Istanbul is a historic and dynamic city.',
         'fr' => 'Istanbul is a historic and dynamic city.',
@@ -6898,7 +6536,6 @@ return array (
       'example' => '¿Qué país te gustaría visitar después?',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -6913,7 +6550,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sonraki ziyaret etmek istediğin ülke hangisi?',
         'en' => 'Which country would you like to visit next?',
         'de' => 'Which country would you like to visit next?',
         'fr' => 'Which country would you like to visit next?',
@@ -6936,7 +6572,6 @@ return array (
       'example' => 'El camino al éxito está pavimentado con trabajo duro.',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -6951,7 +6586,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
         'en' => 'The road to success is paved with hard work.',
         'de' => 'The road to success is paved with hard work.',
         'fr' => 'The road to success is paved with hard work.',
@@ -6974,7 +6608,6 @@ return array (
       'example' => 'El tren sale del andén tres.',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -6989,7 +6622,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
         'en' => 'The train leaves from platform three.',
         'de' => 'The train leaves from platform three.',
         'fr' => 'The train leaves from platform three.',
@@ -7012,7 +6644,6 @@ return array (
       'example' => 'Ella conduce un coche híbrido para ahorrar combustible.',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -7027,7 +6658,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
         'en' => 'She drives a hybrid car to save fuel.',
         'de' => 'She drives a hybrid car to save fuel.',
         'fr' => 'She drives a hybrid car to save fuel.',
@@ -7050,7 +6680,6 @@ return array (
       'example' => 'Guarda tu billete para la inspección.',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -7065,7 +6694,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kontrol için biletini sakla.',
         'en' => 'Keep your ticket for inspection.',
         'de' => 'Keep your ticket for inspection.',
         'fr' => 'Keep your ticket for inspection.',
@@ -7088,7 +6716,6 @@ return array (
       'example' => 'Reservamos un hotel tranquilo junto al mar.',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -7103,7 +6730,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
         'en' => 'We booked a quiet hotel by the sea.',
         'de' => 'We booked a quiet hotel by the sea.',
         'fr' => 'We booked a quiet hotel by the sea.',
@@ -7126,7 +6752,6 @@ return array (
       'example' => 'El dinero puede comprar comodidad pero no felicidad.',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -7141,7 +6766,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
         'en' => 'Money can buy comfort but not happiness.',
         'de' => 'Money can buy comfort but not happiness.',
         'fr' => 'Money can buy comfort but not happiness.',
@@ -7164,7 +6788,6 @@ return array (
       'example' => 'Esta tienda vende ropa hecha a mano.',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -7179,7 +6802,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu mağaza el yapımı kıyafetler satıyor.',
         'en' => 'This shop sells handmade clothes.',
         'de' => 'This shop sells handmade clothes.',
         'fr' => 'This shop sells handmade clothes.',
@@ -7202,7 +6824,6 @@ return array (
       'example' => 'El precio del teléfono inteligente ha bajado.',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -7217,7 +6838,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
         'en' => 'The price of the smartphone has dropped.',
         'de' => 'The price of the smartphone has dropped.',
         'fr' => 'The price of the smartphone has dropped.',
@@ -7240,7 +6860,6 @@ return array (
       'example' => 'La comida callejera local es deliciosa y barata.',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -7255,7 +6874,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
         'en' => 'Local street food is delicious and cheap.',
         'de' => 'Local street food is delicious and cheap.',
         'fr' => 'Local street food is delicious and cheap.',
@@ -7278,7 +6896,6 @@ return array (
       'example' => 'Comer fuera todos los días es muy caro.',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -7293,7 +6910,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
         'en' => 'Eating out every day is very expensive.',
         'de' => 'Eating out every day is very expensive.',
         'fr' => 'Eating out every day is very expensive.',
@@ -7316,7 +6932,6 @@ return array (
       'example' => 'Estábamos muy felices de escuchar las buenas noticias.',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -7331,7 +6946,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
         'en' => 'We were very happy to hear the good news.',
         'de' => 'We were very happy to hear the good news.',
         'fr' => 'We were very happy to hear the good news.',
@@ -7354,7 +6968,6 @@ return array (
       'example' => 'La película tuvo un final muy triste.',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -7369,7 +6982,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
         'en' => 'The movie had a very sad ending.',
         'de' => 'The movie had a very sad ending.',
         'fr' => 'The movie had a very sad ending.',
@@ -7392,7 +7004,6 @@ return array (
       'example' => 'Me siento cansado después del largo vuelo.',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -7407,7 +7018,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
         'en' => 'I feel tired after the long flight.',
         'de' => 'I feel tired after the long flight.',
         'fr' => 'I feel tired after the long flight.',
@@ -7430,7 +7040,6 @@ return array (
       'example' => 'El café todavía está demasiado caliente.',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -7445,7 +7054,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve içmek için hala çok sıcak.',
         'en' => 'The coffee is still too hot.',
         'de' => 'The coffee is still too hot.',
         'fr' => 'The coffee is still too hot.',
@@ -7468,7 +7076,6 @@ return array (
       'example' => 'Hace mucho frío aquí en invierno.',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -7483,7 +7090,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın buralar çok soğuk olur.',
         'en' => 'It is very cold here in winter.',
         'de' => 'It is very cold here in winter.',
         'fr' => 'It is very cold here in winter.',
@@ -7506,7 +7112,6 @@ return array (
       'example' => 'Compró un portátil nuevo para la universidad.',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -7521,7 +7126,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
         'en' => 'He bought a new laptop for university.',
         'de' => 'He bought a new laptop for university.',
         'fr' => 'He bought a new laptop for university.',
@@ -7544,7 +7148,6 @@ return array (
       'example' => 'Este pueblo viejo tiene un encanto especial.',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -7559,7 +7162,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
         'en' => 'This old town has a special charm.',
         'de' => 'This old town has a special charm.',
         'fr' => 'This old town has a special charm.',
@@ -7582,7 +7184,6 @@ return array (
       'example' => 'El amor de una madre por su hijo es infinito.',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -7597,7 +7198,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
         'en' => 'A mother\'s love for her child is infinite.',
         'de' => 'A mother\'s love for her child is infinite.',
         'fr' => 'A mother\'s love for her child is infinite.',
@@ -7623,7 +7223,6 @@ return array (
       'example' => 'مرحبا! كيف حالك اليوم؟',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -7638,7 +7237,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsın?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hello! How are you today?',
         'fr' => 'Hello! How are you today?',
@@ -7661,7 +7259,6 @@ return array (
       'example' => 'وداعا، أراك غدا!',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Güle güle',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -7676,7 +7273,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hoşça kal, yarın görüşürüz!',
         'en' => 'Goodbye, see you tomorrow!',
         'de' => 'Goodbye, see you tomorrow!',
         'fr' => 'Goodbye, see you tomorrow!',
@@ -7699,7 +7295,6 @@ return array (
       'example' => 'كوب من الماء، من فضلك.',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -7714,7 +7309,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir bardak su, lütfen.',
         'en' => 'A glass of water, please.',
         'de' => 'A glass of water, please.',
         'fr' => 'A glass of water, please.',
@@ -7737,7 +7331,6 @@ return array (
       'example' => 'شكرا جزيلا على مساعدتك.',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -7752,7 +7345,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yardımınız için çok teşekkür ederim.',
         'en' => 'Thank you very much for your help.',
         'de' => 'Thank you very much for your help.',
         'fr' => 'Thank you very much for your help.',
@@ -7775,7 +7367,6 @@ return array (
       'example' => 'هل تفضل الماء العادي أم الفوار؟',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -7790,7 +7381,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gazsız mı yoksa maden suyu mu tercih edersin?',
         'en' => 'Do you prefer still or sparkling water?',
         'de' => 'Do you prefer still or sparkling water?',
         'fr' => 'Do you prefer still or sparkling water?',
@@ -7813,7 +7403,6 @@ return array (
       'example' => 'اشتريت خبزا طازجا من المخبز.',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -7828,7 +7417,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Fırından taze ekmek aldım.',
         'en' => 'I bought fresh bread from the bakery.',
         'de' => 'I bought fresh bread from the bakery.',
         'fr' => 'I bought fresh bread from the bakery.',
@@ -7851,7 +7439,6 @@ return array (
       'example' => 'تفاحة في اليوم تبقي الطبيب بعيدا.',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -7866,7 +7453,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günde bir elma doktoru uzak tutar.',
         'en' => 'An apple a day keeps the doctor away.',
         'de' => 'An apple a day keeps the doctor away.',
         'fr' => 'An apple a day keeps the doctor away.',
@@ -7889,7 +7475,6 @@ return array (
       'example' => 'هل تريد حليبا في قهوتك؟',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -7904,7 +7489,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahvene süt ister misin?',
         'en' => 'Do you want milk in your coffee?',
         'de' => 'Do you want milk in your coffee?',
         'fr' => 'Do you want milk in your coffee?',
@@ -7927,7 +7511,6 @@ return array (
       'example' => 'أشرب القهوة السوداء في الصباح.',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -7942,7 +7525,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları sade kahve içerim.',
         'en' => 'I drink black coffee in the morning.',
         'de' => 'I drink black coffee in the morning.',
         'fr' => 'I drink black coffee in the morning.',
@@ -7965,7 +7547,6 @@ return array (
       'example' => 'هو دائما يشرب الشاي الساخن مع العسل.',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -7980,7 +7561,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'O her zaman ballı sıcak çay içer.',
         'en' => 'He always drinks hot tea with honey.',
         'de' => 'He always drinks hot tea with honey.',
         'fr' => 'He always drinks hot tea with honey.',
@@ -8003,7 +7583,6 @@ return array (
       'example' => 'لديهم بيت كبير بالقرب من الغابة.',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -8018,7 +7597,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ormanın yakınında büyük bir evleri var.',
         'en' => 'They have a big house near the forest.',
         'de' => 'They have a big house near the forest.',
         'fr' => 'They have a big house near the forest.',
@@ -8041,7 +7619,6 @@ return array (
       'example' => 'غرفة نومي هي أهدأ مكان في البيت.',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -8056,7 +7633,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
         'en' => 'My bedroom is the quietest place in the house.',
         'de' => 'My bedroom is the quietest place in the house.',
         'fr' => 'My bedroom is the quietest place in the house.',
@@ -8079,7 +7655,6 @@ return array (
       'example' => 'لا تنس إغلاق الباب الأمامي.',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -8094,7 +7669,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ön kapıyı kilitlemeyi unutma.',
         'en' => 'Don\'t forget to close the front door.',
         'de' => 'Don\'t forget to close the front door.',
         'fr' => 'Don\'t forget to close the front door.',
@@ -8117,7 +7691,6 @@ return array (
       'example' => 'افتح النافذة من فضلك لدخول الهواء النقي.',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -8132,7 +7705,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Temiz hava için lütfen pencereyi aç.',
         'en' => 'Open the window please to let in fresh air.',
         'de' => 'Open the window please to let in fresh air.',
         'fr' => 'Open the window please to let in fresh air.',
@@ -8155,7 +7727,6 @@ return array (
       'example' => 'قضاء الوقت مع العائلة مهم بالنسبة لي.',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -8170,7 +7741,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
         'en' => 'Spending time with family is important to me.',
         'de' => 'Spending time with family is important to me.',
         'fr' => 'Spending time with family is important to me.',
@@ -8193,7 +7763,6 @@ return array (
       'example' => 'أبي علمني ركوب الدراجة.',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -8208,7 +7777,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
         'en' => 'My father taught me to ride a bicycle.',
         'de' => 'My father taught me to ride a bicycle.',
         'fr' => 'My father taught me to ride a bicycle.',
@@ -8231,7 +7799,6 @@ return array (
       'example' => 'أمي تطبخ أطباقا تقليدية لذيذة.',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -8246,7 +7813,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Annem lezzetli geleneksel yemekler yapar.',
         'en' => 'My mother cooks delicious traditional dishes.',
         'de' => 'My mother cooks delicious traditional dishes.',
         'fr' => 'My mother cooks delicious traditional dishes.',
@@ -8269,7 +7835,6 @@ return array (
       'example' => 'الصديق وقت الضيق.',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -8284,7 +7849,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi dost kara günde belli olur.',
         'en' => 'A friend in need is a friend indeed.',
         'de' => 'A friend in need is a friend indeed.',
         'fr' => 'A friend in need is a friend indeed.',
@@ -8307,7 +7871,6 @@ return array (
       'example' => 'الأطفال يذهبون إلى المدرسة معا.',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -8322,7 +7885,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula birlikte giderler.',
         'en' => 'The children go to school together.',
         'de' => 'The children go to school together.',
         'fr' => 'The children go to school together.',
@@ -8345,7 +7907,6 @@ return array (
       'example' => 'أقرأ كتابا ممتعا عن التاريخ.',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -8360,7 +7921,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
         'en' => 'I am reading an enjoyable book about history.',
         'de' => 'I am reading an enjoyable book about history.',
         'fr' => 'I am reading an enjoyable book about history.',
@@ -8383,7 +7943,6 @@ return array (
       'example' => 'هل لديك قلم إضافي لأستعيره؟',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -8398,7 +7957,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ödünç alabileceğim yedek bir kalemin var mı?',
         'en' => 'Do you have an extra pen I can borrow?',
         'de' => 'Do you have an extra pen I can borrow?',
         'fr' => 'Do you have an extra pen I can borrow?',
@@ -8421,7 +7979,6 @@ return array (
       'example' => 'لنتجمع حول الطاولة للعشاء.',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -8436,7 +7993,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
         'en' => 'Let\'s gather around the table for dinner.',
         'de' => 'Let\'s gather around the table for dinner.',
         'fr' => 'Let\'s gather around the table for dinner.',
@@ -8459,7 +8015,6 @@ return array (
       'example' => 'خذ كرسيا وانضم إلينا.',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -8474,7 +8029,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sandalye al ve bize katıl.',
         'en' => 'Take a chair and join us.',
         'de' => 'Take a chair and join us.',
         'fr' => 'Take a chair and join us.',
@@ -8497,7 +8051,6 @@ return array (
       'example' => 'الوقت يمر سريعا عندما تستمتع.',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -8512,7 +8065,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eğlenirken zaman su gibi akar.',
         'en' => 'Time passes quickly when you enjoy yourself.',
         'de' => 'Time passes quickly when you enjoy yourself.',
         'fr' => 'Time passes quickly when you enjoy yourself.',
@@ -8535,7 +8087,6 @@ return array (
       'example' => 'كان يوما مشمسا وجميلا.',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -8550,7 +8101,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Güneşli ve güzel bir gündü.',
         'en' => 'It was a sunny and beautiful day.',
         'de' => 'It was a sunny and beautiful day.',
         'fr' => 'It was a sunny and beautiful day.',
@@ -8573,7 +8123,6 @@ return array (
       'example' => 'النجوم تشرق ساطعة هذه الليلة.',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -8588,7 +8137,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
         'en' => 'The stars shine brightly tonight.',
         'de' => 'The stars shine brightly tonight.',
         'fr' => 'The stars shine brightly tonight.',
@@ -8611,7 +8159,6 @@ return array (
       'example' => 'أحب الذهاب للجري في الصباح.',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -8626,7 +8173,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
         'en' => 'I love going for a run in the morning.',
         'de' => 'I love going for a run in the morning.',
         'fr' => 'I love going for a run in the morning.',
@@ -8649,7 +8195,6 @@ return array (
       'example' => 'الأسبوع القادم سنذهب في عطلة.',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -8664,7 +8209,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
         'en' => 'Next week we will go on vacation.',
         'de' => 'Next week we will go on vacation.',
         'fr' => 'Next week we will go on vacation.',
@@ -8687,7 +8231,6 @@ return array (
       'example' => 'فبراير هو أقصر شهر في السنة.',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -8702,7 +8245,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Şubat yılın en kısa ayıdır.',
         'en' => 'February is the shortest month of the year.',
         'de' => 'February is the shortest month of the year.',
         'fr' => 'February is the shortest month of the year.',
@@ -8725,7 +8267,6 @@ return array (
       'example' => 'لقد عاشوا في الخارج لمدة سنة.',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -8740,7 +8281,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
         'en' => 'They lived abroad for a year.',
         'de' => 'They lived abroad for a year.',
         'fr' => 'They lived abroad for a year.',
@@ -8763,7 +8303,6 @@ return array (
       'example' => 'إسطنبول مدينة تاريخية وديناميكية.',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -8778,7 +8317,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
         'en' => 'Istanbul is a historic and dynamic city.',
         'de' => 'Istanbul is a historic and dynamic city.',
         'fr' => 'Istanbul is a historic and dynamic city.',
@@ -8801,7 +8339,6 @@ return array (
       'example' => 'أي بلد تود زيارته بعد ذلك؟',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -8816,7 +8353,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sonraki ziyaret etmek istediğin ülke hangisi?',
         'en' => 'Which country would you like to visit next?',
         'de' => 'Which country would you like to visit next?',
         'fr' => 'Which country would you like to visit next?',
@@ -8839,7 +8375,6 @@ return array (
       'example' => 'الطريق إلى النجاح مرصوف بالعمل الجاد.',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -8854,7 +8389,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
         'en' => 'The road to success is paved with hard work.',
         'de' => 'The road to success is paved with hard work.',
         'fr' => 'The road to success is paved with hard work.',
@@ -8877,7 +8411,6 @@ return array (
       'example' => 'القطار يغادر من الرصيف الثالث.',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -8892,7 +8425,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
         'en' => 'The train departs from platform three.',
         'de' => 'The train departs from platform three.',
         'fr' => 'The train departs from platform three.',
@@ -8915,7 +8447,6 @@ return array (
       'example' => 'هي تقود سيارة هجينة لتوفير الوقود.',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -8930,7 +8461,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yakıt tasarrufu için hibrit bir araba sürüyor.',
         'en' => 'She drives a hybrid car to save fuel.',
         'de' => 'She drives a hybrid car to save fuel.',
         'fr' => 'She drives a hybrid car to save fuel.',
@@ -8953,7 +8483,6 @@ return array (
       'example' => 'احتفظ بتذكرتك للفحص.',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -8968,7 +8497,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kontrol için biletini sakla.',
         'en' => 'Keep your ticket for inspection.',
         'de' => 'Keep your ticket for inspection.',
         'fr' => 'Keep your ticket for inspection.',
@@ -8991,7 +8519,6 @@ return array (
       'example' => 'حجزنا فندقا هادئا بجانب البحر.',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -9006,7 +8533,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
         'en' => 'We booked a quiet hotel by the sea.',
         'de' => 'We booked a quiet hotel by the sea.',
         'fr' => 'We booked a quiet hotel by the sea.',
@@ -9029,7 +8555,6 @@ return array (
       'example' => 'المال يشتري الراحة لكن ليس السعادة.',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -9044,7 +8569,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
         'en' => 'Money buys comfort but not happiness.',
         'de' => 'Money buys comfort but not happiness.',
         'fr' => 'Money buys comfort but not happiness.',
@@ -9067,7 +8591,6 @@ return array (
       'example' => 'هذا المتجر يبيع ملابس مصنوعة يدويا.',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -9082,7 +8605,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu mağaza el yapımı kıyafetler satıyor.',
         'en' => 'This shop sells handmade clothes.',
         'de' => 'This shop sells handmade clothes.',
         'fr' => 'This shop sells handmade clothes.',
@@ -9105,7 +8627,6 @@ return array (
       'example' => 'سعر الهاتف الذكي انخفض.',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -9120,7 +8641,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
         'en' => 'The price of the smartphone has dropped.',
         'de' => 'The price of the smartphone has dropped.',
         'fr' => 'The price of the smartphone has dropped.',
@@ -9143,7 +8663,6 @@ return array (
       'example' => 'طعام الشارع المحلي لذيذ ورخيص.',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -9158,7 +8677,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
         'en' => 'Local street food is delicious and cheap.',
         'de' => 'Local street food is delicious and cheap.',
         'fr' => 'Local street food is delicious and cheap.',
@@ -9181,7 +8699,6 @@ return array (
       'example' => 'الأكل في الخارج كل يوم غالي جدا.',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -9196,7 +8713,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
         'en' => 'Eating out every day is very expensive.',
         'de' => 'Eating out every day is very expensive.',
         'fr' => 'Eating out every day is very expensive.',
@@ -9219,7 +8735,6 @@ return array (
       'example' => 'كنا سعداء جدا لسماع الأخبار الجيدة.',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -9234,7 +8749,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
         'en' => 'We were very happy to hear the good news.',
         'de' => 'We were very happy to hear the good news.',
         'fr' => 'We were very happy to hear the good news.',
@@ -9257,7 +8771,6 @@ return array (
       'example' => 'الفيلم كانت له نهاية حزينة جدا.',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -9272,7 +8785,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
         'en' => 'The movie had a very sad ending.',
         'de' => 'The movie had a very sad ending.',
         'fr' => 'The movie had a very sad ending.',
@@ -9295,7 +8807,6 @@ return array (
       'example' => 'أشعر بالتعب بعد الرحلة الطويلة.',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -9310,7 +8821,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
         'en' => 'I feel tired after the long journey.',
         'de' => 'I feel tired after the long journey.',
         'fr' => 'I feel tired after the long journey.',
@@ -9333,7 +8843,6 @@ return array (
       'example' => 'القهوة لا تزال حارة جدا للشرب.',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -9348,7 +8857,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve içmek için hala çok sıcak.',
         'en' => 'The coffee is still too hot to drink.',
         'de' => 'The coffee is still too hot to drink.',
         'fr' => 'The coffee is still too hot to drink.',
@@ -9371,7 +8879,6 @@ return array (
       'example' => 'يصبح الجو باردا جدا هنا في الشتاء.',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -9386,7 +8893,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın buralar çok soğuk olur.',
         'en' => 'It gets very cold here in winter.',
         'de' => 'It gets very cold here in winter.',
         'fr' => 'It gets very cold here in winter.',
@@ -9409,7 +8915,6 @@ return array (
       'example' => 'اشترى حاسوبا محمولا جديدا للجامعة.',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -9424,7 +8929,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
         'en' => 'He bought a new laptop for university.',
         'de' => 'He bought a new laptop for university.',
         'fr' => 'He bought a new laptop for university.',
@@ -9447,7 +8951,6 @@ return array (
       'example' => 'هذه البلدة القديمة لها جو ساحر.',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -9462,7 +8965,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
         'en' => 'This old town has a charming atmosphere.',
         'de' => 'This old town has a charming atmosphere.',
         'fr' => 'This old town has a charming atmosphere.',
@@ -9485,7 +8987,6 @@ return array (
       'example' => 'حب الأم لطفلها لا حدود له.',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -9500,7 +9001,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
         'en' => 'A mother\'s love for her child has no limits.',
         'de' => 'A mother\'s love for her child has no limits.',
         'fr' => 'A mother\'s love for her child has no limits.',
@@ -9526,7 +9026,6 @@ return array (
       'example' => '你好！今天你怎么样？',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -9541,7 +9040,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsın?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hello! How are you today?',
         'fr' => 'Hello! How are you today?',
@@ -9564,7 +9062,6 @@ return array (
       'example' => '再见，明天见！',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Güle güle',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -9579,7 +9076,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hoşça kal, yarın görüşürüz!',
         'en' => 'Goodbye, see you tomorrow!',
         'de' => 'Goodbye, see you tomorrow!',
         'fr' => 'Goodbye, see you tomorrow!',
@@ -9602,7 +9098,6 @@ return array (
       'example' => '请给我一杯水。',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -9617,7 +9112,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bana bir bardak su ver lütfen.',
         'en' => 'Please give me a glass of water.',
         'de' => 'Please give me a glass of water.',
         'fr' => 'Please give me a glass of water.',
@@ -9640,7 +9134,6 @@ return array (
       'example' => '非常感谢你的帮助。',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -9655,7 +9148,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yardımın için çok teşekkür ederim.',
         'en' => 'Thank you very much for your help.',
         'de' => 'Thank you very much for your help.',
         'fr' => 'Thank you very much for your help.',
@@ -9678,7 +9170,6 @@ return array (
       'example' => '你喜欢喝白水还是气泡水？',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -9693,7 +9184,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gazsız mı yoksa maden suyu mu tercih edersin?',
         'en' => 'Do you like still water or sparkling water?',
         'de' => 'Do you like still water or sparkling water?',
         'fr' => 'Do you like still water or sparkling water?',
@@ -9716,7 +9206,6 @@ return array (
       'example' => '我买了新鲜的面包。',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -9731,7 +9220,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Taze ekmek aldım.',
         'en' => 'I bought fresh bread.',
         'de' => 'I bought fresh bread.',
         'fr' => 'I bought fresh bread.',
@@ -9754,7 +9242,6 @@ return array (
       'example' => '一天一个苹果，医生远离我。',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -9769,7 +9256,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Günde bir elma doktoru uzak tutar.',
         'en' => 'An apple a day keeps the doctor away.',
         'de' => 'An apple a day keeps the doctor away.',
         'fr' => 'An apple a day keeps the doctor away.',
@@ -9792,7 +9278,6 @@ return array (
       'example' => '你的咖啡要加牛奶吗？',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -9807,7 +9292,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahvene süt ister misin?',
         'en' => 'Would you like milk in your coffee?',
         'de' => 'Would you like milk in your coffee?',
         'fr' => 'Would you like milk in your coffee?',
@@ -9830,7 +9314,6 @@ return array (
       'example' => '我早上通常喝黑咖啡。',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -9845,7 +9328,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları genellikle sade kahve içerim.',
         'en' => 'I usually drink black coffee in the morning.',
         'de' => 'I usually drink black coffee in the morning.',
         'fr' => 'I usually drink black coffee in the morning.',
@@ -9868,7 +9350,6 @@ return array (
       'example' => '他生病时总是喝加蜂蜜的热茶。',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -9883,7 +9364,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hasta olduğunda her zaman ballı sıcak çay içer.',
         'en' => 'He always drinks hot tea with honey when sick.',
         'de' => 'He always drinks hot tea with honey when sick.',
         'fr' => 'He always drinks hot tea with honey when sick.',
@@ -9906,7 +9386,6 @@ return array (
       'example' => '他们在森林附近有一所大房子。',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -9921,7 +9400,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ormanın yakınında büyük bir evleri var.',
         'en' => 'They have a big house near the forest.',
         'de' => 'They have a big house near the forest.',
         'fr' => 'They have a big house near the forest.',
@@ -9944,7 +9422,6 @@ return array (
       'example' => '我的卧室是房子里最安静的地方。',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -9959,7 +9436,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
         'en' => 'My bedroom is the quietest place in the house.',
         'de' => 'My bedroom is the quietest place in the house.',
         'fr' => 'My bedroom is the quietest place in the house.',
@@ -9982,7 +9458,6 @@ return array (
       'example' => '别忘了锁前门。',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -9997,7 +9472,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ön kapıyı kilitlemeyi unutma.',
         'en' => 'Don\'t forget to lock the front door.',
         'de' => 'Don\'t forget to lock the front door.',
         'fr' => 'Don\'t forget to lock the front door.',
@@ -10020,7 +9494,6 @@ return array (
       'example' => '请打开窗户让新鲜空气进来。',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -10035,7 +9508,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Temiz hava için lütfen pencereyi aç.',
         'en' => 'Please open the window to let fresh air in.',
         'de' => 'Please open the window to let fresh air in.',
         'fr' => 'Please open the window to let fresh air in.',
@@ -10058,7 +9530,6 @@ return array (
       'example' => '和家人在一起的时间对我来说很重要。',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -10073,7 +9544,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
         'en' => 'Time with family is very important to me.',
         'de' => 'Time with family is very important to me.',
         'fr' => 'Time with family is very important to me.',
@@ -10096,7 +9566,6 @@ return array (
       'example' => '我父亲教我骑自行车。',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -10111,7 +9580,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
         'en' => 'My father taught me to ride a bicycle.',
         'de' => 'My father taught me to ride a bicycle.',
         'fr' => 'My father taught me to ride a bicycle.',
@@ -10134,7 +9602,6 @@ return array (
       'example' => '她母亲做美味的传统菜肴。',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -10149,7 +9616,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Onun annesi lezzetli geleneksel yemekler yapar.',
         'en' => 'Her mother makes delicious traditional dishes.',
         'de' => 'Her mother makes delicious traditional dishes.',
         'fr' => 'Her mother makes delicious traditional dishes.',
@@ -10172,7 +9638,6 @@ return array (
       'example' => '患难见真情。',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -10187,7 +9652,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi dost kara günde belli olur.',
         'en' => 'A friend in need is a friend indeed.',
         'de' => 'A friend in need is a friend indeed.',
         'fr' => 'A friend in need is a friend indeed.',
@@ -10210,7 +9674,6 @@ return array (
       'example' => '孩子们一起走路去学校。',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -10225,7 +9688,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula birlikte yürürler.',
         'en' => 'The children walk to school together.',
         'de' => 'The children walk to school together.',
         'fr' => 'The children walk to school together.',
@@ -10248,7 +9710,6 @@ return array (
       'example' => '我正在读一本有趣的历史书。',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -10263,7 +9724,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
         'en' => 'I am reading an interesting history book.',
         'de' => 'I am reading an interesting history book.',
         'fr' => 'I am reading an interesting history book.',
@@ -10286,7 +9746,6 @@ return array (
       'example' => '你有多余的铅笔可以借我吗？',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -10301,7 +9760,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ödünç alabileceğim yedek bir kalemin var mı?',
         'en' => 'Do you have an extra pencil to lend me?',
         'de' => 'Do you have an extra pencil to lend me?',
         'fr' => 'Do you have an extra pencil to lend me?',
@@ -10324,7 +9782,6 @@ return array (
       'example' => '我们围坐在桌子旁吃晚饭吧。',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -10339,7 +9796,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
         'en' => 'Let\'s sit around the table for dinner.',
         'de' => 'Let\'s sit around the table for dinner.',
         'fr' => 'Let\'s sit around the table for dinner.',
@@ -10362,7 +9818,6 @@ return array (
       'example' => '拿把椅子加入我们吧。',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -10377,7 +9832,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sandalye al ve bize katıl.',
         'en' => 'Grab a chair and join us.',
         'de' => 'Grab a chair and join us.',
         'fr' => 'Grab a chair and join us.',
@@ -10400,7 +9854,6 @@ return array (
       'example' => '快乐的时候时间过得真快。',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -10415,7 +9868,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eğlenirken zaman su gibi akar.',
         'en' => 'Time passes quickly when you are happy.',
         'de' => 'Time passes quickly when you are happy.',
         'fr' => 'Time passes quickly when you are happy.',
@@ -10438,7 +9890,6 @@ return array (
       'example' => '那是晴朗美丽的一天。',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -10453,7 +9904,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Güneşli ve güzel bir gündü.',
         'en' => 'That was a sunny and beautiful day.',
         'de' => 'That was a sunny and beautiful day.',
         'fr' => 'That was a sunny and beautiful day.',
@@ -10476,7 +9926,6 @@ return array (
       'example' => '今晚的星星格外明亮。',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -10491,7 +9940,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
         'en' => 'The stars are especially bright tonight.',
         'de' => 'The stars are especially bright tonight.',
         'fr' => 'The stars are especially bright tonight.',
@@ -10514,7 +9962,6 @@ return array (
       'example' => '我喜欢早上出去跑步。',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -10529,7 +9976,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
         'en' => 'I like to go running in the morning.',
         'de' => 'I like to go running in the morning.',
         'fr' => 'I like to go running in the morning.',
@@ -10552,7 +9998,6 @@ return array (
       'example' => '下星期我们去度假。',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -10567,7 +10012,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
         'en' => 'Next week we are going on vacation.',
         'de' => 'Next week we are going on vacation.',
         'fr' => 'Next week we are going on vacation.',
@@ -10590,7 +10034,6 @@ return array (
       'example' => '二月是一年中最短的月份。',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -10605,7 +10048,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Şubat yılın en kısa ayıdır.',
         'en' => 'February is the shortest month of the year.',
         'de' => 'February is the shortest month of the year.',
         'fr' => 'February is the shortest month of the year.',
@@ -10628,7 +10070,6 @@ return array (
       'example' => '他们在国外住了一年。',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -10643,7 +10084,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
         'en' => 'They lived abroad for a year.',
         'de' => 'They lived abroad for a year.',
         'fr' => 'They lived abroad for a year.',
@@ -10666,7 +10106,6 @@ return array (
       'example' => '伊斯坦布尔是一座历史悠久的活力城市。',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -10681,7 +10120,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
         'en' => 'Istanbul is a historic and vibrant city.',
         'de' => 'Istanbul is a historic and vibrant city.',
         'fr' => 'Istanbul is a historic and vibrant city.',
@@ -10704,7 +10142,6 @@ return array (
       'example' => '你接下来想去哪个国家？',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -10719,7 +10156,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sonraki ziyaret etmek istediğin ülke hangisi?',
         'en' => 'Which country would you like to visit next?',
         'de' => 'Which country would you like to visit next?',
         'fr' => 'Which country would you like to visit next?',
@@ -10742,7 +10178,6 @@ return array (
       'example' => '通往成功的道路是用努力工作铺成的。',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -10757,7 +10192,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
         'en' => 'The road to success is paved with hard work.',
         'de' => 'The road to success is paved with hard work.',
         'fr' => 'The road to success is paved with hard work.',
@@ -10780,7 +10214,6 @@ return array (
       'example' => '火车从三号站台开出。',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -10795,7 +10228,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
         'en' => 'The train departs from platform three.',
         'de' => 'The train departs from platform three.',
         'fr' => 'The train departs from platform three.',
@@ -10818,7 +10250,6 @@ return array (
       'example' => '她开混合动力车来节省燃料。',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -10833,7 +10264,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
         'en' => 'She drives a hybrid car to save fuel.',
         'de' => 'She drives a hybrid car to save fuel.',
         'fr' => 'She drives a hybrid car to save fuel.',
@@ -10856,7 +10286,6 @@ return array (
       'example' => '请保管好您的票以便检查。',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -10871,7 +10300,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kontrol için biletini sakla.',
         'en' => 'Please keep your ticket for inspection.',
         'de' => 'Please keep your ticket for inspection.',
         'fr' => 'Please keep your ticket for inspection.',
@@ -10894,7 +10322,6 @@ return array (
       'example' => '我们预订了一家海边安静的酒店。',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -10909,7 +10336,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
         'en' => 'We booked a quiet seaside hotel.',
         'de' => 'We booked a quiet seaside hotel.',
         'fr' => 'We booked a quiet seaside hotel.',
@@ -10932,7 +10358,6 @@ return array (
       'example' => '钱能买到舒适但买不到幸福。',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -10947,7 +10372,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
         'en' => 'Money can buy comfort but not happiness.',
         'de' => 'Money can buy comfort but not happiness.',
         'fr' => 'Money can buy comfort but not happiness.',
@@ -10970,7 +10394,6 @@ return array (
       'example' => '这家商店出售手工制作的服装。',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -10985,7 +10408,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu mağaza el yapımı kıyafetler satıyor.',
         'en' => 'This shop sells handmade clothes.',
         'de' => 'This shop sells handmade clothes.',
         'fr' => 'This shop sells handmade clothes.',
@@ -11008,7 +10430,6 @@ return array (
       'example' => '智能手机的价格已经下降了。',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -11023,7 +10444,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
         'en' => 'The price of smartphones has dropped.',
         'de' => 'The price of smartphones has dropped.',
         'fr' => 'The price of smartphones has dropped.',
@@ -11046,7 +10466,6 @@ return array (
       'example' => '当地街头美食又好吃又便宜。',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -11061,7 +10480,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
         'en' => 'Local street food is delicious and cheap.',
         'de' => 'Local street food is delicious and cheap.',
         'fr' => 'Local street food is delicious and cheap.',
@@ -11084,7 +10502,6 @@ return array (
       'example' => '每天在外面吃饭很贵。',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -11099,7 +10516,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
         'en' => 'Eating out every day is expensive.',
         'de' => 'Eating out every day is expensive.',
         'fr' => 'Eating out every day is expensive.',
@@ -11122,7 +10538,6 @@ return array (
       'example' => '听到这个好消息我们很高兴。',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -11137,7 +10552,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
         'en' => 'We are very happy to hear this good news.',
         'de' => 'We are very happy to hear this good news.',
         'fr' => 'We are very happy to hear this good news.',
@@ -11160,7 +10574,6 @@ return array (
       'example' => '这部电影有一个非常难过的结局。',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -11175,7 +10588,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
         'en' => 'This movie has a very sad ending.',
         'de' => 'This movie has a very sad ending.',
         'fr' => 'This movie has a very sad ending.',
@@ -11198,7 +10610,6 @@ return array (
       'example' => '长途飞行后我觉得很累。',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -11213,7 +10624,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
         'en' => 'I feel tired after the long flight.',
         'de' => 'I feel tired after the long flight.',
         'fr' => 'I feel tired after the long flight.',
@@ -11236,7 +10646,6 @@ return array (
       'example' => '咖啡还太热不能喝。',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -11251,7 +10660,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve içmek için hala çok sıcak.',
         'en' => 'The coffee is still too hot to drink.',
         'de' => 'The coffee is still too hot to drink.',
         'fr' => 'The coffee is still too hot to drink.',
@@ -11274,7 +10682,6 @@ return array (
       'example' => '这里冬天很冷。',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -11289,7 +10696,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın buralar çok soğuk olur.',
         'en' => 'It is very cold here in winter.',
         'de' => 'It is very cold here in winter.',
         'fr' => 'It is very cold here in winter.',
@@ -11312,7 +10718,6 @@ return array (
       'example' => '他为大学买了一台新笔记本电脑。',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -11327,7 +10732,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
         'en' => 'He bought a new laptop for university.',
         'de' => 'He bought a new laptop for university.',
         'fr' => 'He bought a new laptop for university.',
@@ -11350,7 +10754,6 @@ return array (
       'example' => '这座古镇有一种迷人的氛围。',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -11365,7 +10768,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
         'en' => 'This ancient town has a charming atmosphere.',
         'de' => 'This ancient town has a charming atmosphere.',
         'fr' => 'This ancient town has a charming atmosphere.',
@@ -11388,7 +10790,6 @@ return array (
       'example' => '母亲对孩子的爱是无限的。',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -11403,7 +10804,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
         'en' => 'A mother\'s love for her child is infinite.',
         'de' => 'A mother\'s love for her child is infinite.',
         'fr' => 'A mother\'s love for her child is infinite.',
@@ -11429,7 +10829,6 @@ return array (
       'example' => 'こんにちは！今日はどうですか？',
       'translations' => 
       array (
-        'tr' => 'Merhaba',
         'en' => 'hello',
         'de' => 'Hallo',
         'fr' => 'Bonjour',
@@ -11444,7 +10843,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Merhaba! Bugün nasılsın?',
         'en' => 'Hello! How are you today?',
         'de' => 'Hello! How are you today?',
         'fr' => 'Hello! How are you today?',
@@ -11467,7 +10865,6 @@ return array (
       'example' => 'さようなら、また明日！',
       'translations' => 
       array (
-        'tr' => 'Hoşça kal / Güle güle',
         'en' => 'goodbye',
         'de' => 'Auf Wiedersehen',
         'fr' => 'Au revoir',
@@ -11482,7 +10879,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Hoşça kal, yarın görüşürüz!',
         'en' => 'Goodbye, see you tomorrow!',
         'de' => 'Goodbye, see you tomorrow!',
         'fr' => 'Goodbye, see you tomorrow!',
@@ -11505,7 +10901,6 @@ return array (
       'example' => '水を一杯お願いします。',
       'translations' => 
       array (
-        'tr' => 'Lütfen',
         'en' => 'please',
         'de' => 'Bitte',
         'fr' => 'S\'il vous plaît',
@@ -11520,7 +10915,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir bardak su lütfen.',
         'en' => 'A glass of water, please.',
         'de' => 'A glass of water, please.',
         'fr' => 'A glass of water, please.',
@@ -11543,7 +10937,6 @@ return array (
       'example' => 'ご協力ありがとうございます。',
       'translations' => 
       array (
-        'tr' => 'Teşekkür ederim',
         'en' => 'thank you',
         'de' => 'Danke',
         'fr' => 'Merci',
@@ -11558,7 +10951,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yardımınız için çok teşekkür ederim.',
         'en' => 'Thank you for your cooperation.',
         'de' => 'Thank you for your cooperation.',
         'fr' => 'Thank you for your cooperation.',
@@ -11581,7 +10973,6 @@ return array (
       'example' => '水は生命に不可欠です。',
       'translations' => 
       array (
-        'tr' => 'Su',
         'en' => 'water',
         'de' => 'Wasser',
         'fr' => 'Eau',
@@ -11596,7 +10987,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Su hayat için gereklidir.',
         'en' => 'Water is essential for life.',
         'de' => 'Water is essential for life.',
         'fr' => 'Water is essential for life.',
@@ -11619,7 +11009,6 @@ return array (
       'example' => 'パン屋で新鮮なパンを買いました。',
       'translations' => 
       array (
-        'tr' => 'Ekmek',
         'en' => 'bread',
         'de' => 'Brot',
         'fr' => 'Pain',
@@ -11634,7 +11023,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Fırından taze ekmek aldım.',
         'en' => 'I bought fresh bread at the bakery.',
         'de' => 'I bought fresh bread at the bakery.',
         'fr' => 'I bought fresh bread at the bakery.',
@@ -11657,7 +11045,6 @@ return array (
       'example' => 'りんごは健康的なおやつです。',
       'translations' => 
       array (
-        'tr' => 'Elma',
         'en' => 'apple',
         'de' => 'Apfel',
         'fr' => 'Pomme',
@@ -11672,7 +11059,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Elma sağlıklı bir atıştırmalıktır.',
         'en' => 'Apples are a healthy snack.',
         'de' => 'Apples are a healthy snack.',
         'fr' => 'Apples are a healthy snack.',
@@ -11695,7 +11081,6 @@ return array (
       'example' => 'コーヒーに牛乳を入れますか？',
       'translations' => 
       array (
-        'tr' => 'Süt',
         'en' => 'milk',
         'de' => 'Milch',
         'fr' => 'Lait',
@@ -11710,7 +11095,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahvene süt ister misin?',
         'en' => 'Do you put milk in your coffee?',
         'de' => 'Do you put milk in your coffee?',
         'fr' => 'Do you put milk in your coffee?',
@@ -11733,7 +11117,6 @@ return array (
       'example' => '朝はいつもブラックコーヒーを飲みます。',
       'translations' => 
       array (
-        'tr' => 'Kahve',
         'en' => 'coffee',
         'de' => 'Kaffee',
         'fr' => 'Café',
@@ -11748,7 +11131,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları genellikle sade kahve içerim.',
         'en' => 'I always drink black coffee in the morning.',
         'de' => 'I always drink black coffee in the morning.',
         'fr' => 'I always drink black coffee in the morning.',
@@ -11771,7 +11153,6 @@ return array (
       'example' => '彼はいつもはちみつ入りの熱いお茶を飲みます。',
       'translations' => 
       array (
-        'tr' => 'Çay',
         'en' => 'tea',
         'de' => 'Tee',
         'fr' => 'Thé',
@@ -11786,7 +11167,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'O her zaman ballı sıcak çay içer.',
         'en' => 'He always drinks hot tea with honey.',
         'de' => 'He always drinks hot tea with honey.',
         'fr' => 'He always drinks hot tea with honey.',
@@ -11809,7 +11189,6 @@ return array (
       'example' => '森の近くに大きな家があります。',
       'translations' => 
       array (
-        'tr' => 'Ev',
         'en' => 'house',
         'de' => 'Haus',
         'fr' => 'Maison',
@@ -11824,7 +11203,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ormanın yakınında büyük bir ev var.',
         'en' => 'There is a big house near the forest.',
         'de' => 'There is a big house near the forest.',
         'fr' => 'There is a big house near the forest.',
@@ -11847,7 +11225,6 @@ return array (
       'example' => '私の寝室は家で一番静かな場所です。',
       'translations' => 
       array (
-        'tr' => 'Oda',
         'en' => 'room',
         'de' => 'Zimmer',
         'fr' => 'Chambre',
@@ -11862,7 +11239,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
         'en' => 'My bedroom is the quietest place in the house.',
         'de' => 'My bedroom is the quietest place in the house.',
         'fr' => 'My bedroom is the quietest place in the house.',
@@ -11885,7 +11261,6 @@ return array (
       'example' => '玄関のドアに鍵をかけるのを忘れないで。',
       'translations' => 
       array (
-        'tr' => 'Kapı',
         'en' => 'door',
         'de' => 'Tür',
         'fr' => 'Porte',
@@ -11900,7 +11275,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ön kapıyı kilitlemeyi unutma.',
         'en' => 'Don\'t forget to lock the front door.',
         'de' => 'Don\'t forget to lock the front door.',
         'fr' => 'Don\'t forget to lock the front door.',
@@ -11923,7 +11297,6 @@ return array (
       'example' => '新鮮な空気を入れるために窓を開けてください。',
       'translations' => 
       array (
-        'tr' => 'Pencere',
         'en' => 'window',
         'de' => 'Fenster',
         'fr' => 'Fenêtre',
@@ -11938,7 +11311,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Temiz hava için pencereyi aç.',
         'en' => 'Please open the window to let in fresh air.',
         'de' => 'Please open the window to let in fresh air.',
         'fr' => 'Please open the window to let in fresh air.',
@@ -11961,7 +11333,6 @@ return array (
       'example' => '家族と過ごす時間は私にとって大切です。',
       'translations' => 
       array (
-        'tr' => 'Aile',
         'en' => 'family',
         'de' => 'Familie',
         'fr' => 'Famille',
@@ -11976,7 +11347,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
         'en' => 'Time spent with family is precious to me.',
         'de' => 'Time spent with family is precious to me.',
         'fr' => 'Time spent with family is precious to me.',
@@ -11999,7 +11369,6 @@ return array (
       'example' => '父は自転車の乗り方を教えてくれました。',
       'translations' => 
       array (
-        'tr' => 'Baba',
         'en' => 'father',
         'de' => 'Vater',
         'fr' => 'Père',
@@ -12014,7 +11383,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
         'en' => 'My father taught me how to ride a bicycle.',
         'de' => 'My father taught me how to ride a bicycle.',
         'fr' => 'My father taught me how to ride a bicycle.',
@@ -12037,7 +11405,6 @@ return array (
       'example' => '母はおいしい伝統料理を作ります。',
       'translations' => 
       array (
-        'tr' => 'Anne',
         'en' => 'mother',
         'de' => 'Mutter',
         'fr' => 'Mère',
@@ -12052,7 +11419,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Annem lezzetli geleneksel yemekler yapar.',
         'en' => 'My mother makes delicious traditional dishes.',
         'de' => 'My mother makes delicious traditional dishes.',
         'fr' => 'My mother makes delicious traditional dishes.',
@@ -12075,7 +11441,6 @@ return array (
       'example' => '友達は第二の家族です。',
       'translations' => 
       array (
-        'tr' => 'Arkadaş',
         'en' => 'friend',
         'de' => 'Freund',
         'fr' => 'Ami',
@@ -12090,7 +11455,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Arkadaş ikinci ailedir.',
         'en' => 'Friends are a second family.',
         'de' => 'Friends are a second family.',
         'fr' => 'Friends are a second family.',
@@ -12113,7 +11477,6 @@ return array (
       'example' => '子供たちは一緒に学校へ歩いて行きます。',
       'translations' => 
       array (
-        'tr' => 'Okul',
         'en' => 'school',
         'de' => 'Schule',
         'fr' => 'École',
@@ -12128,7 +11491,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Çocuklar okula birlikte yürürler.',
         'en' => 'The children walk to school together.',
         'de' => 'The children walk to school together.',
         'fr' => 'The children walk to school together.',
@@ -12151,7 +11513,6 @@ return array (
       'example' => '面白い歴史の本を読んでいます。',
       'translations' => 
       array (
-        'tr' => 'Kitap',
         'en' => 'book',
         'de' => 'Buch',
         'fr' => 'Livre',
@@ -12166,7 +11527,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
         'en' => 'I am reading an interesting history book.',
         'de' => 'I am reading an interesting history book.',
         'fr' => 'I am reading an interesting history book.',
@@ -12189,7 +11549,6 @@ return array (
       'example' => '予備の鉛筆を借りられますか？',
       'translations' => 
       array (
-        'tr' => 'Kalem',
         'en' => 'pencil',
         'de' => 'Stift',
         'fr' => 'Stylo',
@@ -12204,7 +11563,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Ödünç alabileceğim yedek bir kalemin var mı?',
         'en' => 'Can I borrow a spare pencil?',
         'de' => 'Can I borrow a spare pencil?',
         'fr' => 'Can I borrow a spare pencil?',
@@ -12227,7 +11585,6 @@ return array (
       'example' => '夕食のために机の周りに集まりましょう。',
       'translations' => 
       array (
-        'tr' => 'Masa',
         'en' => 'table',
         'de' => 'Tisch',
         'fr' => 'Table',
@@ -12242,7 +11599,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
         'en' => 'Let\'s gather around the table for dinner.',
         'de' => 'Let\'s gather around the table for dinner.',
         'fr' => 'Let\'s gather around the table for dinner.',
@@ -12265,7 +11621,6 @@ return array (
       'example' => '椅子を持ってきて私たちに加わってください。',
       'translations' => 
       array (
-        'tr' => 'Sandalye',
         'en' => 'chair',
         'de' => 'Stuhl',
         'fr' => 'Chaise',
@@ -12280,7 +11635,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sandalye al ve bize katıl.',
         'en' => 'Bring a chair and join us.',
         'de' => 'Bring a chair and join us.',
         'fr' => 'Bring a chair and join us.',
@@ -12303,7 +11657,6 @@ return array (
       'example' => '楽しい時はあっという間に過ぎます。',
       'translations' => 
       array (
-        'tr' => 'Zaman / Vakit',
         'en' => 'time',
         'de' => 'Zeit',
         'fr' => 'Temps',
@@ -12318,7 +11671,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Eğlenirken zaman su gibi akar.',
         'en' => 'Time flies when you are having fun.',
         'de' => 'Time flies when you are having fun.',
         'fr' => 'Time flies when you are having fun.',
@@ -12341,7 +11693,6 @@ return array (
       'example' => '晴れた美しい日でした。',
       'translations' => 
       array (
-        'tr' => 'Gün',
         'en' => 'day',
         'de' => 'Tag',
         'fr' => 'Jour',
@@ -12356,7 +11707,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Güneşli ve güzel bir gündü.',
         'en' => 'It was a sunny and beautiful day.',
         'de' => 'It was a sunny and beautiful day.',
         'fr' => 'It was a sunny and beautiful day.',
@@ -12379,7 +11729,6 @@ return array (
       'example' => '今夜の星はとても明るく輝いています。',
       'translations' => 
       array (
-        'tr' => 'Gece',
         'en' => 'night',
         'de' => 'Nacht',
         'fr' => 'Nuit',
@@ -12394,7 +11743,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
         'en' => 'The stars are shining very brightly tonight.',
         'de' => 'The stars are shining very brightly tonight.',
         'fr' => 'The stars are shining very brightly tonight.',
@@ -12417,7 +11765,6 @@ return array (
       'example' => '朝にジョギングに行くのが好きです。',
       'translations' => 
       array (
-        'tr' => 'Sabah',
         'en' => 'morning',
         'de' => 'Morgen',
         'fr' => 'Matin',
@@ -12432,7 +11779,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
         'en' => 'I like to go jogging in the morning.',
         'de' => 'I like to go jogging in the morning.',
         'fr' => 'I like to go jogging in the morning.',
@@ -12455,7 +11801,6 @@ return array (
       'example' => '来週休暇に行きます。',
       'translations' => 
       array (
-        'tr' => 'Hafta',
         'en' => 'week',
         'de' => 'Woche',
         'fr' => 'Semaine',
@@ -12470,7 +11815,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
         'en' => 'Next week I am going on vacation.',
         'de' => 'Next week I am going on vacation.',
         'fr' => 'Next week I am going on vacation.',
@@ -12493,7 +11837,6 @@ return array (
       'example' => '二月は一年で一番短い月です。',
       'translations' => 
       array (
-        'tr' => 'Ay',
         'en' => 'month',
         'de' => 'Monat',
         'fr' => 'Mois',
@@ -12508,7 +11851,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Şubat yılın en kısa ayıdır.',
         'en' => 'February is the shortest month of the year.',
         'de' => 'February is the shortest month of the year.',
         'fr' => 'February is the shortest month of the year.',
@@ -12531,7 +11873,6 @@ return array (
       'example' => '彼らは一年間海外に住んでいます。',
       'translations' => 
       array (
-        'tr' => 'Yıl / Sene',
         'en' => 'year',
         'de' => 'Jahr',
         'fr' => 'Année',
@@ -12546,7 +11887,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
         'en' => 'They have lived abroad for a year.',
         'de' => 'They have lived abroad for a year.',
         'fr' => 'They have lived abroad for a year.',
@@ -12569,7 +11909,6 @@ return array (
       'example' => 'イスタンブールは歴史的で活気のある都市です。',
       'translations' => 
       array (
-        'tr' => 'Şehir',
         'en' => 'city',
         'de' => 'Stadt',
         'fr' => 'Ville',
@@ -12584,7 +11923,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
         'en' => 'Istanbul is a historic and vibrant city.',
         'de' => 'Istanbul is a historic and vibrant city.',
         'fr' => 'Istanbul is a historic and vibrant city.',
@@ -12607,7 +11945,6 @@ return array (
       'example' => '次にどの国を訪れたいですか？',
       'translations' => 
       array (
-        'tr' => 'Ülke',
         'en' => 'country',
         'de' => 'Land',
         'fr' => 'Pays',
@@ -12622,7 +11959,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bir sonraki hangi ülkeyi ziyaret etmek istersin?',
         'en' => 'Which country would you like to visit next?',
         'de' => 'Which country would you like to visit next?',
         'fr' => 'Which country would you like to visit next?',
@@ -12645,7 +11981,6 @@ return array (
       'example' => '成功への道は勤勉で舗装されています。',
       'translations' => 
       array (
-        'tr' => 'Yol',
         'en' => 'road',
         'de' => 'Weg',
         'fr' => 'Chemin',
@@ -12660,7 +11995,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
         'en' => 'The road to success is paved with diligence.',
         'de' => 'The road to success is paved with diligence.',
         'fr' => 'The road to success is paved with diligence.',
@@ -12683,7 +12017,6 @@ return array (
       'example' => '電車は3番ホームから出発します。',
       'translations' => 
       array (
-        'tr' => 'Tren',
         'en' => 'train',
         'de' => 'Zug',
         'fr' => 'Train',
@@ -12698,7 +12031,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
         'en' => 'The train departs from platform three.',
         'de' => 'The train departs from platform three.',
         'fr' => 'The train departs from platform three.',
@@ -12721,7 +12053,6 @@ return array (
       'example' => '彼女は燃費を節約するためにハイブリッド車を運転しています。',
       'translations' => 
       array (
-        'tr' => 'Araba',
         'en' => 'car',
         'de' => 'Auto',
         'fr' => 'Voiture',
@@ -12736,7 +12067,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
         'en' => 'She drives a hybrid car to save fuel.',
         'de' => 'She drives a hybrid car to save fuel.',
         'fr' => 'She drives a hybrid car to save fuel.',
@@ -12759,7 +12089,6 @@ return array (
       'example' => '切符を検査のために保管してください。',
       'translations' => 
       array (
-        'tr' => 'Bilet',
         'en' => 'ticket',
         'de' => 'Ticket',
         'fr' => 'Billet',
@@ -12774,7 +12103,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kontrol için biletini sakla.',
         'en' => 'Please keep your ticket for inspection.',
         'de' => 'Please keep your ticket for inspection.',
         'fr' => 'Please keep your ticket for inspection.',
@@ -12797,7 +12125,6 @@ return array (
       'example' => '海のそばの静かなホテルを予約しました。',
       'translations' => 
       array (
-        'tr' => 'Otel',
         'en' => 'hotel',
         'de' => 'Hotel',
         'fr' => 'Hôtel',
@@ -12812,7 +12139,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
         'en' => 'I booked a quiet hotel by the sea.',
         'de' => 'I booked a quiet hotel by the sea.',
         'fr' => 'I booked a quiet hotel by the sea.',
@@ -12835,7 +12161,6 @@ return array (
       'example' => 'お金は快適さを買えますが幸せは買えません。',
       'translations' => 
       array (
-        'tr' => 'Para',
         'en' => 'money',
         'de' => 'Geld',
         'fr' => 'Argent',
@@ -12850,7 +12175,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
         'en' => 'Money can buy comfort but not happiness.',
         'de' => 'Money can buy comfort but not happiness.',
         'fr' => 'Money can buy comfort but not happiness.',
@@ -12873,7 +12197,6 @@ return array (
       'example' => 'この店は手作りの服を売っています。',
       'translations' => 
       array (
-        'tr' => 'Mağaza / Dükkan',
         'en' => 'shop',
         'de' => 'Laden',
         'fr' => 'Magasin',
@@ -12888,7 +12211,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu mağaza el yapımı kıyafetler satıyor.',
         'en' => 'This shop sells handmade clothes.',
         'de' => 'This shop sells handmade clothes.',
         'fr' => 'This shop sells handmade clothes.',
@@ -12911,7 +12233,6 @@ return array (
       'example' => 'スマートフォンの値段が下がりました。',
       'translations' => 
       array (
-        'tr' => 'Fiyat',
         'en' => 'price',
         'de' => 'Preis',
         'fr' => 'Prix',
@@ -12926,7 +12247,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
         'en' => 'The price of smartphones has dropped.',
         'de' => 'The price of smartphones has dropped.',
         'fr' => 'The price of smartphones has dropped.',
@@ -12949,7 +12269,6 @@ return array (
       'example' => '地元の屋台の食べ物は美味しくて安いです。',
       'translations' => 
       array (
-        'tr' => 'Ucuz',
         'en' => 'cheap',
         'de' => 'billig',
         'fr' => 'bon marché',
@@ -12964,7 +12283,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
         'en' => 'Local street food is delicious and cheap.',
         'de' => 'Local street food is delicious and cheap.',
         'fr' => 'Local street food is delicious and cheap.',
@@ -12987,7 +12305,6 @@ return array (
       'example' => '毎日外食するのはとても高いです。',
       'translations' => 
       array (
-        'tr' => 'Pahalı',
         'en' => 'expensive',
         'de' => 'teuer',
         'fr' => 'cher',
@@ -13002,7 +12319,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
         'en' => 'Eating out every day is very expensive.',
         'de' => 'Eating out every day is very expensive.',
         'fr' => 'Eating out every day is very expensive.',
@@ -13025,7 +12341,6 @@ return array (
       'example' => '良い知らせを聞いてとても幸せでした。',
       'translations' => 
       array (
-        'tr' => 'Mutlu',
         'en' => 'happy',
         'de' => 'glücklich',
         'fr' => 'heureux',
@@ -13040,7 +12355,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
         'en' => 'I was very happy to hear the good news.',
         'de' => 'I was very happy to hear the good news.',
         'fr' => 'I was very happy to hear the good news.',
@@ -13063,7 +12377,6 @@ return array (
       'example' => 'その映画はとても悲しい結末でした。',
       'translations' => 
       array (
-        'tr' => 'Üzgün',
         'en' => 'sad',
         'de' => 'traurig',
         'fr' => 'triste',
@@ -13078,7 +12391,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
         'en' => 'That movie had a very sad ending.',
         'de' => 'That movie had a very sad ending.',
         'fr' => 'That movie had a very sad ending.',
@@ -13101,7 +12413,6 @@ return array (
       'example' => '長いフライトの後で疲れました。',
       'translations' => 
       array (
-        'tr' => 'Yorgun',
         'en' => 'tired',
         'de' => 'müde',
         'fr' => 'fatigué',
@@ -13116,7 +12427,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
         'en' => 'I am tired after the long flight.',
         'de' => 'I am tired after the long flight.',
         'fr' => 'I am tired after the long flight.',
@@ -13139,7 +12449,6 @@ return array (
       'example' => 'コーヒーはまだ熱くて飲めません。',
       'translations' => 
       array (
-        'tr' => 'Sıcak',
         'en' => 'hot',
         'de' => 'heiß',
         'fr' => 'chaud',
@@ -13154,7 +12463,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kahve içmek için hala çok sıcak.',
         'en' => 'The coffee is still too hot to drink.',
         'de' => 'The coffee is still too hot to drink.',
         'fr' => 'The coffee is still too hot to drink.',
@@ -13177,7 +12485,6 @@ return array (
       'example' => '冬はここはとても寒くなります。',
       'translations' => 
       array (
-        'tr' => 'Soğuk',
         'en' => 'cold',
         'de' => 'kalt',
         'fr' => 'froid',
@@ -13192,7 +12499,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Kışın buralar çok soğuk olur.',
         'en' => 'It gets very cold here in winter.',
         'de' => 'It gets very cold here in winter.',
         'fr' => 'It gets very cold here in winter.',
@@ -13215,7 +12521,6 @@ return array (
       'example' => '彼は大学のために新しいノートパソコンを買いました。',
       'translations' => 
       array (
-        'tr' => 'Yeni',
         'en' => 'new',
         'de' => 'neu',
         'fr' => 'nouveau',
@@ -13230,7 +12535,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
         'en' => 'He bought a new laptop for university.',
         'de' => 'He bought a new laptop for university.',
         'fr' => 'He bought a new laptop for university.',
@@ -13253,7 +12557,6 @@ return array (
       'example' => 'この古い町には魅力的な雰囲気があります。',
       'translations' => 
       array (
-        'tr' => 'Eski / Yaşlı',
         'en' => 'old',
         'de' => 'alt',
         'fr' => 'vieux',
@@ -13268,7 +12571,6 @@ return array (
       ),
       'example_translations' => 
       array (
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
         'en' => 'This old town has a charming atmosphere.',
         'de' => 'This old town has a charming atmosphere.',
         'fr' => 'This old town has a charming atmosphere.',
@@ -13291,7 +12593,6 @@ return array (
       'example' => '母の子供への愛は無限です。',
       'translations' => 
       array (
-        'tr' => 'Sevgi / Aşk',
         'en' => 'love',
         'de' => 'Liebe',
         'fr' => 'amour',
@@ -13299,1909 +12600,6 @@ return array (
         'zh' => '爱',
         'ja' => '愛',
         'ar' => 'حب',
-        'ru' => 'любовь',
-        'el' => 'αγάπη',
-        'hy' => 'սեր',
-        'hi' => 'प्यार',
-      ),
-      'example_translations' => 
-      array (
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
-        'en' => 'A mother\'s love for her child is infinite.',
-        'de' => 'A mother\'s love for her child is infinite.',
-        'fr' => 'A mother\'s love for her child is infinite.',
-        'es' => 'A mother\'s love for her child is infinite.',
-        'zh' => 'A mother\'s love for her child is infinite.',
-        'ja' => '母の子供への愛は無限です。',
-        'ar' => 'A mother\'s love for her child is infinite.',
-        'ru' => 'A mother\'s love for her child is infinite.',
-        'el' => 'A mother\'s love for her child is infinite.',
-        'hy' => 'A mother\'s love for her child is infinite.',
-        'hi' => 'A mother\'s love for her child is infinite.',
-      ),
-    ),
-  ),
-  'tr' => 
-  array (
-    0 => 
-    array (
-      'word' => 'Merhaba',
-      'pronunciation' => '',
-      'category' => 'Greeting',
-      'level' => 'A1',
-      'example' => 'Merhaba! Bugün nasılsınız?',
-      'translations' => 
-      array (
-        'en' => 'hello',
-        'de' => 'Hallo',
-        'fr' => 'Bonjour',
-        'es' => 'Hola',
-        'zh' => '你好',
-        'ja' => 'こんにちは',
-        'ar' => 'مرحبا',
-        'tr' => 'Merhaba',
-        'ru' => 'Привет',
-        'el' => 'Γεια σου',
-        'hy' => 'Բարև',
-        'hi' => 'नमस्ते',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Hello! How are you doing today?',
-        'de' => 'Hello! How are you doing today?',
-        'fr' => 'Hello! How are you doing today?',
-        'es' => 'Hello! How are you doing today?',
-        'zh' => 'Hello! How are you doing today?',
-        'ja' => 'Hello! How are you doing today?',
-        'ar' => 'Hello! How are you doing today?',
-        'tr' => 'Merhaba! Bugün nasılsınız?',
-        'ru' => 'Hello! How are you doing today?',
-        'el' => 'Hello! How are you doing today?',
-        'hy' => 'Hello! How are you doing today?',
-        'hi' => 'Hello! How are you doing today?',
-      ),
-    ),
-    1 => 
-    array (
-      'word' => 'Hoşça kal / Güle güle',
-      'pronunciation' => '',
-      'category' => 'Greeting',
-      'level' => 'A1',
-      'example' => 'Hoşça kal, yarın görüşmek üzere!',
-      'translations' => 
-      array (
-        'en' => 'goodbye',
-        'de' => 'Auf Wiedersehen',
-        'fr' => 'Au revoir',
-        'es' => 'Adiós',
-        'zh' => '再见',
-        'ja' => 'さようなら',
-        'ar' => 'وداعا',
-        'tr' => 'Hoşça kal / Güle güle',
-        'ru' => 'До свидания',
-        'el' => 'Αντίο',
-        'hy' => 'Ցտեսություն',
-        'hi' => 'अलविदा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Goodbye, see you tomorrow!',
-        'de' => 'Goodbye, see you tomorrow!',
-        'fr' => 'Goodbye, see you tomorrow!',
-        'es' => 'Goodbye, see you tomorrow!',
-        'zh' => 'Goodbye, see you tomorrow!',
-        'ja' => 'Goodbye, see you tomorrow!',
-        'ar' => 'Goodbye, see you tomorrow!',
-        'tr' => 'Hoşça kal, yarın görüşmek üzere!',
-        'ru' => 'Goodbye, see you tomorrow!',
-        'el' => 'Goodbye, see you tomorrow!',
-        'hy' => 'Goodbye, see you tomorrow!',
-        'hi' => 'Goodbye, see you tomorrow!',
-      ),
-    ),
-    2 => 
-    array (
-      'word' => 'Lütfen',
-      'pronunciation' => '',
-      'category' => 'Greeting',
-      'level' => 'A1',
-      'example' => 'Bana bir bardak su verebilir misiniz, lütfen?',
-      'translations' => 
-      array (
-        'en' => 'please',
-        'de' => 'Bitte',
-        'fr' => 'S\'il vous plaît',
-        'es' => 'Por favor',
-        'zh' => '请',
-        'ja' => 'お願いします',
-        'ar' => 'من فضلك',
-        'tr' => 'Lütfen',
-        'ru' => 'Пожалуйста',
-        'el' => 'Παρακαλώ',
-        'hy' => 'Խնդրում եմ',
-        'hi' => 'कृपया',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Could you give me a glass of water, please?',
-        'de' => 'Could you give me a glass of water, please?',
-        'fr' => 'Could you give me a glass of water, please?',
-        'es' => 'Could you give me a glass of water, please?',
-        'zh' => 'Could you give me a glass of water, please?',
-        'ja' => 'Could you give me a glass of water, please?',
-        'ar' => 'Could you give me a glass of water, please?',
-        'tr' => 'Bana bir bardak su verebilir misiniz, lütfen?',
-        'ru' => 'Could you give me a glass of water, please?',
-        'el' => 'Could you give me a glass of water, please?',
-        'hy' => 'Could you give me a glass of water, please?',
-        'hi' => 'Could you give me a glass of water, please?',
-      ),
-    ),
-    3 => 
-    array (
-      'word' => 'Teşekkür ederim',
-      'pronunciation' => '',
-      'category' => 'Greeting',
-      'level' => 'A1',
-      'example' => 'Lezzetli akşam yemeği için teşekkür ederim.',
-      'translations' => 
-      array (
-        'en' => 'thank you',
-        'de' => 'Danke',
-        'fr' => 'Merci',
-        'es' => 'Gracias',
-        'zh' => '谢谢',
-        'ja' => 'ありがとう',
-        'ar' => 'شكرا',
-        'tr' => 'Teşekkür ederim',
-        'ru' => 'Спасибо',
-        'el' => 'Ευχαριστώ',
-        'hy' => 'Շնորհակալություն',
-        'hi' => 'धन्यवाद',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Thank you for the delicious dinner.',
-        'de' => 'Thank you for the delicious dinner.',
-        'fr' => 'Thank you for the delicious dinner.',
-        'es' => 'Thank you for the delicious dinner.',
-        'zh' => 'Thank you for the delicious dinner.',
-        'ja' => 'Thank you for the delicious dinner.',
-        'ar' => 'Thank you for the delicious dinner.',
-        'tr' => 'Lezzetli akşam yemeği için teşekkür ederim.',
-        'ru' => 'Thank you for the delicious dinner.',
-        'el' => 'Thank you for the delicious dinner.',
-        'hy' => 'Thank you for the delicious dinner.',
-        'hi' => 'Thank you for the delicious dinner.',
-      ),
-    ),
-    4 => 
-    array (
-      'word' => 'Su',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Gazsız mı yoksa maden suyu mu tercih edersiniz?',
-      'translations' => 
-      array (
-        'en' => 'water',
-        'de' => 'Wasser',
-        'fr' => 'Eau',
-        'es' => 'Agua',
-        'zh' => '水',
-        'ja' => '水',
-        'ar' => 'ماء',
-        'tr' => 'Su',
-        'ru' => 'вода',
-        'el' => 'νερό',
-        'hy' => 'ջուր',
-        'hi' => 'पानी',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Do you prefer still or sparkling water?',
-        'de' => 'Do you prefer still or sparkling water?',
-        'fr' => 'Do you prefer still or sparkling water?',
-        'es' => 'Do you prefer still or sparkling water?',
-        'zh' => 'Do you prefer still or sparkling water?',
-        'ja' => 'Do you prefer still or sparkling water?',
-        'ar' => 'Do you prefer still or sparkling water?',
-        'tr' => 'Gazsız mı yoksa maden suyu mu tercih edersiniz?',
-        'ru' => 'Do you prefer still or sparkling water?',
-        'el' => 'Do you prefer still or sparkling water?',
-        'hy' => 'Do you prefer still or sparkling water?',
-        'hi' => 'Do you prefer still or sparkling water?',
-      ),
-    ),
-    5 => 
-    array (
-      'word' => 'Ekmek',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Fırından taze ekmek aldım.',
-      'translations' => 
-      array (
-        'en' => 'bread',
-        'de' => 'Brot',
-        'fr' => 'Pain',
-        'es' => 'Pan',
-        'zh' => '面包',
-        'ja' => 'パン',
-        'ar' => 'خبز',
-        'tr' => 'Ekmek',
-        'ru' => 'хлеб',
-        'el' => 'ψωμί',
-        'hy' => 'հաց',
-        'hi' => 'रोटी',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'I bought some fresh bread from the bakery.',
-        'de' => 'I bought some fresh bread from the bakery.',
-        'fr' => 'I bought some fresh bread from the bakery.',
-        'es' => 'I bought some fresh bread from the bakery.',
-        'zh' => 'I bought some fresh bread from the bakery.',
-        'ja' => 'I bought some fresh bread from the bakery.',
-        'ar' => 'I bought some fresh bread from the bakery.',
-        'tr' => 'Fırından taze ekmek aldım.',
-        'ru' => 'I bought some fresh bread from the bakery.',
-        'el' => 'I bought some fresh bread from the bakery.',
-        'hy' => 'I bought some fresh bread from the bakery.',
-        'hi' => 'I bought some fresh bread from the bakery.',
-      ),
-    ),
-    6 => 
-    array (
-      'word' => 'Elma',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Günde bir elma doktoru uzak tutar.',
-      'translations' => 
-      array (
-        'en' => 'apple',
-        'de' => 'Apfel',
-        'fr' => 'Pomme',
-        'es' => 'Manzana',
-        'zh' => '苹果',
-        'ja' => 'りんご',
-        'ar' => 'تفاح',
-        'tr' => 'Elma',
-        'ru' => 'яблоко',
-        'el' => 'μήλο',
-        'hy' => 'խնձոր',
-        'hi' => 'सेब',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'An apple a day keeps the doctor away.',
-        'de' => 'An apple a day keeps the doctor away.',
-        'fr' => 'An apple a day keeps the doctor away.',
-        'es' => 'An apple a day keeps the doctor away.',
-        'zh' => 'An apple a day keeps the doctor away.',
-        'ja' => 'An apple a day keeps the doctor away.',
-        'ar' => 'An apple a day keeps the doctor away.',
-        'tr' => 'Günde bir elma doktoru uzak tutar.',
-        'ru' => 'An apple a day keeps the doctor away.',
-        'el' => 'An apple a day keeps the doctor away.',
-        'hy' => 'An apple a day keeps the doctor away.',
-        'hi' => 'An apple a day keeps the doctor away.',
-      ),
-    ),
-    7 => 
-    array (
-      'word' => 'Süt',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Çayınıza biraz süt ister misiniz?',
-      'translations' => 
-      array (
-        'en' => 'milk',
-        'de' => 'Milch',
-        'fr' => 'Lait',
-        'es' => 'Leche',
-        'zh' => '牛奶',
-        'ja' => '牛乳',
-        'ar' => 'حليب',
-        'tr' => 'Süt',
-        'ru' => 'молоко',
-        'el' => 'γάλα',
-        'hy' => 'կաթ',
-        'hi' => 'दूध',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Would you like some milk in your tea?',
-        'de' => 'Would you like some milk in your tea?',
-        'fr' => 'Would you like some milk in your tea?',
-        'es' => 'Would you like some milk in your tea?',
-        'zh' => 'Would you like some milk in your tea?',
-        'ja' => 'Would you like some milk in your tea?',
-        'ar' => 'Would you like some milk in your tea?',
-        'tr' => 'Çayınıza biraz süt ister misiniz?',
-        'ru' => 'Would you like some milk in your tea?',
-        'el' => 'Would you like some milk in your tea?',
-        'hy' => 'Would you like some milk in your tea?',
-        'hi' => 'Would you like some milk in your tea?',
-      ),
-    ),
-    8 => 
-    array (
-      'word' => 'Kahve',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Sabahları genellikle sade kahve içerim.',
-      'translations' => 
-      array (
-        'en' => 'coffee',
-        'de' => 'Kaffee',
-        'fr' => 'Café',
-        'es' => 'Café',
-        'zh' => '咖啡',
-        'ja' => 'コーヒー',
-        'ar' => 'قهوة',
-        'tr' => 'Kahve',
-        'ru' => 'кофе',
-        'el' => 'καφές',
-        'hy' => 'սուրճ',
-        'hi' => 'कॉफ़ी',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'I usually drink black coffee in the morning.',
-        'de' => 'I usually drink black coffee in the morning.',
-        'fr' => 'I usually drink black coffee in the morning.',
-        'es' => 'I usually drink black coffee in the morning.',
-        'zh' => 'I usually drink black coffee in the morning.',
-        'ja' => 'I usually drink black coffee in the morning.',
-        'ar' => 'I usually drink black coffee in the morning.',
-        'tr' => 'Sabahları genellikle sade kahve içerim.',
-        'ru' => 'I usually drink black coffee in the morning.',
-        'el' => 'I usually drink black coffee in the morning.',
-        'hy' => 'I usually drink black coffee in the morning.',
-        'hi' => 'I usually drink black coffee in the morning.',
-      ),
-    ),
-    9 => 
-    array (
-      'word' => 'Çay',
-      'pronunciation' => '',
-      'category' => 'Food',
-      'level' => 'A1',
-      'example' => 'Hasta olduğunda her zaman ballı sıcak çay içer.',
-      'translations' => 
-      array (
-        'en' => 'tea',
-        'de' => 'Tee',
-        'fr' => 'Thé',
-        'es' => 'Té',
-        'zh' => '茶',
-        'ja' => 'お茶',
-        'ar' => 'شاي',
-        'tr' => 'Çay',
-        'ru' => 'чай',
-        'el' => 'τσάι',
-        'hy' => 'թեյ',
-        'hi' => 'चाय',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'He always has hot tea with honey when sick.',
-        'de' => 'He always has hot tea with honey when sick.',
-        'fr' => 'He always has hot tea with honey when sick.',
-        'es' => 'He always has hot tea with honey when sick.',
-        'zh' => 'He always has hot tea with honey when sick.',
-        'ja' => 'He always has hot tea with honey when sick.',
-        'ar' => 'He always has hot tea with honey when sick.',
-        'tr' => 'Hasta olduğunda her zaman ballı sıcak çay içer.',
-        'ru' => 'He always has hot tea with honey when sick.',
-        'el' => 'He always has hot tea with honey when sick.',
-        'hy' => 'He always has hot tea with honey when sick.',
-        'hi' => 'He always has hot tea with honey when sick.',
-      ),
-    ),
-    10 => 
-    array (
-      'word' => 'Ev',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Ormanın yakınında büyük bir evleri var.',
-      'translations' => 
-      array (
-        'en' => 'house',
-        'de' => 'Haus',
-        'fr' => 'Maison',
-        'es' => 'Casa',
-        'zh' => '房子',
-        'ja' => '家',
-        'ar' => 'بيت',
-        'tr' => 'Ev',
-        'ru' => 'дом',
-        'el' => 'σπίτι',
-        'hy' => 'տուն',
-        'hi' => 'घर',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'They have a big house near the forest.',
-        'de' => 'They have a big house near the forest.',
-        'fr' => 'They have a big house near the forest.',
-        'es' => 'They have a big house near the forest.',
-        'zh' => 'They have a big house near the forest.',
-        'ja' => 'They have a big house near the forest.',
-        'ar' => 'They have a big house near the forest.',
-        'tr' => 'Ormanın yakınında büyük bir evleri var.',
-        'ru' => 'They have a big house near the forest.',
-        'el' => 'They have a big house near the forest.',
-        'hy' => 'They have a big house near the forest.',
-        'hi' => 'They have a big house near the forest.',
-      ),
-    ),
-    11 => 
-    array (
-      'word' => 'Oda',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Yatak odam evdeki en sessiz yerdir.',
-      'translations' => 
-      array (
-        'en' => 'room',
-        'de' => 'Zimmer',
-        'fr' => 'Chambre',
-        'es' => 'Habitación',
-        'zh' => '房间',
-        'ja' => '部屋',
-        'ar' => 'غرفة',
-        'tr' => 'Oda',
-        'ru' => 'комната',
-        'el' => 'δωμάτιο',
-        'hy' => 'սենյակ',
-        'hi' => 'कमरा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'My bedroom is the quietest place in the house.',
-        'de' => 'My bedroom is the quietest place in the house.',
-        'fr' => 'My bedroom is the quietest place in the house.',
-        'es' => 'My bedroom is the quietest place in the house.',
-        'zh' => 'My bedroom is the quietest place in the house.',
-        'ja' => 'My bedroom is the quietest place in the house.',
-        'ar' => 'My bedroom is the quietest place in the house.',
-        'tr' => 'Yatak odam evdeki en sessiz yerdir.',
-        'ru' => 'My bedroom is the quietest place in the house.',
-        'el' => 'My bedroom is the quietest place in the house.',
-        'hy' => 'My bedroom is the quietest place in the house.',
-        'hi' => 'My bedroom is the quietest place in the house.',
-      ),
-    ),
-    12 => 
-    array (
-      'word' => 'Kapı',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Dış kapıyı kilitlemeyi unutmayın.',
-      'translations' => 
-      array (
-        'en' => 'door',
-        'de' => 'Tür',
-        'fr' => 'Porte',
-        'es' => 'Puerta',
-        'zh' => '门',
-        'ja' => 'ドア',
-        'ar' => 'باب',
-        'tr' => 'Kapı',
-        'ru' => 'дверь',
-        'el' => 'πόρτα',
-        'hy' => 'դուռ',
-        'hi' => 'दरवाज़ा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Don\'t forget to lock the front door.',
-        'de' => 'Don\'t forget to lock the front door.',
-        'fr' => 'Don\'t forget to lock the front door.',
-        'es' => 'Don\'t forget to lock the front door.',
-        'zh' => 'Don\'t forget to lock the front door.',
-        'ja' => 'Don\'t forget to lock the front door.',
-        'ar' => 'Don\'t forget to lock the front door.',
-        'tr' => 'Dış kapıyı kilitlemeyi unutmayın.',
-        'ru' => 'Don\'t forget to lock the front door.',
-        'el' => 'Don\'t forget to lock the front door.',
-        'hy' => 'Don\'t forget to lock the front door.',
-        'hi' => 'Don\'t forget to lock the front door.',
-      ),
-    ),
-    13 => 
-    array (
-      'word' => 'Pencere',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Taze havanın içeri girmesi için lütfen pencereyi açın.',
-      'translations' => 
-      array (
-        'en' => 'window',
-        'de' => 'Fenster',
-        'fr' => 'Fenêtre',
-        'es' => 'Ventana',
-        'zh' => '窗户',
-        'ja' => '窓',
-        'ar' => 'نافذة',
-        'tr' => 'Pencere',
-        'ru' => 'окно',
-        'el' => 'παράθυρο',
-        'hy' => 'պատուհան',
-        'hi' => 'खिड़की',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Please open the window to let fresh air in.',
-        'de' => 'Please open the window to let fresh air in.',
-        'fr' => 'Please open the window to let fresh air in.',
-        'es' => 'Please open the window to let fresh air in.',
-        'zh' => 'Please open the window to let fresh air in.',
-        'ja' => 'Please open the window to let fresh air in.',
-        'ar' => 'Please open the window to let fresh air in.',
-        'tr' => 'Taze havanın içeri girmesi için lütfen pencereyi açın.',
-        'ru' => 'Please open the window to let fresh air in.',
-        'el' => 'Please open the window to let fresh air in.',
-        'hy' => 'Please open the window to let fresh air in.',
-        'hi' => 'Please open the window to let fresh air in.',
-      ),
-    ),
-    14 => 
-    array (
-      'word' => 'Aile',
-      'pronunciation' => '',
-      'category' => 'Family',
-      'level' => 'A1',
-      'example' => 'Aileyle vakit geçirmek benim için önemlidir.',
-      'translations' => 
-      array (
-        'en' => 'family',
-        'de' => 'Familie',
-        'fr' => 'Famille',
-        'es' => 'Familia',
-        'zh' => '家庭',
-        'ja' => '家族',
-        'ar' => 'عائلة',
-        'tr' => 'Aile',
-        'ru' => 'семья',
-        'el' => 'οικογένεια',
-        'hy' => 'ընտանիք',
-        'hi' => 'परिवार',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Spending time with family is important to me.',
-        'de' => 'Spending time with family is important to me.',
-        'fr' => 'Spending time with family is important to me.',
-        'es' => 'Spending time with family is important to me.',
-        'zh' => 'Spending time with family is important to me.',
-        'ja' => 'Spending time with family is important to me.',
-        'ar' => 'Spending time with family is important to me.',
-        'tr' => 'Aileyle vakit geçirmek benim için önemlidir.',
-        'ru' => 'Spending time with family is important to me.',
-        'el' => 'Spending time with family is important to me.',
-        'hy' => 'Spending time with family is important to me.',
-        'hi' => 'Spending time with family is important to me.',
-      ),
-    ),
-    15 => 
-    array (
-      'word' => 'Baba',
-      'pronunciation' => '',
-      'category' => 'Family',
-      'level' => 'A1',
-      'example' => 'Babam bana bisiklete binmeyi öğretti.',
-      'translations' => 
-      array (
-        'en' => 'father',
-        'de' => 'Vater',
-        'fr' => 'Père',
-        'es' => 'Padre',
-        'zh' => '父亲',
-        'ja' => '父',
-        'ar' => 'أب',
-        'tr' => 'Baba',
-        'ru' => 'отец',
-        'el' => 'πατέρας',
-        'hy' => 'հայր',
-        'hi' => 'पिता',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'My father taught me how to ride a bicycle.',
-        'de' => 'My father taught me how to ride a bicycle.',
-        'fr' => 'My father taught me how to ride a bicycle.',
-        'es' => 'My father taught me how to ride a bicycle.',
-        'zh' => 'My father taught me how to ride a bicycle.',
-        'ja' => 'My father taught me how to ride a bicycle.',
-        'ar' => 'My father taught me how to ride a bicycle.',
-        'tr' => 'Babam bana bisiklete binmeyi öğretti.',
-        'ru' => 'My father taught me how to ride a bicycle.',
-        'el' => 'My father taught me how to ride a bicycle.',
-        'hy' => 'My father taught me how to ride a bicycle.',
-        'hi' => 'My father taught me how to ride a bicycle.',
-      ),
-    ),
-    16 => 
-    array (
-      'word' => 'Anne',
-      'pronunciation' => '',
-      'category' => 'Family',
-      'level' => 'A1',
-      'example' => 'Onun annesi lezzetli geleneksel yemekler yapar.',
-      'translations' => 
-      array (
-        'en' => 'mother',
-        'de' => 'Mutter',
-        'fr' => 'Mère',
-        'es' => 'Madre',
-        'zh' => '母亲',
-        'ja' => '母',
-        'ar' => 'أم',
-        'tr' => 'Anne',
-        'ru' => 'мать',
-        'el' => 'μητέρα',
-        'hy' => 'մայր',
-        'hi' => 'माँ',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Her mother cooks delicious traditional dishes.',
-        'de' => 'Her mother cooks delicious traditional dishes.',
-        'fr' => 'Her mother cooks delicious traditional dishes.',
-        'es' => 'Her mother cooks delicious traditional dishes.',
-        'zh' => 'Her mother cooks delicious traditional dishes.',
-        'ja' => 'Her mother cooks delicious traditional dishes.',
-        'ar' => 'Her mother cooks delicious traditional dishes.',
-        'tr' => 'Onun annesi lezzetli geleneksel yemekler yapar.',
-        'ru' => 'Her mother cooks delicious traditional dishes.',
-        'el' => 'Her mother cooks delicious traditional dishes.',
-        'hy' => 'Her mother cooks delicious traditional dishes.',
-        'hi' => 'Her mother cooks delicious traditional dishes.',
-      ),
-    ),
-    17 => 
-    array (
-      'word' => 'Arkadaş',
-      'pronunciation' => '',
-      'category' => 'Family',
-      'level' => 'A1',
-      'example' => 'İyi dost kara günde belli olur.',
-      'translations' => 
-      array (
-        'en' => 'friend',
-        'de' => 'Freund',
-        'fr' => 'Ami',
-        'es' => 'Amigo',
-        'zh' => '朋友',
-        'ja' => '友達',
-        'ar' => 'صديق',
-        'tr' => 'Arkadaş',
-        'ru' => 'друг',
-        'el' => 'φίλος',
-        'hy' => 'ընկեր',
-        'hi' => 'दोस्त',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'A friend in need is a friend indeed.',
-        'de' => 'A friend in need is a friend indeed.',
-        'fr' => 'A friend in need is a friend indeed.',
-        'es' => 'A friend in need is a friend indeed.',
-        'zh' => 'A friend in need is a friend indeed.',
-        'ja' => 'A friend in need is a friend indeed.',
-        'ar' => 'A friend in need is a friend indeed.',
-        'tr' => 'İyi dost kara günde belli olur.',
-        'ru' => 'A friend in need is a friend indeed.',
-        'el' => 'A friend in need is a friend indeed.',
-        'hy' => 'A friend in need is a friend indeed.',
-        'hi' => 'A friend in need is a friend indeed.',
-      ),
-    ),
-    18 => 
-    array (
-      'word' => 'Okul',
-      'pronunciation' => '',
-      'category' => 'Education',
-      'level' => 'A1',
-      'example' => 'Çocuklar okula birlikte yürürler.',
-      'translations' => 
-      array (
-        'en' => 'school',
-        'de' => 'Schule',
-        'fr' => 'École',
-        'es' => 'Escuela',
-        'zh' => '学校',
-        'ja' => '学校',
-        'ar' => 'مدرسة',
-        'tr' => 'Okul',
-        'ru' => 'школа',
-        'el' => 'σχολείο',
-        'hy' => 'դպրոց',
-        'hi' => 'स्कूल',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The children walk to school together.',
-        'de' => 'The children walk to school together.',
-        'fr' => 'The children walk to school together.',
-        'es' => 'The children walk to school together.',
-        'zh' => 'The children walk to school together.',
-        'ja' => 'The children walk to school together.',
-        'ar' => 'The children walk to school together.',
-        'tr' => 'Çocuklar okula birlikte yürürler.',
-        'ru' => 'The children walk to school together.',
-        'el' => 'The children walk to school together.',
-        'hy' => 'The children walk to school together.',
-        'hi' => 'The children walk to school together.',
-      ),
-    ),
-    19 => 
-    array (
-      'word' => 'Kitap',
-      'pronunciation' => '',
-      'category' => 'Education',
-      'level' => 'A1',
-      'example' => 'Tarih hakkında ilginç bir kitap okuyorum.',
-      'translations' => 
-      array (
-        'en' => 'book',
-        'de' => 'Buch',
-        'fr' => 'Livre',
-        'es' => 'Libro',
-        'zh' => '书',
-        'ja' => '本',
-        'ar' => 'كتاب',
-        'tr' => 'Kitap',
-        'ru' => 'книга',
-        'el' => 'βιβλίο',
-        'hy' => 'գիրք',
-        'hi' => 'किताब',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'I am reading an interesting book about history.',
-        'de' => 'I am reading an interesting book about history.',
-        'fr' => 'I am reading an interesting book about history.',
-        'es' => 'I am reading an interesting book about history.',
-        'zh' => 'I am reading an interesting book about history.',
-        'ja' => 'I am reading an interesting book about history.',
-        'ar' => 'I am reading an interesting book about history.',
-        'tr' => 'Tarih hakkında ilginç bir kitap okuyorum.',
-        'ru' => 'I am reading an interesting book about history.',
-        'el' => 'I am reading an interesting book about history.',
-        'hy' => 'I am reading an interesting book about history.',
-        'hi' => 'I am reading an interesting book about history.',
-      ),
-    ),
-    20 => 
-    array (
-      'word' => 'Kalem',
-      'pronunciation' => '',
-      'category' => 'Education',
-      'level' => 'A1',
-      'example' => 'Ödünç alabileceğim yedek bir kaleminiz var mı?',
-      'translations' => 
-      array (
-        'en' => 'pencil',
-        'de' => 'Stift',
-        'fr' => 'Stylo',
-        'es' => 'Lápiz',
-        'zh' => '铅笔',
-        'ja' => '鉛筆',
-        'ar' => 'قلم',
-        'tr' => 'Kalem',
-        'ru' => 'карандаш',
-        'el' => 'μολύβι',
-        'hy' => 'մատիտ',
-        'hi' => 'पेंसिल',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Do you have a spare pencil I could borrow?',
-        'de' => 'Do you have a spare pencil I could borrow?',
-        'fr' => 'Do you have a spare pencil I could borrow?',
-        'es' => 'Do you have a spare pencil I could borrow?',
-        'zh' => 'Do you have a spare pencil I could borrow?',
-        'ja' => 'Do you have a spare pencil I could borrow?',
-        'ar' => 'Do you have a spare pencil I could borrow?',
-        'tr' => 'Ödünç alabileceğim yedek bir kaleminiz var mı?',
-        'ru' => 'Do you have a spare pencil I could borrow?',
-        'el' => 'Do you have a spare pencil I could borrow?',
-        'hy' => 'Do you have a spare pencil I could borrow?',
-        'hi' => 'Do you have a spare pencil I could borrow?',
-      ),
-    ),
-    21 => 
-    array (
-      'word' => 'Masa',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Akşam yemeği için masanın etrafında toplanalım.',
-      'translations' => 
-      array (
-        'en' => 'table',
-        'de' => 'Tisch',
-        'fr' => 'Table',
-        'es' => 'Mesa',
-        'zh' => '桌子',
-        'ja' => '机',
-        'ar' => 'طاولة',
-        'tr' => 'Masa',
-        'ru' => 'стол',
-        'el' => 'τραπέζι',
-        'hy' => 'սեղան',
-        'hi' => 'मेज़',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Let\'s gather around the table for dinner.',
-        'de' => 'Let\'s gather around the table for dinner.',
-        'fr' => 'Let\'s gather around the table for dinner.',
-        'es' => 'Let\'s gather around the table for dinner.',
-        'zh' => 'Let\'s gather around the table for dinner.',
-        'ja' => 'Let\'s gather around the table for dinner.',
-        'ar' => 'Let\'s gather around the table for dinner.',
-        'tr' => 'Akşam yemeği için masanın etrafında toplanalım.',
-        'ru' => 'Let\'s gather around the table for dinner.',
-        'el' => 'Let\'s gather around the table for dinner.',
-        'hy' => 'Let\'s gather around the table for dinner.',
-        'hi' => 'Let\'s gather around the table for dinner.',
-      ),
-    ),
-    22 => 
-    array (
-      'word' => 'Sandalye',
-      'pronunciation' => '',
-      'category' => 'House',
-      'level' => 'A1',
-      'example' => 'Lütfen bir sandalye çekin ve bize katılın.',
-      'translations' => 
-      array (
-        'en' => 'chair',
-        'de' => 'Stuhl',
-        'fr' => 'Chaise',
-        'es' => 'Silla',
-        'zh' => '椅子',
-        'ja' => '椅子',
-        'ar' => 'كرسي',
-        'tr' => 'Sandalye',
-        'ru' => 'стул',
-        'el' => 'καρέκλα',
-        'hy' => 'աթոռ',
-        'hi' => 'कुर्सी',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Please pull up a chair and join us.',
-        'de' => 'Please pull up a chair and join us.',
-        'fr' => 'Please pull up a chair and join us.',
-        'es' => 'Please pull up a chair and join us.',
-        'zh' => 'Please pull up a chair and join us.',
-        'ja' => 'Please pull up a chair and join us.',
-        'ar' => 'Please pull up a chair and join us.',
-        'tr' => 'Lütfen bir sandalye çekin ve bize katılın.',
-        'ru' => 'Please pull up a chair and join us.',
-        'el' => 'Please pull up a chair and join us.',
-        'hy' => 'Please pull up a chair and join us.',
-        'hi' => 'Please pull up a chair and join us.',
-      ),
-    ),
-    23 => 
-    array (
-      'word' => 'Zaman / Vakit',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Eğlenirken zaman su gibi akar.',
-      'translations' => 
-      array (
-        'en' => 'time',
-        'de' => 'Zeit',
-        'fr' => 'Temps',
-        'es' => 'Tiempo',
-        'zh' => '时间',
-        'ja' => '時間',
-        'ar' => 'وقت',
-        'tr' => 'Zaman / Vakit',
-        'ru' => 'время',
-        'el' => 'χρόνος',
-        'hy' => 'ժամանակ',
-        'hi' => 'समय',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Time flies when you are having fun.',
-        'de' => 'Time flies when you are having fun.',
-        'fr' => 'Time flies when you are having fun.',
-        'es' => 'Time flies when you are having fun.',
-        'zh' => 'Time flies when you are having fun.',
-        'ja' => 'Time flies when you are having fun.',
-        'ar' => 'Time flies when you are having fun.',
-        'tr' => 'Eğlenirken zaman su gibi akar.',
-        'ru' => 'Time flies when you are having fun.',
-        'el' => 'Time flies when you are having fun.',
-        'hy' => 'Time flies when you are having fun.',
-        'hi' => 'Time flies when you are having fun.',
-      ),
-    ),
-    24 => 
-    array (
-      'word' => 'Gün',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Güneşli ve güzel bir gündü.',
-      'translations' => 
-      array (
-        'en' => 'day',
-        'de' => 'Tag',
-        'fr' => 'Jour',
-        'es' => 'Día',
-        'zh' => '天',
-        'ja' => '日',
-        'ar' => 'يوم',
-        'tr' => 'Gün',
-        'ru' => 'день',
-        'el' => 'μέρα',
-        'hy' => 'օր',
-        'hi' => 'दिन',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'It was a sunny and beautiful day.',
-        'de' => 'It was a sunny and beautiful day.',
-        'fr' => 'It was a sunny and beautiful day.',
-        'es' => 'It was a sunny and beautiful day.',
-        'zh' => 'It was a sunny and beautiful day.',
-        'ja' => 'It was a sunny and beautiful day.',
-        'ar' => 'It was a sunny and beautiful day.',
-        'tr' => 'Güneşli ve güzel bir gündü.',
-        'ru' => 'It was a sunny and beautiful day.',
-        'el' => 'It was a sunny and beautiful day.',
-        'hy' => 'It was a sunny and beautiful day.',
-        'hi' => 'It was a sunny and beautiful day.',
-      ),
-    ),
-    25 => 
-    array (
-      'word' => 'Gece',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Bu gece yıldızlar çok parlak parlıyor.',
-      'translations' => 
-      array (
-        'en' => 'night',
-        'de' => 'Nacht',
-        'fr' => 'Nuit',
-        'es' => 'Noche',
-        'zh' => '晚上',
-        'ja' => '夜',
-        'ar' => 'ليل',
-        'tr' => 'Gece',
-        'ru' => 'ночь',
-        'el' => 'νύχτα',
-        'hy' => 'գիշեր',
-        'hi' => 'रात',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The stars are shining brightly tonight.',
-        'de' => 'The stars are shining brightly tonight.',
-        'fr' => 'The stars are shining brightly tonight.',
-        'es' => 'The stars are shining brightly tonight.',
-        'zh' => 'The stars are shining brightly tonight.',
-        'ja' => 'The stars are shining brightly tonight.',
-        'ar' => 'The stars are shining brightly tonight.',
-        'tr' => 'Bu gece yıldızlar çok parlak parlıyor.',
-        'ru' => 'The stars are shining brightly tonight.',
-        'el' => 'The stars are shining brightly tonight.',
-        'hy' => 'The stars are shining brightly tonight.',
-        'hi' => 'The stars are shining brightly tonight.',
-      ),
-    ),
-    26 => 
-    array (
-      'word' => 'Sabah',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Sabahları koşuya çıkmayı severim.',
-      'translations' => 
-      array (
-        'en' => 'morning',
-        'de' => 'Morgen',
-        'fr' => 'Matin',
-        'es' => 'Mañana',
-        'zh' => '早上',
-        'ja' => '朝',
-        'ar' => 'صباح',
-        'tr' => 'Sabah',
-        'ru' => 'утро',
-        'el' => 'πρωί',
-        'hy' => 'առավոտ',
-        'hi' => 'सुबह',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'I like to go for a run in the morning.',
-        'de' => 'I like to go for a run in the morning.',
-        'fr' => 'I like to go for a run in the morning.',
-        'es' => 'I like to go for a run in the morning.',
-        'zh' => 'I like to go for a run in the morning.',
-        'ja' => 'I like to go for a run in the morning.',
-        'ar' => 'I like to go for a run in the morning.',
-        'tr' => 'Sabahları koşuya çıkmayı severim.',
-        'ru' => 'I like to go for a run in the morning.',
-        'el' => 'I like to go for a run in the morning.',
-        'hy' => 'I like to go for a run in the morning.',
-        'hi' => 'I like to go for a run in the morning.',
-      ),
-    ),
-    27 => 
-    array (
-      'word' => 'Hafta',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Gelecek hafta tatile gidiyoruz.',
-      'translations' => 
-      array (
-        'en' => 'week',
-        'de' => 'Woche',
-        'fr' => 'Semaine',
-        'es' => 'Semana',
-        'zh' => '星期',
-        'ja' => '週間',
-        'ar' => 'أسبوع',
-        'tr' => 'Hafta',
-        'ru' => 'неделя',
-        'el' => 'εβδομάδα',
-        'hy' => 'շաբաթ',
-        'hi' => 'हफ़्ता',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Next week we are going on holiday.',
-        'de' => 'Next week we are going on holiday.',
-        'fr' => 'Next week we are going on holiday.',
-        'es' => 'Next week we are going on holiday.',
-        'zh' => 'Next week we are going on holiday.',
-        'ja' => 'Next week we are going on holiday.',
-        'ar' => 'Next week we are going on holiday.',
-        'tr' => 'Gelecek hafta tatile gidiyoruz.',
-        'ru' => 'Next week we are going on holiday.',
-        'el' => 'Next week we are going on holiday.',
-        'hy' => 'Next week we are going on holiday.',
-        'hi' => 'Next week we are going on holiday.',
-      ),
-    ),
-    28 => 
-    array (
-      'word' => 'Ay',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Şubat yılın en kısa ayıdır.',
-      'translations' => 
-      array (
-        'en' => 'month',
-        'de' => 'Monat',
-        'fr' => 'Mois',
-        'es' => 'Mes',
-        'zh' => '月',
-        'ja' => '月',
-        'ar' => 'شهر',
-        'tr' => 'Ay',
-        'ru' => 'месяц',
-        'el' => 'μήνας',
-        'hy' => 'ամիս',
-        'hi' => 'महीना',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'February is the shortest month of the year.',
-        'de' => 'February is the shortest month of the year.',
-        'fr' => 'February is the shortest month of the year.',
-        'es' => 'February is the shortest month of the year.',
-        'zh' => 'February is the shortest month of the year.',
-        'ja' => 'February is the shortest month of the year.',
-        'ar' => 'February is the shortest month of the year.',
-        'tr' => 'Şubat yılın en kısa ayıdır.',
-        'ru' => 'February is the shortest month of the year.',
-        'el' => 'February is the shortest month of the year.',
-        'hy' => 'February is the shortest month of the year.',
-        'hi' => 'February is the shortest month of the year.',
-      ),
-    ),
-    29 => 
-    array (
-      'word' => 'Yıl / Sene',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Bir yıldır yurt dışında yaşıyorlar.',
-      'translations' => 
-      array (
-        'en' => 'year',
-        'de' => 'Jahr',
-        'fr' => 'Année',
-        'es' => 'Año',
-        'zh' => '年',
-        'ja' => '年',
-        'ar' => 'سنة',
-        'tr' => 'Yıl / Sene',
-        'ru' => 'год',
-        'el' => 'έτος',
-        'hy' => 'տարի',
-        'hi' => 'साल',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'They have lived abroad for one year.',
-        'de' => 'They have lived abroad for one year.',
-        'fr' => 'They have lived abroad for one year.',
-        'es' => 'They have lived abroad for one year.',
-        'zh' => 'They have lived abroad for one year.',
-        'ja' => 'They have lived abroad for one year.',
-        'ar' => 'They have lived abroad for one year.',
-        'tr' => 'Bir yıldır yurt dışında yaşıyorlar.',
-        'ru' => 'They have lived abroad for one year.',
-        'el' => 'They have lived abroad for one year.',
-        'hy' => 'They have lived abroad for one year.',
-        'hi' => 'They have lived abroad for one year.',
-      ),
-    ),
-    30 => 
-    array (
-      'word' => 'Şehir',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'İstanbul tarihi ve dinamik bir şehirdir.',
-      'translations' => 
-      array (
-        'en' => 'city',
-        'de' => 'Stadt',
-        'fr' => 'Ville',
-        'es' => 'Ciudad',
-        'zh' => '城市',
-        'ja' => '都市',
-        'ar' => 'مدينة',
-        'tr' => 'Şehir',
-        'ru' => 'город',
-        'el' => 'πόλη',
-        'hy' => 'քաղաք',
-        'hi' => 'शहर',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Istanbul is a historic and dynamic city.',
-        'de' => 'Istanbul is a historic and dynamic city.',
-        'fr' => 'Istanbul is a historic and dynamic city.',
-        'es' => 'Istanbul is a historic and dynamic city.',
-        'zh' => 'Istanbul is a historic and dynamic city.',
-        'ja' => 'Istanbul is a historic and dynamic city.',
-        'ar' => 'Istanbul is a historic and dynamic city.',
-        'tr' => 'İstanbul tarihi ve dinamik bir şehirdir.',
-        'ru' => 'Istanbul is a historic and dynamic city.',
-        'el' => 'Istanbul is a historic and dynamic city.',
-        'hy' => 'Istanbul is a historic and dynamic city.',
-        'hi' => 'Istanbul is a historic and dynamic city.',
-      ),
-    ),
-    31 => 
-    array (
-      'word' => 'Ülke',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Bir sonraki ziyaret etmek istediğiniz ülke hangisidir?',
-      'translations' => 
-      array (
-        'en' => 'country',
-        'de' => 'Land',
-        'fr' => 'Pays',
-        'es' => 'País',
-        'zh' => '国家',
-        'ja' => '国',
-        'ar' => 'بلد',
-        'tr' => 'Ülke',
-        'ru' => 'страна',
-        'el' => 'χώρα',
-        'hy' => 'երկիր',
-        'hi' => 'देश',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Which country would you like to visit next?',
-        'de' => 'Which country would you like to visit next?',
-        'fr' => 'Which country would you like to visit next?',
-        'es' => 'Which country would you like to visit next?',
-        'zh' => 'Which country would you like to visit next?',
-        'ja' => 'Which country would you like to visit next?',
-        'ar' => 'Which country would you like to visit next?',
-        'tr' => 'Bir sonraki ziyaret etmek istediğiniz ülke hangisidir?',
-        'ru' => 'Which country would you like to visit next?',
-        'el' => 'Which country would you like to visit next?',
-        'hy' => 'Which country would you like to visit next?',
-        'hi' => 'Which country would you like to visit next?',
-      ),
-    ),
-    32 => 
-    array (
-      'word' => 'Yol',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
-      'translations' => 
-      array (
-        'en' => 'road',
-        'de' => 'Weg',
-        'fr' => 'Chemin',
-        'es' => 'Camino',
-        'zh' => '路',
-        'ja' => '道',
-        'ar' => 'طريق',
-        'tr' => 'Yol',
-        'ru' => 'дорога',
-        'el' => 'δρόμος',
-        'hy' => 'ճանապարհ',
-        'hi' => 'सड़क',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The road to success is paved with hard work.',
-        'de' => 'The road to success is paved with hard work.',
-        'fr' => 'The road to success is paved with hard work.',
-        'es' => 'The road to success is paved with hard work.',
-        'zh' => 'The road to success is paved with hard work.',
-        'ja' => 'The road to success is paved with hard work.',
-        'ar' => 'The road to success is paved with hard work.',
-        'tr' => 'Başarıya giden yol sıkı çalışmayla döşenmiştir.',
-        'ru' => 'The road to success is paved with hard work.',
-        'el' => 'The road to success is paved with hard work.',
-        'hy' => 'The road to success is paved with hard work.',
-        'hi' => 'The road to success is paved with hard work.',
-      ),
-    ),
-    33 => 
-    array (
-      'word' => 'Tren',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Tren üçüncü perondan kalkıyor.',
-      'translations' => 
-      array (
-        'en' => 'train',
-        'de' => 'Zug',
-        'fr' => 'Train',
-        'es' => 'Tren',
-        'zh' => '火车',
-        'ja' => '電車',
-        'ar' => 'قطار',
-        'tr' => 'Tren',
-        'ru' => 'поезд',
-        'el' => 'τρένο',
-        'hy' => 'գնացք',
-        'hi' => 'ट्रेन',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The train leaves from platform three.',
-        'de' => 'The train leaves from platform three.',
-        'fr' => 'The train leaves from platform three.',
-        'es' => 'The train leaves from platform three.',
-        'zh' => 'The train leaves from platform three.',
-        'ja' => 'The train leaves from platform three.',
-        'ar' => 'The train leaves from platform three.',
-        'tr' => 'Tren üçüncü perondan kalkıyor.',
-        'ru' => 'The train leaves from platform three.',
-        'el' => 'The train leaves from platform three.',
-        'hy' => 'The train leaves from platform three.',
-        'hi' => 'The train leaves from platform three.',
-      ),
-    ),
-    34 => 
-    array (
-      'word' => 'Araba',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
-      'translations' => 
-      array (
-        'en' => 'car',
-        'de' => 'Auto',
-        'fr' => 'Voiture',
-        'es' => 'Coche',
-        'zh' => '汽车',
-        'ja' => '車',
-        'ar' => 'سيارة',
-        'tr' => 'Araba',
-        'ru' => 'машина',
-        'el' => 'αυτοκίνητο',
-        'hy' => 'մեքենա',
-        'hi' => 'गाड़ी',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'She drives a hybrid car to save fuel.',
-        'de' => 'She drives a hybrid car to save fuel.',
-        'fr' => 'She drives a hybrid car to save fuel.',
-        'es' => 'She drives a hybrid car to save fuel.',
-        'zh' => 'She drives a hybrid car to save fuel.',
-        'ja' => 'She drives a hybrid car to save fuel.',
-        'ar' => 'She drives a hybrid car to save fuel.',
-        'tr' => 'Yakıt tasarrufu yapmak için hibrit bir araba sürüyor.',
-        'ru' => 'She drives a hybrid car to save fuel.',
-        'el' => 'She drives a hybrid car to save fuel.',
-        'hy' => 'She drives a hybrid car to save fuel.',
-        'hi' => 'She drives a hybrid car to save fuel.',
-      ),
-    ),
-    35 => 
-    array (
-      'word' => 'Bilet',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Kontrol için biletinizi sakladığınızdan emin olun.',
-      'translations' => 
-      array (
-        'en' => 'ticket',
-        'de' => 'Ticket',
-        'fr' => 'Billet',
-        'es' => 'Billete',
-        'zh' => '票',
-        'ja' => '切符',
-        'ar' => 'تذكرة',
-        'tr' => 'Bilet',
-        'ru' => 'билет',
-        'el' => 'εισιτήριο',
-        'hy' => 'տոմս',
-        'hi' => 'टिकट',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Make sure you keep your ticket for inspection.',
-        'de' => 'Make sure you keep your ticket for inspection.',
-        'fr' => 'Make sure you keep your ticket for inspection.',
-        'es' => 'Make sure you keep your ticket for inspection.',
-        'zh' => 'Make sure you keep your ticket for inspection.',
-        'ja' => 'Make sure you keep your ticket for inspection.',
-        'ar' => 'Make sure you keep your ticket for inspection.',
-        'tr' => 'Kontrol için biletinizi sakladığınızdan emin olun.',
-        'ru' => 'Make sure you keep your ticket for inspection.',
-        'el' => 'Make sure you keep your ticket for inspection.',
-        'hy' => 'Make sure you keep your ticket for inspection.',
-        'hi' => 'Make sure you keep your ticket for inspection.',
-      ),
-    ),
-    36 => 
-    array (
-      'word' => 'Otel',
-      'pronunciation' => '',
-      'category' => 'Travel',
-      'level' => 'A1',
-      'example' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
-      'translations' => 
-      array (
-        'en' => 'hotel',
-        'de' => 'Hotel',
-        'fr' => 'Hôtel',
-        'es' => 'Hotel',
-        'zh' => '酒店',
-        'ja' => 'ホテル',
-        'ar' => 'فندق',
-        'tr' => 'Otel',
-        'ru' => 'гостиница',
-        'el' => 'ξενοδοχείο',
-        'hy' => 'հյուրանոց',
-        'hi' => 'होटल',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'We booked a quiet hotel by the sea.',
-        'de' => 'We booked a quiet hotel by the sea.',
-        'fr' => 'We booked a quiet hotel by the sea.',
-        'es' => 'We booked a quiet hotel by the sea.',
-        'zh' => 'We booked a quiet hotel by the sea.',
-        'ja' => 'We booked a quiet hotel by the sea.',
-        'ar' => 'We booked a quiet hotel by the sea.',
-        'tr' => 'Deniz kenarında sessiz bir otel rezerve ettik.',
-        'ru' => 'We booked a quiet hotel by the sea.',
-        'el' => 'We booked a quiet hotel by the sea.',
-        'hy' => 'We booked a quiet hotel by the sea.',
-        'hi' => 'We booked a quiet hotel by the sea.',
-      ),
-    ),
-    37 => 
-    array (
-      'word' => 'Para',
-      'pronunciation' => '',
-      'category' => 'Shopping',
-      'level' => 'A1',
-      'example' => 'Para konfor satın alabilir ama mutluluk alamaz.',
-      'translations' => 
-      array (
-        'en' => 'money',
-        'de' => 'Geld',
-        'fr' => 'Argent',
-        'es' => 'Dinero',
-        'zh' => '钱',
-        'ja' => 'お金',
-        'ar' => 'مال',
-        'tr' => 'Para',
-        'ru' => 'деньги',
-        'el' => 'χρήματα',
-        'hy' => 'փող',
-        'hi' => 'पैसा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Money can buy comfort but not happiness.',
-        'de' => 'Money can buy comfort but not happiness.',
-        'fr' => 'Money can buy comfort but not happiness.',
-        'es' => 'Money can buy comfort but not happiness.',
-        'zh' => 'Money can buy comfort but not happiness.',
-        'ja' => 'Money can buy comfort but not happiness.',
-        'ar' => 'Money can buy comfort but not happiness.',
-        'tr' => 'Para konfor satın alabilir ama mutluluk alamaz.',
-        'ru' => 'Money can buy comfort but not happiness.',
-        'el' => 'Money can buy comfort but not happiness.',
-        'hy' => 'Money can buy comfort but not happiness.',
-        'hi' => 'Money can buy comfort but not happiness.',
-      ),
-    ),
-    38 => 
-    array (
-      'word' => 'Mağaza / Dükkan',
-      'pronunciation' => '',
-      'category' => 'Shopping',
-      'level' => 'A1',
-      'example' => 'Bu butik mağaza el yapımı kıyafetler satıyor.',
-      'translations' => 
-      array (
-        'en' => 'shop',
-        'de' => 'Laden',
-        'fr' => 'Magasin',
-        'es' => 'Tienda',
-        'zh' => '商店',
-        'ja' => '店',
-        'ar' => 'متجر',
-        'tr' => 'Mağaza / Dükkan',
-        'ru' => 'магазин',
-        'el' => 'μαγαζί',
-        'hy' => 'խանութ',
-        'hi' => 'दुकान',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'This boutique shop sells handmade clothes.',
-        'de' => 'This boutique shop sells handmade clothes.',
-        'fr' => 'This boutique shop sells handmade clothes.',
-        'es' => 'This boutique shop sells handmade clothes.',
-        'zh' => 'This boutique shop sells handmade clothes.',
-        'ja' => 'This boutique shop sells handmade clothes.',
-        'ar' => 'This boutique shop sells handmade clothes.',
-        'tr' => 'Bu butik mağaza el yapımı kıyafetler satıyor.',
-        'ru' => 'This boutique shop sells handmade clothes.',
-        'el' => 'This boutique shop sells handmade clothes.',
-        'hy' => 'This boutique shop sells handmade clothes.',
-        'hi' => 'This boutique shop sells handmade clothes.',
-      ),
-    ),
-    39 => 
-    array (
-      'word' => 'Fiyat',
-      'pronunciation' => '',
-      'category' => 'Shopping',
-      'level' => 'A1',
-      'example' => 'Akıllı telefonun fiyatı düştü.',
-      'translations' => 
-      array (
-        'en' => 'price',
-        'de' => 'Preis',
-        'fr' => 'Prix',
-        'es' => 'Precio',
-        'zh' => '价格',
-        'ja' => '値段',
-        'ar' => 'سعر',
-        'tr' => 'Fiyat',
-        'ru' => 'цена',
-        'el' => 'τιμή',
-        'hy' => 'գին',
-        'hi' => 'कीमत',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The price of the smartphone has dropped.',
-        'de' => 'The price of the smartphone has dropped.',
-        'fr' => 'The price of the smartphone has dropped.',
-        'es' => 'The price of the smartphone has dropped.',
-        'zh' => 'The price of the smartphone has dropped.',
-        'ja' => 'The price of the smartphone has dropped.',
-        'ar' => 'The price of the smartphone has dropped.',
-        'tr' => 'Akıllı telefonun fiyatı düştü.',
-        'ru' => 'The price of the smartphone has dropped.',
-        'el' => 'The price of the smartphone has dropped.',
-        'hy' => 'The price of the smartphone has dropped.',
-        'hi' => 'The price of the smartphone has dropped.',
-      ),
-    ),
-    40 => 
-    array (
-      'word' => 'Ucuz',
-      'pronunciation' => '',
-      'category' => 'Shopping',
-      'level' => 'A1',
-      'example' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
-      'translations' => 
-      array (
-        'en' => 'cheap',
-        'de' => 'billig',
-        'fr' => 'bon marché',
-        'es' => 'barato',
-        'zh' => '便宜',
-        'ja' => '安い',
-        'ar' => 'رخيص',
-        'tr' => 'Ucuz',
-        'ru' => 'дешёвый',
-        'el' => 'φτηνός',
-        'hy' => 'էժան',
-        'hi' => 'सस्ता',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Local street food is delicious and cheap.',
-        'de' => 'Local street food is delicious and cheap.',
-        'fr' => 'Local street food is delicious and cheap.',
-        'es' => 'Local street food is delicious and cheap.',
-        'zh' => 'Local street food is delicious and cheap.',
-        'ja' => 'Local street food is delicious and cheap.',
-        'ar' => 'Local street food is delicious and cheap.',
-        'tr' => 'Yerel sokak yemekleri lezzetli ve ucuzdur.',
-        'ru' => 'Local street food is delicious and cheap.',
-        'el' => 'Local street food is delicious and cheap.',
-        'hy' => 'Local street food is delicious and cheap.',
-        'hi' => 'Local street food is delicious and cheap.',
-      ),
-    ),
-    41 => 
-    array (
-      'word' => 'Pahalı',
-      'pronunciation' => '',
-      'category' => 'Shopping',
-      'level' => 'A1',
-      'example' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
-      'translations' => 
-      array (
-        'en' => 'expensive',
-        'de' => 'teuer',
-        'fr' => 'cher',
-        'es' => 'caro',
-        'zh' => '贵',
-        'ja' => '高い',
-        'ar' => 'غالي',
-        'tr' => 'Pahalı',
-        'ru' => 'дорогой',
-        'el' => 'ακριβός',
-        'hy' => 'թանկ',
-        'hi' => 'महँगा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'Eating out every day is very expensive.',
-        'de' => 'Eating out every day is very expensive.',
-        'fr' => 'Eating out every day is very expensive.',
-        'es' => 'Eating out every day is very expensive.',
-        'zh' => 'Eating out every day is very expensive.',
-        'ja' => 'Eating out every day is very expensive.',
-        'ar' => 'Eating out every day is very expensive.',
-        'tr' => 'Her gün dışarıda yemek yemek çok pahalıdır.',
-        'ru' => 'Eating out every day is very expensive.',
-        'el' => 'Eating out every day is very expensive.',
-        'hy' => 'Eating out every day is very expensive.',
-        'hi' => 'Eating out every day is very expensive.',
-      ),
-    ),
-    42 => 
-    array (
-      'word' => 'Mutlu',
-      'pronunciation' => '',
-      'category' => 'Emotion',
-      'level' => 'A1',
-      'example' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
-      'translations' => 
-      array (
-        'en' => 'happy',
-        'de' => 'glücklich',
-        'fr' => 'heureux',
-        'es' => 'feliz',
-        'zh' => '高兴',
-        'ja' => '幸せ',
-        'ar' => 'سعيد',
-        'tr' => 'Mutlu',
-        'ru' => 'счастливый',
-        'el' => 'χαρούμενος',
-        'hy' => 'ուրախ',
-        'hi' => 'खुश',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'We were so happy to hear the good news.',
-        'de' => 'We were so happy to hear the good news.',
-        'fr' => 'We were so happy to hear the good news.',
-        'es' => 'We were so happy to hear the good news.',
-        'zh' => 'We were so happy to hear the good news.',
-        'ja' => 'We were so happy to hear the good news.',
-        'ar' => 'We were so happy to hear the good news.',
-        'tr' => 'İyi haberleri duyduğumuza çok mutlu olduk.',
-        'ru' => 'We were so happy to hear the good news.',
-        'el' => 'We were so happy to hear the good news.',
-        'hy' => 'We were so happy to hear the good news.',
-        'hi' => 'We were so happy to hear the good news.',
-      ),
-    ),
-    43 => 
-    array (
-      'word' => 'Üzgün',
-      'pronunciation' => '',
-      'category' => 'Emotion',
-      'level' => 'A1',
-      'example' => 'Filmin çok üzücü bir sonu vardı.',
-      'translations' => 
-      array (
-        'en' => 'sad',
-        'de' => 'traurig',
-        'fr' => 'triste',
-        'es' => 'triste',
-        'zh' => '难过',
-        'ja' => '悲しい',
-        'ar' => 'حزين',
-        'tr' => 'Üzgün',
-        'ru' => 'грустный',
-        'el' => 'λυπημένος',
-        'hy' => 'տխուր',
-        'hi' => 'उदास',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The movie had a very sad ending.',
-        'de' => 'The movie had a very sad ending.',
-        'fr' => 'The movie had a very sad ending.',
-        'es' => 'The movie had a very sad ending.',
-        'zh' => 'The movie had a very sad ending.',
-        'ja' => 'The movie had a very sad ending.',
-        'ar' => 'The movie had a very sad ending.',
-        'tr' => 'Filmin çok üzücü bir sonu vardı.',
-        'ru' => 'The movie had a very sad ending.',
-        'el' => 'The movie had a very sad ending.',
-        'hy' => 'The movie had a very sad ending.',
-        'hi' => 'The movie had a very sad ending.',
-      ),
-    ),
-    44 => 
-    array (
-      'word' => 'Yorgun',
-      'pronunciation' => '',
-      'category' => 'Emotion',
-      'level' => 'A1',
-      'example' => 'Uzun uçuştan sonra yorgun hissediyorum.',
-      'translations' => 
-      array (
-        'en' => 'tired',
-        'de' => 'müde',
-        'fr' => 'fatigué',
-        'es' => 'cansado',
-        'zh' => '累',
-        'ja' => '疲れた',
-        'ar' => 'متعب',
-        'tr' => 'Yorgun',
-        'ru' => 'усталый',
-        'el' => 'κουρασμένος',
-        'hy' => 'հոգնած',
-        'hi' => 'थका हुआ',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'I feel tired after the long flight.',
-        'de' => 'I feel tired after the long flight.',
-        'fr' => 'I feel tired after the long flight.',
-        'es' => 'I feel tired after the long flight.',
-        'zh' => 'I feel tired after the long flight.',
-        'ja' => 'I feel tired after the long flight.',
-        'ar' => 'I feel tired after the long flight.',
-        'tr' => 'Uzun uçuştan sonra yorgun hissediyorum.',
-        'ru' => 'I feel tired after the long flight.',
-        'el' => 'I feel tired after the long flight.',
-        'hy' => 'I feel tired after the long flight.',
-        'hi' => 'I feel tired after the long flight.',
-      ),
-    ),
-    45 => 
-    array (
-      'word' => 'Sıcak',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Kahve içmek için hala çok sıcak.',
-      'translations' => 
-      array (
-        'en' => 'hot',
-        'de' => 'heiß',
-        'fr' => 'chaud',
-        'es' => 'caliente',
-        'zh' => '热',
-        'ja' => '暑い',
-        'ar' => 'حار',
-        'tr' => 'Sıcak',
-        'ru' => 'жаркий',
-        'el' => 'ζεστός',
-        'hy' => 'տաք',
-        'hi' => 'गरम',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'The coffee is still too hot to drink.',
-        'de' => 'The coffee is still too hot to drink.',
-        'fr' => 'The coffee is still too hot to drink.',
-        'es' => 'The coffee is still too hot to drink.',
-        'zh' => 'The coffee is still too hot to drink.',
-        'ja' => 'The coffee is still too hot to drink.',
-        'ar' => 'The coffee is still too hot to drink.',
-        'tr' => 'Kahve içmek için hala çok sıcak.',
-        'ru' => 'The coffee is still too hot to drink.',
-        'el' => 'The coffee is still too hot to drink.',
-        'hy' => 'The coffee is still too hot to drink.',
-        'hi' => 'The coffee is still too hot to drink.',
-      ),
-    ),
-    46 => 
-    array (
-      'word' => 'Soğuk',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Kışın buralar çok soğuk olur.',
-      'translations' => 
-      array (
-        'en' => 'cold',
-        'de' => 'kalt',
-        'fr' => 'froid',
-        'es' => 'frío',
-        'zh' => '冷',
-        'ja' => '寒い',
-        'ar' => 'بارد',
-        'tr' => 'Soğuk',
-        'ru' => 'холодный',
-        'el' => 'κρύος',
-        'hy' => 'սառը',
-        'hi' => 'ठंडा',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'It gets very cold here in the winter.',
-        'de' => 'It gets very cold here in the winter.',
-        'fr' => 'It gets very cold here in the winter.',
-        'es' => 'It gets very cold here in the winter.',
-        'zh' => 'It gets very cold here in the winter.',
-        'ja' => 'It gets very cold here in the winter.',
-        'ar' => 'It gets very cold here in the winter.',
-        'tr' => 'Kışın buralar çok soğuk olur.',
-        'ru' => 'It gets very cold here in the winter.',
-        'el' => 'It gets very cold here in the winter.',
-        'hy' => 'It gets very cold here in the winter.',
-        'hi' => 'It gets very cold here in the winter.',
-      ),
-    ),
-    47 => 
-    array (
-      'word' => 'Yeni',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
-      'translations' => 
-      array (
-        'en' => 'new',
-        'de' => 'neu',
-        'fr' => 'nouveau',
-        'es' => 'nuevo',
-        'zh' => '新',
-        'ja' => '新しい',
-        'ar' => 'جديد',
-        'tr' => 'Yeni',
-        'ru' => 'новый',
-        'el' => 'καινούργιος',
-        'hy' => 'նոր',
-        'hi' => 'नया',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'He bought a new laptop for university.',
-        'de' => 'He bought a new laptop for university.',
-        'fr' => 'He bought a new laptop for university.',
-        'es' => 'He bought a new laptop for university.',
-        'zh' => 'He bought a new laptop for university.',
-        'ja' => 'He bought a new laptop for university.',
-        'ar' => 'He bought a new laptop for university.',
-        'tr' => 'Üniversite için yeni bir dizüstü bilgisayar satın aldı.',
-        'ru' => 'He bought a new laptop for university.',
-        'el' => 'He bought a new laptop for university.',
-        'hy' => 'He bought a new laptop for university.',
-        'hi' => 'He bought a new laptop for university.',
-      ),
-    ),
-    48 => 
-    array (
-      'word' => 'Eski / Yaşlı',
-      'pronunciation' => '',
-      'category' => 'General',
-      'level' => 'A1',
-      'example' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
-      'translations' => 
-      array (
-        'en' => 'old',
-        'de' => 'alt',
-        'fr' => 'vieux',
-        'es' => 'viejo',
-        'zh' => '旧',
-        'ja' => '古い',
-        'ar' => 'قديم',
-        'tr' => 'Eski / Yaşlı',
-        'ru' => 'старый',
-        'el' => 'παλιός',
-        'hy' => 'հին',
-        'hi' => 'पुराना',
-      ),
-      'example_translations' => 
-      array (
-        'en' => 'This old town has a charming atmosphere.',
-        'de' => 'This old town has a charming atmosphere.',
-        'fr' => 'This old town has a charming atmosphere.',
-        'es' => 'This old town has a charming atmosphere.',
-        'zh' => 'This old town has a charming atmosphere.',
-        'ja' => 'This old town has a charming atmosphere.',
-        'ar' => 'This old town has a charming atmosphere.',
-        'tr' => 'Bu eski kasabanın büyüleyici bir atmosferi var.',
-        'ru' => 'This old town has a charming atmosphere.',
-        'el' => 'This old town has a charming atmosphere.',
-        'hy' => 'This old town has a charming atmosphere.',
-        'hi' => 'This old town has a charming atmosphere.',
-      ),
-    ),
-    49 => 
-    array (
-      'word' => 'Sevgi / Aşk',
-      'pronunciation' => '',
-      'category' => 'Emotion',
-      'level' => 'A1',
-      'example' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
-      'translations' => 
-      array (
-        'en' => 'love',
-        'de' => 'Liebe',
-        'fr' => 'amour',
-        'es' => 'amor',
-        'zh' => '爱',
-        'ja' => '愛',
-        'ar' => 'حب',
-        'tr' => 'Sevgi / Aşk',
         'ru' => 'любовь',
         'el' => 'αγάπη',
         'hy' => 'սեր',
@@ -15214,9 +12612,8 @@ return array (
         'fr' => 'A mother\'s love for her child is infinite.',
         'es' => 'A mother\'s love for her child is infinite.',
         'zh' => 'A mother\'s love for her child is infinite.',
-        'ja' => 'A mother\'s love for her child is infinite.',
+        'ja' => '母の子供への愛は無限です。',
         'ar' => 'A mother\'s love for her child is infinite.',
-        'tr' => 'Bir annenin çocuğuna olan sevgisi sonsuzdur.',
         'ru' => 'A mother\'s love for her child is infinite.',
         'el' => 'A mother\'s love for her child is infinite.',
         'hy' => 'A mother\'s love for her child is infinite.',
@@ -15242,7 +12639,6 @@ return array (
         'ar' => 'مرحبا',
         'zh' => '你好',
         'ja' => 'こんにちは',
-        'tr' => 'Merhaba',
         'ru' => 'Привет',
         'el' => 'Γεια σου',
         'hy' => 'Բարև',
@@ -15257,7 +12653,6 @@ return array (
         'ar' => 'Hi! How are you?',
         'zh' => 'Hi! How are you?',
         'ja' => 'Hi! How are you?',
-        'tr' => 'Hi! How are you?',
         'ru' => 'Hi! How are you?',
         'el' => 'Hi! How are you?',
         'hy' => 'Hi! How are you?',
@@ -15280,7 +12675,6 @@ return array (
         'ar' => 'وداعا',
         'zh' => '再见',
         'ja' => 'さようなら',
-        'tr' => 'Hoşça kal / Güle güle',
         'ru' => 'До свидания',
         'el' => 'Αντίο',
         'hy' => 'Ցտեսություն',
@@ -15295,7 +12689,6 @@ return array (
         'ar' => 'Goodbye, see you tomorrow!',
         'zh' => 'Goodbye, see you tomorrow!',
         'ja' => 'Goodbye, see you tomorrow!',
-        'tr' => 'Goodbye, see you tomorrow!',
         'ru' => 'Goodbye, see you tomorrow!',
         'el' => 'Goodbye, see you tomorrow!',
         'hy' => 'Goodbye, see you tomorrow!',
@@ -15318,7 +12711,6 @@ return array (
         'ar' => 'من فضلك',
         'zh' => '请',
         'ja' => 'お願いします',
-        'tr' => 'Lütfen',
         'ru' => 'Пожалуйста',
         'el' => 'Παρακαλώ',
         'hy' => 'Խնդրում եմ',
@@ -15333,7 +12725,6 @@ return array (
         'ar' => 'Water, please.',
         'zh' => 'Water, please.',
         'ja' => 'Water, please.',
-        'tr' => 'Water, please.',
         'ru' => 'Water, please.',
         'el' => 'Water, please.',
         'hy' => 'Water, please.',
@@ -15356,7 +12747,6 @@ return array (
         'ar' => 'شكرا',
         'zh' => '谢谢',
         'ja' => 'ありがとう',
-        'tr' => 'Teşekkür ederim',
         'ru' => 'Спасибо',
         'el' => 'Ευχαριστώ',
         'hy' => 'Շնորհակալություն',
@@ -15371,7 +12761,6 @@ return array (
         'ar' => 'Thank you for the help!',
         'zh' => 'Thank you for the help!',
         'ja' => 'Thank you for the help!',
-        'tr' => 'Thank you for the help!',
         'ru' => 'Thank you for the help!',
         'el' => 'Thank you for the help!',
         'hy' => 'Thank you for the help!',
@@ -15394,7 +12783,6 @@ return array (
         'ar' => 'ماء',
         'zh' => '水',
         'ja' => '水',
-        'tr' => 'Su',
         'ru' => 'вода',
         'el' => 'νερό',
         'hy' => 'ջուր',
@@ -15409,7 +12797,6 @@ return array (
         'ar' => 'I drink water every day.',
         'zh' => 'I drink water every day.',
         'ja' => 'I drink water every day.',
-        'tr' => 'I drink water every day.',
         'ru' => 'I drink water every day.',
         'el' => 'I drink water every day.',
         'hy' => 'I drink water every day.',
@@ -15432,7 +12819,6 @@ return array (
         'ar' => 'خبز',
         'zh' => '面包',
         'ja' => 'パン',
-        'tr' => 'Ekmek',
         'ru' => 'хлеб',
         'el' => 'ψωμί',
         'hy' => 'հաց',
@@ -15447,7 +12833,6 @@ return array (
         'ar' => 'This bread is very fresh.',
         'zh' => 'This bread is very fresh.',
         'ja' => 'This bread is very fresh.',
-        'tr' => 'This bread is very fresh.',
         'ru' => 'This bread is very fresh.',
         'el' => 'This bread is very fresh.',
         'hy' => 'This bread is very fresh.',
@@ -15470,7 +12855,6 @@ return array (
         'ar' => 'تفاح',
         'zh' => '苹果',
         'ja' => 'りんご',
-        'tr' => 'Elma',
         'ru' => 'яблоко',
         'el' => 'μήλο',
         'hy' => 'խնձոր',
@@ -15485,7 +12869,6 @@ return array (
         'ar' => 'I am eating an apple.',
         'zh' => 'I am eating an apple.',
         'ja' => 'I am eating an apple.',
-        'tr' => 'I am eating an apple.',
         'ru' => 'I am eating an apple.',
         'el' => 'I am eating an apple.',
         'hy' => 'I am eating an apple.',
@@ -15508,7 +12891,6 @@ return array (
         'ar' => 'حليب',
         'zh' => '牛奶',
         'ja' => '牛乳',
-        'tr' => 'Süt',
         'ru' => 'молоко',
         'el' => 'γάλα',
         'hy' => 'կաթ',
@@ -15523,7 +12905,6 @@ return array (
         'ar' => 'The children drink milk.',
         'zh' => 'The children drink milk.',
         'ja' => 'The children drink milk.',
-        'tr' => 'The children drink milk.',
         'ru' => 'The children drink milk.',
         'el' => 'The children drink milk.',
         'hy' => 'The children drink milk.',
@@ -15546,7 +12927,6 @@ return array (
         'ar' => 'قهوة',
         'zh' => '咖啡',
         'ja' => 'コーヒー',
-        'tr' => 'Kahve',
         'ru' => 'кофе',
         'el' => 'καφές',
         'hy' => 'սուրճ',
@@ -15561,7 +12941,6 @@ return array (
         'ar' => 'In the morning I drink coffee.',
         'zh' => 'In the morning I drink coffee.',
         'ja' => 'In the morning I drink coffee.',
-        'tr' => 'In the morning I drink coffee.',
         'ru' => 'In the morning I drink coffee.',
         'el' => 'In the morning I drink coffee.',
         'hy' => 'In the morning I drink coffee.',
@@ -15584,7 +12963,6 @@ return array (
         'ar' => 'شاي',
         'zh' => '茶',
         'ja' => 'お茶',
-        'tr' => 'Çay',
         'ru' => 'чай',
         'el' => 'τσάι',
         'hy' => 'թեյ',
@@ -15599,7 +12977,6 @@ return array (
         'ar' => 'Would you like some tea?',
         'zh' => 'Would you like some tea?',
         'ja' => 'Would you like some tea?',
-        'tr' => 'Would you like some tea?',
         'ru' => 'Would you like some tea?',
         'el' => 'Would you like some tea?',
         'hy' => 'Would you like some tea?',
@@ -15622,7 +12999,6 @@ return array (
         'ar' => 'بيت',
         'zh' => '房子',
         'ja' => '家',
-        'tr' => 'Ev',
         'ru' => 'дом',
         'el' => 'σπίτι',
         'hy' => 'տուն',
@@ -15637,7 +13013,6 @@ return array (
         'ar' => 'Our house is big.',
         'zh' => 'Our house is big.',
         'ja' => 'Our house is big.',
-        'tr' => 'Our house is big.',
         'ru' => 'Our house is big.',
         'el' => 'Our house is big.',
         'hy' => 'Our house is big.',
@@ -15660,7 +13035,6 @@ return array (
         'ar' => 'غرفة',
         'zh' => '房间',
         'ja' => '部屋',
-        'tr' => 'Oda',
         'ru' => 'комната',
         'el' => 'δωμάτιο',
         'hy' => 'սենյակ',
@@ -15675,7 +13049,6 @@ return array (
         'ar' => 'My room is clean.',
         'zh' => 'My room is clean.',
         'ja' => 'My room is clean.',
-        'tr' => 'My room is clean.',
         'ru' => 'My room is clean.',
         'el' => 'My room is clean.',
         'hy' => 'My room is clean.',
@@ -15698,7 +13071,6 @@ return array (
         'ar' => 'باب',
         'zh' => '门',
         'ja' => 'ドア',
-        'tr' => 'Kapı',
         'ru' => 'дверь',
         'el' => 'πόρτα',
         'hy' => 'դուռ',
@@ -15713,7 +13085,6 @@ return array (
         'ar' => 'Please close the door.',
         'zh' => 'Please close the door.',
         'ja' => 'Please close the door.',
-        'tr' => 'Please close the door.',
         'ru' => 'Please close the door.',
         'el' => 'Please close the door.',
         'hy' => 'Please close the door.',
@@ -15736,7 +13107,6 @@ return array (
         'ar' => 'نافذة',
         'zh' => '窗户',
         'ja' => '窓',
-        'tr' => 'Pencere',
         'ru' => 'окно',
         'el' => 'παράθυρο',
         'hy' => 'պատուհան',
@@ -15751,7 +13121,6 @@ return array (
         'ar' => 'Open the window.',
         'zh' => 'Open the window.',
         'ja' => 'Open the window.',
-        'tr' => 'Open the window.',
         'ru' => 'Open the window.',
         'el' => 'Open the window.',
         'hy' => 'Open the window.',
@@ -15774,7 +13143,6 @@ return array (
         'ar' => 'عائلة',
         'zh' => '家庭',
         'ja' => '家族',
-        'tr' => 'Aile',
         'ru' => 'семья',
         'el' => 'οικογένεια',
         'hy' => 'ընտանիք',
@@ -15789,7 +13157,6 @@ return array (
         'ar' => 'I love my family.',
         'zh' => 'I love my family.',
         'ja' => 'I love my family.',
-        'tr' => 'I love my family.',
         'ru' => 'I love my family.',
         'el' => 'I love my family.',
         'hy' => 'I love my family.',
@@ -15812,7 +13179,6 @@ return array (
         'ar' => 'أب',
         'zh' => '父亲',
         'ja' => '父',
-        'tr' => 'Baba',
         'ru' => 'отец',
         'el' => 'πατέρας',
         'hy' => 'հայր',
@@ -15827,7 +13193,6 @@ return array (
         'ar' => 'My father is a doctor.',
         'zh' => 'My father is a doctor.',
         'ja' => 'My father is a doctor.',
-        'tr' => 'My father is a doctor.',
         'ru' => 'My father is a doctor.',
         'el' => 'My father is a doctor.',
         'hy' => 'My father is a doctor.',
@@ -15850,7 +13215,6 @@ return array (
         'ar' => 'أم',
         'zh' => '母亲',
         'ja' => '母',
-        'tr' => 'Anne',
         'ru' => 'мать',
         'el' => 'μητέρα',
         'hy' => 'մայր',
@@ -15865,7 +13229,6 @@ return array (
         'ar' => 'My mother is cooking dinner.',
         'zh' => 'My mother is cooking dinner.',
         'ja' => 'My mother is cooking dinner.',
-        'tr' => 'My mother is cooking dinner.',
         'ru' => 'My mother is cooking dinner.',
         'el' => 'My mother is cooking dinner.',
         'hy' => 'My mother is cooking dinner.',
@@ -15888,7 +13251,6 @@ return array (
         'ar' => 'صديق',
         'zh' => '朋友',
         'ja' => '友達',
-        'tr' => 'Arkadaş',
         'ru' => 'друг',
         'el' => 'φίλος',
         'hy' => 'ընկեր',
@@ -15903,7 +13265,6 @@ return array (
         'ar' => 'This is my best friend.',
         'zh' => 'This is my best friend.',
         'ja' => 'This is my best friend.',
-        'tr' => 'This is my best friend.',
         'ru' => 'This is my best friend.',
         'el' => 'This is my best friend.',
         'hy' => 'This is my best friend.',
@@ -15926,7 +13287,6 @@ return array (
         'ar' => 'مدرسة',
         'zh' => '学校',
         'ja' => '学校',
-        'tr' => 'Okul',
         'ru' => 'школа',
         'el' => 'σχολείο',
         'hy' => 'դպրոց',
@@ -15941,7 +13301,6 @@ return array (
         'ar' => 'The children go to school.',
         'zh' => 'The children go to school.',
         'ja' => 'The children go to school.',
-        'tr' => 'The children go to school.',
         'ru' => 'The children go to school.',
         'el' => 'The children go to school.',
         'hy' => 'The children go to school.',
@@ -15964,7 +13323,6 @@ return array (
         'ar' => 'كتاب',
         'zh' => '书',
         'ja' => '本',
-        'tr' => 'Kitap',
         'ru' => 'книга',
         'el' => 'βιβλίο',
         'hy' => 'գիրք',
@@ -15979,7 +13337,6 @@ return array (
         'ar' => 'I\'m reading an interesting book.',
         'zh' => 'I\'m reading an interesting book.',
         'ja' => 'I\'m reading an interesting book.',
-        'tr' => 'I\'m reading an interesting book.',
         'ru' => 'I\'m reading an interesting book.',
         'el' => 'I\'m reading an interesting book.',
         'hy' => 'I\'m reading an interesting book.',
@@ -16002,7 +13359,6 @@ return array (
         'ar' => 'قلم',
         'zh' => '铅笔',
         'ja' => '鉛筆',
-        'tr' => 'Kalem',
         'ru' => 'карандаш',
         'el' => 'μολύβι',
         'hy' => 'մատիտ',
@@ -16017,7 +13373,6 @@ return array (
         'ar' => 'Do you have a pencil?',
         'zh' => 'Do you have a pencil?',
         'ja' => 'Do you have a pencil?',
-        'tr' => 'Do you have a pencil?',
         'ru' => 'Do you have a pencil?',
         'el' => 'Do you have a pencil?',
         'hy' => 'Do you have a pencil?',
@@ -16040,7 +13395,6 @@ return array (
         'ar' => 'طاولة',
         'zh' => '桌子',
         'ja' => '机',
-        'tr' => 'Masa',
         'ru' => 'стол',
         'el' => 'τραπέζι',
         'hy' => 'սեղան',
@@ -16055,7 +13409,6 @@ return array (
         'ar' => 'The book is on the table.',
         'zh' => 'The book is on the table.',
         'ja' => 'The book is on the table.',
-        'tr' => 'The book is on the table.',
         'ru' => 'The book is on the table.',
         'el' => 'The book is on the table.',
         'hy' => 'The book is on the table.',
@@ -16078,7 +13431,6 @@ return array (
         'ar' => 'كرسي',
         'zh' => '椅子',
         'ja' => '椅子',
-        'tr' => 'Sandalye',
         'ru' => 'стул',
         'el' => 'καρέκλα',
         'hy' => 'աթոռ',
@@ -16093,7 +13445,6 @@ return array (
         'ar' => 'Sit on the chair.',
         'zh' => 'Sit on the chair.',
         'ja' => 'Sit on the chair.',
-        'tr' => 'Sit on the chair.',
         'ru' => 'Sit on the chair.',
         'el' => 'Sit on the chair.',
         'hy' => 'Sit on the chair.',
@@ -16116,7 +13467,6 @@ return array (
         'ar' => 'وقت',
         'zh' => '时间',
         'ja' => '時間',
-        'tr' => 'Zaman / Vakit',
         'ru' => 'время',
         'el' => 'χρόνος',
         'hy' => 'ժամանակ',
@@ -16131,7 +13481,6 @@ return array (
         'ar' => 'I don\'t have time.',
         'zh' => 'I don\'t have time.',
         'ja' => 'I don\'t have time.',
-        'tr' => 'I don\'t have time.',
         'ru' => 'I don\'t have time.',
         'el' => 'I don\'t have time.',
         'hy' => 'I don\'t have time.',
@@ -16154,7 +13503,6 @@ return array (
         'ar' => 'يوم',
         'zh' => '天',
         'ja' => '日',
-        'tr' => 'Gün',
         'ru' => 'день',
         'el' => 'μέρα',
         'hy' => 'օր',
@@ -16169,7 +13517,6 @@ return array (
         'ar' => 'Have a nice day!',
         'zh' => 'Have a nice day!',
         'ja' => 'Have a nice day!',
-        'tr' => 'Have a nice day!',
         'ru' => 'Have a nice day!',
         'el' => 'Have a nice day!',
         'hy' => 'Have a nice day!',
@@ -16192,7 +13539,6 @@ return array (
         'ar' => 'ليل',
         'zh' => '晚上',
         'ja' => '夜',
-        'tr' => 'Gece',
         'ru' => 'ночь',
         'el' => 'νύχτα',
         'hy' => 'գիշեր',
@@ -16207,7 +13553,6 @@ return array (
         'ar' => 'The night is quiet.',
         'zh' => 'The night is quiet.',
         'ja' => 'The night is quiet.',
-        'tr' => 'The night is quiet.',
         'ru' => 'The night is quiet.',
         'el' => 'The night is quiet.',
         'hy' => 'The night is quiet.',
@@ -16230,7 +13575,6 @@ return array (
         'ar' => 'صباح',
         'zh' => '早上',
         'ja' => '朝',
-        'tr' => 'Sabah',
         'ru' => 'утро',
         'el' => 'πρωί',
         'hy' => 'առավոտ',
@@ -16245,7 +13589,6 @@ return array (
         'ar' => 'Good morning!',
         'zh' => 'Good morning!',
         'ja' => 'Good morning!',
-        'tr' => 'Good morning!',
         'ru' => 'Good morning!',
         'el' => 'Good morning!',
         'hy' => 'Good morning!',
@@ -16268,7 +13611,6 @@ return array (
         'ar' => 'أسبوع',
         'zh' => '星期',
         'ja' => '週間',
-        'tr' => 'Hafta',
         'ru' => 'неделя',
         'el' => 'εβδομάδα',
         'hy' => 'շաբաթ',
@@ -16283,7 +13625,6 @@ return array (
         'ar' => 'See you next week.',
         'zh' => 'See you next week.',
         'ja' => 'See you next week.',
-        'tr' => 'See you next week.',
         'ru' => 'See you next week.',
         'el' => 'See you next week.',
         'hy' => 'See you next week.',
@@ -16306,7 +13647,6 @@ return array (
         'ar' => 'شهر',
         'zh' => '月',
         'ja' => '月',
-        'tr' => 'Ay',
         'ru' => 'месяц',
         'el' => 'μήνας',
         'hy' => 'ամիս',
@@ -16321,7 +13661,6 @@ return array (
         'ar' => 'I\'ve been learning Russian for a month.',
         'zh' => 'I\'ve been learning Russian for a month.',
         'ja' => 'I\'ve been learning Russian for a month.',
-        'tr' => 'I\'ve been learning Russian for a month.',
         'ru' => 'I\'ve been learning Russian for a month.',
         'el' => 'I\'ve been learning Russian for a month.',
         'hy' => 'I\'ve been learning Russian for a month.',
@@ -16344,7 +13683,6 @@ return array (
         'ar' => 'سنة',
         'zh' => '年',
         'ja' => '年',
-        'tr' => 'Yıl / Sene',
         'ru' => 'год',
         'el' => 'έτος',
         'hy' => 'տարի',
@@ -16359,7 +13697,6 @@ return array (
         'ar' => 'Happy New Year!',
         'zh' => 'Happy New Year!',
         'ja' => 'Happy New Year!',
-        'tr' => 'Happy New Year!',
         'ru' => 'Happy New Year!',
         'el' => 'Happy New Year!',
         'hy' => 'Happy New Year!',
@@ -16382,7 +13719,6 @@ return array (
         'ar' => 'مدينة',
         'zh' => '城市',
         'ja' => '都市',
-        'tr' => 'Şehir',
         'ru' => 'город',
         'el' => 'πόλη',
         'hy' => 'քաղաք',
@@ -16397,7 +13733,6 @@ return array (
         'ar' => 'Moscow is a big city.',
         'zh' => 'Moscow is a big city.',
         'ja' => 'Moscow is a big city.',
-        'tr' => 'Moscow is a big city.',
         'ru' => 'Moscow is a big city.',
         'el' => 'Moscow is a big city.',
         'hy' => 'Moscow is a big city.',
@@ -16420,7 +13755,6 @@ return array (
         'ar' => 'بلد',
         'zh' => '国家',
         'ja' => '国',
-        'tr' => 'Ülke',
         'ru' => 'страна',
         'el' => 'χώρα',
         'hy' => 'երկիր',
@@ -16435,7 +13769,6 @@ return array (
         'ar' => 'This is a beautiful country.',
         'zh' => 'This is a beautiful country.',
         'ja' => 'This is a beautiful country.',
-        'tr' => 'This is a beautiful country.',
         'ru' => 'This is a beautiful country.',
         'el' => 'This is a beautiful country.',
         'hy' => 'This is a beautiful country.',
@@ -16458,7 +13791,6 @@ return array (
         'ar' => 'طريق',
         'zh' => '路',
         'ja' => '道',
-        'tr' => 'Yol',
         'ru' => 'дорога',
         'el' => 'δρόμος',
         'hy' => 'ճանապարհ',
@@ -16473,7 +13805,6 @@ return array (
         'ar' => 'The road is very long.',
         'zh' => 'The road is very long.',
         'ja' => 'The road is very long.',
-        'tr' => 'The road is very long.',
         'ru' => 'The road is very long.',
         'el' => 'The road is very long.',
         'hy' => 'The road is very long.',
@@ -16496,7 +13827,6 @@ return array (
         'ar' => 'قطار',
         'zh' => '火车',
         'ja' => '電車',
-        'tr' => 'Tren',
         'ru' => 'поезд',
         'el' => 'τρένο',
         'hy' => 'գնացք',
@@ -16511,7 +13841,6 @@ return array (
         'ar' => 'The train arrives at eight.',
         'zh' => 'The train arrives at eight.',
         'ja' => 'The train arrives at eight.',
-        'tr' => 'The train arrives at eight.',
         'ru' => 'The train arrives at eight.',
         'el' => 'The train arrives at eight.',
         'hy' => 'The train arrives at eight.',
@@ -16534,7 +13863,6 @@ return array (
         'ar' => 'سيارة',
         'zh' => '汽车',
         'ja' => '車',
-        'tr' => 'Araba',
         'ru' => 'машина',
         'el' => 'αυτοκίνητο',
         'hy' => 'մեքենա',
@@ -16549,7 +13877,6 @@ return array (
         'ar' => 'He has a new car.',
         'zh' => 'He has a new car.',
         'ja' => 'He has a new car.',
-        'tr' => 'He has a new car.',
         'ru' => 'He has a new car.',
         'el' => 'He has a new car.',
         'hy' => 'He has a new car.',
@@ -16572,7 +13899,6 @@ return array (
         'ar' => 'تذكرة',
         'zh' => '票',
         'ja' => '切符',
-        'tr' => 'Bilet',
         'ru' => 'билет',
         'el' => 'εισιτήριο',
         'hy' => 'տոմս',
@@ -16587,7 +13913,6 @@ return array (
         'ar' => 'I need a ticket to Moscow.',
         'zh' => 'I need a ticket to Moscow.',
         'ja' => 'I need a ticket to Moscow.',
-        'tr' => 'I need a ticket to Moscow.',
         'ru' => 'I need a ticket to Moscow.',
         'el' => 'I need a ticket to Moscow.',
         'hy' => 'I need a ticket to Moscow.',
@@ -16610,7 +13935,6 @@ return array (
         'ar' => 'فندق',
         'zh' => '酒店',
         'ja' => 'ホテル',
-        'tr' => 'Otel',
         'ru' => 'гостиница',
         'el' => 'ξενοδοχείο',
         'hy' => 'հյուրանոց',
@@ -16625,7 +13949,6 @@ return array (
         'ar' => 'The hotel is near the station.',
         'zh' => 'The hotel is near the station.',
         'ja' => 'The hotel is near the station.',
-        'tr' => 'The hotel is near the station.',
         'ru' => 'The hotel is near the station.',
         'el' => 'The hotel is near the station.',
         'hy' => 'The hotel is near the station.',
@@ -16648,7 +13971,6 @@ return array (
         'ar' => 'مال',
         'zh' => '钱',
         'ja' => 'お金',
-        'tr' => 'Para',
         'ru' => 'деньги',
         'el' => 'χρήματα',
         'hy' => 'փող',
@@ -16663,7 +13985,6 @@ return array (
         'ar' => 'I have little money.',
         'zh' => 'I have little money.',
         'ja' => 'I have little money.',
-        'tr' => 'I have little money.',
         'ru' => 'I have little money.',
         'el' => 'I have little money.',
         'hy' => 'I have little money.',
@@ -16686,7 +14007,6 @@ return array (
         'ar' => 'متجر',
         'zh' => '商店',
         'ja' => '店',
-        'tr' => 'Mağaza / Dükkan',
         'ru' => 'магазин',
         'el' => 'μαγαζί',
         'hy' => 'խանութ',
@@ -16701,7 +14021,6 @@ return array (
         'ar' => 'The shop is open until ten.',
         'zh' => 'The shop is open until ten.',
         'ja' => 'The shop is open until ten.',
-        'tr' => 'The shop is open until ten.',
         'ru' => 'The shop is open until ten.',
         'el' => 'The shop is open until ten.',
         'hy' => 'The shop is open until ten.',
@@ -16724,7 +14043,6 @@ return array (
         'ar' => 'سعر',
         'zh' => '价格',
         'ja' => '値段',
-        'tr' => 'Fiyat',
         'ru' => 'цена',
         'el' => 'τιμή',
         'hy' => 'գին',
@@ -16739,7 +14057,6 @@ return array (
         'ar' => 'What\'s the price?',
         'zh' => 'What\'s the price?',
         'ja' => 'What\'s the price?',
-        'tr' => 'What\'s the price?',
         'ru' => 'What\'s the price?',
         'el' => 'What\'s the price?',
         'hy' => 'What\'s the price?',
@@ -16762,7 +14079,6 @@ return array (
         'ar' => 'رخيص',
         'zh' => '便宜',
         'ja' => '安い',
-        'tr' => 'Ucuz',
         'ru' => 'дешёвый',
         'el' => 'φτηνός',
         'hy' => 'էժան',
@@ -16777,7 +14093,6 @@ return array (
         'ar' => 'This phone is cheap.',
         'zh' => 'This phone is cheap.',
         'ja' => 'This phone is cheap.',
-        'tr' => 'This phone is cheap.',
         'ru' => 'This phone is cheap.',
         'el' => 'This phone is cheap.',
         'hy' => 'This phone is cheap.',
@@ -16800,7 +14115,6 @@ return array (
         'ar' => 'غالي',
         'zh' => '贵',
         'ja' => '高い',
-        'tr' => 'Pahalı',
         'ru' => 'дорогой',
         'el' => 'ακριβός',
         'hy' => 'թանկ',
@@ -16815,7 +14129,6 @@ return array (
         'ar' => 'This restaurant is expensive.',
         'zh' => 'This restaurant is expensive.',
         'ja' => 'This restaurant is expensive.',
-        'tr' => 'This restaurant is expensive.',
         'ru' => 'This restaurant is expensive.',
         'el' => 'This restaurant is expensive.',
         'hy' => 'This restaurant is expensive.',
@@ -16838,7 +14151,6 @@ return array (
         'ar' => 'سعيد',
         'zh' => '高兴',
         'ja' => '幸せ',
-        'tr' => 'Mutlu',
         'ru' => 'счастливый',
         'el' => 'χαρούμενος',
         'hy' => 'ուրախ',
@@ -16853,7 +14165,6 @@ return array (
         'ar' => 'I\'m very happy today.',
         'zh' => 'I\'m very happy today.',
         'ja' => 'I\'m very happy today.',
-        'tr' => 'I\'m very happy today.',
         'ru' => 'I\'m very happy today.',
         'el' => 'I\'m very happy today.',
         'hy' => 'I\'m very happy today.',
@@ -16876,7 +14187,6 @@ return array (
         'ar' => 'حزين',
         'zh' => '难过',
         'ja' => '悲しい',
-        'tr' => 'Üzgün',
         'ru' => 'грустный',
         'el' => 'λυπημένος',
         'hy' => 'տխուր',
@@ -16891,7 +14201,6 @@ return array (
         'ar' => 'Why are you sad?',
         'zh' => 'Why are you sad?',
         'ja' => 'Why are you sad?',
-        'tr' => 'Why are you sad?',
         'ru' => 'Why are you sad?',
         'el' => 'Why are you sad?',
         'hy' => 'Why are you sad?',
@@ -16914,7 +14223,6 @@ return array (
         'ar' => 'متعب',
         'zh' => '累',
         'ja' => '疲れた',
-        'tr' => 'Yorgun',
         'ru' => 'усталый',
         'el' => 'κουρασμένος',
         'hy' => 'հոգնած',
@@ -16929,7 +14237,6 @@ return array (
         'ar' => 'I\'m very tired.',
         'zh' => 'I\'m very tired.',
         'ja' => 'I\'m very tired.',
-        'tr' => 'I\'m very tired.',
         'ru' => 'I\'m very tired.',
         'el' => 'I\'m very tired.',
         'hy' => 'I\'m very tired.',
@@ -16952,7 +14259,6 @@ return array (
         'ar' => 'حار',
         'zh' => '热',
         'ja' => '暑い',
-        'tr' => 'Sıcak',
         'ru' => 'жаркий',
         'el' => 'ζεστός',
         'hy' => 'տաք',
@@ -16967,7 +14273,6 @@ return array (
         'ar' => 'Today is a hot day.',
         'zh' => 'Today is a hot day.',
         'ja' => 'Today is a hot day.',
-        'tr' => 'Today is a hot day.',
         'ru' => 'Today is a hot day.',
         'el' => 'Today is a hot day.',
         'hy' => 'Today is a hot day.',
@@ -16990,7 +14295,6 @@ return array (
         'ar' => 'بارد',
         'zh' => '冷',
         'ja' => '寒い',
-        'tr' => 'Soğuk',
         'ru' => 'холодный',
         'el' => 'κρύος',
         'hy' => 'սառը',
@@ -17005,7 +14309,6 @@ return array (
         'ar' => 'The water is cold.',
         'zh' => 'The water is cold.',
         'ja' => 'The water is cold.',
-        'tr' => 'The water is cold.',
         'ru' => 'The water is cold.',
         'el' => 'The water is cold.',
         'hy' => 'The water is cold.',
@@ -17028,7 +14331,6 @@ return array (
         'ar' => 'جديد',
         'zh' => '新',
         'ja' => '新しい',
-        'tr' => 'Yeni',
         'ru' => 'новый',
         'el' => 'καινούργιος',
         'hy' => 'նոր',
@@ -17043,7 +14345,6 @@ return array (
         'ar' => 'I have a new phone.',
         'zh' => 'I have a new phone.',
         'ja' => 'I have a new phone.',
-        'tr' => 'I have a new phone.',
         'ru' => 'I have a new phone.',
         'el' => 'I have a new phone.',
         'hy' => 'I have a new phone.',
@@ -17066,7 +14367,6 @@ return array (
         'ar' => 'قديم',
         'zh' => '旧',
         'ja' => '古い',
-        'tr' => 'Eski / Yaşlı',
         'ru' => 'старый',
         'el' => 'παλιός',
         'hy' => 'հին',
@@ -17081,7 +14381,6 @@ return array (
         'ar' => 'This is a very old house.',
         'zh' => 'This is a very old house.',
         'ja' => 'This is a very old house.',
-        'tr' => 'This is a very old house.',
         'ru' => 'This is a very old house.',
         'el' => 'This is a very old house.',
         'hy' => 'This is a very old house.',
@@ -17104,7 +14403,6 @@ return array (
         'ar' => 'حب',
         'zh' => '爱',
         'ja' => '愛',
-        'tr' => 'Sevgi / Aşk',
         'ru' => 'любовь',
         'el' => 'αγάπη',
         'hy' => 'սեր',
@@ -17119,7 +14417,6 @@ return array (
         'ar' => 'Love is what matters most.',
         'zh' => 'Love is what matters most.',
         'ja' => 'Love is what matters most.',
-        'tr' => 'Love is what matters most.',
         'ru' => 'Love is what matters most.',
         'el' => 'Love is what matters most.',
         'hy' => 'Love is what matters most.',
@@ -17145,7 +14442,6 @@ return array (
         'ar' => 'مرحبا',
         'zh' => '你好',
         'ja' => 'こんにちは',
-        'tr' => 'Merhaba',
         'ru' => 'Привет',
         'el' => 'Γεια σου',
         'hy' => 'Բարև',
@@ -17160,7 +14456,6 @@ return array (
         'ar' => 'Hello! How are you?',
         'zh' => 'Hello! How are you?',
         'ja' => 'Hello! How are you?',
-        'tr' => 'Hello! How are you?',
         'ru' => 'Hello! How are you?',
         'el' => 'Hello! How are you?',
         'hy' => 'Hello! How are you?',
@@ -17183,7 +14478,6 @@ return array (
         'ar' => 'وداعا',
         'zh' => '再见',
         'ja' => 'さようなら',
-        'tr' => 'Hoşça kal / Güle güle',
         'ru' => 'До свидания',
         'el' => 'Αντίο',
         'hy' => 'Ցտեսություն',
@@ -17198,7 +14492,6 @@ return array (
         'ar' => 'Goodbye, see you tomorrow!',
         'zh' => 'Goodbye, see you tomorrow!',
         'ja' => 'Goodbye, see you tomorrow!',
-        'tr' => 'Goodbye, see you tomorrow!',
         'ru' => 'Goodbye, see you tomorrow!',
         'el' => 'Goodbye, see you tomorrow!',
         'hy' => 'Goodbye, see you tomorrow!',
@@ -17221,7 +14514,6 @@ return array (
         'ar' => 'من فضلك',
         'zh' => '请',
         'ja' => 'お願いします',
-        'tr' => 'Lütfen',
         'ru' => 'Пожалуйста',
         'el' => 'Παρακαλώ',
         'hy' => 'Խնդրում եմ',
@@ -17236,7 +14528,6 @@ return array (
         'ar' => 'A water, please.',
         'zh' => 'A water, please.',
         'ja' => 'A water, please.',
-        'tr' => 'A water, please.',
         'ru' => 'A water, please.',
         'el' => 'A water, please.',
         'hy' => 'A water, please.',
@@ -17259,7 +14550,6 @@ return array (
         'ar' => 'شكرا',
         'zh' => '谢谢',
         'ja' => 'ありがとう',
-        'tr' => 'Teşekkür ederim',
         'ru' => 'Спасибо',
         'el' => 'Ευχαριστώ',
         'hy' => 'Շնորհակալություն',
@@ -17274,7 +14564,6 @@ return array (
         'ar' => 'Thank you for the help!',
         'zh' => 'Thank you for the help!',
         'ja' => 'Thank you for the help!',
-        'tr' => 'Thank you for the help!',
         'ru' => 'Thank you for the help!',
         'el' => 'Thank you for the help!',
         'hy' => 'Thank you for the help!',
@@ -17297,7 +14586,6 @@ return array (
         'ar' => 'ماء',
         'zh' => '水',
         'ja' => '水',
-        'tr' => 'Su',
         'ru' => 'вода',
         'el' => 'νερό',
         'hy' => 'ջուր',
@@ -17312,7 +14600,6 @@ return array (
         'ar' => 'I drink water every day.',
         'zh' => 'I drink water every day.',
         'ja' => 'I drink water every day.',
-        'tr' => 'I drink water every day.',
         'ru' => 'I drink water every day.',
         'el' => 'I drink water every day.',
         'hy' => 'I drink water every day.',
@@ -17335,7 +14622,6 @@ return array (
         'ar' => 'خبز',
         'zh' => '面包',
         'ja' => 'パン',
-        'tr' => 'Ekmek',
         'ru' => 'хлеб',
         'el' => 'ψωμί',
         'hy' => 'հաց',
@@ -17350,7 +14636,6 @@ return array (
         'ar' => 'This bread is very fresh.',
         'zh' => 'This bread is very fresh.',
         'ja' => 'This bread is very fresh.',
-        'tr' => 'This bread is very fresh.',
         'ru' => 'This bread is very fresh.',
         'el' => 'This bread is very fresh.',
         'hy' => 'This bread is very fresh.',
@@ -17373,7 +14658,6 @@ return array (
         'ar' => 'تفاح',
         'zh' => '苹果',
         'ja' => 'りんご',
-        'tr' => 'Elma',
         'ru' => 'яблоко',
         'el' => 'μήλο',
         'hy' => 'խնձոր',
@@ -17388,7 +14672,6 @@ return array (
         'ar' => 'I am eating an apple.',
         'zh' => 'I am eating an apple.',
         'ja' => 'I am eating an apple.',
-        'tr' => 'I am eating an apple.',
         'ru' => 'I am eating an apple.',
         'el' => 'I am eating an apple.',
         'hy' => 'I am eating an apple.',
@@ -17411,7 +14694,6 @@ return array (
         'ar' => 'حليب',
         'zh' => '牛奶',
         'ja' => '牛乳',
-        'tr' => 'Süt',
         'ru' => 'молоко',
         'el' => 'γάλα',
         'hy' => 'կաթ',
@@ -17426,7 +14708,6 @@ return array (
         'ar' => 'The children drink milk.',
         'zh' => 'The children drink milk.',
         'ja' => 'The children drink milk.',
-        'tr' => 'The children drink milk.',
         'ru' => 'The children drink milk.',
         'el' => 'The children drink milk.',
         'hy' => 'The children drink milk.',
@@ -17449,7 +14730,6 @@ return array (
         'ar' => 'قهوة',
         'zh' => '咖啡',
         'ja' => 'コーヒー',
-        'tr' => 'Kahve',
         'ru' => 'кофе',
         'el' => 'καφές',
         'hy' => 'սուրճ',
@@ -17464,7 +14744,6 @@ return array (
         'ar' => 'In the morning I drink coffee.',
         'zh' => 'In the morning I drink coffee.',
         'ja' => 'In the morning I drink coffee.',
-        'tr' => 'In the morning I drink coffee.',
         'ru' => 'In the morning I drink coffee.',
         'el' => 'In the morning I drink coffee.',
         'hy' => 'In the morning I drink coffee.',
@@ -17487,7 +14766,6 @@ return array (
         'ar' => 'شاي',
         'zh' => '茶',
         'ja' => 'お茶',
-        'tr' => 'Çay',
         'ru' => 'чай',
         'el' => 'τσάι',
         'hy' => 'թեյ',
@@ -17502,7 +14780,6 @@ return array (
         'ar' => 'Would you like some tea?',
         'zh' => 'Would you like some tea?',
         'ja' => 'Would you like some tea?',
-        'tr' => 'Would you like some tea?',
         'ru' => 'Would you like some tea?',
         'el' => 'Would you like some tea?',
         'hy' => 'Would you like some tea?',
@@ -17525,7 +14802,6 @@ return array (
         'ar' => 'بيت',
         'zh' => '房子',
         'ja' => '家',
-        'tr' => 'Ev',
         'ru' => 'дом',
         'el' => 'σπίτι',
         'hy' => 'տուն',
@@ -17540,7 +14816,6 @@ return array (
         'ar' => 'Our house is big.',
         'zh' => 'Our house is big.',
         'ja' => 'Our house is big.',
-        'tr' => 'Our house is big.',
         'ru' => 'Our house is big.',
         'el' => 'Our house is big.',
         'hy' => 'Our house is big.',
@@ -17563,7 +14838,6 @@ return array (
         'ar' => 'غرفة',
         'zh' => '房间',
         'ja' => '部屋',
-        'tr' => 'Oda',
         'ru' => 'комната',
         'el' => 'δωμάτιο',
         'hy' => 'սենյակ',
@@ -17578,7 +14852,6 @@ return array (
         'ar' => 'My room is clean.',
         'zh' => 'My room is clean.',
         'ja' => 'My room is clean.',
-        'tr' => 'My room is clean.',
         'ru' => 'My room is clean.',
         'el' => 'My room is clean.',
         'hy' => 'My room is clean.',
@@ -17601,7 +14874,6 @@ return array (
         'ar' => 'باب',
         'zh' => '门',
         'ja' => 'ドア',
-        'tr' => 'Kapı',
         'ru' => 'дверь',
         'el' => 'πόρτα',
         'hy' => 'դուռ',
@@ -17616,7 +14888,6 @@ return array (
         'ar' => 'Please close the door.',
         'zh' => 'Please close the door.',
         'ja' => 'Please close the door.',
-        'tr' => 'Please close the door.',
         'ru' => 'Please close the door.',
         'el' => 'Please close the door.',
         'hy' => 'Please close the door.',
@@ -17639,7 +14910,6 @@ return array (
         'ar' => 'نافذة',
         'zh' => '窗户',
         'ja' => '窓',
-        'tr' => 'Pencere',
         'ru' => 'окно',
         'el' => 'παράθυρο',
         'hy' => 'պատուհան',
@@ -17654,7 +14924,6 @@ return array (
         'ar' => 'Open the window.',
         'zh' => 'Open the window.',
         'ja' => 'Open the window.',
-        'tr' => 'Open the window.',
         'ru' => 'Open the window.',
         'el' => 'Open the window.',
         'hy' => 'Open the window.',
@@ -17677,7 +14946,6 @@ return array (
         'ar' => 'عائلة',
         'zh' => '家庭',
         'ja' => '家族',
-        'tr' => 'Aile',
         'ru' => 'семья',
         'el' => 'οικογένεια',
         'hy' => 'ընտանիք',
@@ -17692,7 +14960,6 @@ return array (
         'ar' => 'I love my family.',
         'zh' => 'I love my family.',
         'ja' => 'I love my family.',
-        'tr' => 'I love my family.',
         'ru' => 'I love my family.',
         'el' => 'I love my family.',
         'hy' => 'I love my family.',
@@ -17715,7 +14982,6 @@ return array (
         'ar' => 'أب',
         'zh' => '父亲',
         'ja' => '父',
-        'tr' => 'Baba',
         'ru' => 'отец',
         'el' => 'πατέρας',
         'hy' => 'հայր',
@@ -17730,7 +14996,6 @@ return array (
         'ar' => 'My father is a doctor.',
         'zh' => 'My father is a doctor.',
         'ja' => 'My father is a doctor.',
-        'tr' => 'My father is a doctor.',
         'ru' => 'My father is a doctor.',
         'el' => 'My father is a doctor.',
         'hy' => 'My father is a doctor.',
@@ -17753,7 +15018,6 @@ return array (
         'ar' => 'أم',
         'zh' => '母亲',
         'ja' => '母',
-        'tr' => 'Anne',
         'ru' => 'мать',
         'el' => 'μητέρα',
         'hy' => 'մայր',
@@ -17768,7 +15032,6 @@ return array (
         'ar' => 'My mother is cooking.',
         'zh' => 'My mother is cooking.',
         'ja' => 'My mother is cooking.',
-        'tr' => 'My mother is cooking.',
         'ru' => 'My mother is cooking.',
         'el' => 'My mother is cooking.',
         'hy' => 'My mother is cooking.',
@@ -17791,7 +15054,6 @@ return array (
         'ar' => 'صديق',
         'zh' => '朋友',
         'ja' => '友達',
-        'tr' => 'Arkadaş',
         'ru' => 'друг',
         'el' => 'φίλος',
         'hy' => 'ընկեր',
@@ -17806,7 +15068,6 @@ return array (
         'ar' => 'This is my best friend.',
         'zh' => 'This is my best friend.',
         'ja' => 'This is my best friend.',
-        'tr' => 'This is my best friend.',
         'ru' => 'This is my best friend.',
         'el' => 'This is my best friend.',
         'hy' => 'This is my best friend.',
@@ -17829,7 +15090,6 @@ return array (
         'ar' => 'مدرسة',
         'zh' => '学校',
         'ja' => '学校',
-        'tr' => 'Okul',
         'ru' => 'школа',
         'el' => 'σχολείο',
         'hy' => 'դպրոց',
@@ -17844,7 +15104,6 @@ return array (
         'ar' => 'The children go to school.',
         'zh' => 'The children go to school.',
         'ja' => 'The children go to school.',
-        'tr' => 'The children go to school.',
         'ru' => 'The children go to school.',
         'el' => 'The children go to school.',
         'hy' => 'The children go to school.',
@@ -17867,7 +15126,6 @@ return array (
         'ar' => 'كتاب',
         'zh' => '书',
         'ja' => '本',
-        'tr' => 'Kitap',
         'ru' => 'книга',
         'el' => 'βιβλίο',
         'hy' => 'գիրք',
@@ -17882,7 +15140,6 @@ return array (
         'ar' => 'I\'m reading an interesting book.',
         'zh' => 'I\'m reading an interesting book.',
         'ja' => 'I\'m reading an interesting book.',
-        'tr' => 'I\'m reading an interesting book.',
         'ru' => 'I\'m reading an interesting book.',
         'el' => 'I\'m reading an interesting book.',
         'hy' => 'I\'m reading an interesting book.',
@@ -17905,7 +15162,6 @@ return array (
         'ar' => 'قلم',
         'zh' => '铅笔',
         'ja' => '鉛筆',
-        'tr' => 'Kalem',
         'ru' => 'карандаш',
         'el' => 'μολύβι',
         'hy' => 'մատիտ',
@@ -17920,7 +15176,6 @@ return array (
         'ar' => 'Do you have a pencil?',
         'zh' => 'Do you have a pencil?',
         'ja' => 'Do you have a pencil?',
-        'tr' => 'Do you have a pencil?',
         'ru' => 'Do you have a pencil?',
         'el' => 'Do you have a pencil?',
         'hy' => 'Do you have a pencil?',
@@ -17943,7 +15198,6 @@ return array (
         'ar' => 'طاولة',
         'zh' => '桌子',
         'ja' => '机',
-        'tr' => 'Masa',
         'ru' => 'стол',
         'el' => 'τραπέζι',
         'hy' => 'սեղան',
@@ -17958,7 +15212,6 @@ return array (
         'ar' => 'The book is on the table.',
         'zh' => 'The book is on the table.',
         'ja' => 'The book is on the table.',
-        'tr' => 'The book is on the table.',
         'ru' => 'The book is on the table.',
         'el' => 'The book is on the table.',
         'hy' => 'The book is on the table.',
@@ -17981,7 +15234,6 @@ return array (
         'ar' => 'كرسي',
         'zh' => '椅子',
         'ja' => '椅子',
-        'tr' => 'Sandalye',
         'ru' => 'стул',
         'el' => 'καρέκλα',
         'hy' => 'աթոռ',
@@ -17996,7 +15248,6 @@ return array (
         'ar' => 'Sit on the chair.',
         'zh' => 'Sit on the chair.',
         'ja' => 'Sit on the chair.',
-        'tr' => 'Sit on the chair.',
         'ru' => 'Sit on the chair.',
         'el' => 'Sit on the chair.',
         'hy' => 'Sit on the chair.',
@@ -18019,7 +15270,6 @@ return array (
         'ar' => 'وقت',
         'zh' => '时间',
         'ja' => '時間',
-        'tr' => 'Zaman / Vakit',
         'ru' => 'время',
         'el' => 'χρόνος',
         'hy' => 'ժամանակ',
@@ -18034,7 +15284,6 @@ return array (
         'ar' => 'I don\'t have time.',
         'zh' => 'I don\'t have time.',
         'ja' => 'I don\'t have time.',
-        'tr' => 'I don\'t have time.',
         'ru' => 'I don\'t have time.',
         'el' => 'I don\'t have time.',
         'hy' => 'I don\'t have time.',
@@ -18057,7 +15306,6 @@ return array (
         'ar' => 'يوم',
         'zh' => '天',
         'ja' => '日',
-        'tr' => 'Gün',
         'ru' => 'день',
         'el' => 'μέρα',
         'hy' => 'օր',
@@ -18072,7 +15320,6 @@ return array (
         'ar' => 'Have a nice day!',
         'zh' => 'Have a nice day!',
         'ja' => 'Have a nice day!',
-        'tr' => 'Have a nice day!',
         'ru' => 'Have a nice day!',
         'el' => 'Have a nice day!',
         'hy' => 'Have a nice day!',
@@ -18095,7 +15342,6 @@ return array (
         'ar' => 'ليل',
         'zh' => '晚上',
         'ja' => '夜',
-        'tr' => 'Gece',
         'ru' => 'ночь',
         'el' => 'νύχτα',
         'hy' => 'գիշեր',
@@ -18110,7 +15356,6 @@ return array (
         'ar' => 'The night is quiet.',
         'zh' => 'The night is quiet.',
         'ja' => 'The night is quiet.',
-        'tr' => 'The night is quiet.',
         'ru' => 'The night is quiet.',
         'el' => 'The night is quiet.',
         'hy' => 'The night is quiet.',
@@ -18133,7 +15378,6 @@ return array (
         'ar' => 'صباح',
         'zh' => '早上',
         'ja' => '朝',
-        'tr' => 'Sabah',
         'ru' => 'утро',
         'el' => 'πρωί',
         'hy' => 'առավոտ',
@@ -18148,7 +15392,6 @@ return array (
         'ar' => 'I wake up early in the morning.',
         'zh' => 'I wake up early in the morning.',
         'ja' => 'I wake up early in the morning.',
-        'tr' => 'I wake up early in the morning.',
         'ru' => 'I wake up early in the morning.',
         'el' => 'I wake up early in the morning.',
         'hy' => 'I wake up early in the morning.',
@@ -18171,7 +15414,6 @@ return array (
         'ar' => 'أسبوع',
         'zh' => '星期',
         'ja' => '週間',
-        'tr' => 'Hafta',
         'ru' => 'неделя',
         'el' => 'εβδομάδα',
         'hy' => 'շաբաթ',
@@ -18186,7 +15428,6 @@ return array (
         'ar' => 'See you next week.',
         'zh' => 'See you next week.',
         'ja' => 'See you next week.',
-        'tr' => 'See you next week.',
         'ru' => 'See you next week.',
         'el' => 'See you next week.',
         'hy' => 'See you next week.',
@@ -18209,7 +15450,6 @@ return array (
         'ar' => 'شهر',
         'zh' => '月',
         'ja' => '月',
-        'tr' => 'Ay',
         'ru' => 'месяц',
         'el' => 'μήνας',
         'hy' => 'ամիս',
@@ -18224,7 +15464,6 @@ return array (
         'ar' => 'I\'ve been learning Greek for a month.',
         'zh' => 'I\'ve been learning Greek for a month.',
         'ja' => 'I\'ve been learning Greek for a month.',
-        'tr' => 'I\'ve been learning Greek for a month.',
         'ru' => 'I\'ve been learning Greek for a month.',
         'el' => 'I\'ve been learning Greek for a month.',
         'hy' => 'I\'ve been learning Greek for a month.',
@@ -18247,7 +15486,6 @@ return array (
         'ar' => 'سنة',
         'zh' => '年',
         'ja' => '年',
-        'tr' => 'Yıl / Sene',
         'ru' => 'год',
         'el' => 'έτος',
         'hy' => 'տարի',
@@ -18262,7 +15500,6 @@ return array (
         'ar' => 'A year has twelve months.',
         'zh' => 'A year has twelve months.',
         'ja' => 'A year has twelve months.',
-        'tr' => 'A year has twelve months.',
         'ru' => 'A year has twelve months.',
         'el' => 'A year has twelve months.',
         'hy' => 'A year has twelve months.',
@@ -18285,7 +15522,6 @@ return array (
         'ar' => 'مدينة',
         'zh' => '城市',
         'ja' => '都市',
-        'tr' => 'Şehir',
         'ru' => 'город',
         'el' => 'πόλη',
         'hy' => 'քաղաք',
@@ -18300,7 +15536,6 @@ return array (
         'ar' => 'Athens is a big city.',
         'zh' => 'Athens is a big city.',
         'ja' => 'Athens is a big city.',
-        'tr' => 'Athens is a big city.',
         'ru' => 'Athens is a big city.',
         'el' => 'Athens is a big city.',
         'hy' => 'Athens is a big city.',
@@ -18323,7 +15558,6 @@ return array (
         'ar' => 'بلد',
         'zh' => '国家',
         'ja' => '国',
-        'tr' => 'Ülke',
         'ru' => 'страна',
         'el' => 'χώρα',
         'hy' => 'երկիր',
@@ -18338,7 +15572,6 @@ return array (
         'ar' => 'Greece is a beautiful country.',
         'zh' => 'Greece is a beautiful country.',
         'ja' => 'Greece is a beautiful country.',
-        'tr' => 'Greece is a beautiful country.',
         'ru' => 'Greece is a beautiful country.',
         'el' => 'Greece is a beautiful country.',
         'hy' => 'Greece is a beautiful country.',
@@ -18361,7 +15594,6 @@ return array (
         'ar' => 'طريق',
         'zh' => '路',
         'ja' => '道',
-        'tr' => 'Yol',
         'ru' => 'дорога',
         'el' => 'δρόμος',
         'hy' => 'ճանապարհ',
@@ -18376,7 +15608,6 @@ return array (
         'ar' => 'The road is very long.',
         'zh' => 'The road is very long.',
         'ja' => 'The road is very long.',
-        'tr' => 'The road is very long.',
         'ru' => 'The road is very long.',
         'el' => 'The road is very long.',
         'hy' => 'The road is very long.',
@@ -18399,7 +15630,6 @@ return array (
         'ar' => 'قطار',
         'zh' => '火车',
         'ja' => '電車',
-        'tr' => 'Tren',
         'ru' => 'поезд',
         'el' => 'τρένο',
         'hy' => 'գնացք',
@@ -18414,7 +15644,6 @@ return array (
         'ar' => 'The train arrives at eight.',
         'zh' => 'The train arrives at eight.',
         'ja' => 'The train arrives at eight.',
-        'tr' => 'The train arrives at eight.',
         'ru' => 'The train arrives at eight.',
         'el' => 'The train arrives at eight.',
         'hy' => 'The train arrives at eight.',
@@ -18437,7 +15666,6 @@ return array (
         'ar' => 'سيارة',
         'zh' => '汽车',
         'ja' => '車',
-        'tr' => 'Araba',
         'ru' => 'машина',
         'el' => 'αυτοκίνητο',
         'hy' => 'մեքենա',
@@ -18452,7 +15680,6 @@ return array (
         'ar' => 'He has a new car.',
         'zh' => 'He has a new car.',
         'ja' => 'He has a new car.',
-        'tr' => 'He has a new car.',
         'ru' => 'He has a new car.',
         'el' => 'He has a new car.',
         'hy' => 'He has a new car.',
@@ -18475,7 +15702,6 @@ return array (
         'ar' => 'تذكرة',
         'zh' => '票',
         'ja' => '切符',
-        'tr' => 'Bilet',
         'ru' => 'билет',
         'el' => 'εισιτήριο',
         'hy' => 'տոմս',
@@ -18490,7 +15716,6 @@ return array (
         'ar' => 'I want a ticket to Athens.',
         'zh' => 'I want a ticket to Athens.',
         'ja' => 'I want a ticket to Athens.',
-        'tr' => 'I want a ticket to Athens.',
         'ru' => 'I want a ticket to Athens.',
         'el' => 'I want a ticket to Athens.',
         'hy' => 'I want a ticket to Athens.',
@@ -18513,7 +15738,6 @@ return array (
         'ar' => 'فندق',
         'zh' => '酒店',
         'ja' => 'ホテル',
-        'tr' => 'Otel',
         'ru' => 'гостиница',
         'el' => 'ξενοδοχείο',
         'hy' => 'հյուրանոց',
@@ -18528,7 +15752,6 @@ return array (
         'ar' => 'The hotel is near the station.',
         'zh' => 'The hotel is near the station.',
         'ja' => 'The hotel is near the station.',
-        'tr' => 'The hotel is near the station.',
         'ru' => 'The hotel is near the station.',
         'el' => 'The hotel is near the station.',
         'hy' => 'The hotel is near the station.',
@@ -18551,7 +15774,6 @@ return array (
         'ar' => 'مال',
         'zh' => '钱',
         'ja' => 'お金',
-        'tr' => 'Para',
         'ru' => 'деньги',
         'el' => 'χρήματα',
         'hy' => 'փող',
@@ -18566,7 +15788,6 @@ return array (
         'ar' => 'I have little money.',
         'zh' => 'I have little money.',
         'ja' => 'I have little money.',
-        'tr' => 'I have little money.',
         'ru' => 'I have little money.',
         'el' => 'I have little money.',
         'hy' => 'I have little money.',
@@ -18589,7 +15810,6 @@ return array (
         'ar' => 'متجر',
         'zh' => '商店',
         'ja' => '店',
-        'tr' => 'Mağaza / Dükkan',
         'ru' => 'магазин',
         'el' => 'μαγαζί',
         'hy' => 'խանութ',
@@ -18604,7 +15824,6 @@ return array (
         'ar' => 'The shop is open until ten.',
         'zh' => 'The shop is open until ten.',
         'ja' => 'The shop is open until ten.',
-        'tr' => 'The shop is open until ten.',
         'ru' => 'The shop is open until ten.',
         'el' => 'The shop is open until ten.',
         'hy' => 'The shop is open until ten.',
@@ -18627,7 +15846,6 @@ return array (
         'ar' => 'سعر',
         'zh' => '价格',
         'ja' => '値段',
-        'tr' => 'Fiyat',
         'ru' => 'цена',
         'el' => 'τιμή',
         'hy' => 'գին',
@@ -18642,7 +15860,6 @@ return array (
         'ar' => 'What\'s the price?',
         'zh' => 'What\'s the price?',
         'ja' => 'What\'s the price?',
-        'tr' => 'What\'s the price?',
         'ru' => 'What\'s the price?',
         'el' => 'What\'s the price?',
         'hy' => 'What\'s the price?',
@@ -18665,7 +15882,6 @@ return array (
         'ar' => 'رخيص',
         'zh' => '便宜',
         'ja' => '安い',
-        'tr' => 'Ucuz',
         'ru' => 'дешёвый',
         'el' => 'φτηνός',
         'hy' => 'էժան',
@@ -18680,7 +15896,6 @@ return array (
         'ar' => 'This phone is cheap.',
         'zh' => 'This phone is cheap.',
         'ja' => 'This phone is cheap.',
-        'tr' => 'This phone is cheap.',
         'ru' => 'This phone is cheap.',
         'el' => 'This phone is cheap.',
         'hy' => 'This phone is cheap.',
@@ -18703,7 +15918,6 @@ return array (
         'ar' => 'غالي',
         'zh' => '贵',
         'ja' => '高い',
-        'tr' => 'Pahalı',
         'ru' => 'дорогой',
         'el' => 'ακριβός',
         'hy' => 'թանկ',
@@ -18718,7 +15932,6 @@ return array (
         'ar' => 'This restaurant is expensive.',
         'zh' => 'This restaurant is expensive.',
         'ja' => 'This restaurant is expensive.',
-        'tr' => 'This restaurant is expensive.',
         'ru' => 'This restaurant is expensive.',
         'el' => 'This restaurant is expensive.',
         'hy' => 'This restaurant is expensive.',
@@ -18741,7 +15954,6 @@ return array (
         'ar' => 'سعيد',
         'zh' => '高兴',
         'ja' => '幸せ',
-        'tr' => 'Mutlu',
         'ru' => 'счастливый',
         'el' => 'χαρούμενος',
         'hy' => 'ուրախ',
@@ -18756,7 +15968,6 @@ return array (
         'ar' => 'I\'m very happy today.',
         'zh' => 'I\'m very happy today.',
         'ja' => 'I\'m very happy today.',
-        'tr' => 'I\'m very happy today.',
         'ru' => 'I\'m very happy today.',
         'el' => 'I\'m very happy today.',
         'hy' => 'I\'m very happy today.',
@@ -18779,7 +15990,6 @@ return array (
         'ar' => 'حزين',
         'zh' => '难过',
         'ja' => '悲しい',
-        'tr' => 'Üzgün',
         'ru' => 'грустный',
         'el' => 'λυπημένος',
         'hy' => 'տխուր',
@@ -18794,7 +16004,6 @@ return array (
         'ar' => 'Why are you sad?',
         'zh' => 'Why are you sad?',
         'ja' => 'Why are you sad?',
-        'tr' => 'Why are you sad?',
         'ru' => 'Why are you sad?',
         'el' => 'Why are you sad?',
         'hy' => 'Why are you sad?',
@@ -18817,7 +16026,6 @@ return array (
         'ar' => 'متعب',
         'zh' => '累',
         'ja' => '疲れた',
-        'tr' => 'Yorgun',
         'ru' => 'усталый',
         'el' => 'κουρασμένος',
         'hy' => 'հոգնած',
@@ -18832,7 +16040,6 @@ return array (
         'ar' => 'I\'m very tired.',
         'zh' => 'I\'m very tired.',
         'ja' => 'I\'m very tired.',
-        'tr' => 'I\'m very tired.',
         'ru' => 'I\'m very tired.',
         'el' => 'I\'m very tired.',
         'hy' => 'I\'m very tired.',
@@ -18855,7 +16062,6 @@ return array (
         'ar' => 'حار',
         'zh' => '热',
         'ja' => '暑い',
-        'tr' => 'Sıcak',
         'ru' => 'жаркий',
         'el' => 'ζεστός',
         'hy' => 'տաք',
@@ -18870,7 +16076,6 @@ return array (
         'ar' => 'The coffee is hot.',
         'zh' => 'The coffee is hot.',
         'ja' => 'The coffee is hot.',
-        'tr' => 'The coffee is hot.',
         'ru' => 'The coffee is hot.',
         'el' => 'The coffee is hot.',
         'hy' => 'The coffee is hot.',
@@ -18893,7 +16098,6 @@ return array (
         'ar' => 'بارد',
         'zh' => '冷',
         'ja' => '寒い',
-        'tr' => 'Soğuk',
         'ru' => 'холодный',
         'el' => 'κρύος',
         'hy' => 'սառը',
@@ -18908,7 +16112,6 @@ return array (
         'ar' => 'The water is cold.',
         'zh' => 'The water is cold.',
         'ja' => 'The water is cold.',
-        'tr' => 'The water is cold.',
         'ru' => 'The water is cold.',
         'el' => 'The water is cold.',
         'hy' => 'The water is cold.',
@@ -18931,7 +16134,6 @@ return array (
         'ar' => 'جديد',
         'zh' => '新',
         'ja' => '新しい',
-        'tr' => 'Yeni',
         'ru' => 'новый',
         'el' => 'καινούργιος',
         'hy' => 'նոր',
@@ -18946,7 +16148,6 @@ return array (
         'ar' => 'I have a new phone.',
         'zh' => 'I have a new phone.',
         'ja' => 'I have a new phone.',
-        'tr' => 'I have a new phone.',
         'ru' => 'I have a new phone.',
         'el' => 'I have a new phone.',
         'hy' => 'I have a new phone.',
@@ -18969,7 +16170,6 @@ return array (
         'ar' => 'قديم',
         'zh' => '旧',
         'ja' => '古い',
-        'tr' => 'Eski / Yaşlı',
         'ru' => 'старый',
         'el' => 'παλιός',
         'hy' => 'հին',
@@ -18984,7 +16184,6 @@ return array (
         'ar' => 'This is a very old house.',
         'zh' => 'This is a very old house.',
         'ja' => 'This is a very old house.',
-        'tr' => 'This is a very old house.',
         'ru' => 'This is a very old house.',
         'el' => 'This is a very old house.',
         'hy' => 'This is a very old house.',
@@ -19007,7 +16206,6 @@ return array (
         'ar' => 'حب',
         'zh' => '爱',
         'ja' => '愛',
-        'tr' => 'Sevgi / Aşk',
         'ru' => 'любовь',
         'el' => 'αγάπη',
         'hy' => 'սեր',
@@ -19022,7 +16220,6 @@ return array (
         'ar' => 'Love is what matters most.',
         'zh' => 'Love is what matters most.',
         'ja' => 'Love is what matters most.',
-        'tr' => 'Love is what matters most.',
         'ru' => 'Love is what matters most.',
         'el' => 'Love is what matters most.',
         'hy' => 'Love is what matters most.',
@@ -19048,7 +16245,6 @@ return array (
         'ar' => 'مرحبا',
         'zh' => '你好',
         'ja' => 'こんにちは',
-        'tr' => 'Merhaba',
         'ru' => 'Привет',
         'el' => 'Γεια σου',
         'hy' => 'Բարև',
@@ -19063,7 +16259,6 @@ return array (
         'ar' => 'Hello, how are you?',
         'zh' => 'Hello, how are you?',
         'ja' => 'Hello, how are you?',
-        'tr' => 'Hello, how are you?',
         'ru' => 'Hello, how are you?',
         'el' => 'Hello, how are you?',
         'hy' => 'Hello, how are you?',
@@ -19086,7 +16281,6 @@ return array (
         'ar' => 'وداعا',
         'zh' => '再见',
         'ja' => 'さようなら',
-        'tr' => 'Hoşça kal / Güle güle',
         'ru' => 'До свидания',
         'el' => 'Αντίο',
         'hy' => 'Ցտեսություն',
@@ -19101,7 +16295,6 @@ return array (
         'ar' => 'Goodbye, see you tomorrow.',
         'zh' => 'Goodbye, see you tomorrow.',
         'ja' => 'Goodbye, see you tomorrow.',
-        'tr' => 'Goodbye, see you tomorrow.',
         'ru' => 'Goodbye, see you tomorrow.',
         'el' => 'Goodbye, see you tomorrow.',
         'hy' => 'Goodbye, see you tomorrow.',
@@ -19124,7 +16317,6 @@ return array (
         'ar' => 'من فضلك',
         'zh' => '请',
         'ja' => 'お願いします',
-        'tr' => 'Lütfen',
         'ru' => 'Пожалуйста',
         'el' => 'Παρακαλώ',
         'hy' => 'Խնդրում եմ',
@@ -19139,7 +16331,6 @@ return array (
         'ar' => 'A glass of water, please.',
         'zh' => 'A glass of water, please.',
         'ja' => 'A glass of water, please.',
-        'tr' => 'A glass of water, please.',
         'ru' => 'A glass of water, please.',
         'el' => 'A glass of water, please.',
         'hy' => 'A glass of water, please.',
@@ -19162,7 +16353,6 @@ return array (
         'ar' => 'شكرا',
         'zh' => '谢谢',
         'ja' => 'ありがとう',
-        'tr' => 'Teşekkür ederim',
         'ru' => 'Спасибо',
         'el' => 'Ευχαριστώ',
         'hy' => 'Շնորհակալություն',
@@ -19177,7 +16367,6 @@ return array (
         'ar' => 'Thank you for the help.',
         'zh' => 'Thank you for the help.',
         'ja' => 'Thank you for the help.',
-        'tr' => 'Thank you for the help.',
         'ru' => 'Thank you for the help.',
         'el' => 'Thank you for the help.',
         'hy' => 'Thank you for the help.',
@@ -19200,7 +16389,6 @@ return array (
         'ar' => 'ماء',
         'zh' => '水',
         'ja' => '水',
-        'tr' => 'Su',
         'ru' => 'вода',
         'el' => 'νερό',
         'hy' => 'ջուր',
@@ -19215,7 +16403,6 @@ return array (
         'ar' => 'I drink water every day.',
         'zh' => 'I drink water every day.',
         'ja' => 'I drink water every day.',
-        'tr' => 'I drink water every day.',
         'ru' => 'I drink water every day.',
         'el' => 'I drink water every day.',
         'hy' => 'I drink water every day.',
@@ -19238,7 +16425,6 @@ return array (
         'ar' => 'خبز',
         'zh' => '面包',
         'ja' => 'パン',
-        'tr' => 'Ekmek',
         'ru' => 'хлеб',
         'el' => 'ψωμί',
         'hy' => 'հաց',
@@ -19253,7 +16439,6 @@ return array (
         'ar' => 'This bread is very fresh.',
         'zh' => 'This bread is very fresh.',
         'ja' => 'This bread is very fresh.',
-        'tr' => 'This bread is very fresh.',
         'ru' => 'This bread is very fresh.',
         'el' => 'This bread is very fresh.',
         'hy' => 'This bread is very fresh.',
@@ -19276,7 +16461,6 @@ return array (
         'ar' => 'تفاح',
         'zh' => '苹果',
         'ja' => 'りんご',
-        'tr' => 'Elma',
         'ru' => 'яблоко',
         'el' => 'μήλο',
         'hy' => 'խնձոր',
@@ -19291,7 +16475,6 @@ return array (
         'ar' => 'I am eating an apple.',
         'zh' => 'I am eating an apple.',
         'ja' => 'I am eating an apple.',
-        'tr' => 'I am eating an apple.',
         'ru' => 'I am eating an apple.',
         'el' => 'I am eating an apple.',
         'hy' => 'I am eating an apple.',
@@ -19314,7 +16497,6 @@ return array (
         'ar' => 'حليب',
         'zh' => '牛奶',
         'ja' => '牛乳',
-        'tr' => 'Süt',
         'ru' => 'молоко',
         'el' => 'γάλα',
         'hy' => 'կաթ',
@@ -19329,7 +16511,6 @@ return array (
         'ar' => 'The children drink milk.',
         'zh' => 'The children drink milk.',
         'ja' => 'The children drink milk.',
-        'tr' => 'The children drink milk.',
         'ru' => 'The children drink milk.',
         'el' => 'The children drink milk.',
         'hy' => 'The children drink milk.',
@@ -19352,7 +16533,6 @@ return array (
         'ar' => 'قهوة',
         'zh' => '咖啡',
         'ja' => 'コーヒー',
-        'tr' => 'Kahve',
         'ru' => 'кофе',
         'el' => 'καφές',
         'hy' => 'սուրճ',
@@ -19367,7 +16547,6 @@ return array (
         'ar' => 'In the morning I drink coffee.',
         'zh' => 'In the morning I drink coffee.',
         'ja' => 'In the morning I drink coffee.',
-        'tr' => 'In the morning I drink coffee.',
         'ru' => 'In the morning I drink coffee.',
         'el' => 'In the morning I drink coffee.',
         'hy' => 'In the morning I drink coffee.',
@@ -19390,7 +16569,6 @@ return array (
         'ar' => 'شاي',
         'zh' => '茶',
         'ja' => 'お茶',
-        'tr' => 'Çay',
         'ru' => 'чай',
         'el' => 'τσάι',
         'hy' => 'թեյ',
@@ -19405,7 +16583,6 @@ return array (
         'ar' => 'Would you like some tea?',
         'zh' => 'Would you like some tea?',
         'ja' => 'Would you like some tea?',
-        'tr' => 'Would you like some tea?',
         'ru' => 'Would you like some tea?',
         'el' => 'Would you like some tea?',
         'hy' => 'Would you like some tea?',
@@ -19428,7 +16605,6 @@ return array (
         'ar' => 'بيت',
         'zh' => '房子',
         'ja' => '家',
-        'tr' => 'Ev',
         'ru' => 'дом',
         'el' => 'σπίτι',
         'hy' => 'տուն',
@@ -19443,7 +16619,6 @@ return array (
         'ar' => 'Our house is big.',
         'zh' => 'Our house is big.',
         'ja' => 'Our house is big.',
-        'tr' => 'Our house is big.',
         'ru' => 'Our house is big.',
         'el' => 'Our house is big.',
         'hy' => 'Our house is big.',
@@ -19466,7 +16641,6 @@ return array (
         'ar' => 'غرفة',
         'zh' => '房间',
         'ja' => '部屋',
-        'tr' => 'Oda',
         'ru' => 'комната',
         'el' => 'δωμάτιο',
         'hy' => 'սենյակ',
@@ -19481,7 +16655,6 @@ return array (
         'ar' => 'My room is clean.',
         'zh' => 'My room is clean.',
         'ja' => 'My room is clean.',
-        'tr' => 'My room is clean.',
         'ru' => 'My room is clean.',
         'el' => 'My room is clean.',
         'hy' => 'My room is clean.',
@@ -19504,7 +16677,6 @@ return array (
         'ar' => 'باب',
         'zh' => '门',
         'ja' => 'ドア',
-        'tr' => 'Kapı',
         'ru' => 'дверь',
         'el' => 'πόρτα',
         'hy' => 'դուռ',
@@ -19519,7 +16691,6 @@ return array (
         'ar' => 'Please close the door.',
         'zh' => 'Please close the door.',
         'ja' => 'Please close the door.',
-        'tr' => 'Please close the door.',
         'ru' => 'Please close the door.',
         'el' => 'Please close the door.',
         'hy' => 'Please close the door.',
@@ -19542,7 +16713,6 @@ return array (
         'ar' => 'نافذة',
         'zh' => '窗户',
         'ja' => '窓',
-        'tr' => 'Pencere',
         'ru' => 'окно',
         'el' => 'παράθυρο',
         'hy' => 'պատուհան',
@@ -19557,7 +16727,6 @@ return array (
         'ar' => 'Open the window.',
         'zh' => 'Open the window.',
         'ja' => 'Open the window.',
-        'tr' => 'Open the window.',
         'ru' => 'Open the window.',
         'el' => 'Open the window.',
         'hy' => 'Open the window.',
@@ -19580,7 +16749,6 @@ return array (
         'ar' => 'عائلة',
         'zh' => '家庭',
         'ja' => '家族',
-        'tr' => 'Aile',
         'ru' => 'семья',
         'el' => 'οικογένεια',
         'hy' => 'ընտանիք',
@@ -19595,7 +16763,6 @@ return array (
         'ar' => 'I love my family.',
         'zh' => 'I love my family.',
         'ja' => 'I love my family.',
-        'tr' => 'I love my family.',
         'ru' => 'I love my family.',
         'el' => 'I love my family.',
         'hy' => 'I love my family.',
@@ -19618,7 +16785,6 @@ return array (
         'ar' => 'أب',
         'zh' => '父亲',
         'ja' => '父',
-        'tr' => 'Baba',
         'ru' => 'отец',
         'el' => 'πατέρας',
         'hy' => 'հայր',
@@ -19633,7 +16799,6 @@ return array (
         'ar' => 'My father is a doctor.',
         'zh' => 'My father is a doctor.',
         'ja' => 'My father is a doctor.',
-        'tr' => 'My father is a doctor.',
         'ru' => 'My father is a doctor.',
         'el' => 'My father is a doctor.',
         'hy' => 'My father is a doctor.',
@@ -19656,7 +16821,6 @@ return array (
         'ar' => 'أم',
         'zh' => '母亲',
         'ja' => '母',
-        'tr' => 'Anne',
         'ru' => 'мать',
         'el' => 'μητέρα',
         'hy' => 'մայր',
@@ -19671,7 +16835,6 @@ return array (
         'ar' => 'My mother is cooking dinner.',
         'zh' => 'My mother is cooking dinner.',
         'ja' => 'My mother is cooking dinner.',
-        'tr' => 'My mother is cooking dinner.',
         'ru' => 'My mother is cooking dinner.',
         'el' => 'My mother is cooking dinner.',
         'hy' => 'My mother is cooking dinner.',
@@ -19694,7 +16857,6 @@ return array (
         'ar' => 'صديق',
         'zh' => '朋友',
         'ja' => '友達',
-        'tr' => 'Arkadaş',
         'ru' => 'друг',
         'el' => 'φίλος',
         'hy' => 'ընկեր',
@@ -19709,7 +16871,6 @@ return array (
         'ar' => 'This is my best friend.',
         'zh' => 'This is my best friend.',
         'ja' => 'This is my best friend.',
-        'tr' => 'This is my best friend.',
         'ru' => 'This is my best friend.',
         'el' => 'This is my best friend.',
         'hy' => 'This is my best friend.',
@@ -19732,7 +16893,6 @@ return array (
         'ar' => 'مدرسة',
         'zh' => '学校',
         'ja' => '学校',
-        'tr' => 'Okul',
         'ru' => 'школа',
         'el' => 'σχολείο',
         'hy' => 'դպրոց',
@@ -19747,7 +16907,6 @@ return array (
         'ar' => 'The children go to school.',
         'zh' => 'The children go to school.',
         'ja' => 'The children go to school.',
-        'tr' => 'The children go to school.',
         'ru' => 'The children go to school.',
         'el' => 'The children go to school.',
         'hy' => 'The children go to school.',
@@ -19770,7 +16929,6 @@ return array (
         'ar' => 'كتاب',
         'zh' => '书',
         'ja' => '本',
-        'tr' => 'Kitap',
         'ru' => 'книга',
         'el' => 'βιβλίο',
         'hy' => 'գիրք',
@@ -19785,7 +16943,6 @@ return array (
         'ar' => 'I\'m reading an interesting book.',
         'zh' => 'I\'m reading an interesting book.',
         'ja' => 'I\'m reading an interesting book.',
-        'tr' => 'I\'m reading an interesting book.',
         'ru' => 'I\'m reading an interesting book.',
         'el' => 'I\'m reading an interesting book.',
         'hy' => 'I\'m reading an interesting book.',
@@ -19808,7 +16965,6 @@ return array (
         'ar' => 'قلم',
         'zh' => '铅笔',
         'ja' => '鉛筆',
-        'tr' => 'Kalem',
         'ru' => 'карандаш',
         'el' => 'μολύβι',
         'hy' => 'մատիտ',
@@ -19823,7 +16979,6 @@ return array (
         'ar' => 'Do you have a pencil?',
         'zh' => 'Do you have a pencil?',
         'ja' => 'Do you have a pencil?',
-        'tr' => 'Do you have a pencil?',
         'ru' => 'Do you have a pencil?',
         'el' => 'Do you have a pencil?',
         'hy' => 'Do you have a pencil?',
@@ -19846,7 +17001,6 @@ return array (
         'ar' => 'طاولة',
         'zh' => '桌子',
         'ja' => '机',
-        'tr' => 'Masa',
         'ru' => 'стол',
         'el' => 'τραπέζι',
         'hy' => 'սեղան',
@@ -19861,7 +17015,6 @@ return array (
         'ar' => 'The book is on the table.',
         'zh' => 'The book is on the table.',
         'ja' => 'The book is on the table.',
-        'tr' => 'The book is on the table.',
         'ru' => 'The book is on the table.',
         'el' => 'The book is on the table.',
         'hy' => 'The book is on the table.',
@@ -19884,7 +17037,6 @@ return array (
         'ar' => 'كرسي',
         'zh' => '椅子',
         'ja' => '椅子',
-        'tr' => 'Sandalye',
         'ru' => 'стул',
         'el' => 'καρέκλα',
         'hy' => 'աթոռ',
@@ -19899,7 +17051,6 @@ return array (
         'ar' => 'Sit on the chair.',
         'zh' => 'Sit on the chair.',
         'ja' => 'Sit on the chair.',
-        'tr' => 'Sit on the chair.',
         'ru' => 'Sit on the chair.',
         'el' => 'Sit on the chair.',
         'hy' => 'Sit on the chair.',
@@ -19922,7 +17073,6 @@ return array (
         'ar' => 'وقت',
         'zh' => '时间',
         'ja' => '時間',
-        'tr' => 'Zaman / Vakit',
         'ru' => 'время',
         'el' => 'χρόνος',
         'hy' => 'ժամանակ',
@@ -19937,7 +17087,6 @@ return array (
         'ar' => 'I don\'t have time.',
         'zh' => 'I don\'t have time.',
         'ja' => 'I don\'t have time.',
-        'tr' => 'I don\'t have time.',
         'ru' => 'I don\'t have time.',
         'el' => 'I don\'t have time.',
         'hy' => 'I don\'t have time.',
@@ -19960,7 +17109,6 @@ return array (
         'ar' => 'يوم',
         'zh' => '天',
         'ja' => '日',
-        'tr' => 'Gün',
         'ru' => 'день',
         'el' => 'μέρα',
         'hy' => 'օր',
@@ -19975,7 +17123,6 @@ return array (
         'ar' => 'I wish you a good day.',
         'zh' => 'I wish you a good day.',
         'ja' => 'I wish you a good day.',
-        'tr' => 'I wish you a good day.',
         'ru' => 'I wish you a good day.',
         'el' => 'I wish you a good day.',
         'hy' => 'I wish you a good day.',
@@ -19998,7 +17145,6 @@ return array (
         'ar' => 'ليل',
         'zh' => '晚上',
         'ja' => '夜',
-        'tr' => 'Gece',
         'ru' => 'ночь',
         'el' => 'νύχτα',
         'hy' => 'գիշեր',
@@ -20013,7 +17159,6 @@ return array (
         'ar' => 'The night is quiet.',
         'zh' => 'The night is quiet.',
         'ja' => 'The night is quiet.',
-        'tr' => 'The night is quiet.',
         'ru' => 'The night is quiet.',
         'el' => 'The night is quiet.',
         'hy' => 'The night is quiet.',
@@ -20036,7 +17181,6 @@ return array (
         'ar' => 'صباح',
         'zh' => '早上',
         'ja' => '朝',
-        'tr' => 'Sabah',
         'ru' => 'утро',
         'el' => 'πρωί',
         'hy' => 'առավոտ',
@@ -20051,7 +17195,6 @@ return array (
         'ar' => 'Good morning.',
         'zh' => 'Good morning.',
         'ja' => 'Good morning.',
-        'tr' => 'Good morning.',
         'ru' => 'Good morning.',
         'el' => 'Good morning.',
         'hy' => 'Good morning.',
@@ -20074,7 +17217,6 @@ return array (
         'ar' => 'أسبوع',
         'zh' => '星期',
         'ja' => '週間',
-        'tr' => 'Hafta',
         'ru' => 'неделя',
         'el' => 'εβδομάδα',
         'hy' => 'շաբաթ',
@@ -20089,7 +17231,6 @@ return array (
         'ar' => 'See you next week.',
         'zh' => 'See you next week.',
         'ja' => 'See you next week.',
-        'tr' => 'See you next week.',
         'ru' => 'See you next week.',
         'el' => 'See you next week.',
         'hy' => 'See you next week.',
@@ -20112,7 +17253,6 @@ return array (
         'ar' => 'شهر',
         'zh' => '月',
         'ja' => '月',
-        'tr' => 'Ay',
         'ru' => 'месяц',
         'el' => 'μήνας',
         'hy' => 'ամիս',
@@ -20127,7 +17267,6 @@ return array (
         'ar' => 'I\'ve been learning Armenian for a month.',
         'zh' => 'I\'ve been learning Armenian for a month.',
         'ja' => 'I\'ve been learning Armenian for a month.',
-        'tr' => 'I\'ve been learning Armenian for a month.',
         'ru' => 'I\'ve been learning Armenian for a month.',
         'el' => 'I\'ve been learning Armenian for a month.',
         'hy' => 'I\'ve been learning Armenian for a month.',
@@ -20150,7 +17289,6 @@ return array (
         'ar' => 'سنة',
         'zh' => '年',
         'ja' => '年',
-        'tr' => 'Yıl / Sene',
         'ru' => 'год',
         'el' => 'έτος',
         'hy' => 'տարի',
@@ -20165,7 +17303,6 @@ return array (
         'ar' => 'Happy New Year.',
         'zh' => 'Happy New Year.',
         'ja' => 'Happy New Year.',
-        'tr' => 'Happy New Year.',
         'ru' => 'Happy New Year.',
         'el' => 'Happy New Year.',
         'hy' => 'Happy New Year.',
@@ -20188,7 +17325,6 @@ return array (
         'ar' => 'مدينة',
         'zh' => '城市',
         'ja' => '都市',
-        'tr' => 'Şehir',
         'ru' => 'город',
         'el' => 'πόλη',
         'hy' => 'քաղաք',
@@ -20203,7 +17339,6 @@ return array (
         'ar' => 'Yerevan is a big city.',
         'zh' => 'Yerevan is a big city.',
         'ja' => 'Yerevan is a big city.',
-        'tr' => 'Yerevan is a big city.',
         'ru' => 'Yerevan is a big city.',
         'el' => 'Yerevan is a big city.',
         'hy' => 'Yerevan is a big city.',
@@ -20226,7 +17361,6 @@ return array (
         'ar' => 'بلد',
         'zh' => '国家',
         'ja' => '国',
-        'tr' => 'Ülke',
         'ru' => 'страна',
         'el' => 'χώρα',
         'hy' => 'երկիր',
@@ -20241,7 +17375,6 @@ return array (
         'ar' => 'Armenia is a beautiful country.',
         'zh' => 'Armenia is a beautiful country.',
         'ja' => 'Armenia is a beautiful country.',
-        'tr' => 'Armenia is a beautiful country.',
         'ru' => 'Armenia is a beautiful country.',
         'el' => 'Armenia is a beautiful country.',
         'hy' => 'Armenia is a beautiful country.',
@@ -20264,7 +17397,6 @@ return array (
         'ar' => 'طريق',
         'zh' => '路',
         'ja' => '道',
-        'tr' => 'Yol',
         'ru' => 'дорога',
         'el' => 'δρόμος',
         'hy' => 'ճանապարհ',
@@ -20279,7 +17411,6 @@ return array (
         'ar' => 'The road is very long.',
         'zh' => 'The road is very long.',
         'ja' => 'The road is very long.',
-        'tr' => 'The road is very long.',
         'ru' => 'The road is very long.',
         'el' => 'The road is very long.',
         'hy' => 'The road is very long.',
@@ -20302,7 +17433,6 @@ return array (
         'ar' => 'قطار',
         'zh' => '火车',
         'ja' => '電車',
-        'tr' => 'Tren',
         'ru' => 'поезд',
         'el' => 'τρένο',
         'hy' => 'գնացք',
@@ -20317,7 +17447,6 @@ return array (
         'ar' => 'The train arrives at eight.',
         'zh' => 'The train arrives at eight.',
         'ja' => 'The train arrives at eight.',
-        'tr' => 'The train arrives at eight.',
         'ru' => 'The train arrives at eight.',
         'el' => 'The train arrives at eight.',
         'hy' => 'The train arrives at eight.',
@@ -20340,7 +17469,6 @@ return array (
         'ar' => 'سيارة',
         'zh' => '汽车',
         'ja' => '車',
-        'tr' => 'Araba',
         'ru' => 'машина',
         'el' => 'αυτοκίνητο',
         'hy' => 'մեքենա',
@@ -20355,7 +17483,6 @@ return array (
         'ar' => 'He has a new car.',
         'zh' => 'He has a new car.',
         'ja' => 'He has a new car.',
-        'tr' => 'He has a new car.',
         'ru' => 'He has a new car.',
         'el' => 'He has a new car.',
         'hy' => 'He has a new car.',
@@ -20378,7 +17505,6 @@ return array (
         'ar' => 'تذكرة',
         'zh' => '票',
         'ja' => '切符',
-        'tr' => 'Bilet',
         'ru' => 'билет',
         'el' => 'εισιτήριο',
         'hy' => 'տոմս',
@@ -20393,7 +17519,6 @@ return array (
         'ar' => 'I need a ticket to Yerevan.',
         'zh' => 'I need a ticket to Yerevan.',
         'ja' => 'I need a ticket to Yerevan.',
-        'tr' => 'I need a ticket to Yerevan.',
         'ru' => 'I need a ticket to Yerevan.',
         'el' => 'I need a ticket to Yerevan.',
         'hy' => 'I need a ticket to Yerevan.',
@@ -20416,7 +17541,6 @@ return array (
         'ar' => 'فندق',
         'zh' => '酒店',
         'ja' => 'ホテル',
-        'tr' => 'Otel',
         'ru' => 'гостиница',
         'el' => 'ξενοδοχείο',
         'hy' => 'հյուրանոց',
@@ -20431,7 +17555,6 @@ return array (
         'ar' => 'The hotel is near the station.',
         'zh' => 'The hotel is near the station.',
         'ja' => 'The hotel is near the station.',
-        'tr' => 'The hotel is near the station.',
         'ru' => 'The hotel is near the station.',
         'el' => 'The hotel is near the station.',
         'hy' => 'The hotel is near the station.',
@@ -20454,7 +17577,6 @@ return array (
         'ar' => 'مال',
         'zh' => '钱',
         'ja' => 'お金',
-        'tr' => 'Para',
         'ru' => 'деньги',
         'el' => 'χρήματα',
         'hy' => 'փող',
@@ -20469,7 +17591,6 @@ return array (
         'ar' => 'I have little money.',
         'zh' => 'I have little money.',
         'ja' => 'I have little money.',
-        'tr' => 'I have little money.',
         'ru' => 'I have little money.',
         'el' => 'I have little money.',
         'hy' => 'I have little money.',
@@ -20492,7 +17613,6 @@ return array (
         'ar' => 'متجر',
         'zh' => '商店',
         'ja' => '店',
-        'tr' => 'Mağaza / Dükkan',
         'ru' => 'магазин',
         'el' => 'μαγαζί',
         'hy' => 'խանութ',
@@ -20507,7 +17627,6 @@ return array (
         'ar' => 'The shop is open until ten.',
         'zh' => 'The shop is open until ten.',
         'ja' => 'The shop is open until ten.',
-        'tr' => 'The shop is open until ten.',
         'ru' => 'The shop is open until ten.',
         'el' => 'The shop is open until ten.',
         'hy' => 'The shop is open until ten.',
@@ -20530,7 +17649,6 @@ return array (
         'ar' => 'سعر',
         'zh' => '价格',
         'ja' => '値段',
-        'tr' => 'Fiyat',
         'ru' => 'цена',
         'el' => 'τιμή',
         'hy' => 'գին',
@@ -20545,7 +17663,6 @@ return array (
         'ar' => 'What\'s the price?',
         'zh' => 'What\'s the price?',
         'ja' => 'What\'s the price?',
-        'tr' => 'What\'s the price?',
         'ru' => 'What\'s the price?',
         'el' => 'What\'s the price?',
         'hy' => 'What\'s the price?',
@@ -20568,7 +17685,6 @@ return array (
         'ar' => 'رخيص',
         'zh' => '便宜',
         'ja' => '安い',
-        'tr' => 'Ucuz',
         'ru' => 'дешёвый',
         'el' => 'φτηνός',
         'hy' => 'էժան',
@@ -20583,7 +17699,6 @@ return array (
         'ar' => 'This phone is cheap.',
         'zh' => 'This phone is cheap.',
         'ja' => 'This phone is cheap.',
-        'tr' => 'This phone is cheap.',
         'ru' => 'This phone is cheap.',
         'el' => 'This phone is cheap.',
         'hy' => 'This phone is cheap.',
@@ -20606,7 +17721,6 @@ return array (
         'ar' => 'غالي',
         'zh' => '贵',
         'ja' => '高い',
-        'tr' => 'Pahalı',
         'ru' => 'дорогой',
         'el' => 'ακριβός',
         'hy' => 'թանկ',
@@ -20621,7 +17735,6 @@ return array (
         'ar' => 'This restaurant is expensive.',
         'zh' => 'This restaurant is expensive.',
         'ja' => 'This restaurant is expensive.',
-        'tr' => 'This restaurant is expensive.',
         'ru' => 'This restaurant is expensive.',
         'el' => 'This restaurant is expensive.',
         'hy' => 'This restaurant is expensive.',
@@ -20644,7 +17757,6 @@ return array (
         'ar' => 'سعيد',
         'zh' => '高兴',
         'ja' => '幸せ',
-        'tr' => 'Mutlu',
         'ru' => 'счастливый',
         'el' => 'χαρούμενος',
         'hy' => 'ուրախ',
@@ -20659,7 +17771,6 @@ return array (
         'ar' => 'I\'m very happy today.',
         'zh' => 'I\'m very happy today.',
         'ja' => 'I\'m very happy today.',
-        'tr' => 'I\'m very happy today.',
         'ru' => 'I\'m very happy today.',
         'el' => 'I\'m very happy today.',
         'hy' => 'I\'m very happy today.',
@@ -20682,7 +17793,6 @@ return array (
         'ar' => 'حزين',
         'zh' => '难过',
         'ja' => '悲しい',
-        'tr' => 'Üzgün',
         'ru' => 'грустный',
         'el' => 'λυπημένος',
         'hy' => 'տխուր',
@@ -20697,7 +17807,6 @@ return array (
         'ar' => 'Why are you sad?',
         'zh' => 'Why are you sad?',
         'ja' => 'Why are you sad?',
-        'tr' => 'Why are you sad?',
         'ru' => 'Why are you sad?',
         'el' => 'Why are you sad?',
         'hy' => 'Why are you sad?',
@@ -20720,7 +17829,6 @@ return array (
         'ar' => 'متعب',
         'zh' => '累',
         'ja' => '疲れた',
-        'tr' => 'Yorgun',
         'ru' => 'усталый',
         'el' => 'κουρασμένος',
         'hy' => 'հոգնած',
@@ -20735,7 +17843,6 @@ return array (
         'ar' => 'I\'m very tired.',
         'zh' => 'I\'m very tired.',
         'ja' => 'I\'m very tired.',
-        'tr' => 'I\'m very tired.',
         'ru' => 'I\'m very tired.',
         'el' => 'I\'m very tired.',
         'hy' => 'I\'m very tired.',
@@ -20758,7 +17865,6 @@ return array (
         'ar' => 'حار',
         'zh' => '热',
         'ja' => '暑い',
-        'tr' => 'Sıcak',
         'ru' => 'жаркий',
         'el' => 'ζεστός',
         'hy' => 'տաք',
@@ -20773,7 +17879,6 @@ return array (
         'ar' => 'The tea is hot.',
         'zh' => 'The tea is hot.',
         'ja' => 'The tea is hot.',
-        'tr' => 'The tea is hot.',
         'ru' => 'The tea is hot.',
         'el' => 'The tea is hot.',
         'hy' => 'The tea is hot.',
@@ -20796,7 +17901,6 @@ return array (
         'ar' => 'بارد',
         'zh' => '冷',
         'ja' => '寒い',
-        'tr' => 'Soğuk',
         'ru' => 'холодный',
         'el' => 'κρύος',
         'hy' => 'սառը',
@@ -20811,7 +17915,6 @@ return array (
         'ar' => 'The water is cold.',
         'zh' => 'The water is cold.',
         'ja' => 'The water is cold.',
-        'tr' => 'The water is cold.',
         'ru' => 'The water is cold.',
         'el' => 'The water is cold.',
         'hy' => 'The water is cold.',
@@ -20834,7 +17937,6 @@ return array (
         'ar' => 'جديد',
         'zh' => '新',
         'ja' => '新しい',
-        'tr' => 'Yeni',
         'ru' => 'новый',
         'el' => 'καινούργιος',
         'hy' => 'նոր',
@@ -20849,7 +17951,6 @@ return array (
         'ar' => 'I have a new phone.',
         'zh' => 'I have a new phone.',
         'ja' => 'I have a new phone.',
-        'tr' => 'I have a new phone.',
         'ru' => 'I have a new phone.',
         'el' => 'I have a new phone.',
         'hy' => 'I have a new phone.',
@@ -20872,7 +17973,6 @@ return array (
         'ar' => 'قديم',
         'zh' => '旧',
         'ja' => '古い',
-        'tr' => 'Eski / Yaşlı',
         'ru' => 'старый',
         'el' => 'παλιός',
         'hy' => 'հին',
@@ -20887,7 +17987,6 @@ return array (
         'ar' => 'This is a very old house.',
         'zh' => 'This is a very old house.',
         'ja' => 'This is a very old house.',
-        'tr' => 'This is a very old house.',
         'ru' => 'This is a very old house.',
         'el' => 'This is a very old house.',
         'hy' => 'This is a very old house.',
@@ -20910,7 +18009,6 @@ return array (
         'ar' => 'حب',
         'zh' => '爱',
         'ja' => '愛',
-        'tr' => 'Sevgi / Aşk',
         'ru' => 'любовь',
         'el' => 'αγάπη',
         'hy' => 'սեր',
@@ -20925,7 +18023,6 @@ return array (
         'ar' => 'Love is what matters most.',
         'zh' => 'Love is what matters most.',
         'ja' => 'Love is what matters most.',
-        'tr' => 'Love is what matters most.',
         'ru' => 'Love is what matters most.',
         'el' => 'Love is what matters most.',
         'hy' => 'Love is what matters most.',
@@ -20951,7 +18048,6 @@ return array (
         'ar' => 'مرحبا',
         'zh' => '你好',
         'ja' => 'こんにちは',
-        'tr' => 'Merhaba',
         'ru' => 'Привет',
         'el' => 'Γεια σου',
         'hy' => 'Բարև',
@@ -20966,7 +18062,6 @@ return array (
         'ar' => 'Hello! How are you?',
         'zh' => 'Hello! How are you?',
         'ja' => 'Hello! How are you?',
-        'tr' => 'Hello! How are you?',
         'ru' => 'Hello! How are you?',
         'el' => 'Hello! How are you?',
         'hy' => 'Hello! How are you?',
@@ -20989,7 +18084,6 @@ return array (
         'ar' => 'وداعا',
         'zh' => '再见',
         'ja' => 'さようなら',
-        'tr' => 'Hoşça kal / Güle güle',
         'ru' => 'До свидания',
         'el' => 'Αντίο',
         'hy' => 'Ցտեսություն',
@@ -21004,7 +18098,6 @@ return array (
         'ar' => 'Goodbye, see you tomorrow!',
         'zh' => 'Goodbye, see you tomorrow!',
         'ja' => 'Goodbye, see you tomorrow!',
-        'tr' => 'Goodbye, see you tomorrow!',
         'ru' => 'Goodbye, see you tomorrow!',
         'el' => 'Goodbye, see you tomorrow!',
         'hy' => 'Goodbye, see you tomorrow!',
@@ -21027,7 +18120,6 @@ return array (
         'ar' => 'من فضلك',
         'zh' => '请',
         'ja' => 'お願いします',
-        'tr' => 'Lütfen',
         'ru' => 'Пожалуйста',
         'el' => 'Παρακαλώ',
         'hy' => 'Խնդրում եմ',
@@ -21042,7 +18134,6 @@ return array (
         'ar' => 'Please give me some water.',
         'zh' => 'Please give me some water.',
         'ja' => 'Please give me some water.',
-        'tr' => 'Please give me some water.',
         'ru' => 'Please give me some water.',
         'el' => 'Please give me some water.',
         'hy' => 'Please give me some water.',
@@ -21065,7 +18156,6 @@ return array (
         'ar' => 'شكرا',
         'zh' => '谢谢',
         'ja' => 'ありがとう',
-        'tr' => 'Teşekkür ederim',
         'ru' => 'Спасибо',
         'el' => 'Ευχαριστώ',
         'hy' => 'Շնորհակալություն',
@@ -21080,7 +18170,6 @@ return array (
         'ar' => 'Thank you for the help!',
         'zh' => 'Thank you for the help!',
         'ja' => 'Thank you for the help!',
-        'tr' => 'Thank you for the help!',
         'ru' => 'Thank you for the help!',
         'el' => 'Thank you for the help!',
         'hy' => 'Thank you for the help!',
@@ -21103,7 +18192,6 @@ return array (
         'ar' => 'ماء',
         'zh' => '水',
         'ja' => '水',
-        'tr' => 'Su',
         'ru' => 'вода',
         'el' => 'νερό',
         'hy' => 'ջուր',
@@ -21118,7 +18206,6 @@ return array (
         'ar' => 'I drink water every day.',
         'zh' => 'I drink water every day.',
         'ja' => 'I drink water every day.',
-        'tr' => 'I drink water every day.',
         'ru' => 'I drink water every day.',
         'el' => 'I drink water every day.',
         'hy' => 'I drink water every day.',
@@ -21141,7 +18228,6 @@ return array (
         'ar' => 'خبز',
         'zh' => '面包',
         'ja' => 'パン',
-        'tr' => 'Ekmek',
         'ru' => 'хлеб',
         'el' => 'ψωμί',
         'hy' => 'հաց',
@@ -21156,7 +18242,6 @@ return array (
         'ar' => 'This bread is very fresh.',
         'zh' => 'This bread is very fresh.',
         'ja' => 'This bread is very fresh.',
-        'tr' => 'This bread is very fresh.',
         'ru' => 'This bread is very fresh.',
         'el' => 'This bread is very fresh.',
         'hy' => 'This bread is very fresh.',
@@ -21179,7 +18264,6 @@ return array (
         'ar' => 'تفاح',
         'zh' => '苹果',
         'ja' => 'りんご',
-        'tr' => 'Elma',
         'ru' => 'яблоко',
         'el' => 'μήλο',
         'hy' => 'խնձոր',
@@ -21194,7 +18278,6 @@ return array (
         'ar' => 'I am eating an apple.',
         'zh' => 'I am eating an apple.',
         'ja' => 'I am eating an apple.',
-        'tr' => 'I am eating an apple.',
         'ru' => 'I am eating an apple.',
         'el' => 'I am eating an apple.',
         'hy' => 'I am eating an apple.',
@@ -21217,7 +18300,6 @@ return array (
         'ar' => 'حليب',
         'zh' => '牛奶',
         'ja' => '牛乳',
-        'tr' => 'Süt',
         'ru' => 'молоко',
         'el' => 'γάλα',
         'hy' => 'կաթ',
@@ -21232,7 +18314,6 @@ return array (
         'ar' => 'The children drink milk.',
         'zh' => 'The children drink milk.',
         'ja' => 'The children drink milk.',
-        'tr' => 'The children drink milk.',
         'ru' => 'The children drink milk.',
         'el' => 'The children drink milk.',
         'hy' => 'The children drink milk.',
@@ -21255,7 +18336,6 @@ return array (
         'ar' => 'قهوة',
         'zh' => '咖啡',
         'ja' => 'コーヒー',
-        'tr' => 'Kahve',
         'ru' => 'кофе',
         'el' => 'καφές',
         'hy' => 'սուրճ',
@@ -21270,7 +18350,6 @@ return array (
         'ar' => 'In the morning I drink coffee.',
         'zh' => 'In the morning I drink coffee.',
         'ja' => 'In the morning I drink coffee.',
-        'tr' => 'In the morning I drink coffee.',
         'ru' => 'In the morning I drink coffee.',
         'el' => 'In the morning I drink coffee.',
         'hy' => 'In the morning I drink coffee.',
@@ -21293,7 +18372,6 @@ return array (
         'ar' => 'شاي',
         'zh' => '茶',
         'ja' => 'お茶',
-        'tr' => 'Çay',
         'ru' => 'чай',
         'el' => 'τσάι',
         'hy' => 'թեյ',
@@ -21308,7 +18386,6 @@ return array (
         'ar' => 'Would you like some tea?',
         'zh' => 'Would you like some tea?',
         'ja' => 'Would you like some tea?',
-        'tr' => 'Would you like some tea?',
         'ru' => 'Would you like some tea?',
         'el' => 'Would you like some tea?',
         'hy' => 'Would you like some tea?',
@@ -21331,7 +18408,6 @@ return array (
         'ar' => 'بيت',
         'zh' => '房子',
         'ja' => '家',
-        'tr' => 'Ev',
         'ru' => 'дом',
         'el' => 'σπίτι',
         'hy' => 'տուն',
@@ -21346,7 +18422,6 @@ return array (
         'ar' => 'Our house is big.',
         'zh' => 'Our house is big.',
         'ja' => 'Our house is big.',
-        'tr' => 'Our house is big.',
         'ru' => 'Our house is big.',
         'el' => 'Our house is big.',
         'hy' => 'Our house is big.',
@@ -21369,7 +18444,6 @@ return array (
         'ar' => 'غرفة',
         'zh' => '房间',
         'ja' => '部屋',
-        'tr' => 'Oda',
         'ru' => 'комната',
         'el' => 'δωμάτιο',
         'hy' => 'սենյակ',
@@ -21384,7 +18458,6 @@ return array (
         'ar' => 'My room is clean.',
         'zh' => 'My room is clean.',
         'ja' => 'My room is clean.',
-        'tr' => 'My room is clean.',
         'ru' => 'My room is clean.',
         'el' => 'My room is clean.',
         'hy' => 'My room is clean.',
@@ -21407,7 +18480,6 @@ return array (
         'ar' => 'باب',
         'zh' => '门',
         'ja' => 'ドア',
-        'tr' => 'Kapı',
         'ru' => 'дверь',
         'el' => 'πόρτα',
         'hy' => 'դուռ',
@@ -21422,7 +18494,6 @@ return array (
         'ar' => 'Please close the door.',
         'zh' => 'Please close the door.',
         'ja' => 'Please close the door.',
-        'tr' => 'Please close the door.',
         'ru' => 'Please close the door.',
         'el' => 'Please close the door.',
         'hy' => 'Please close the door.',
@@ -21445,7 +18516,6 @@ return array (
         'ar' => 'نافذة',
         'zh' => '窗户',
         'ja' => '窓',
-        'tr' => 'Pencere',
         'ru' => 'окно',
         'el' => 'παράθυρο',
         'hy' => 'պատուհան',
@@ -21460,7 +18530,6 @@ return array (
         'ar' => 'Open the window.',
         'zh' => 'Open the window.',
         'ja' => 'Open the window.',
-        'tr' => 'Open the window.',
         'ru' => 'Open the window.',
         'el' => 'Open the window.',
         'hy' => 'Open the window.',
@@ -21483,7 +18552,6 @@ return array (
         'ar' => 'عائلة',
         'zh' => '家庭',
         'ja' => '家族',
-        'tr' => 'Aile',
         'ru' => 'семья',
         'el' => 'οικογένεια',
         'hy' => 'ընտանիք',
@@ -21498,7 +18566,6 @@ return array (
         'ar' => 'I love my family.',
         'zh' => 'I love my family.',
         'ja' => 'I love my family.',
-        'tr' => 'I love my family.',
         'ru' => 'I love my family.',
         'el' => 'I love my family.',
         'hy' => 'I love my family.',
@@ -21521,7 +18588,6 @@ return array (
         'ar' => 'أب',
         'zh' => '父亲',
         'ja' => '父',
-        'tr' => 'Baba',
         'ru' => 'отец',
         'el' => 'πατέρας',
         'hy' => 'հայր',
@@ -21536,7 +18602,6 @@ return array (
         'ar' => 'My father is a doctor.',
         'zh' => 'My father is a doctor.',
         'ja' => 'My father is a doctor.',
-        'tr' => 'My father is a doctor.',
         'ru' => 'My father is a doctor.',
         'el' => 'My father is a doctor.',
         'hy' => 'My father is a doctor.',
@@ -21559,7 +18624,6 @@ return array (
         'ar' => 'أم',
         'zh' => '母亲',
         'ja' => '母',
-        'tr' => 'Anne',
         'ru' => 'мать',
         'el' => 'μητέρα',
         'hy' => 'մայր',
@@ -21574,7 +18638,6 @@ return array (
         'ar' => 'My mother is cooking.',
         'zh' => 'My mother is cooking.',
         'ja' => 'My mother is cooking.',
-        'tr' => 'My mother is cooking.',
         'ru' => 'My mother is cooking.',
         'el' => 'My mother is cooking.',
         'hy' => 'My mother is cooking.',
@@ -21597,7 +18660,6 @@ return array (
         'ar' => 'صديق',
         'zh' => '朋友',
         'ja' => '友達',
-        'tr' => 'Arkadaş',
         'ru' => 'друг',
         'el' => 'φίλος',
         'hy' => 'ընկեր',
@@ -21612,7 +18674,6 @@ return array (
         'ar' => 'This is my best friend.',
         'zh' => 'This is my best friend.',
         'ja' => 'This is my best friend.',
-        'tr' => 'This is my best friend.',
         'ru' => 'This is my best friend.',
         'el' => 'This is my best friend.',
         'hy' => 'This is my best friend.',
@@ -21635,7 +18696,6 @@ return array (
         'ar' => 'مدرسة',
         'zh' => '学校',
         'ja' => '学校',
-        'tr' => 'Okul',
         'ru' => 'школа',
         'el' => 'σχολείο',
         'hy' => 'դպրոց',
@@ -21650,7 +18710,6 @@ return array (
         'ar' => 'The children go to school.',
         'zh' => 'The children go to school.',
         'ja' => 'The children go to school.',
-        'tr' => 'The children go to school.',
         'ru' => 'The children go to school.',
         'el' => 'The children go to school.',
         'hy' => 'The children go to school.',
@@ -21673,7 +18732,6 @@ return array (
         'ar' => 'كتاب',
         'zh' => '书',
         'ja' => '本',
-        'tr' => 'Kitap',
         'ru' => 'книга',
         'el' => 'βιβλίο',
         'hy' => 'գիրք',
@@ -21688,7 +18746,6 @@ return array (
         'ar' => 'I\'m reading an interesting book.',
         'zh' => 'I\'m reading an interesting book.',
         'ja' => 'I\'m reading an interesting book.',
-        'tr' => 'I\'m reading an interesting book.',
         'ru' => 'I\'m reading an interesting book.',
         'el' => 'I\'m reading an interesting book.',
         'hy' => 'I\'m reading an interesting book.',
@@ -21711,7 +18768,6 @@ return array (
         'ar' => 'قلم',
         'zh' => '铅笔',
         'ja' => '鉛筆',
-        'tr' => 'Kalem',
         'ru' => 'карандаш',
         'el' => 'μολύβι',
         'hy' => 'մատիտ',
@@ -21726,7 +18782,6 @@ return array (
         'ar' => 'Do you have a pencil?',
         'zh' => 'Do you have a pencil?',
         'ja' => 'Do you have a pencil?',
-        'tr' => 'Do you have a pencil?',
         'ru' => 'Do you have a pencil?',
         'el' => 'Do you have a pencil?',
         'hy' => 'Do you have a pencil?',
@@ -21749,7 +18804,6 @@ return array (
         'ar' => 'طاولة',
         'zh' => '桌子',
         'ja' => '机',
-        'tr' => 'Masa',
         'ru' => 'стол',
         'el' => 'τραπέζι',
         'hy' => 'սեղան',
@@ -21764,7 +18818,6 @@ return array (
         'ar' => 'The book is on the table.',
         'zh' => 'The book is on the table.',
         'ja' => 'The book is on the table.',
-        'tr' => 'The book is on the table.',
         'ru' => 'The book is on the table.',
         'el' => 'The book is on the table.',
         'hy' => 'The book is on the table.',
@@ -21787,7 +18840,6 @@ return array (
         'ar' => 'كرسي',
         'zh' => '椅子',
         'ja' => '椅子',
-        'tr' => 'Sandalye',
         'ru' => 'стул',
         'el' => 'καρέκλα',
         'hy' => 'աթոռ',
@@ -21802,7 +18854,6 @@ return array (
         'ar' => 'Sit on the chair.',
         'zh' => 'Sit on the chair.',
         'ja' => 'Sit on the chair.',
-        'tr' => 'Sit on the chair.',
         'ru' => 'Sit on the chair.',
         'el' => 'Sit on the chair.',
         'hy' => 'Sit on the chair.',
@@ -21825,7 +18876,6 @@ return array (
         'ar' => 'وقت',
         'zh' => '时间',
         'ja' => '時間',
-        'tr' => 'Zaman / Vakit',
         'ru' => 'время',
         'el' => 'χρόνος',
         'hy' => 'ժամանակ',
@@ -21840,7 +18890,6 @@ return array (
         'ar' => 'I don\'t have time.',
         'zh' => 'I don\'t have time.',
         'ja' => 'I don\'t have time.',
-        'tr' => 'I don\'t have time.',
         'ru' => 'I don\'t have time.',
         'el' => 'I don\'t have time.',
         'hy' => 'I don\'t have time.',
@@ -21863,7 +18912,6 @@ return array (
         'ar' => 'يوم',
         'zh' => '天',
         'ja' => '日',
-        'tr' => 'Gün',
         'ru' => 'день',
         'el' => 'μέρα',
         'hy' => 'օր',
@@ -21878,7 +18926,6 @@ return array (
         'ar' => 'Have a nice day!',
         'zh' => 'Have a nice day!',
         'ja' => 'Have a nice day!',
-        'tr' => 'Have a nice day!',
         'ru' => 'Have a nice day!',
         'el' => 'Have a nice day!',
         'hy' => 'Have a nice day!',
@@ -21901,7 +18948,6 @@ return array (
         'ar' => 'ليل',
         'zh' => '晚上',
         'ja' => '夜',
-        'tr' => 'Gece',
         'ru' => 'ночь',
         'el' => 'νύχτα',
         'hy' => 'գիշեր',
@@ -21916,7 +18962,6 @@ return array (
         'ar' => 'The night is quiet.',
         'zh' => 'The night is quiet.',
         'ja' => 'The night is quiet.',
-        'tr' => 'The night is quiet.',
         'ru' => 'The night is quiet.',
         'el' => 'The night is quiet.',
         'hy' => 'The night is quiet.',
@@ -21939,7 +18984,6 @@ return array (
         'ar' => 'صباح',
         'zh' => '早上',
         'ja' => '朝',
-        'tr' => 'Sabah',
         'ru' => 'утро',
         'el' => 'πρωί',
         'hy' => 'առավոտ',
@@ -21954,7 +18998,6 @@ return array (
         'ar' => 'I wake up early in the morning.',
         'zh' => 'I wake up early in the morning.',
         'ja' => 'I wake up early in the morning.',
-        'tr' => 'I wake up early in the morning.',
         'ru' => 'I wake up early in the morning.',
         'el' => 'I wake up early in the morning.',
         'hy' => 'I wake up early in the morning.',
@@ -21977,7 +19020,6 @@ return array (
         'ar' => 'أسبوع',
         'zh' => '星期',
         'ja' => '週間',
-        'tr' => 'Hafta',
         'ru' => 'неделя',
         'el' => 'εβδομάδα',
         'hy' => 'շաբաթ',
@@ -21992,7 +19034,6 @@ return array (
         'ar' => 'See you next week.',
         'zh' => 'See you next week.',
         'ja' => 'See you next week.',
-        'tr' => 'See you next week.',
         'ru' => 'See you next week.',
         'el' => 'See you next week.',
         'hy' => 'See you next week.',
@@ -22015,7 +19056,6 @@ return array (
         'ar' => 'شهر',
         'zh' => '月',
         'ja' => '月',
-        'tr' => 'Ay',
         'ru' => 'месяц',
         'el' => 'μήνας',
         'hy' => 'ամիս',
@@ -22030,7 +19070,6 @@ return array (
         'ar' => 'I\'ve been learning Hindi for a month.',
         'zh' => 'I\'ve been learning Hindi for a month.',
         'ja' => 'I\'ve been learning Hindi for a month.',
-        'tr' => 'I\'ve been learning Hindi for a month.',
         'ru' => 'I\'ve been learning Hindi for a month.',
         'el' => 'I\'ve been learning Hindi for a month.',
         'hy' => 'I\'ve been learning Hindi for a month.',
@@ -22053,7 +19092,6 @@ return array (
         'ar' => 'سنة',
         'zh' => '年',
         'ja' => '年',
-        'tr' => 'Yıl / Sene',
         'ru' => 'год',
         'el' => 'έτος',
         'hy' => 'տարի',
@@ -22068,7 +19106,6 @@ return array (
         'ar' => 'Happy New Year!',
         'zh' => 'Happy New Year!',
         'ja' => 'Happy New Year!',
-        'tr' => 'Happy New Year!',
         'ru' => 'Happy New Year!',
         'el' => 'Happy New Year!',
         'hy' => 'Happy New Year!',
@@ -22091,7 +19128,6 @@ return array (
         'ar' => 'مدينة',
         'zh' => '城市',
         'ja' => '都市',
-        'tr' => 'Şehir',
         'ru' => 'город',
         'el' => 'πόλη',
         'hy' => 'քաղաք',
@@ -22106,7 +19142,6 @@ return array (
         'ar' => 'Delhi is a big city.',
         'zh' => 'Delhi is a big city.',
         'ja' => 'Delhi is a big city.',
-        'tr' => 'Delhi is a big city.',
         'ru' => 'Delhi is a big city.',
         'el' => 'Delhi is a big city.',
         'hy' => 'Delhi is a big city.',
@@ -22129,7 +19164,6 @@ return array (
         'ar' => 'بلد',
         'zh' => '国家',
         'ja' => '国',
-        'tr' => 'Ülke',
         'ru' => 'страна',
         'el' => 'χώρα',
         'hy' => 'երկիր',
@@ -22144,7 +19178,6 @@ return array (
         'ar' => 'India is a beautiful country.',
         'zh' => 'India is a beautiful country.',
         'ja' => 'India is a beautiful country.',
-        'tr' => 'India is a beautiful country.',
         'ru' => 'India is a beautiful country.',
         'el' => 'India is a beautiful country.',
         'hy' => 'India is a beautiful country.',
@@ -22167,7 +19200,6 @@ return array (
         'ar' => 'طريق',
         'zh' => '路',
         'ja' => '道',
-        'tr' => 'Yol',
         'ru' => 'дорога',
         'el' => 'δρόμος',
         'hy' => 'ճանապարհ',
@@ -22182,7 +19214,6 @@ return array (
         'ar' => 'The road is very long.',
         'zh' => 'The road is very long.',
         'ja' => 'The road is very long.',
-        'tr' => 'The road is very long.',
         'ru' => 'The road is very long.',
         'el' => 'The road is very long.',
         'hy' => 'The road is very long.',
@@ -22205,7 +19236,6 @@ return array (
         'ar' => 'قطار',
         'zh' => '火车',
         'ja' => '電車',
-        'tr' => 'Tren',
         'ru' => 'поезд',
         'el' => 'τρένο',
         'hy' => 'գնացք',
@@ -22220,7 +19250,6 @@ return array (
         'ar' => 'The train arrives at eight.',
         'zh' => 'The train arrives at eight.',
         'ja' => 'The train arrives at eight.',
-        'tr' => 'The train arrives at eight.',
         'ru' => 'The train arrives at eight.',
         'el' => 'The train arrives at eight.',
         'hy' => 'The train arrives at eight.',
@@ -22243,7 +19272,6 @@ return array (
         'ar' => 'سيارة',
         'zh' => '汽车',
         'ja' => '車',
-        'tr' => 'Araba',
         'ru' => 'машина',
         'el' => 'αυτοκίνητο',
         'hy' => 'մեքենա',
@@ -22258,7 +19286,6 @@ return array (
         'ar' => 'He has a new car.',
         'zh' => 'He has a new car.',
         'ja' => 'He has a new car.',
-        'tr' => 'He has a new car.',
         'ru' => 'He has a new car.',
         'el' => 'He has a new car.',
         'hy' => 'He has a new car.',
@@ -22281,7 +19308,6 @@ return array (
         'ar' => 'تذكرة',
         'zh' => '票',
         'ja' => '切符',
-        'tr' => 'Bilet',
         'ru' => 'билет',
         'el' => 'εισιτήριο',
         'hy' => 'տոմս',
@@ -22296,7 +19322,6 @@ return array (
         'ar' => 'I need a ticket to Delhi.',
         'zh' => 'I need a ticket to Delhi.',
         'ja' => 'I need a ticket to Delhi.',
-        'tr' => 'I need a ticket to Delhi.',
         'ru' => 'I need a ticket to Delhi.',
         'el' => 'I need a ticket to Delhi.',
         'hy' => 'I need a ticket to Delhi.',
@@ -22319,7 +19344,6 @@ return array (
         'ar' => 'فندق',
         'zh' => '酒店',
         'ja' => 'ホテル',
-        'tr' => 'Otel',
         'ru' => 'гостиница',
         'el' => 'ξενοδοχείο',
         'hy' => 'հյուրանոց',
@@ -22334,7 +19358,6 @@ return array (
         'ar' => 'The hotel is near the station.',
         'zh' => 'The hotel is near the station.',
         'ja' => 'The hotel is near the station.',
-        'tr' => 'The hotel is near the station.',
         'ru' => 'The hotel is near the station.',
         'el' => 'The hotel is near the station.',
         'hy' => 'The hotel is near the station.',
@@ -22357,7 +19380,6 @@ return array (
         'ar' => 'مال',
         'zh' => '钱',
         'ja' => 'お金',
-        'tr' => 'Para',
         'ru' => 'деньги',
         'el' => 'χρήματα',
         'hy' => 'փող',
@@ -22372,7 +19394,6 @@ return array (
         'ar' => 'I have little money.',
         'zh' => 'I have little money.',
         'ja' => 'I have little money.',
-        'tr' => 'I have little money.',
         'ru' => 'I have little money.',
         'el' => 'I have little money.',
         'hy' => 'I have little money.',
@@ -22395,7 +19416,6 @@ return array (
         'ar' => 'متجر',
         'zh' => '商店',
         'ja' => '店',
-        'tr' => 'Mağaza / Dükkan',
         'ru' => 'магазин',
         'el' => 'μαγαζί',
         'hy' => 'խանութ',
@@ -22410,7 +19430,6 @@ return array (
         'ar' => 'The shop is open until ten.',
         'zh' => 'The shop is open until ten.',
         'ja' => 'The shop is open until ten.',
-        'tr' => 'The shop is open until ten.',
         'ru' => 'The shop is open until ten.',
         'el' => 'The shop is open until ten.',
         'hy' => 'The shop is open until ten.',
@@ -22433,7 +19452,6 @@ return array (
         'ar' => 'سعر',
         'zh' => '价格',
         'ja' => '値段',
-        'tr' => 'Fiyat',
         'ru' => 'цена',
         'el' => 'τιμή',
         'hy' => 'գին',
@@ -22448,7 +19466,6 @@ return array (
         'ar' => 'What\'s the price?',
         'zh' => 'What\'s the price?',
         'ja' => 'What\'s the price?',
-        'tr' => 'What\'s the price?',
         'ru' => 'What\'s the price?',
         'el' => 'What\'s the price?',
         'hy' => 'What\'s the price?',
@@ -22471,7 +19488,6 @@ return array (
         'ar' => 'رخيص',
         'zh' => '便宜',
         'ja' => '安い',
-        'tr' => 'Ucuz',
         'ru' => 'дешёвый',
         'el' => 'φτηνός',
         'hy' => 'էժան',
@@ -22486,7 +19502,6 @@ return array (
         'ar' => 'This phone is cheap.',
         'zh' => 'This phone is cheap.',
         'ja' => 'This phone is cheap.',
-        'tr' => 'This phone is cheap.',
         'ru' => 'This phone is cheap.',
         'el' => 'This phone is cheap.',
         'hy' => 'This phone is cheap.',
@@ -22509,7 +19524,6 @@ return array (
         'ar' => 'غالي',
         'zh' => '贵',
         'ja' => '高い',
-        'tr' => 'Pahalı',
         'ru' => 'дорогой',
         'el' => 'ακριβός',
         'hy' => 'թանկ',
@@ -22524,7 +19538,6 @@ return array (
         'ar' => 'This restaurant is expensive.',
         'zh' => 'This restaurant is expensive.',
         'ja' => 'This restaurant is expensive.',
-        'tr' => 'This restaurant is expensive.',
         'ru' => 'This restaurant is expensive.',
         'el' => 'This restaurant is expensive.',
         'hy' => 'This restaurant is expensive.',
@@ -22547,7 +19560,6 @@ return array (
         'ar' => 'سعيد',
         'zh' => '高兴',
         'ja' => '幸せ',
-        'tr' => 'Mutlu',
         'ru' => 'счастливый',
         'el' => 'χαρούμενος',
         'hy' => 'ուրախ',
@@ -22562,7 +19574,6 @@ return array (
         'ar' => 'I\'m very happy today.',
         'zh' => 'I\'m very happy today.',
         'ja' => 'I\'m very happy today.',
-        'tr' => 'I\'m very happy today.',
         'ru' => 'I\'m very happy today.',
         'el' => 'I\'m very happy today.',
         'hy' => 'I\'m very happy today.',
@@ -22585,7 +19596,6 @@ return array (
         'ar' => 'حزين',
         'zh' => '难过',
         'ja' => '悲しい',
-        'tr' => 'Üzgün',
         'ru' => 'грустный',
         'el' => 'λυπημένος',
         'hy' => 'տխուր',
@@ -22600,7 +19610,6 @@ return array (
         'ar' => 'Why are you sad?',
         'zh' => 'Why are you sad?',
         'ja' => 'Why are you sad?',
-        'tr' => 'Why are you sad?',
         'ru' => 'Why are you sad?',
         'el' => 'Why are you sad?',
         'hy' => 'Why are you sad?',
@@ -22623,7 +19632,6 @@ return array (
         'ar' => 'متعب',
         'zh' => '累',
         'ja' => '疲れた',
-        'tr' => 'Yorgun',
         'ru' => 'усталый',
         'el' => 'κουρασμένος',
         'hy' => 'հոգնած',
@@ -22638,7 +19646,6 @@ return array (
         'ar' => 'I\'m very tired.',
         'zh' => 'I\'m very tired.',
         'ja' => 'I\'m very tired.',
-        'tr' => 'I\'m very tired.',
         'ru' => 'I\'m very tired.',
         'el' => 'I\'m very tired.',
         'hy' => 'I\'m very tired.',
@@ -22661,7 +19668,6 @@ return array (
         'ar' => 'حار',
         'zh' => '热',
         'ja' => '暑い',
-        'tr' => 'Sıcak',
         'ru' => 'жаркий',
         'el' => 'ζεστός',
         'hy' => 'տաք',
@@ -22676,7 +19682,6 @@ return array (
         'ar' => 'The tea is hot.',
         'zh' => 'The tea is hot.',
         'ja' => 'The tea is hot.',
-        'tr' => 'The tea is hot.',
         'ru' => 'The tea is hot.',
         'el' => 'The tea is hot.',
         'hy' => 'The tea is hot.',
@@ -22699,7 +19704,6 @@ return array (
         'ar' => 'بارد',
         'zh' => '冷',
         'ja' => '寒い',
-        'tr' => 'Soğuk',
         'ru' => 'холодный',
         'el' => 'κρύος',
         'hy' => 'սառը',
@@ -22714,7 +19718,6 @@ return array (
         'ar' => 'The water is cold.',
         'zh' => 'The water is cold.',
         'ja' => 'The water is cold.',
-        'tr' => 'The water is cold.',
         'ru' => 'The water is cold.',
         'el' => 'The water is cold.',
         'hy' => 'The water is cold.',
@@ -22737,7 +19740,6 @@ return array (
         'ar' => 'جديد',
         'zh' => '新',
         'ja' => '新しい',
-        'tr' => 'Yeni',
         'ru' => 'новый',
         'el' => 'καινούργιος',
         'hy' => 'նոր',
@@ -22752,7 +19754,6 @@ return array (
         'ar' => 'I have a new phone.',
         'zh' => 'I have a new phone.',
         'ja' => 'I have a new phone.',
-        'tr' => 'I have a new phone.',
         'ru' => 'I have a new phone.',
         'el' => 'I have a new phone.',
         'hy' => 'I have a new phone.',
@@ -22775,7 +19776,6 @@ return array (
         'ar' => 'قديم',
         'zh' => '旧',
         'ja' => '古い',
-        'tr' => 'Eski / Yaşlı',
         'ru' => 'старый',
         'el' => 'παλιός',
         'hy' => 'հին',
@@ -22790,7 +19790,6 @@ return array (
         'ar' => 'This is a very old house.',
         'zh' => 'This is a very old house.',
         'ja' => 'This is a very old house.',
-        'tr' => 'This is a very old house.',
         'ru' => 'This is a very old house.',
         'el' => 'This is a very old house.',
         'hy' => 'This is a very old house.',
@@ -22813,7 +19812,6 @@ return array (
         'ar' => 'حب',
         'zh' => '爱',
         'ja' => '愛',
-        'tr' => 'Sevgi / Aşk',
         'ru' => 'любовь',
         'el' => 'αγάπη',
         'hy' => 'սեր',
@@ -22828,7 +19826,6 @@ return array (
         'ar' => 'Love is what matters most.',
         'zh' => 'Love is what matters most.',
         'ja' => 'Love is what matters most.',
-        'tr' => 'Love is what matters most.',
         'ru' => 'Love is what matters most.',
         'el' => 'Love is what matters most.',
         'hy' => 'Love is what matters most.',
