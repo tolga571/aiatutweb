@@ -181,7 +181,10 @@ for c, meta in concepts.items():
 base_words = {l: {c["word"].lower() for c in BASE.get(l, [])} for l in LANGS}
 OUT.mkdir(parents=True, exist_ok=True)
 manifest = {}
-for target in LANGS:
+# Turkish stays the pivot the concepts are written in, but the site no
+# longer offers it (2026-10-05): no Turkish pack, no Turkish translations.
+SITE_LANGS = [l for l in LANGS if l != "tr"]
+for target in SITE_LANGS:
     seen = set(base_words[target])
     cards = []
     for c, meta in concepts.items():
@@ -193,7 +196,7 @@ for target in LANGS:
             report["dropped"].append((c, target, word, "duplicate of an existing card"))
             continue
         seen.add(key)
-        trans = {n: resolved[c][n][0] for n in LANGS if n in resolved[c]}
+        trans = {n: resolved[c][n][0] for n in SITE_LANGS if n in resolved[c]}
         cards.append(dict(word=word, pronunciation=pron, category=meta["category"], level=meta["level"], translations=trans))
     if target == "zh":                       # HSK 1-4 packs (not already in the core set)
         lvmap = {1: "A1", 2: "A2", 3: "B1", 4: "B2"}
