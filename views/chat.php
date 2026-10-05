@@ -362,7 +362,7 @@ if ($quotaPercent > 75) {
             </div>
             <h2 style="--i:1" class="m-in font-headline-md text-headline-sm text-primary mb-1"><?= __('chat.start_chatting') ?></h2>
             <p style="--i:2" class="m-in text-body-md text-on-surface-variant">
-              <?= sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?></p>
+              <?= sprintf(__('chat.write_something'), htmlspecialchars(__('languages.' . $targetLang))) ?></p>
           </div>
 
           <!-- Topics suggestions grid -->
@@ -395,7 +395,7 @@ if ($quotaPercent > 75) {
           <!-- Textarea / Input -->
           <textarea id="chat-input"
             class="flex-1 bg-transparent border-none focus:ring-0 text-base sm:text-xs py-1 px-1 resize-none chat-scrollbar min-h-[24px] max-h-32 text-on-surface placeholder-outline focus:outline-none"
-            placeholder="<?= $isTrialExpired ? __('chat.trial_expired_placeholder') : sprintf(__('chat.write_something'), htmlspecialchars(strtoupper($targetLang))) ?>"
+            placeholder="<?= $isTrialExpired ? __('chat.trial_expired_placeholder') : sprintf(__('chat.write_something'), htmlspecialchars(__('languages.' . $targetLang))) ?>"
             rows="1" <?= $isTrialExpired ? 'disabled' : '' ?>></textarea>
 
           <!-- Send Button on Right -->
@@ -564,7 +564,7 @@ if ($quotaPercent > 75) {
         const sendBtn = document.getElementById('btn-send');
         if (inputEl) {
           inputEl.disabled = true;
-          inputEl.placeholder = '<?= __('chat.trial_expired_placeholder') ?>';
+          inputEl.placeholder = '<?= jsq(__('chat.trial_expired_placeholder')) ?>';
           inputEl.parentElement.classList.add('opacity-60');
         }
         if (sendBtn) {
@@ -696,7 +696,7 @@ if ($quotaPercent > 75) {
         })
         .catch(function () {
           removeLoadingMessage(loadId);
-          showToast('<?= __('chat.http_error') ?>', 'error');
+          showToast('<?= jsq(__('chat.http_error')) ?>', 'error');
         });
     }
 
@@ -735,7 +735,7 @@ if ($quotaPercent > 75) {
             }
             showToast(data.error, 'error');
             markMessageFailed(userRow, msg, topicId);
-            if (data.error.includes('<?= __('error.trial_expired') ?>')) {
+            if (data.error.includes('<?= jsq(__('error.trial_expired')) ?>')) {
               showTrialExpiredModal();
             }
           } else if (data) {
@@ -755,13 +755,13 @@ if ($quotaPercent > 75) {
               addConversationLink(conversationId, msg);
             }
           } else {
-            showToast('<?= __('chat.http_error') ?>', 'error');
+            showToast('<?= jsq(__('chat.http_error')) ?>', 'error');
             markMessageFailed(userRow, msg, topicId);
           }
         })
         .catch(function(err) {
           removeLoadingMessage(loadingId);
-          showToast('<?= __('chat.http_error') ?>', 'error');
+          showToast('<?= jsq(__('chat.http_error')) ?>', 'error');
           markMessageFailed(userRow, msg, topicId);
         })
         .finally(() => {
@@ -777,7 +777,7 @@ if ($quotaPercent > 75) {
       div.className = 'message-row flex justify-center';
       const now = new Date();
       const dateStr = now.toLocaleDateString(UI_LANG, { weekday: 'long', month: 'long', day: 'numeric' });
-      div.innerHTML = `<span class="text-label-md text-on-surface-variant bg-surface-container px-lg py-xs rounded-full"><?= __('chat.today') ?>, ${dateStr}</span>`;
+      div.innerHTML = `<span class="text-label-md text-on-surface-variant bg-surface-container px-lg py-xs rounded-full"><?= jsq(__('chat.today')) ?>, ${dateStr}</span>`;
       messagesEl.appendChild(div);
     }
 
@@ -795,7 +795,7 @@ if ($quotaPercent > 75) {
           <div class="space-y-sm flex-1 min-w-0">
             <div class="flex items-center gap-sm justify-end opacity-70 group-hover:opacity-100 transition-opacity">
               <span class="text-label-md text-outline">${timeStr}</span>
-              <span class="font-bold text-on-surface"><?= __('chat.you') ?></span>
+              <span class="font-bold text-on-surface"><?= jsq(__('chat.you')) ?></span>
             </div>
             <div class="user-bubble bg-[#1e1b4b]/50 border border-indigo-500/30 rounded-2xl rounded-tr-none overflow-hidden shadow-xl backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10">
               <div class="px-4 sm:px-5 py-4">
@@ -812,7 +812,7 @@ if ($quotaPercent > 75) {
           ${avatar}
           <div class="space-y-sm">
             <div class="flex items-center gap-sm opacity-70 group-hover:opacity-100 transition-opacity">
-              <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
+              <span class="font-bold text-on-surface"><?= jsq(__('chat.kai')) ?></span>
               <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
             <div class="glass-panel p-3 sm:p-lg rounded-2xl rounded-tl-none border border-outline-variant/20 transform transition-all duration-300 md:hover:scale-[1.01]">
@@ -838,9 +838,9 @@ if ($quotaPercent > 75) {
       slot.innerHTML = `
         <button type="button" class="retry-send-btn flex items-center gap-1 text-[11px] text-red-400 hover:text-red-300 transition-colors mt-1">
           <span class="material-symbols-outlined text-[13px]">error</span>
-          <span><?= __('chat.send_failed') ?></span>
+          <span><?= jsq(__('chat.send_failed')) ?></span>
           <span class="text-outline">·</span>
-          <span class="underline"><?= __('chat.retry_send') ?></span>
+          <span class="underline"><?= jsq(__('chat.retry_send')) ?></span>
         </button>`;
       const btn = slot.querySelector('.retry-send-btn');
       if (btn) {
@@ -918,13 +918,13 @@ if ($quotaPercent > 75) {
         }).join('');
         correctionsHtml = `
         <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
-          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= jsq(__('chat.your_corrections')) ?></p>
           <div class="space-y-1">${chips}</div>
         </div>`;
       } else if (correction) {
         correctionsHtml = `
         <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 bg-red-500/5 reveal-block">
-          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.your_corrections') ?></p>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= jsq(__('chat.your_corrections')) ?></p>
           <div class="bg-gray-800/50 rounded-lg px-3 py-2 text-xs text-amber-200/80 border border-gray-700/30">${escHtml(correction)}</div>
         </div>`;
       }
@@ -940,20 +940,20 @@ if ($quotaPercent > 75) {
         }).join('');
         wordsHtml = `
         <div class="px-4 sm:px-6 py-4 border-t border-gray-700/50 reveal-block">
-          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= __('chat.key_vocabulary') ?></p>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2"><?= jsq(__('chat.key_vocabulary')) ?></p>
           <div class="flex flex-wrap">${chips}</div>
         </div>`;
       }
 
       const phoneticBlock = phonetic ? `
       <div>
-        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= __('chat.phonetic') ?></p>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= jsq(__('chat.phonetic')) ?></p>
         <p class="text-sm italic text-gray-300 font-serif">${escHtml(phonetic)}</p>
       </div>` : '';
 
       const literalBlock = literalTranslation ? `
       <div>
-        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= __('chat.literal_translation') ?></p>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= jsq(__('chat.literal_translation')) ?></p>
         <p class="text-sm text-gray-300">${escHtml(literalTranslation)}</p>
       </div>` : '';
 
@@ -971,7 +971,7 @@ if ($quotaPercent > 75) {
 
       const naturalTranslationBlock = translation ? `
       <div class="px-4 sm:px-6 py-4 bg-indigo-500/5 border-b border-gray-700/50 reveal-block">
-        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= __('chat.natural_translation') ?></p>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1"><?= jsq(__('chat.natural_translation')) ?></p>
         <p class="text-lg text-gray-100 font-medium italic">"${escHtml(translation)}"</p>
       </div>` : '';
 
@@ -979,7 +979,7 @@ if ($quotaPercent > 75) {
       <div class="space-y-3">
         <div class="flex items-center gap-2">
           <div class="w-1.5 h-4 bg-blue-500 rounded-full"></div>
-          <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider"><?= __('chat.grammar_spotlight') ?></h4>
+          <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider"><?= jsq(__('chat.grammar_spotlight')) ?></h4>
         </div>
         <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-700/30">
           <p class="text-sm text-gray-400 leading-relaxed">${formatRichText(grammarSpotlight, 'text-blue-400 font-bold')}</p>
@@ -990,7 +990,7 @@ if ($quotaPercent > 75) {
       <div class="space-y-3">
         <div class="flex items-center gap-2">
           <div class="w-1.5 h-4 bg-amber-500 rounded-full"></div>
-          <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider"><?= __('chat.pro_tip_culture') ?></h4>
+          <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider"><?= jsq(__('chat.pro_tip_culture')) ?></h4>
         </div>
         <div class="bg-amber-900/10 p-4 rounded-xl border border-amber-900/20">
           <p class="text-sm text-amber-100/80 leading-relaxed">${formatRichText(proTip, 'text-amber-400 font-bold')}</p>
@@ -1012,13 +1012,13 @@ if ($quotaPercent > 75) {
         </div>
         <div class="space-y-sm flex-1 min-w-0">
           <div class="flex items-center gap-sm">
-            <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
+            <span class="font-bold text-on-surface"><?= jsq(__('chat.kai')) ?></span>
             <span class="text-label-md text-outline">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </div>
           <div id="${cardId}" class="bg-[#1e293b]/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
             <div class="p-4 sm:p-6 border-b border-gray-700/50 bg-[#1e293b]/40">
               <div class="flex justify-between items-start mb-4">
-                <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest bg-teal-900/20 px-2 py-0.5 rounded"><?= __('chat.target_language') ?></span>
+                <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest bg-teal-900/20 px-2 py-0.5 rounded"><?= jsq(__('chat.target_language')) ?></span>
                 <button type="button" class="ai-speak-btn text-gray-500 hover:text-white transition-colors" data-text="${escAttr(content)}" aria-label="Listen">
                   <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -1163,7 +1163,7 @@ if ($quotaPercent > 75) {
         </div>
         <div class="space-y-sm flex-1 min-w-0">
           <div class="flex items-center gap-sm opacity-70">
-            <span class="font-bold text-on-surface"><?= __('chat.kai') ?></span>
+            <span class="font-bold text-on-surface"><?= jsq(__('chat.kai')) ?></span>
             <span class="flex gap-1 items-center">
               <span class="w-1 h-1 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:0ms"></span>
               <span class="w-1 h-1 bg-on-surface-variant rounded-full animate-bounce" style="animation-delay:150ms"></span>
@@ -1396,7 +1396,7 @@ if ($quotaPercent > 75) {
       a.className = 'conversation-link flex flex-col p-sm rounded-lg border bg-secondary-container/40 border-primary/30 text-primary transition-colors';
       a.innerHTML =
         '<span class="text-xs font-semibold truncate max-w-[200px]">' + escHtml(firstMsg) + '</span>' +
-        '<span class="text-[9px] text-outline mt-0.5"><?= __('chat.just_now') ?></span>';
+        '<span class="text-[9px] text-outline mt-0.5"><?= jsq(__('chat.just_now')) ?></span>';
       list.insertBefore(a, list.firstChild);
       updateUrl(id);
     }

@@ -1,6 +1,6 @@
 <?php require_once __DIR__ . '/flags.php'; ?>
 <!DOCTYPE html>
-<html class="dark" lang="<?= App\Src\Language::currentLang() ?>">
+<html class="dark" lang="<?= App\Src\Language::currentLang() ?>" dir="<?= App\Src\Language::dir() ?>">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>

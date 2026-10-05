@@ -29,6 +29,8 @@ $viewTabs = [
     'chat' => ['label' => __('fc.tab_chat_words'), 'icon' => 'forum', 'n' => $fcStats['chat_words']],
 ];
 $deckLangs = \App\Src\Language::listed('learn', $currentUser['target_lang'] ?? null);
+// No deck in your own native language (the chat pickers hide it too).
+$deckLangs = array_values(array_diff($deckLangs, [strtolower($currentUser['native_lang'] ?? '')]));
 if (!in_array($targetLang, $deckLangs, true)) {
     $deckLangs[] = $targetLang;
 }
@@ -313,15 +315,15 @@ window.__FC_CONFIG__ = {
   isRtl: <?= $isRtlTarget ? 'true' : 'false' ?>,
   userId: <?= (int)$currentUser['id'] ?>,
   texts: {
-    learnedBadge: "<?= __('fc.learned_badge') ?>",
-    remainingBadge: "<?= __('fc.remaining_badge') ?>",
-    xpEarned: "<?= __('fc.xp_earned') ?>",
-    xpToast: "<?= __('fc.xp_toast') ?>",
-    cardCounter: "<?= __('fc.card_counter') ?>",
-    percentLearned: "<?= __('fc.percent_learned') ?>",
-    speechNotSupported: "<?= __('fc.speech_not_supported') ?>",
-    importSuccess: "<?= __('fc.import_success') ?>",
-    packError: "<?= __('fc.pack_error') ?>",
+    learnedBadge: "<?= jsq(__('fc.learned_badge')) ?>",
+    remainingBadge: "<?= jsq(__('fc.remaining_badge')) ?>",
+    xpEarned: "<?= jsq(__('fc.xp_earned')) ?>",
+    xpToast: "<?= jsq(__('fc.xp_toast')) ?>",
+    cardCounter: "<?= jsq(__('fc.card_counter')) ?>",
+    percentLearned: "<?= jsq(__('fc.percent_learned')) ?>",
+    speechNotSupported: "<?= jsq(__('fc.speech_not_supported')) ?>",
+    importSuccess: "<?= jsq(__('fc.import_success')) ?>",
+    packError: "<?= jsq(__('fc.pack_error')) ?>",
   },
   // Every visible string the script builds (JSON-encoded, so quotes are safe).
   t: <?= json_encode([

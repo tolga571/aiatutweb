@@ -129,7 +129,7 @@
           const target = document.getElementById('target-val').value;
           if (native === target) {
             e.preventDefault();
-            showOnboardingError('<?= __('onboarding.same_lang_error') ?>');
+            showOnboardingError('<?= jsq(__('onboarding.same_lang_error')) ?>');
           }
         });
         </script>

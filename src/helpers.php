@@ -131,3 +131,15 @@ function client_ip(): string
     }
     return $peer;
 }
+
+/**
+ * A translation (or any text) for use inside a JavaScript string or template
+ * literal in a view: '…<?= jsq(__('x')) ?>…'. Translations are raw text, so an
+ * apostrophe ("l'activation") would otherwise end the string and break every
+ * script on the page. Markup inside the text still works with innerHTML.
+ */
+function jsq(string $s): string
+{
+    $json = json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+    return str_replace(['`', '${'], ['\\u0060', '\\u0024{'], substr((string)$json, 1, -1));
+}

@@ -580,6 +580,8 @@ class Router
     private function flashcardLanguages(): void
     {
         $learn = Language::listed('learn', $this->user['target_lang'] ?? null);
+        // No deck in your own native language (same as the web picker).
+        $learn = array_values(array_diff($learn, [strtolower($this->user['native_lang'] ?? '')]));
         $this->ok([
             'current' => $this->user['target_lang'] ?? 'en',
             'languages' => (new Flashcard($this->db))->getLanguages((int)$this->user['id'], $learn),

@@ -670,11 +670,11 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
                 '<div class="w-16 h-16 rounded-2xl bg-error-container border border-error/30 flex items-center justify-center text-error mx-auto mb-4">' +
                   '<span class="material-symbols-outlined text-[36px]">warning</span>' +
                 '</div>' +
-                '<h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= __('pricing.timeout_title') ?></h3>' +
-                '<p class="text-body-md text-on-surface-variant mb-6"><?= __('pricing.timeout_body') ?></p>' +
+                '<h3 class="font-headline-sm text-[20px] font-semibold text-on-surface mb-2"><?= jsq(__('pricing.timeout_title')) ?></h3>' +
+                '<p class="text-body-md text-on-surface-variant mb-6"><?= jsq(__('pricing.timeout_body')) ?></p>' +
                 '<div class="flex gap-3 justify-center">' +
-                  '<button onclick="checkAgain()" class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30"><?= __('pricing.timeout_retry') ?></button>' +
-                  '<a href="?page=chat" class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md"><?= __('pricing.timeout_chat') ?></a>' +
+                  '<button onclick="checkAgain()" class="bg-surface-container-high hover:bg-outline/10 text-on-surface font-semibold text-xs px-xl py-3 rounded-xl transition-all border border-outline-variant/30"><?= jsq(__('pricing.timeout_retry')) ?></button>' +
+                  '<a href="?page=chat" class="bg-primary text-on-primary hover:opacity-90 font-semibold text-xs px-xl py-3 rounded-xl transition-all shadow-md"><?= jsq(__('pricing.timeout_chat')) ?></a>' +
                 '</div>';
             }
           }
@@ -686,7 +686,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   }
 
   <?php if (!empty($_GET['dodo_error'])): ?>
-  alert("<?= __('pricing.checkout_error') ?>");
+  alert("<?= jsq(__('pricing.checkout_error')) ?>");
   <?php endif; ?>
 
   <?php if (($_GET['dodo_return'] ?? '') === '1'): ?>
@@ -712,7 +712,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
 
   async function openCheckout(priceId) {
     if (!priceId) {
-      alert("<?= __('pricing.price_id_error') ?>");
+      alert("<?= jsq(__('pricing.price_id_error')) ?>");
       return;
     }
 
@@ -733,7 +733,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       });
     } catch (error) {
       console.error("Error opening FastSpring checkout:", error);
-      alert("<?= __('pricing.checkout_error') ?>");
+      alert("<?= jsq(__('pricing.checkout_error')) ?>");
     }
     return;
     <?php endif; ?>
@@ -767,7 +767,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       });
     } catch (error) {
       console.error("Error opening checkout:", error);
-      alert("<?= __('pricing.checkout_error') ?>");
+      alert("<?= jsq(__('pricing.checkout_error')) ?>");
     }
   }
 

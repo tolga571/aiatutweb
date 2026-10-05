@@ -217,7 +217,7 @@ $planLabel = $planLabels[$user['plan_status'] ?? 'inactive'] ?? __('chat.plan_fr
       <a href="?page=chat" class="flex items-center justify-between bg-surface-container border border-outline-variant/20 hover:border-primary/50 rounded-2xl p-5 transition group">
         <div>
           <div class="font-headline-sm text-headline-sm text-on-surface mb-1"><?= __('dash.new_conversation') ?></div>
-          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.new_conv_desc'), htmlspecialchars($user['target_lang'] ?? 'en')) ?></div>
+          <div class="text-body-md text-on-surface-variant"><?= sprintf(__('dash.new_conv_desc'), htmlspecialchars(__('languages.' . ($user['target_lang'] ?? 'en')))) ?></div>
         </div>
         <span class="material-symbols-outlined text-primary text-2xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
       </a>
