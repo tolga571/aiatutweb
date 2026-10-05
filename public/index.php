@@ -401,6 +401,7 @@ switch ($page) {
         if (is_string($lang) && Language::isUsable($lang, 'learn')) {
             $currentUser = $auth->currentUser();
             if ($lang === ($currentUser['native_lang'] ?? '')) {
+                $_SESSION['lang_notice'] = __('onboarding.same_lang_error');
                 header('Location: ?page=chat'); exit;
             }
             $db->execute('UPDATE users SET target_lang = ? WHERE id = ?', [$lang, $auth->userId()]);

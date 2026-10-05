@@ -205,7 +205,7 @@
         <div id="nav-lang-dropdown" class="hidden absolute right-0 pt-2 w-40 z-50">
           <div class="rounded-xl shadow-lg border border-outline-variant/20 bg-surface-container-high overflow-hidden">
             <?php foreach (\App\Src\Language::listed('learn') as $l): $c = \App\Src\Language::flagCountry($l);
-              if ($l === $navTargetLang)
+              if ($l === $navTargetLang || $l === $navNativeLang)
                 continue; ?>
               <a href="?page=update_lang&lang=<?= $l ?>"
                 class="flex items-center gap-2 px-3 py-2.5 text-xs text-on-surface hover:bg-surface-variant transition">
@@ -325,6 +325,7 @@
           // current language first, so the highlighted chip is never scrolled out of view
           $navLangs = [];
           foreach (\App\Src\Language::listed('learn', $navTargetLang) as $l) {
+            if ($l === $navNativeLang && $l !== $navTargetLang) continue; // can't learn your own native language
             $navLangs[$l] = \App\Src\Language::flagCountry($l);
           }
           if (isset($navLangs[$navTargetLang])) {

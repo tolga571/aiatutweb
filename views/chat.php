@@ -139,6 +139,9 @@ if ($quotaPercent > 75) {
 
 <!-- Main Content Canvas -->
 <main class="chat-main flex-1 flex flex-col relative bg-surface-dim overflow-hidden">
+  <?php if (!empty($_SESSION['lang_notice'])): ?>
+  <div role="alert" class="mx-md mt-sm rounded-xl border border-amber-400/30 bg-amber-400/10 px-md py-2 text-xs text-amber-100"><?= htmlspecialchars($_SESSION['lang_notice']) ?></div>
+  <?php unset($_SESSION['lang_notice']); endif; ?>
   <div id="drawer-backdrop" onclick="closeDrawers()" class="hidden fixed inset-0 bg-black/40 z-30"></div>
 
   <div class="flex flex-1 overflow-hidden h-full w-full">
@@ -279,7 +282,8 @@ if ($quotaPercent > 75) {
           </svg>
         </div>
         <div id="lang-dropdown" class="hidden absolute bottom-full left-0 w-full mb-1 bg-surface-container border border-outline-variant/30 rounded-xl overflow-hidden shadow-lg z-50">
-          <?php foreach(\App\Src\Language::listed('learn') as $l): if($l === $targetLang) continue; ?>
+          <?php $chatNative = strtolower($currentUser['native_lang'] ?? '');
+          foreach (\App\Src\Language::listed('learn') as $l): if ($l === $targetLang || $l === $chatNative) continue; ?>
           <a href="?page=update_lang&lang=<?= $l ?>" class="flex items-center gap-2 px-3 py-2 text-xs text-on-surface hover:bg-surface-variant transition">
             <?= flagImg($l, 'w-4 h-3') ?>
             <?= __("languages.{$l}") ?>
@@ -1377,6 +1381,9 @@ if ($quotaPercent > 75) {
       utterance.lang = SPEECH_LANG_MAP[TARGET_LANG] || TARGET_LANG;
       window.speechSynthesis.speak(utterance);
     }
+    // The word/sentence cards call it from inline onclick attributes, which
+    // only see globals — inside this closure it was undefined.
+    window.speakText = speakText;
 
     function addConversationLink(id, firstMsg) {
       var list = document.getElementById('conversations-list');
