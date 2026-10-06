@@ -1,0 +1,264 @@
+# en	ru	ru_rom	el	el_rom	hi	hi_rom	hy	hy_rom    Russian, Greek, Hindi, Armenian for the same concepts (2026-10-06). Dictionary forms; *_rom = pronunciation shown on the card. Checked by add_langs.py.
+one	один	odín	ένα	éna	एक	ek	մեկ	mek
+two	два	dva	δύο	dýo	दो	do	երկու	yerkú
+three	три	tri	τρία	tría	तीन	tīn	երեք	yerék'
+four	четыре	chetýre	τέσσερα	téssera	चार	chār	չորս	chors
+five	пять	pyat'	πέντε	pénde	पाँच	pā̃ch	հինգ	hing
+six	шесть	shest'	έξι	éxi	छह	chhah	վեց	vets'
+seven	семь	sem'	επτά	eptá	सात	sāt	յոթ	yot'
+eight	восемь	vósem'	οκτώ	októ	आठ	āṭh	ութ	ut'
+nine	девять	dévyat'	εννέα	ennéa	नौ	nau	ինը	íny
+ten	десять	désyat'	δέκα	déka	दस	das	տասը	tásy
+hundred	сто	sto	εκατό	ekató	सौ	sau	հարյուր	haryúr
+thousand	тысяча	týsyacha	χίλια	chília	हज़ार	hazār	հազար	hazár
+red	красный	krásnyy	κόκκινος	kókkinos	लाल	lāl	կարմիր	karmír
+blue	синий	síniy	μπλε	ble	नीला	nīlā	կապույտ	kapúyt
+green	зелёный	zelyónyy	πράσινος	prásinos	हरा	harā	կանաչ	kanách'
+yellow	жёлтый	zhyóltyy	κίτρινος	kítrinos	पीला	pīlā	դեղին	deghín
+black	чёрный	chyórnyy	μαύρος	mávros	काला	kālā	սև	sev
+white	белый	bélyy	άσπρος	áspros	सफ़ेद	safed	սպիտակ	spiták
+brown	коричневый	koríchnevyy	καφέ	kafé	भूरा	bhūrā	շագանակագույն	shaganakagúyn
+son	сын	syn	γιος	yos	बेटा	beṭā	որդի	vordí
+daughter	дочь	doch'	κόρη	kóri	बेटी	beṭī	դուստր	dustr
+brother	брат	brat	αδερφός	aderfós	भाई	bhāī	եղբայր	yeghbáyr
+sister	сестра	sestrá	αδερφή	aderfí	बहन	bahan	քույր	k'uyr
+husband	муж	muzh	σύζυγος	sýzygos	पति	pati	ամուսին	amusín
+wife	жена	zhená	σύζυγος	sýzygos	पत्नी	patnī	կին	kin
+baby	младенец	mladénets	μωρό	moró	शिशु	shishu	մանուկ	manúk
+child	ребёнок	rebyónok	παιδί	paidí	बच्चा	bachchā	երեխա	yerekhá
+man	мужчина	muzhchína	άντρας	ántras	आदमी	ādmī	տղամարդ	tghamárd
+woman	женщина	zhénshchina	γυναίκα	yinéka	औरत	aurat	կին	kin
+boy	мальчик	mál'chik	αγόρι	agóri	लड़का	laṛkā	տղա	tghá
+girl	девочка	dévochka	κορίτσι	korítsi	लड़की	laṛkī	աղջիկ	aghjík
+neighbor	сосед	soséd	γείτονας	yítonas	पड़ोसी	paṛosī	հարևան	hareván
+head	голова	golová	κεφάλι	kefáli	सिर	sir	գլուխ	glukh
+hand	рука	ruká	χέρι	chéri	हाथ	hāth	ձեռք	dzerrk'
+eye	глаз	glaz	μάτι	máti	आँख	ā̃kh	աչք	achk'
+ear	ухо	úkho	αυτί	aftí	कान	kān	ականջ	akánj
+nose	нос	nos	μύτη	míti	नाक	nāk	քիթ	k'it'
+mouth	рот	rot	στόμα	stóma	मुँह	mũh	բերան	berán
+heart	сердце	sérdtse	καρδιά	kardiá	दिल	dil	սիրտ	sirt
+foot	ступня	stupnyá	πατούσα	patoúsa	पैर	pair	ոտնաթաթ	votnat'át'
+arm	рука	ruká	μπράτσο	brátso	बाँह	bā̃h	թև	t'ev
+leg	нога	nogá	πόδι	pódi	टाँग	ṭā̃g	ոտք	votk'
+face	лицо	litsó	πρόσωπο	prósopo	चेहरा	chehrā	դեմք	demk'
+hair	волосы	vólosy	μαλλιά	malliá	बाल	bāl	մազեր	mazér
+rice	рис	ris	ρύζι	rízi	चावल	chāval	բրինձ	brindz
+meat	мясо	myáso	κρέας	kréas	मांस	māns	միս	mis
+fish	рыба	rýba	ψάρι	psári	मछली	machhlī	ձուկ	dzuk
+egg	яйцо	yaytsó	αυγό	avgó	अंडा	anḍā	ձու	dzu
+cheese	сыр	syr	τυρί	tirí	पनीर	panīr	պանիր	panír
+fruit	фрукт	frukt	φρούτο	fróuto	फल	phal	միրգ	mirg
+vegetable	овощ	óvoshch	λαχανικό	lachanikó	सब्ज़ी	sabzī	բանջարեղեն	banjareghén
+sugar	сахар	sákhar	ζάχαρη	záchari	चीनी	chīnī	շաքար	shak'ár
+salt	соль	sol'	αλάτι	aláti	नमक	namak	աղ	agh
+beer	пиво	pívo	μπίρα	bíra	बीयर	bīyar	գարեջուր	garejúr
+wine	вино	vinó	κρασί	krasí	शराब	sharāb	գինի	giní
+breakfast	завтрак	závtrak	πρωινό	proinó	नाश्ता	nāshtā	նախաճաշ	nakhachásh
+potato	картофель	kartófel'	πατάτα	patáta	आलू	ālū	կարտոֆիլ	kartofíl
+tomato	помидор	pomidór	ντομάτα	domáta	टमाटर	ṭamāṭar	լոլիկ	lolík
+chicken	курица	kúritsa	κοτόπουλο	kotópoulo	मुर्गी	murgī	հավ	hav
+orange	апельсин	apel'sín	πορτοκάλι	portokáli	संतरा	santarā	նարինջ	narínj
+banana	банан	banán	μπανάνα	banána	केला	kelā	բանան	banán
+bed	кровать	krovát'	κρεβάτι	kreváti	बिस्तर	bistar	մահճակալ	mahchakál
+kitchen	кухня	kúkhnya	κουζίνα	kouzína	रसोई	rasoī	խոհանոց	khohanóts'
+bathroom	ванная	vánnaya	μπάνιο	bánio	बाथरूम	bāthrūm	լոգարան	logarán
+garden	сад	sad	κήπος	kípos	बगीचा	bagīchā	այգի	aygí
+key	ключ	klyuch	κλειδί	klidí	चाबी	chābī	բանալի	banalí
+wall	стена	stená	τοίχος	tíchos	दीवार	dīvār	պատ	pat
+roof	крыша	krýsha	στέγη	stéyi	छत	chhat	տանիք	taník'
+sun	солнце	sóntse	ήλιος	ílios	सूरज	sūraj	արև	arév
+moon	луна	luná	φεγγάρι	fengári	चाँद	chā̃d	լուսին	lusín
+star	звезда	zvezdá	αστέρι	astéri	तारा	tārā	աստղ	astgh
+sky	небо	nébo	ουρανός	ouranós	आसमान	āsmān	երկինք	yerkínk'
+rain	дождь	dozhd'	βροχή	vrochí	बारिश	bārish	անձրև	andzrév
+snow	снег	sneg	χιόνι	chióni	बर्फ़	barf	ձյուն	dzyun
+wind	ветер	véter	άνεμος	ánemos	हवा	havā	քամի	k'amí
+tree	дерево	dérevo	δέντρο	déndro	पेड़	peṛ	ծառ	tsarr
+flower	цветок	tsvetók	λουλούδι	louloúdi	फूल	phūl	ծաղիկ	tsaghík
+sea	море	móre	θάλασσα	thálassa	समुद्र	samudra	ծով	tsov
+river	река	reká	ποτάμι	potámi	नदी	nadī	գետ	get
+mountain	гора	gorá	βουνό	vounó	पहाड़	pahāṛ	սար	sar
+fire	огонь	ogón'	φωτιά	fotiá	आग	āg	կրակ	krak
+dog	собака	sobáka	σκύλος	skílos	कुत्ता	kuttā	շուն	shun
+cat	кошка	kóshka	γάτα	gáta	बिल्ली	billī	կատու	katú
+bird	птица	ptítsa	πουλί	poulí	चिड़िया	ciṛiyā	թռչուն	t'rrchún
+horse	лошадь	lóshad'	άλογο	álogo	घोड़ा	ghoṛā	ձի	dzi
+cow	корова	koróva	αγελάδα	ayeláda	गाय	gāy	կով	kov
+today	сегодня	sevódnya	σήμερα	símera	आज	āj	այսօր	aysór
+tomorrow	завтра	závtra	αύριο	ávrio	कल	kal	վաղը	vághy
+yesterday	вчера	vcherá	χθες	chthes	कल	kal	երեկ	yerék
+now	сейчас	seychás	τώρα	tóra	अब	ab	հիմա	himá
+hour	час	chas	ώρα	óra	घंटा	ghanṭā	ժամ	zham
+minute	минута	minúta	λεπτό	leptó	मिनट	minaṭ	րոպե	ropé
+evening	вечер	vécher	βράδυ	vrádi	शाम	shām	երեկո	yerekó
+airport	аэропорт	aeropórt	αεροδρόμιο	aerodrómio	हवाई अड्डा	havāī aḍḍā	օդանավակայան	odanavakayán
+plane	самолёт	samolyót	αεροπλάνο	aeropláno	हवाई जहाज़	havāī jahāz	ինքնաթիռ	ink'nat'írr
+bus	автобус	avtóbus	λεωφορείο	leoforío	बस	bas	ավտոբուս	avtobús
+street	улица	úlitsa	δρόμος	drómos	सड़क	saṛak	փողոց	p'oghóts'
+map	карта	kárta	χάρτης	chártis	नक्शा	naqshā	քարտեզ	k'artéz
+passport	паспорт	pásport	διαβατήριο	diavatírio	पासपोर्ट	pāsporṭ	անձնագիր	andznagír
+station	станция	stántsiya	σταθμός	stathmós	स्टेशन	sṭeshan	կայարան	kayarán
+bridge	мост	most	γέφυρα	yéfira	पुल	pul	կամուրջ	kamúrj
+taxi	такси	taksí	ταξί	taxí	टैक्सी	ṭaiksī	տաքսի	tak'sí
+bag	сумка	súmka	τσάντα	tsánda	थैला	thailā	պայուսակ	payusák
+shirt	рубашка	rubáshka	πουκάμισο	poukámiso	कमीज़	qamīz	վերնաշապիկ	vernashapík
+dress	платье	plát'ye	φόρεμα	fórema	पोशाक	poshāk	զգեստ	zgest
+shoe	туфля	túflya	παπούτσι	papoútsi	जूता	jūtā	կոշիկ	koshík
+teacher	учитель	uchítel'	δάσκαλος	dáskalos	शिक्षक	shikṣak	ուսուցիչ	usuts'ích'
+student	студент	studént	μαθητής	mathitís	छात्र	chhātra	ուսանող	usanógh
+language	язык	yazýk	γλώσσα	glóssa	भाषा	bhāṣā	լեզու	lezú
+word	слово	slóvo	λέξη	léxi	शब्द	shabd	բառ	barr
+question	вопрос	voprós	ερώτηση	erótisi	सवाल	savāl	հարց	harts'
+answer	ответ	otvét	απάντηση	apándisi	जवाब	javāb	պատասխան	pataskhán
+lesson	урок	urók	μάθημα	máthima	पाठ	pāṭh	դաս	das
+paper	бумага	bumága	χαρτί	chartí	काग़ज़	kāgaz	թուղթ	t'ught'
+name	имя	ímya	όνομα	ónoma	नाम	nām	անուն	anún
+work	работа	rabóta	δουλειά	douliá	काम	kām	աշխատանք	ashkhatánk'
+office	офис	ófis	γραφείο	grafío	दफ़्तर	daftar	գրասենյակ	grasenyák
+doctor	врач	vrach	γιατρός	yatrós	डॉक्टर	ḍākṭar	բժիշկ	bzhishk
+police	полиция	polítsiya	αστυνομία	astinomía	पुलिस	pulis	ոստիկանություն	vostikanut'yún
+company	компания	kompániya	εταιρεία	etería	कंपनी	kampanī	ընկերություն	ynkerut'yún
+computer	компьютер	komp'yúter	υπολογιστής	ipoloyistís	कंप्यूटर	kampyūṭar	համակարգիչ	hamakargích'
+telephone	телефон	telefón	τηλέφωνο	tiléfono	फ़ोन	fon	հեռախոս	herrakhós
+letter	письмо	pis'mó	γράμμα	gráma	चिट्ठी	chiṭṭhī	նամակ	namák
+hospital	больница	bol'nítsa	νοσοκομείο	nosokomío	अस्पताल	aspatāl	հիվանդանոց	hivandanóts'
+medicine	лекарство	lekárstvo	φάρμακο	fármako	दवा	davā	դեղ	degh
+bank	банк	bank	τράπεζα	trápeza	बैंक	baink	բանկ	bank
+angry	сердитый	serdítyy	θυμωμένος	thimoménos	नाराज़	nārāz	բարկացած	barkats'áts
+afraid	испуганный	ispúgannyy	φοβισμένος	fovisménos	डरा हुआ	ḍarā huā	վախեցած	vakhets'áts
+hope	надежда	nadézhda	ελπίδα	elpída	उम्मीद	ummīd	հույս	huys
+fear	страх	strakh	φόβος	fóvos	डर	ḍar	վախ	vakh
+dream	мечта	mechtá	όνειρο	óniro	सपना	sapnā	երազ	yeráz
+go	идти	idtí	πηγαίνω	piyéno	जाना	jānā	գնալ	gnal
+come	приходить	prikhodít'	έρχομαι	érchome	आना	ānā	գալ	gal
+eat	есть	yest'	τρώω	tróo	खाना	khānā	ուտել	utél
+drink	пить	pit'	πίνω	píno	पीना	pīnā	խմել	khmel
+sleep	спать	spat'	κοιμάμαι	kimáme	सोना	sonā	քնել	k'nel
+read	читать	chitát'	διαβάζω	diavázo	पढ़ना	paṛhnā	կարդալ	kardál
+write	писать	pisát'	γράφω	gráfo	लिखना	likhnā	գրել	grel
+speak	говорить	govorít'	μιλάω	miláo	बोलना	bolnā	խոսել	khosél
+listen	слушать	slúshat'	ακούω	akoúo	सुनना	sunnā	լսել	lsel
+see	видеть	vídet'	βλέπω	vlépo	देखना	dekhnā	տեսնել	tesnél
+buy	покупать	pokupát'	αγοράζω	agorázo	खरीदना	kharīdnā	գնել	gnel
+sell	продавать	prodavát'	πουλάω	pouláo	बेचना	bechnā	վաճառել	vacharrél
+give	давать	davát'	δίνω	díno	देना	denā	տալ	tal
+take	брать	brat'	παίρνω	pérno	लेना	lenā	վերցնել	verts'nél
+want	хотеть	khotét'	θέλω	thélo	चाहना	chāhnā	ուզել	uzél
+know	знать	znat'	ξέρω	xéro	जानना	jānnā	իմանալ	imanál
+live	жить	zhit'	ζω	zo	रहना	rahnā	ապրել	aprél
+walk	ходить	khodít'	περπατάω	perpatáo	चलना	chalnā	քայլել	k'aylél
+run	бегать	bégat'	τρέχω	trécho	दौड़ना	dauṛnā	վազել	vazél
+open	открывать	otkryvát'	ανοίγω	anígo	खोलना	kholnā	բացել	bats'él
+close	закрывать	zakryvát'	κλείνω	klíno	बंद करना	band karnā	փակել	p'akél
+help	помогать	pomogát'	βοηθάω	voitháo	मदद करना	madad karnā	օգնել	ognél
+wait	ждать	zhdat'	περιμένω	periméno	इंतज़ार करना	intazār karnā	սպասել	spasél
+learn	учить	uchít'	μαθαίνω	mathéno	सीखना	sīkhnā	սովորել	sovorél
+think	думать	dúmat'	σκέφτομαι	skéftome	सोचना	sochnā	մտածել	mtatsél
+arrive	приезжать	priyezzhát'	φτάνω	ftáno	पहुँचना	pahũchnā	ժամանել	zhamanél
+leave	уходить	ukhodít'	φεύγω	févgo	छोड़ना	chhoṛnā	հեռանալ	herranál
+visit	посещать	poseshchát'	επισκέπτομαι	episképtome	मिलने जाना	milne jānā	այցելել	ayts'elél
+remember	помнить	pómnit'	θυμάμαι	thimáme	याद रखना	yād rakhnā	հիշել	hishél
+forget	забывать	zabyvát'	ξεχνάω	xechnáo	भूलना	bhūlnā	մոռանալ	morranál
+understand	понимать	ponimát'	καταλαβαίνω	katalavéno	समझना	samajhnā	հասկանալ	haskanál
+explain	объяснять	ob'yasnyát'	εξηγώ	exigó	समझाना	samjhānā	բացատրել	bats'atrél
+ask	спрашивать	spráshivat'	ρωτάω	rotáo	पूछना	pūchhnā	հարցնել	harts'nél
+choose	выбирать	vybirát'	διαλέγω	dialégo	चुनना	chunnā	ընտրել	yntrél
+decide	решать	reshát'	αποφασίζω	apofasízo	तय करना	tay karnā	որոշել	voroshél
+try	пытаться	pytát'sya	προσπαθώ	prospathó	कोशिश करना	koshish karnā	փորձել	p'ordzél
+use	использовать	ispól'zovat'	χρησιμοποιώ	chrisimopió	इस्तेमाल करना	istemāl karnā	օգտագործել	ogtagortsél
+find	находить	nakhodít'	βρίσκω	vrísko	पाना	pānā	գտնել	gtnel
+lose	терять	teryát'	χάνω	cháno	खोना	khonā	կորցնել	korts'nél
+win	выигрывать	vyígryvat'	κερδίζω	kerdízo	जीतना	jītnā	հաղթել	haght'él
+pay	платить	platít'	πληρώνω	pliróno	भुगतान करना	bhugtān karnā	վճարել	vcharél
+cook	готовить	gotóvit'	μαγειρεύω	mayirévo	पकाना	pakānā	եփել	yep'él
+wash	мыть	myt'	πλένω	pléno	धोना	dhonā	լվանալ	lvanál
+wear	носить	nosít'	φοράω	foráo	पहनना	pahannā	հագնել	hagnél
+carry	нести	nestí	κουβαλάω	kouvaláo	ले जाना	le jānā	տանել	tanél
+bring	приносить	prinosít'	φέρνω	férno	लाना	lānā	բերել	berél
+send	отправлять	otpravlyát'	στέλνω	stélno	भेजना	bhejnā	ուղարկել	ugharkél
+follow	следовать	slédovat'	ακολουθώ	akolouthó	पीछा करना	pīchhā karnā	հետևել	hetevél
+dance	танцевать	tantsevát'	χορεύω	chorévo	नाचना	nāchnā	պարել	parél
+sing	петь	pet'	τραγουδάω	tragoudáo	गाना	gānā	երգել	yergél
+swim	плавать	plávat'	κολυμπάω	kolimbáo	तैरना	tairnā	լողալ	loghál
+fly	летать	letát'	πετάω	petáo	उड़ना	uṛnā	թռչել	t'rrchél
+cut	резать	rézat'	κόβω	kóvo	काटना	kāṭnā	կտրել	ktrel
+build	строить	stróit'	χτίζω	chtízo	बनाना	banānā	կառուցել	karruts'él
+change	менять	menyát'	αλλάζω	allázo	बदलना	badalnā	փոխել	p'okhél
+finish	заканчивать	zakánchivat'	τελειώνω	telióno	ख़त्म करना	khatm karnā	ավարտել	avartél
+begin	начинать	nachinát'	αρχίζω	archízo	शुरू करना	shurū karnā	սկսել	sksel
+stop	останавливаться	ostanávlivat'sya	σταματάω	stamatáo	रुकना	ruknā	կանգ առնել	kang arrnél
+play	играть	igrát'	παίζω	pézo	खेलना	khelnā	խաղալ	khaghál
+watch	смотреть	smotrét'	παρακολουθώ	parakolouthó	देखना	dekhnā	դիտել	ditél
+laugh	смеяться	smeyát'sya	γελάω	yeláo	हँसना	hãsnā	ծիծաղել	tsitsaghél
+cry	плакать	plákat'	κλαίω	kléo	रोना	ronā	լացել	lats'él
+believe	верить	vérit'	πιστεύω	pistévo	विश्वास करना	vishvās karnā	հավատալ	havatál
+big	большой	bol'shóy	μεγάλος	megálos	बड़ा	baṛā	մեծ	mets
+small	маленький	málen'kiy	μικρός	mikrós	छोटा	chhoṭā	փոքր	p'ok'r
+good	хороший	khoróshiy	καλός	kalós	अच्छा	achchhā	լավ	lav
+bad	плохой	plokhóy	κακός	kakós	बुरा	burā	վատ	vat
+beautiful	красивый	krasívyy	όμορφος	ómorfos	सुंदर	sundar	գեղեցիկ	geghets'ík
+easy	лёгкий	lyókhkiy	εύκολος	éfkolos	आसान	āsān	հեշտ	hesht
+difficult	трудный	trúdnyy	δύσκολος	dískolos	कठिन	kaṭhin	դժվար	dzhvar
+fast	быстрый	býstryy	γρήγορος	grígoros	तेज़	tez	արագ	arág
+slow	медленный	médlennyy	αργός	argós	धीमा	dhīmā	դանդաղ	dandágh
+long	длинный	dlínnyy	μακρύς	makrís	लंबा	lambā	երկար	yerkár
+short	короткий	korótkiy	κοντός	kondós	छोटा	chhoṭā	կարճ	karch
+young	молодой	molodóy	νέος	néos	जवान	javān	երիտասարդ	yeritasárd
+heavy	тяжёлый	tyazhyólyy	βαρύς	varís	भारी	bhārī	ծանր	tsanr
+clean	чистый	chístyy	καθαρός	katharós	साफ़	sāf	մաքուր	mak'úr
+dirty	грязный	gryáznyy	βρώμικος	vrómikos	गंदा	gandā	կեղտոտ	keghtót
+full	полный	pólnyy	γεμάτος	yemátos	भरा	bharā	լիքը	lík'y
+empty	пустой	pustóy	άδειος	ádios	ख़ाली	khālī	դատարկ	datárk
+hungry	голодный	golódnyy	πεινασμένος	pinasménos	भूखा	bhūkhā	սոված	sováts
+thirsty	хочет пить	khóchet pit'	διψασμένος	dipsasménos	प्यासा	pyāsā	ծարավ	tsaráv
+sick	больной	bol'nóy	άρρωστος	árostos	बीमार	bīmār	հիվանդ	hivánd
+rich	богатый	bogátyy	πλούσιος	ploúsios	अमीर	amīr	հարուստ	harúst
+poor	бедный	bédnyy	φτωχός	ftochós	ग़रीब	garīb	աղքատ	aghk'át
+strong	сильный	síl'nyy	δυνατός	dinatós	मज़बूत	mazbūt	ուժեղ	uzhégh
+weak	слабый	slábyy	αδύναμος	adínamos	कमज़ोर	kamzor	թույլ	t'uyl
+dangerous	опасный	opásnyy	επικίνδυνος	epikíndinos	ख़तरनाक	khatarnāk	վտանգավոր	vtangavór
+important	важный	vázhnyy	σημαντικός	simandikós	महत्वपूर्ण	mahatvapūrṇ	կարևոր	karevór
+famous	известный	izvéstnyy	διάσημος	diásimos	मशहूर	mashhūr	հայտնի	haytní
+different	разный	ráznyy	διαφορετικός	diaforetikós	अलग	alag	տարբեր	tarbér
+same	одинаковый	odinákovyy	ίδιος	ídios	समान	samān	նույն	nuyn
+ready	готовый	gotóvyy	έτοιμος	étimos	तैयार	taiyār	պատրաստ	patrást
+busy	занятый	zányatyy	απασχολημένος	apascholiménos	व्यस्त	vyast	զբաղված	zbaghváts
+quiet	тихий	tíkhiy	ήσυχος	ísichos	शांत	shānt	հանգիստ	hangíst
+wet	мокрый	mókryy	βρεγμένος	vregménos	गीला	gīlā	թաց	t'ats'
+dry	сухой	sukhóy	στεγνός	stegnós	सूखा	sūkhā	չոր	ch'or
+sweet	сладкий	sládkiy	γλυκός	glikós	मीठा	mīṭhā	քաղցր	k'aghts'r
+thin	тонкий	tónkiy	λεπτός	leptós	पतला	patlā	բարակ	barák
+deep	глубокий	glubókiy	βαθύς	vathís	गहरा	gahrā	խորը	khóry
+always	всегда	vsegdá	πάντα	pánda	हमेशा	hameshā	միշտ	misht
+never	никогда	nikogdá	ποτέ	poté	कभी नहीं	kabhī nahī̃	երբեք	yerbék'
+often	часто	chásto	συχνά	sichná	अक्सर	aksar	հաճախ	hachákh
+sometimes	иногда	inogdá	μερικές φορές	merikés forés	कभी-कभी	kabhī-kabhī	երբեմն	yerbémn
+again	снова	snóva	ξανά	xaná	फिर से	phir se	նորից	noríts'
+together	вместе	vméste	μαζί	mazí	साथ में	sāth mẽ	միասին	miasín
+alone	в одиночестве	v odinóchestve	μόνος	mónos	अकेला	akelā	մենակ	menák
+here	здесь	zdes'	εδώ	edó	यहाँ	yahā̃	այստեղ	aystégh
+there	там	tam	εκεί	ekí	वहाँ	vahā̃	այնտեղ	ayntégh
+very	очень	óchen'	πολύ	polí	बहुत	bahut	շատ	shat
+idea	идея	idéya	ιδέα	idéa	विचार	vichār	գաղափար	gaghap'ár
+problem	проблема	probléma	πρόβλημα	próvlima	समस्या	samasyā	խնդիր	khndir
+reason	причина	prichína	λόγος	lógos	कारण	kāraṇ	պատճառ	patchárr
+story	история	istóriya	ιστορία	istoría	कहानी	kahānī	պատմություն	patmut'yún
+news	новости	nóvosti	νέα	néa	ख़बर	khabar	նորություն	norut'yún
+music	музыка	múzyka	μουσική	mousikí	संगीत	sangīt	երաժշտություն	yerazhshtut'yún
+film	фильм	fil'm	ταινία	tenía	फ़िल्म	film	ֆիլմ	film
+game	игра	igrá	παιχνίδι	pechnídi	खेल	khel	խաղ	khagh
+sport	спорт	sport	άθλημα	áthlima	खेल-कूद	khel-kūd	սպորտ	sport
+world	мир	mir	κόσμος	kósmos	दुनिया	duniyā	աշխարհ	ashkhárh
+life	жизнь	zhizn'	ζωή	zoí	ज़िंदगी	zindagī	կյանք	kyank'
+war	война	voyná	πόλεμος	pólemos	युद्ध	yuddh	պատերազմ	paterázm
+peace	мир	mir	ειρήνη	iríni	शांति	shānti	խաղաղություն	khaghaghut'yún
+picture	картина	kartína	εικόνα	ikóna	तस्वीर	tasvīr	նկար	nkar
+gift	подарок	podárok	δώρο	dóro	तोहफ़ा	tohfā	նվեր	nver
+newspaper	газета	gazéta	εφημερίδα	efimerída	अख़बार	akhbār	թերթ	t'ert'
+weather	погода	pogóda	καιρός	kerós	मौसम	mausam	եղանակ	yeghanák
+holiday	отпуск	ótpusk	διακοπές	diakopés	छुट्टी	chhuṭṭī	արձակուրդ	ardzakúrd
+tourist	турист	turíst	τουρίστας	tourístas	पर्यटक	paryaṭak	զբոսաշրջիկ	zbosashrjík
+restaurant	ресторан	restorán	εστιατόριο	estiatório	रेस्टोरेंट	resṭoreṇṭ	ռեստորան	rrestorán
+library	библиотека	bibliotéka	βιβλιοθήκη	vivliothíki	पुस्तकालय	pustakālay	գրադարան	gradarán
+museum	музей	muzéy	μουσείο	mousío	संग्रहालय	sangrahālay	թանգարան	t'angarán

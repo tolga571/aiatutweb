@@ -124,6 +124,9 @@ class Router
             ['POST', 'flashcards/(\d+)/favorite', 'flashcardFavorite', 'plan'],
             ['POST', 'flashcards/(\d+)/learned', 'flashcardLearned', 'plan'],
 
+            ['GET', 'words', 'words', 'plan'],
+            ['POST', 'words', 'wordAdd', 'plan'],
+
             ['GET', 'lists', 'lists', 'plan'],
             ['POST', 'lists', 'listCreate', 'plan'],
             ['PATCH', 'lists/(\d+)', 'listRename', 'plan'],
@@ -639,6 +642,30 @@ class Router
             $r['card'] = $fc->getCard($uid, (int)$r['card']['id']);
         }
         $this->cardResult($r);
+    }
+
+    // ── Word bank ───────────────────────────────────────────────────
+
+    /** ?lang= — every word of the deck language, with card_id when the user has it. */
+    private function words(): void
+    {
+        $lang = $this->deckLang();
+        $this->ok(['words' => (new Flashcard($this->db))->wordBank((int)$this->user['id'], $lang, $this->user['native_lang'] ?? 'en'), 'lang' => $lang]);
+    }
+
+    /** {word, lang} — adds the word to the user's cards and their "Saved" list. */
+    private function wordAdd(): void
+    {
+        $uid = (int)$this->user['id'];
+        $lang = $this->deckLang();
+        $r = (new Flashcard($this->db))->addFromBank($uid, $lang, $this->user['native_lang'] ?? 'en', $this->str('word'));
+        if (empty($r['card'])) {
+            $code = $r['error'] ?? 'generic';
+            throw new ApiError($code, t('fc.err_' . $code), $code === 'word_not_in_bank' ? 404 : 422);
+        }
+        $cl = new CardLists($this->db);
+        $cl->add($uid, $cl->defaultId($uid, $lang), [(int)$r['card']['id']]);
+        $this->ok(['card' => (new Flashcard($this->db))->getCard($uid, (int)$r['card']['id'])]);
     }
 
     // ── Card lists (playlists), see CardLists ──────────────────────

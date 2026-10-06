@@ -569,6 +569,81 @@ class Flashcard {
     }
 
     /**
+     * The word bank for a language: the starter deck plus the extra pack, one
+     * row per word with its meaning in the user's language and, when the user
+     * already has that word, the id of their card.
+     * @return array<int, array{word:string, pronunciation:string, meaning:string, level:string, category:string, card_id:?int}>
+     */
+    public function wordBank(int $userId, string $lang, string $nativeLang): array {
+        $useLang = in_array($nativeLang, self::NATIVE_LANGS, true) ? $nativeLang : 'en';
+        $have = [];
+        foreach ($this->db->fetchAll('SELECT id, word FROM vocabulary_words WHERE user_id = ? AND language = ?', [$userId, $lang]) as $row) {
+            $have[mb_strtolower($row['word'])] = (int)$row['id'];
+        }
+        $out = [];
+        $seen = [];
+        foreach ($this->bankSource($lang) as $card) {
+            $word = (string)($card['word'] ?? '');
+            $key = mb_strtolower($word);
+            if ($word === '' || isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+            $tr = $card['translations'] ?? [];
+            $out[] = [
+                'word' => $word,
+                'pronunciation' => (string)($card['pronunciation'] ?? ''),
+                'meaning' => (string)($tr[$useLang] ?? $tr['en'] ?? ''),
+                'level' => (string)($card['level'] ?? 'A1'),
+                'category' => (string)($card['category'] ?? 'General'),
+                'card_id' => $have[$key] ?? null,
+            ];
+        }
+        return $out;
+    }
+
+    /**
+     * Adds one word from the word bank to the user's cards (or finds the card
+     * they already have for it). The word must be in the bank — free text is
+     * what createCard() is for.
+     * @return array{card?: array, error?: string}
+     */
+    public function addFromBank(int $userId, string $lang, string $nativeLang, string $word): array {
+        $key = mb_strtolower(trim($word));
+        foreach ($this->bankSource($lang) as $card) {
+            if (mb_strtolower((string)($card['word'] ?? '')) !== $key) {
+                continue;
+            }
+            $existing = $this->db->fetchOne(
+                'SELECT id FROM vocabulary_words WHERE user_id = ? AND language = ? AND LOWER(word) = ?',
+                [$userId, $lang, $key]
+            );
+            if (!$existing) {
+                $this->insertCards($userId, $lang, $nativeLang, [$card], ($card['_from'] ?? 'pack') === 'starter' ? 'static' : 'pack');
+                $existing = $this->db->fetchOne(
+                    'SELECT id FROM vocabulary_words WHERE user_id = ? AND language = ? AND LOWER(word) = ?',
+                    [$userId, $lang, $key]
+                );
+            }
+            return $existing ? ['card' => $this->getCard($userId, (int)$existing['id'])] : ['error' => 'generic'];
+        }
+        return ['error' => 'word_not_in_bank'];
+    }
+
+    /** Starter deck first (marked _from=starter), then the pack. */
+    private function bankSource(string $lang): array {
+        if (!in_array($lang, self::NATIVE_LANGS, true)) {
+            return [];
+        }
+        $starter = (require __DIR__ . '/../data/flashcards_data.php')[$lang] ?? [];
+        foreach ($starter as &$c) {
+            $c['_from'] = 'starter';
+        }
+        unset($c);
+        return array_merge($starter, $this->loadPack($lang));
+    }
+
+    /**
      * Levels of the extra vocabulary packs for a language with, per level,
      * the pack size and how many of those words the user already added.
      * @return array<string, array{total:int, added:int}>

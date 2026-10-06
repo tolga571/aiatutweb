@@ -68,7 +68,7 @@ $firstCard = $cards[0] ?? null;
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<link rel="stylesheet" href="css/flashcard.css?v=8">
+<link rel="stylesheet" href="css/flashcard.css?v=9">
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
@@ -215,6 +215,7 @@ $firstCard = $cards[0] ?? null;
               <span class="material-symbols-outlined text-[16px] text-yellow-500 animate-pulse">workspace_premium</span>
               <span id="session-xp"><?= sprintf(__('fc.xp_earned'), 0) ?></span>
             </span>
+            <a href="?page=words" class="fc-ghost-btn inline-flex items-center gap-1" title="<?= htmlspecialchars(__('fc.words_title')) ?>"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">menu_book</span><span class="hidden sm:inline"><?= __('fc.words_title') ?></span><span class="sm:hidden sr-only"><?= __('fc.words_title') ?></span></a>
             <button type="button" id="btn-select" class="fc-ghost-btn <?= count($cards) ? '' : 'hidden' ?>"><?= __('fc.select') ?></button>
             <button type="button" id="btn-study" class="fc-study-btn" <?= count($cards) ? '' : 'disabled' ?>>
               <span class="material-symbols-outlined text-[18px]">play_arrow</span><span><?= __('fc.study') ?></span>

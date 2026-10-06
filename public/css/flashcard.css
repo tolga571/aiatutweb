@@ -267,3 +267,59 @@
 @media (prefers-reduced-motion: reduce) {
   .fc-study-inner, .fc-study-fill { transition: none; }
 }
+
+/* Word bank (views/words.php) */
+.fc-words { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; color: #e3e5ff; }
+.fc-words-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.fc-words-back { display: inline-flex; align-items: center; gap: .25rem; font-size: .75rem; font-weight: 600; color: #b4c5ff; margin-bottom: .5rem; }
+.fc-words-title { font-size: 1.5rem; font-weight: 800; }
+.fc-words-sub { font-size: .85rem; color: #c4c6d6; margin-top: .25rem; max-width: 40rem; }
+.fc-words-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1.25rem; }
+.fc-words-input {
+  width: 100%; background: #1c2b3c; border: 1px solid rgba(67, 70, 85, .7); border-radius: .75rem;
+  padding: .55rem .75rem; font-size: .85rem; color: #e3e5ff;
+}
+.fc-words-input.pl-9 { padding-left: 2.25rem; }
+.fc-words-input:focus { outline: none; border-color: rgba(99, 102, 241, .7); }
+.fc-words-input option { background: #1c2b3c; }
+.fc-words-check { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; color: #c4c6d6; }
+.fc-words-check input { accent-color: #6366f1; width: 1rem; height: 1rem; }
+.fc-words-count { font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #8e90a0; margin: 1rem 0 .5rem; }
+.fc-words-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .85rem; }
+.fc-words-table th { text-align: start; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8e90a0; padding: .5rem .75rem; border-bottom: 1px solid rgba(67, 70, 85, .6); }
+.fc-words-table td { padding: .6rem .75rem; border-bottom: 1px solid rgba(67, 70, 85, .35); vertical-align: middle; }
+.fc-words-table tbody tr:hover { background: rgba(180, 197, 255, .04); }
+.fc-words-word { display: flex; align-items: center; gap: .25rem; font-weight: 700; font-size: .95rem; }
+.fc-words-pron { font-size: .75rem; font-style: italic; color: #8e90a0; }
+.fc-words-meaning { color: #c4c6d6; }
+.fc-words-cat { color: #8e90a0; font-size: .78rem; }
+.fc-words-narrow { width: 1%; white-space: nowrap; }
+.fc-words-add {
+  display: inline-flex; align-items: center; gap: .2rem; padding: .35rem .7rem; border-radius: 9999px;
+  background: #6366f1; color: #fff; font-size: .75rem; font-weight: 700;
+}
+.fc-words-add:hover { opacity: .9; }
+.fc-words-add:disabled { opacity: .5; }
+.fc-words-have { display: inline-flex; align-items: center; gap: .2rem; font-size: .75rem; font-weight: 600; color: #34d399; }
+.fc-words-none { text-align: center; color: #8e90a0; padding: 2rem 0; }
+/* Phones: each row becomes a small card (word + meaning on the left, add on the right) */
+@media (max-width: 640px) {
+  .fc-words-table thead { display: none; }
+  .fc-words-table, .fc-words-table tbody { display: block; }
+  .fc-words-table tr {
+    display: grid; grid-template-columns: 1fr auto; grid-template-areas: "word act" "meaning act" "meta act";
+    gap: .1rem .75rem; padding: .7rem .25rem; border-bottom: 1px solid rgba(67, 70, 85, .35);
+  }
+  .fc-words-table td { display: block; padding: 0; border: 0; }
+  .fc-words-table td:nth-child(1) { grid-area: word; }
+  .fc-words-table td:nth-child(2) { grid-area: meaning; }
+  .fc-words-table td:nth-child(3) { grid-area: meta; }
+  .fc-words-table td:nth-child(4) { display: none; }
+  .fc-words-table td:nth-child(5) { grid-area: act; align-self: center; }
+}
+
+/* Flashcards sidebar: the word list keeps a usable height on short screens —
+   the sidebar scrolls instead of squeezing it (lists made it crowded). */
+#words-list { min-height: 12rem; flex-shrink: 0; }
+.fc-words-tools select.fc-words-input { width: auto; min-width: 9rem; }
+@media (max-width: 640px) { .fc-words-tools select.fc-words-input { flex: 1; } }

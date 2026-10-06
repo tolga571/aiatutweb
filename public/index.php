@@ -1030,6 +1030,39 @@ switch ($page) {
         }
         exit;
 
+    // Word bank: every word we have for the deck language, each one a tap
+    // away from the user's "Saved" list.
+    case 'words':
+        $requirePlan();
+        $currentUser = $auth->currentUser();
+        if (isset($_GET['lang']) && \App\Src\Language::isUsable(strtolower((string)$_GET['lang']), 'learn')) {
+            $_SESSION['fc_lang'] = strtolower((string)$_GET['lang']);
+        }
+        $deckLang = $fcDeckLang();
+        require __DIR__ . '/../views/words.php';
+        break;
+
+    case 'word-add':
+        // JSON in and out, CSRF-checked, never a 5xx.
+        $requirePlan();
+        header('Content-Type: application/json');
+        $wordIn = json_decode(file_get_contents('php://input'), true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($wordIn) || !csrf_verify($wordIn['csrf_token'] ?? null)) {
+            echo json_encode(['success' => false, 'error' => 'invalid_request', 'message' => __('fc.err_generic')]);
+            exit;
+        }
+        $r = (new \App\Src\Flashcard($db))->addFromBank($auth->userId(), $fcDeckLang(), $auth->currentUser()['native_lang'] ?? 'en', (string)($wordIn['word'] ?? ''));
+        if (!empty($r['card'])) {
+            $cl = new \App\Src\CardLists($db);
+            $cl->add($auth->userId(), $cl->defaultId($auth->userId(), $fcDeckLang()), [(int)$r['card']['id']]);
+            echo json_encode(['success' => true, 'card_id' => (int)$r['card']['id']]);
+        } else {
+            $key = 'fc.err_' . ($r['error'] ?? 'generic');
+            $msg = __($key);
+            echo json_encode(['success' => false, 'error' => $r['error'] ?? 'generic', 'message' => $msg === $key ? __('fc.err_generic') : $msg]);
+        }
+        exit;
+
     case 'card-list':
         // Card lists (playlists): create / rename / delete a list, put cards
         // in (optionally moving them out of another list) or take them out.
