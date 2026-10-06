@@ -1,0 +1,958 @@
+# idx	word	en	de	fr	es	ar	ja	ru	el	hi	hy    HSK meanings in the sense the word has at its HSK level (the original glosses were often a dictionary's first sense). idx = position among the HSK cards of data/vocab/zh.json. Applied by add_hsk_meanings.py.
+0	爸爸	dad	Papa	papa	papá	بابا	お父さん	папа	μπαμπάς	पापा	հայրիկ
+1	杯子	cup, glass	Tasse, Glas	tasse, verre	taza, vaso	كوب	コップ	чашка, стакан	φλιτζάνι, ποτήρι	कप, गिलास	բաժակ
+2	北京	Beijing	Peking	Pékin	Pekín	بكين	北京	Пекин	Πεκίνο	बीजिंग	Պեկին
+3	本	(measure word for books)	(Zählwort für Bücher)	(classificateur pour les livres)	(clasificador para libros)	(مميّز عددي للكتب)	〜冊（本を数える）	(счётное слово для книг)	(αριθμητικό για βιβλία)	(किताबों के लिए परिमाणवाचक)	(գրքերի հաշվիչ բառ)
+4	不客气	you're welcome	gern geschehen	de rien	de nada	على الرحب والسعة	どういたしまして	пожалуйста (не за что)	παρακαλώ (τίποτα)	कोई बात नहीं	խնդրեմ
+5	不	not, no	nicht, nein	ne… pas, non	no	لا	〜ない（否定）	не, нет	όχι, δεν	नहीं	ոչ, չ-
+6	菜	dish, vegetable	Gericht, Gemüse	plat, légume	plato, verdura	طبق، خضار	料理、野菜	блюдо, овощи	φαγητό, λαχανικό	व्यंजन, सब्ज़ी	ճաշատեսակ, բանջարեղեն
+7	打电话	to make a phone call	telefonieren	téléphoner	llamar por teléfono	يتصل هاتفياً	電話をかける	звонить по телефону	τηλεφωνώ	फ़ोन करना	զանգահարել
+8	的	(possessive particle, 's)	(Possessivpartikel)	(particule possessive : de)	(partícula posesiva: de)	(أداة الإضافة)	〜の	(частица принадлежности)	(μόριο κτήσης)	का, की, के	(պատկանելիության մասնիկ)
+9	点	o'clock; dot	Uhr; Punkt	heure; point	en punto (hora); punto	الساعة؛ نقطة	〜時；点	час (время); точка	η ώρα; τελεία	बजे; बिंदु	ժամը; կետ
+10	电视	television	Fernsehen	télévision	televisión	تلفزيون	テレビ	телевизор	τηλεόραση	टीवी	հեռուստացույց
+11	东西	thing, stuff	Ding, Sache	chose, truc	cosa	شيء	もの	вещь	πράγμα	चीज़	իր
+12	都	all, both	alle, beide	tous, tout	todos	كلّ	みんな、すべて	все, всё	όλοι	सब	բոլորը
+13	对不起	sorry	Entschuldigung	pardon, désolé	perdón, lo siento	آسف	すみません	извините	συγγνώμη	माफ़ कीजिए	ներեցեք
+14	多	many, much	viel	beaucoup	mucho	كثير	多い	много	πολύ	बहुत, ज़्यादा	շատ
+15	多少	how many, how much	wie viel	combien	cuánto	كم	いくつ、いくら	сколько	πόσο	कितना	որքան
+16	饭馆	restaurant	Restaurant	restaurant	restaurante	مطعم	レストラン、食堂	ресторан	εστιατόριο	रेस्टोरेंट	ռեստորան
+17	个	(general measure word)	(allgemeines Zählwort)	(classificateur général)	(clasificador general)	(مميّز عددي عام)	〜個（一般的な助数詞）	(общее счётное слово)	(γενικό αριθμητικό)	(सामान्य परिमाणवाचक)	(ընդհանուր հաշվիչ բառ)
+18	汉语	Chinese (language)	Chinesisch	chinois	chino (idioma)	اللغة الصينية	中国語	китайский язык	κινέζικα	चीनी भाषा	չինարեն
+19	和	and, with	und, mit	et, avec	y, con	و، مع	〜と	и, с	και, με	और	և
+20	后面	behind, at the back	hinten	derrière	detrás	خلف	後ろ	сзади	πίσω	पीछे	հետևում
+21	回	to return; (times)	zurückkehren; Mal	revenir; fois	volver; vez	يعود؛ مرة	帰る；〜回	возвращаться; раз	επιστρέφω; φορά	लौटना; बार	վերադառնալ; անգամ
+22	会	can, know how to; will	können; werden	savoir; aller (futur)	saber (hacer); ir a	يستطيع؛ سوف	できる；〜だろう	уметь; будет	ξέρω (να); θα	सकना, आना; होगा	կարողանալ; կլինի
+23	火车站	train station	Bahnhof	gare	estación de tren	محطة القطار	駅	вокзал	σιδηροδρομικός σταθμός	रेलवे स्टेशन	երկաթուղային կայարան
+24	几	how many (small number)	wie viele	combien (petit nombre)	cuántos	كم	いくつ	сколько	πόσα	कितने	քանի
+25	家	home, family	Zuhause, Familie	maison, famille	casa, familia	بيت، عائلة	家、家族	дом, семья	σπίτι, οικογένεια	घर, परिवार	տուն, ընտանիք
+26	叫	to be called; to call	heißen; rufen	s'appeler; appeler	llamarse; llamar	يُدعى؛ ينادي	〜という名前だ；呼ぶ	звать(ся)	λέγομαι; φωνάζω	नाम होना; बुलाना	կոչվել; կանչել
+27	块	yuan (money); piece	Yuan; Stück	yuan; morceau	yuan; trozo	يوان؛ قطعة	元（お金）；かたまり	юань; кусок	γιουάν; κομμάτι	युआन; टुकड़ा	յուան; կտոր
+28	了	(particle: completed action)	(Partikel: abgeschlossene Handlung)	(particule : action accomplie)	(partícula: acción terminada)	(أداة لإتمام الفعل)	〜した（完了）	(частица завершённого действия)	(μόριο ολοκληρωμένης πράξης)	(पूर्ण क्रिया का निपात)	(ավարտված գործողության մասնիկ)
+29	里	inside, in	drinnen, in	dedans, dans	dentro, en	داخل	中	внутри, в	μέσα	अंदर, में	ներսում
+30	零	zero	null	zéro	cero	صفر	ゼロ	ноль	μηδέν	शून्य	զրո
+31	妈妈	mum	Mama	maman	mamá	ماما	お母さん	мама	μαμά	माँ	մայրիկ
+32	吗	(question particle)	(Fragepartikel)	(particule interrogative)	(partícula interrogativa)	(أداة الاستفهام)	〜か（疑問）	(вопросительная частица)	(ερωτηματικό μόριο)	(प्रश्नवाचक निपात)	(հարցական մասնիկ)
+33	没	not (have); didn't	nicht (haben); nicht (Vergangenheit)	ne pas (avoir); ne pas avoir fait	no (tener); no (pasado)	لا يملك؛ لم	〜ない、〜なかった	нет; не (в прошлом)	δεν έχω; δεν (αόριστος)	नहीं (है); नहीं (किया)	չունենալ; չ- (անցյալ)
+34	没关系	it doesn't matter	macht nichts	ce n'est pas grave	no importa	لا بأس	大丈夫です	ничего страшного	δεν πειράζει	कोई बात नहीं	ոչինչ
+35	哪	which	welche(r)	lequel, quel	cuál	أيّ	どれ、どの	какой, который	ποιος	कौन-सा	որ
+36	那	that	das, jene(r)	cela, ce…là	ese, aquel	ذلك	あれ、その	тот, то	εκείνο	वह	այն
+37	呢	(particle: "and…?", "what about…?")	(Partikel: „und …?“)	(particule : « et… ? »)	(partícula: «¿y…?»)	(أداة: «وماذا عن…؟»)	〜は？（問い返し）	(частица: «а …?»)	(μόριο: «κι εσύ;»)	(निपात: «और…?»)	(մասնիկ՝ «իսկ…»)
+38	能	can, be able to	können	pouvoir	poder	يستطيع	できる	мочь	μπορώ	सकना	կարողանալ
+39	你	you	du	tu	tú	أنت	あなた	ты	εσύ	तुम	դու
+40	前面	in front, ahead	vorne	devant	delante	أمام	前	впереди	μπροστά	आगे	առջևում
+41	人	person, people	Mensch, Leute	personne, gens	persona, gente	إنسان، ناس	人	человек, люди	άνθρωπος	आदमी, लोग	մարդ
+42	认识	to know (sb), to meet	kennen, kennenlernen	connaître	conocer	يعرف، يتعرّف	知り合う	знать, знакомиться	γνωρίζω	जानना, परिचित होना	ճանաչել
+43	日	day; date	Tag; Datum	jour; date	día; fecha	يوم؛ تاريخ	日	день; число	μέρα; ημερομηνία	दिन; तारीख़	օր; ամսաթիվ
+44	上	on, above; to go up	auf, oben; hinaufgehen	sur, dessus; monter	sobre, arriba; subir	فوق؛ يصعد	上；上がる	на, над; подниматься	πάνω; ανεβαίνω	ऊपर; चढ़ना	վրա; բարձրանալ
+45	上午	morning (before noon)	Vormittag	matin	mañana	صباحاً	午前	утро (до полудня)	πρωί	सुबह	առավոտ
+46	少	few, little	wenig	peu	poco	قليل	少ない	мало	λίγο	कम	քիչ
+47	谁	who	wer	qui	quién	من	誰	кто	ποιος	कौन	ով
+48	什么	what	was	quoi	qué	ماذا	何	что	τι	क्या	ինչ
+49	时候	time, moment	Zeit, Zeitpunkt	moment, heure	momento, tiempo	وقت	時	время, момент	ώρα, στιγμή	समय	ժամանակ
+50	是	to be (am, is, are)	sein	être	ser	يكون	〜である	быть (является)	είμαι	होना	լինել
+51	说话	to speak, to talk	sprechen	parler	hablar	يتكلّم	話す	говорить	μιλάω	बात करना	խոսել
+52	岁	years old	Jahre alt	ans (âge)	años (de edad)	سنة (من العمر)	〜歳	лет (возраст)	χρονών	साल (उम्र)	տարեկան
+53	他	he, him	er, ihn	il, lui	él	هو	彼	он	αυτός	वह (पुरुष)	նա (արական)
+54	她	she, her	sie	elle	ella	هي	彼女	она	αυτή	वह (स्त्री)	նա (իգական)
+55	太	too (much); very	zu; sehr	trop; très	demasiado; muy	جداً، أكثر من اللازم	あまりにも、とても	слишком; очень	πολύ, υπερβολικά	बहुत, ज़्यादा	չափազանց
+56	同学	classmate	Mitschüler	camarade de classe	compañero de clase	زميل الدراسة	クラスメート	одноклассник	συμμαθητής	सहपाठी	դասընկեր
+57	喂	hello (on the phone)	hallo (am Telefon)	allô	¿diga? (al teléfono)	ألو	もしもし	алло	εμπρός (στο τηλέφωνο)	हैलो (फ़ोन पर)	ալո
+58	我	I, me	ich	je, moi	yo	أنا	私	я	εγώ	मैं	ես
+59	我们	we, us	wir	nous	nosotros	نحن	私たち	мы	εμείς	हम	մենք
+60	喜欢	to like	mögen	aimer	gustar	يحبّ	好きだ	нравиться, любить	μου αρέσει	पसंद करना	սիրել, դուր գալ
+61	下	under, below; next; to go down	unter; nächste; hinuntergehen	sous; prochain; descendre	debajo; próximo; bajar	تحت؛ القادم؛ ينزل	下；次の；下りる	под; следующий; спускаться	κάτω; επόμενος; κατεβαίνω	नीचे; अगला; उतरना	տակ; հաջորդ; իջնել
+62	下午	afternoon	Nachmittag	après-midi	tarde	بعد الظهر	午後	после полудня	απόγευμα	दोपहर बाद	կեսօրից հետո
+63	下雨	to rain	regnen	pleuvoir	llover	تمطر	雨が降る	идёт дождь	βρέχει	बारिश होना	անձրև գալ
+64	先生	Mr., sir; husband	Herr; Ehemann	monsieur; mari	señor; marido	السيد؛ الزوج	〜さん（男性）；夫	господин; муж	κύριος; σύζυγος	श्रीमान; पति	պարոն; ամուսին
+65	小姐	Miss, young lady	Fräulein, junge Dame	mademoiselle	señorita	آنسة	〜さん（若い女性）	девушка, мисс	δεσποινίς	मिस, कुमारी	օրիորդ
+66	些	some, a few	einige	quelques	algunos	بعض	いくつか	некоторые	μερικά	कुछ	մի քանի
+67	衣服	clothes	Kleidung	vêtements	ropa	ملابس	服	одежда	ρούχα	कपड़े	հագուստ
+68	有	to have; there is	haben; es gibt	avoir; il y a	tener; hay	يملك؛ يوجد	ある、持っている	иметь; есть	έχω; υπάρχει	होना, के पास होना	ունենալ; կա
+69	在	at, in; to be (somewhere)	in, an; sich befinden	à, dans; se trouver	en; estar	في؛ يوجد	〜にいる、〜で	в, на; находиться	σε; βρίσκομαι	में; होना (जगह पर)	գտնվել, մեջ
+70	怎么	how, why	wie, warum	comment, pourquoi	cómo, por qué	كيف، لماذا	どう、なぜ	как, почему	πώς, γιατί	कैसे, क्यों	ինչպես, ինչու
+71	怎么样	how about it, how is it	wie (ist es)	comment ça va, qu'en dis-tu	¿qué tal?	كيف الحال	どうですか	как (дела)	πώς είναι	कैसा है	ինչպես է
+72	这	this	dies, diese(r)	ceci, ce	este, esto	هذا	これ、この	этот, это	αυτό	यह	այս
+73	中国	China	China	Chine	China	الصين	中国	Китай	Κίνα	चीन	Չինաստան
+74	中午	noon	Mittag	midi	mediodía	الظهر	正午、昼	полдень	μεσημέρι	दोपहर	կեսօր
+75	字	character, word	Schriftzeichen	caractère	carácter	حرف (صيني)	字	иероглиф	χαρακτήρας	अक्षर	գրանշան
+76	坐	to sit; to take (bus, train)	sitzen; fahren mit	s'asseoir; prendre (bus)	sentarse; tomar (bus)	يجلس؛ يركب	座る；乗る	сидеть; ехать на	κάθομαι; παίρνω (λεωφορείο)	बैठना; सवार होना	նստել; գնալ (տրանսպորտով)
+77	做	to do, to make	machen, tun	faire	hacer	يفعل، يصنع	する、作る	делать	κάνω	करना, बनाना	անել
+78	吧	(particle: suggestion, "let's")	(Partikel: Vorschlag, „lass uns“)	(particule : suggestion)	(partícula: sugerencia)	(أداة اقتراح)	〜しよう、〜でしょう	(частица: давай)	(μόριο πρότασης: ας)	(निपात: सुझाव)	(մասնիկ՝ առաջարկ)
+79	白	white	weiß	blanc	blanco	أبيض	白い	белый	άσπρος	सफ़ेद	սպիտակ
+80	比	than (comparison)	als (Vergleich)	que (comparaison)	que (comparación)	مِن (للمقارنة)	〜より	чем (сравнение)	από (σύγκριση)	से (तुलना)	քան
+81	别	don't; other	nicht (Verbot); andere	ne… pas (interdiction); autre	no (prohibición); otro	لا تفعل؛ آخر	〜するな；ほかの	не (запрет); другой	μην; άλλος	मत; दूसरा	մի՛ (արգելք); այլ
+82	出	to go out, to come out	hinausgehen	sortir	salir	يخرج	出る	выходить	βγαίνω	बाहर निकलना	դուրս գալ
+83	船	boat, ship	Boot, Schiff	bateau	barco	سفينة	船	корабль, лодка	πλοίο, βάρκα	नाव, जहाज़	նավ
+84	次	time (occurrence)	Mal	fois	vez	مرة	〜回	раз	φορά	बार	անգամ
+85	从	from	von, aus	de, depuis	desde	من	〜から	от, из	από	से	-ից
+86	错	wrong; mistake	falsch; Fehler	faux; erreur	incorrecto; error	خطأ	間違い	неправильный; ошибка	λάθος	गलत; गलती	սխալ
+87	打篮球	to play basketball	Basketball spielen	jouer au basket	jugar al baloncesto	يلعب كرة السلة	バスケットボールをする	играть в баскетбол	παίζω μπάσκετ	बास्केटबॉल खेलना	բասկետբոլ խաղալ
+88	大家	everyone	alle	tout le monde	todos	الجميع	みなさん	все	όλοι	सब लोग	բոլորը
+89	但是	but	aber	mais	pero	لكن	しかし	но	αλλά	लेकिन	բայց
+90	得	(particle: degree/result after a verb)	(Partikel nach Verb: Grad, Ergebnis)	(particule après un verbe : degré)	(partícula tras verbo: grado)	(أداة بعد الفعل للدرجة)	〜するのが（程度補語）	(частица степени после глагола)	(μόριο βαθμού μετά από ρήμα)	(क्रिया के बाद मात्रा का निपात)	(բայից հետո՝ աստիճանի մասնիկ)
+91	弟弟	younger brother	jüngerer Bruder	petit frère	hermano menor	الأخ الأصغر	弟	младший брат	μικρότερος αδερφός	छोटा भाई	կրտսեր եղբայր
+92	第一	first	erste(r)	premier	primero	الأول	第一、一番目	первый	πρώτος	पहला	առաջին
+93	非常	very, extremely	sehr	très	muy	جداً	非常に	очень	πάρα πολύ	बहुत	շատ, խիստ
+94	服务员	waiter, attendant	Kellner	serveur	camarero	نادل	店員、ウェイター	официант	σερβιτόρος	वेटर	մատուցող
+95	高	tall, high	groß, hoch	grand, haut	alto	عالٍ، طويل	高い	высокий	ψηλός	ऊँचा, लंबा	բարձր
+96	告诉	to tell	sagen, erzählen	dire	decir, contar	يخبر	伝える、知らせる	сказать, сообщить	λέω	बताना	ասել, պատմել
+97	公斤	kilogram	Kilogramm	kilogramme	kilogramo	كيلوغرام	キログラム	килограмм	κιλό	किलोग्राम	կիլոգրամ
+98	还	still, also	noch, auch	encore	todavía, también	ما زال، أيضاً	まだ、さらに	ещё	ακόμα	अभी भी, और	դեռ, նաև
+99	好吃	tasty, delicious	lecker	bon, délicieux	rico, sabroso	لذيذ	おいしい	вкусный	νόστιμος	स्वादिष्ट	համեղ
+100	号	number; day of the month	Nummer; Tag (Datum)	numéro; jour du mois	número; día del mes	رقم؛ يوم (تاريخ)	〜番；〜日	номер; число (дата)	αριθμός; ημερομηνία	नंबर; तारीख़	համար; ամսաթիվ
+101	黑	black; dark	schwarz; dunkel	noir; sombre	negro; oscuro	أسود؛ مظلم	黒い；暗い	чёрный; тёмный	μαύρος; σκοτεινός	काला; अँधेरा	սև; մութ
+102	红	red	rot	rouge	rojo	أحمر	赤い	красный	κόκκινος	लाल	կարմիր
+103	欢迎	welcome; to welcome	willkommen	bienvenue; accueillir	bienvenido; dar la bienvenida	أهلاً؛ يرحّب	ようこそ；歓迎する	добро пожаловать	καλώς ήρθες; καλωσορίζω	स्वागत	բարի գալուստ
+104	回答	to answer; answer	antworten; Antwort	répondre; réponse	responder; respuesta	يجيب؛ جواب	答える；答え	отвечать; ответ	απαντώ; απάντηση	जवाब देना; जवाब	պատասխանել; պատասխան
+105	件	(measure word for clothes, matters)	(Zählwort für Kleidung, Angelegenheiten)	(classificateur : vêtements, affaires)	(clasificador: ropa, asuntos)	(مميّز للملابس والأمور)	〜着、〜件	(счётное слово для одежды, дел)	(αριθμητικό για ρούχα, υποθέσεις)	(कपड़ों, मामलों का परिमाणवाचक)	(հագուստի, գործերի հաշվիչ բառ)
+106	教室	classroom	Klassenzimmer	salle de classe	aula	فصل دراسي	教室	класс (комната)	τάξη (αίθουσα)	कक्षा	դասարան
+107	介绍	to introduce	vorstellen	présenter	presentar	يقدّم، يعرّف	紹介する	представлять, знакомить	συστήνω	परिचय कराना	ներկայացնել
+108	进	to enter, to come in	hereinkommen	entrer	entrar	يدخل	入る	входить	μπαίνω	अंदर आना	մտնել
+109	近	near, close	nah	proche	cerca	قريب	近い	близко	κοντά	पास, नज़दीक	մոտ
+110	就	just, then, right away	gleich, eben	tout de suite, justement	enseguida, justo	حالاً، فقط	すぐ、まさに	сразу, как раз	αμέσως, ακριβώς	तुरंत, ही	անմիջապես, հենց
+111	觉得	to feel, to think	finden, meinen	trouver, penser	parecer, pensar	يشعر، يظنّ	〜と思う、感じる	считать, чувствовать	νομίζω, νιώθω	लगना, महसूस करना	կարծել, զգալ
+112	考试	exam; to take an exam	Prüfung; Prüfung machen	examen; passer un examen	examen; hacer un examen	امتحان	試験；試験を受ける	экзамен; сдавать экзамен	εξέταση; δίνω εξετάσεις	परीक्षा; परीक्षा देना	քննություն; քննություն հանձնել
+113	可能	maybe, possible	vielleicht, möglich	peut-être, possible	quizás, posible	ربما، ممكن	たぶん、可能な	возможно	ίσως, πιθανό	शायद, संभव	հնարավոր է
+114	可以	can, may	können, dürfen	pouvoir	poder	يمكن	〜してもよい、できる	можно, мочь	μπορώ	सकना	կարելի է
+115	快乐	happy	fröhlich	heureux, joyeux	feliz	سعيد	楽しい	весёлый, радостный	χαρούμενος	खुश	ուրախ
+116	离	away from (distance)	entfernt von	loin de (distance)	(distancia) de	يبعد عن	〜から（距離）	от (расстояние)	μακριά από	से दूर	-ից (հեռավորություն)
+117	两	two (with measure words)	zwei	deux	dos	اثنان	二つ	два	δύο	दो	երկու
+118	旅游	to travel; tourism	reisen; Tourismus	voyager; tourisme	viajar; turismo	يسافر؛ سياحة	旅行する；観光	путешествовать; туризм	ταξιδεύω; τουρισμός	घूमना; पर्यटन	ճանապարհորդել; զբոսաշրջություն
+119	每	every, each	jede(r)	chaque	cada	كل	毎〜、それぞれ	каждый	κάθε	हर	ամեն
+120	妹妹	younger sister	jüngere Schwester	petite sœur	hermana menor	الأخت الصغرى	妹	младшая сестра	μικρότερη αδερφή	छोटी बहन	կրտսեր քույր
+121	您	you (polite)	Sie	vous (politesse)	usted	حضرتك	あなた（丁寧）	Вы	εσείς (ευγενικά)	आप	Դուք
+122	旁边	beside, next to	neben	à côté	al lado	بجانب	横、そば	рядом	δίπλα	बगल में	կողքին
+123	跑步	to run, to jog	laufen, joggen	courir, faire du jogging	correr	يجري، يركض	ジョギングする	бегать	τρέχω	दौड़ना	վազել
+124	起床	to get up	aufstehen	se lever	levantarse	يستيقظ (من الفراش)	起きる	вставать	σηκώνομαι	उठना	արթնանալ, վեր կենալ
+125	晴	sunny, clear	sonnig	ensoleillé	soleado	صحو، مشمس	晴れ	ясно	ηλιόλουστος	धूप वाला, साफ़	պայծառ, արևոտ
+126	去年	last year	letztes Jahr	l'année dernière	el año pasado	العام الماضي	去年	в прошлом году	πέρσι	पिछले साल	անցյալ տարի
+127	让	to let, to make (sb do)	lassen	laisser, faire faire	dejar, hacer que	يدع، يجعل	〜させる	позволять, заставлять	αφήνω, βάζω να	देना (करने देना)	թույլ տալ, ստիպել
+128	上班	to go to work	zur Arbeit gehen	aller au travail	ir a trabajar	يذهب إلى العمل	出勤する	идти на работу	πηγαίνω στη δουλειά	काम पर जाना	աշխատանքի գնալ
+129	身体	body; health	Körper; Gesundheit	corps; santé	cuerpo; salud	جسم؛ صحة	体；健康	тело; здоровье	σώμα; υγεία	शरीर; सेहत	մարմին; առողջություն
+130	生日	birthday	Geburtstag	anniversaire	cumpleaños	عيد ميلاد	誕生日	день рождения	γενέθλια	जन्मदिन	ծննդյան օր
+131	事情	matter, thing (to do)	Angelegenheit	affaire, chose	asunto	أمر، شأن	こと、用事	дело	υπόθεση, πράγμα	बात, काम	գործ
+132	手表	wristwatch	Armbanduhr	montre	reloj de pulsera	ساعة يد	腕時計	наручные часы	ρολόι χεριού	घड़ी	ձեռքի ժամացույց
+133	手机	mobile phone	Handy	téléphone portable	móvil	هاتف محمول	携帯電話	мобильный телефон	κινητό	मोबाइल फ़ोन	բջջային հեռախոս
+134	送	to give (as a gift); to see off	schenken; begleiten	offrir; raccompagner	regalar; acompañar	يهدي؛ يودّع	贈る；見送る	дарить; провожать	δωρίζω; συνοδεύω	तोहफ़ा देना; छोड़ने जाना	նվիրել; ճանապարհել
+135	所以	so, therefore	deshalb	donc	por eso	لذلك	だから	поэтому	γι' αυτό	इसलिए	այդ պատճառով
+136	它	it	es	il, elle (chose)	ello	هو، هي (لغير العاقل)	それ	оно	αυτό	यह, वह (वस्तु)	այն
+137	踢	to kick	treten	donner un coup de pied	patear	يركل	蹴る	пинать	κλοτσάω	लात मारना	քացի տալ
+138	题	question (in a test), topic	Aufgabe, Thema	question, sujet	pregunta, tema	سؤال، موضوع	問題	задача, вопрос	ερώτηση, θέμα	प्रश्न, विषय	խնդիր, հարց
+139	外	outside	draußen	dehors	fuera	خارج	外	снаружи	έξω	बाहर	դուրս
+140	完	to finish; done	beenden; fertig	finir; fini	terminar; acabado	ينتهي	終わる	заканчивать	τελειώνω	ख़त्म करना	ավարտել
+141	为	for	für	pour	para, por	من أجل	〜のために	для, ради	για	के लिए	համար
+142	西瓜	watermelon	Wassermelone	pastèque	sandía	بطيخ	スイカ	арбуз	καρπούζι	तरबूज़	ձմերուկ
+143	向	towards	in Richtung	vers	hacia	نحو	〜に向かって	к, в сторону	προς	की ओर	դեպի
+144	姓	surname; to be surnamed	Nachname; heißen (mit Nachnamen)	nom de famille	apellido; apellidarse	اسم العائلة	姓；〜という姓だ	фамилия	επώνυμο	उपनाम	ազգանուն
+145	休息	to rest	sich ausruhen	se reposer	descansar	يستريح	休む	отдыхать	ξεκουράζομαι	आराम करना	հանգստանալ
+146	颜色	colour	Farbe	couleur	color	لون	色	цвет	χρώμα	रंग	գույն
+147	羊肉	mutton, lamb	Lammfleisch	mouton, agneau	cordero	لحم الضأن	羊肉	баранина	αρνί	भेड़ का मांस	ոչխարի միս
+148	要	to want; will; need	wollen; werden; brauchen	vouloir; aller; falloir	querer; ir a; necesitar	يريد؛ سوف؛ يحتاج	欲しい；〜するつもり	хотеть; собираться	θέλω; θα; χρειάζομαι	चाहना; वाला होना	ուզել; պետք է
+149	也	also, too	auch	aussi	también	أيضاً	〜も	тоже	επίσης	भी	նույնպես
+150	已经	already	schon	déjà	ya	بالفعل	もう、すでに	уже	ήδη	पहले ही	արդեն
+151	意思	meaning	Bedeutung	sens	significado	معنى	意味	смысл, значение	νόημα	मतलब	իմաստ
+152	阴	cloudy, overcast	bewölkt	nuageux	nublado	غائم	曇り	пасмурно	συννεφιασμένος	बादल वाला	ամպամած
+153	因为	because	weil	parce que	porque	لأن	なぜなら、〜だから	потому что	επειδή	क्योंकि	որովհետև
+154	右边	right side	rechts	à droite	a la derecha	اليمين	右側	справа	δεξιά	दाईं ओर	աջ կողմ
+155	元	yuan (Chinese currency)	Yuan	yuan	yuan	يوان	元（中国の通貨）	юань	γιουάν	युआन	յուան
+156	远	far	weit	loin	lejos	بعيد	遠い	далеко	μακριά	दूर	հեռու
+157	张	(measure word for flat things)	(Zählwort für flache Dinge)	(classificateur : objets plats)	(clasificador: objetos planos)	(مميّز للأشياء المسطّحة)	〜枚	(счётное слово для плоских предметов)	(αριθμητικό για επίπεδα αντικείμενα)	(चपटी चीज़ों का परिमाणवाचक)	(հարթ իրերի հաշվիչ բառ)
+158	找	to look for; to give change	suchen; Wechselgeld geben	chercher; rendre la monnaie	buscar; dar el cambio	يبحث؛ يعيد الباقي	探す；おつりを出す	искать; давать сдачу	ψάχνω; δίνω ρέστα	ढूँढना; छुट्टे लौटाना	փնտրել; մանր վերադարձնել
+159	着	(particle: ongoing state)	(Partikel: andauernder Zustand)	(particule : état continu)	(partícula: estado continuo)	(أداة الاستمرار)	〜している（持続）	(частица длящегося состояния)	(μόριο διαρκούς κατάστασης)	(जारी स्थिति का निपात)	(շարունակական վիճակի մասնիկ)
+160	真	really, truly	wirklich	vraiment	de verdad	حقاً	本当に	действительно	πραγματικά	सचमुच	իսկապես
+161	正在	in the middle of (doing)	gerade (dabei)	en train de	estar (haciendo)	في أثناء	〜しているところ	как раз (делать)	τώρα (κάνω)	अभी (कर रहा)	հենց հիմա (անել)
+162	准备	to prepare; to plan to	vorbereiten; vorhaben	préparer; compter faire	preparar; pensar hacer	يستعدّ؛ ينوي	準備する；〜するつもり	готовиться; собираться	ετοιμάζω; σκοπεύω	तैयारी करना; इरादा करना	պատրաստվել
+163	自行车	bicycle	Fahrrad	vélo	bicicleta	دراجة	自転車	велосипед	ποδήλατο	साइकिल	հեծանիվ
+164	最	most	am meisten	le plus	el más	الأكثر	最も	самый	ο πιο	सबसे	ամենա-
+165	左边	left side	links	à gauche	a la izquierda	اليسار	左側	слева	αριστερά	बाईं ओर	ձախ կողմ
+166	阿姨	aunt; auntie (older woman)	Tante	tante, madame	tía, señora	خالة	おばさん	тётя	θεία	आंटी	մորաքույր
+167	啊	(exclamation particle: ah)	(Ausrufpartikel: ah)	(particule exclamative : ah)	(partícula exclamativa: ah)	(أداة تعجب: آه)	ああ（感嘆）	(восклицательная частица: а)	(επιφώνημα: α)	(विस्मयादिबोधक: अरे)	(բացականչական մասնիկ՝ ա)
+168	矮	short (height)	klein (Körpergröße)	petit (taille)	bajo (estatura)	قصير	背が低い	низкий (ростом)	κοντός	नाटा	ցածրահասակ
+169	爱好	hobby	Hobby	passe-temps	afición	هواية	趣味	хобби	χόμπι	शौक़	հոբբի
+170	把	(particle marking the object before the verb)	(Partikel: Objekt vor dem Verb)	(particule : complément placé avant le verbe)	(partícula: objeto antes del verbo)	(أداة تقديم المفعول)	〜を（目的語を前に出す）	(частица: дополнение перед глаголом)	(μόριο: αντικείμενο πριν από το ρήμα)	(कर्म को क्रिया से पहले लाने वाला निपात)	(մասնիկ՝ խնդիրը բայից առաջ)
+171	班	class (group of students); shift	Klasse; Schicht	classe; équipe	clase (grupo); turno	صفّ؛ نوبة عمل	クラス；勤務	класс (группа); смена	τάξη; βάρδια	कक्षा; पाली	դասարան; հերթափոխ
+172	半	half	halb	demi	medio	نصف	半分	половина	μισό	आधा	կես
+173	办法	way, method	Lösung, Weg	moyen, solution	manera, solución	طريقة، حلّ	方法	способ	τρόπος, λύση	उपाय	միջոց, ելք
+174	帮忙	to help, to do a favour	helfen	aider	ayudar	يساعد	手伝う	помогать	βοηθάω	मदद करना	օգնել
+175	饱	full (after eating)	satt	rassasié	lleno (de comida)	شبعان	お腹がいっぱい	сытый	χορτάτος	पेट भरा हुआ	կուշտ
+176	北方	the north	Norden	le nord	el norte	الشمال	北方	север	βορράς	उत्तर	հյուսիս
+177	被	(passive marker: by)	(Passivpartikel: von)	(marque du passif : par)	(marca de pasiva: por)	(أداة المبني للمجهول)	〜される（受け身）	(показатель пассива)	(δείκτης παθητικής φωνής)	(कर्मवाच्य सूचक: द्वारा)	(կրավորականի ցուցիչ)
+178	比较	rather, fairly; to compare	ziemlich; vergleichen	assez; comparer	bastante; comparar	نسبياً؛ يقارن	比較的；比べる	довольно; сравнивать	αρκετά; συγκρίνω	काफ़ी; तुलना करना	բավական; համեմատել
+179	比赛	match, competition	Wettkampf, Spiel	match, compétition	partido, competición	مباراة	試合	соревнование, матч	αγώνας	मुकाबला, मैच	մրցույթ, խաղ
+180	必须	must	müssen	devoir	tener que	يجب	〜しなければならない	должен	πρέπει	ज़रूर, अवश्य	պետք է
+181	变化	change	Veränderung	changement	cambio	تغيير	変化	изменение	αλλαγή	बदलाव	փոփոխություն
+182	表示	to express, to show	ausdrücken	exprimer	expresar	يعبّر	表す	выражать	εκφράζω	व्यक्त करना	արտահայտել
+183	表演	to perform; performance	aufführen; Vorstellung	jouer; spectacle	actuar; actuación	يؤدّي؛ عرض	演じる；公演	выступать; представление	παίζω (σε παράσταση); παράσταση	प्रदर्शन करना; प्रस्तुति	ներկայացնել; ներկայացում
+184	别人	other people	andere Leute	les autres	los demás	الآخرون	他人	другие люди	οι άλλοι	दूसरे लोग	ուրիշները
+185	宾馆	hotel	Hotel	hôtel	hotel	فندق	ホテル	гостиница	ξενοδοχείο	होटल	հյուրանոց
+186	冰箱	fridge	Kühlschrank	réfrigérateur	nevera	ثلاجة	冷蔵庫	холодильник	ψυγείο	फ़्रिज	սառնարան
+187	才	only then; only (just)	erst; nur	seulement alors; seulement	recién; solo	لم… إلا؛ فقط	やっと；たった	только (тогда); всего	μόλις; μόνο	तभी; केवल	միայն այդ ժամանակ; ընդամենը
+188	菜单	menu	Speisekarte	menu	menú	قائمة الطعام	メニュー	меню	μενού	मेन्यू	ճաշացանկ
+189	参加	to take part	teilnehmen	participer	participar	يشارك	参加する	участвовать	συμμετέχω	भाग लेना	մասնակցել
+190	草	grass	Gras	herbe	hierba	عشب	草	трава	χορτάρι	घास	խոտ
+191	层	floor (storey); layer	Stockwerk; Schicht	étage; couche	piso; capa	طابق؛ طبقة	〜階；層	этаж; слой	όροφος; στρώμα	मंज़िल; परत	հարկ; շերտ
+192	差	poor, not good; to lack	schlecht; fehlen	mauvais; manquer	malo; faltar	سيئ؛ ينقص	悪い；足りない	плохой; не хватать	κακός; λείπει	ख़राब; कम होना	վատ; պակասել
+193	超市	supermarket	Supermarkt	supermarché	supermercado	سوبرماركت	スーパー	супермаркет	σουπερμάρκετ	सुपरमार्केट	սուպերմարկետ
+194	成绩	results, grades	Leistung, Noten	résultats, notes	resultados, notas	نتائج، درجات	成績	результаты, оценки	βαθμοί, επιδόσεις	अंक, परिणाम	արդյունքներ, գնահատականներ
+195	迟到	to be late	zu spät kommen	être en retard	llegar tarde	يتأخر	遅刻する	опаздывать	αργώ	देर से आना	ուշանալ
+196	出现	to appear	erscheinen	apparaître	aparecer	يظهر	現れる	появляться	εμφανίζομαι	प्रकट होना	հայտնվել
+197	除了	except, besides	außer	sauf, à part	excepto, además de	ما عدا، بالإضافة إلى	〜以外	кроме	εκτός από	के अलावा	բացի
+198	春	spring (season)	Frühling	printemps	primavera	الربيع	春	весна	άνοιξη	वसंत	գարուն
+199	词语	word, expression	Wort, Ausdruck	mot, expression	palabra, expresión	كلمة، تعبير	語句	слово, выражение	λέξη, έκφραση	शब्द, शब्दावली	բառ, արտահայտություն
+200	聪明	clever, smart	klug	intelligent	listo, inteligente	ذكي	頭がいい	умный	έξυπνος	होशियार	խելացի
+201	打扫	to clean, to sweep	putzen	nettoyer	limpiar	ينظّف	掃除する	убирать	καθαρίζω	सफ़ाई करना	մաքրել
+202	打算	to plan to; plan	vorhaben; Plan	compter faire; projet	pensar hacer; plan	ينوي؛ خطة	〜するつもり；予定	собираться; план	σκοπεύω; σχέδιο	इरादा करना; योजना	մտադրվել; ծրագիր
+203	带	to bring, to take along	mitbringen	apporter, emmener	llevar, traer	يحضر، يأخذ معه	持っていく、連れていく	брать с собой	φέρνω, παίρνω μαζί	साथ ले जाना	բերել, տանել
+204	担心	to worry	sich Sorgen machen	s'inquiéter	preocuparse	يقلق	心配する	беспокоиться	ανησυχώ	चिंता करना	անհանգստանալ
+205	蛋糕	cake	Kuchen	gâteau	pastel	كعكة	ケーキ	торт	τούρτα	केक	տորթ
+206	当然	of course	natürlich	bien sûr	por supuesto	طبعاً	もちろん	конечно	φυσικά	बेशक	իհարկե
+207	地	(adverb particle: -ly)	(Adverbialpartikel: -lich)	(particule adverbiale : -ment)	(partícula adverbial: -mente)	(أداة الحال)	〜に（副詞化）	(наречная частица)	(μόριο επιρρήματος)	(क्रियाविशेषण निपात: से)	(մակբայական մասնիկ)
+208	灯	lamp, light	Lampe, Licht	lampe, lumière	lámpara, luz	مصباح	明かり、ランプ	лампа, свет	λάμπα, φως	बत्ती	լամպ, լույս
+209	低	low	niedrig	bas	bajo	منخفض	低い	низкий	χαμηλός	नीचा, कम	ցածր
+210	地方	place	Ort	endroit	lugar	مكان	場所	место	μέρος	जगह	տեղ
+211	地铁	underground, metro	U-Bahn	métro	metro	مترو	地下鉄	метро	μετρό	मेट्रो	մետրո
+212	电梯	lift, elevator	Aufzug	ascenseur	ascensor	مصعد	エレベーター	лифт	ασανσέρ	लिफ़्ट	վերելակ
+213	电子	electronic	elektronisch	électronique	electrónico	إلكتروني	電子	электронный	ηλεκτρονικός	इलेक्ट्रॉनिक	էլեկտրոնային
+214	冬	winter	Winter	hiver	invierno	الشتاء	冬	зима	χειμώνας	सर्दी	ձմեռ
+215	东	east	Osten	est	este	الشرق	東	восток	ανατολή	पूर्व	արևելք
+216	动物	animal	Tier	animal	animal	حيوان	動物	животное	ζώο	जानवर	կենդանի
+217	段	section, paragraph; period	Abschnitt; Zeitraum	passage, paragraphe; période	párrafo; período	فقرة؛ فترة	段落；期間	отрезок, абзац; период	τμήμα, παράγραφος; περίοδος	अंश, अनुच्छेद; अवधि	հատված; ժամանակահատված
+218	锻炼	to exercise, to work out	trainieren	faire de l'exercice	hacer ejercicio	يتمرّن	体を鍛える	тренироваться	γυμνάζομαι	व्यायाम करना	մարզվել
+219	多么	how (very)!	wie (sehr)!	comme… !	¡qué…!	ما أ…!	なんと	как (же)!	πόσο!	कितना!	որքա՜ն
+220	而且	and also, moreover	außerdem	de plus	además	وأيضاً	しかも	к тому же	επιπλέον	और भी	ավելին
+221	发烧	to have a fever	Fieber haben	avoir de la fièvre	tener fiebre	يصاب بالحمى	熱が出る	температурить	έχω πυρετό	बुख़ार होना	ջերմել
+222	发现	to discover, to notice	entdecken, bemerken	découvrir, remarquer	descubrir, notar	يكتشف، يلاحظ	発見する、気づく	обнаружить, заметить	ανακαλύπτω	पता लगाना	հայտնաբերել, նկատել
+223	方便	convenient	bequem, praktisch	pratique	cómodo, conveniente	مريح، سهل	便利	удобный	βολικός	सुविधाजनक	հարմար
+224	放	to put, to place	legen, stellen	mettre, poser	poner	يضع	置く	класть, ставить	βάζω	रखना	դնել
+225	放心	to be at ease, to stop worrying	beruhigt sein	être rassuré	estar tranquilo	يطمئن	安心する	быть спокойным	ησυχάζω	बेफ़िक्र होना	հանգիստ լինել
+226	分	minute; cent (fen); to divide	Minute; Fen; teilen	minute; fen; diviser	minuto; fen; dividir	دقيقة؛ فين؛ يقسم	〜分；分ける	минута; фэнь; делить	λεπτό; διαιρώ	मिनट; बाँटना	րոպե; բաժանել
+227	附近	nearby	in der Nähe	à proximité	cerca	بالقرب	近く	поблизости	κοντά	पास में	մոտակայքում
+228	复习	to review (lessons)	wiederholen (Lernstoff)	réviser	repasar	يراجع	復習する	повторять (урок)	επαναλαμβάνω (μάθημα)	दोहराना (पाठ)	կրկնել (դասը)
+229	敢	to dare	sich trauen	oser	atreverse	يجرؤ	あえて〜する	сметь	τολμώ	हिम्मत करना	համարձակվել
+230	感冒	to catch a cold; cold	sich erkälten; Erkältung	s'enrhumer; rhume	resfriarse; resfriado	يصاب بالزكام؛ زكام	風邪をひく；風邪	простудиться; простуда	κρυολογώ; κρύωμα	ज़ुकाम होना; ज़ुकाम	մրսել; մրսածություն
+231	刚才	just now	gerade eben	tout à l'heure	hace un momento	قبل قليل	さっき	только что	μόλις τώρα	अभी-अभी	հենց նոր
+232	根据	according to	laut, gemäß	d'après	según	وفقاً لـ	〜によると	согласно	σύμφωνα με	के अनुसार	համաձայն
+233	更	even more	noch (mehr)	encore plus	aún más	أكثر	さらに	ещё более	ακόμα πιο	और भी	ավելի
+234	公园	park	Park	parc	parque	حديقة عامة	公園	парк	πάρκο	पार्क	զբոսայգի
+235	刮	to blow (wind); to shave	wehen; rasieren	souffler; raser	soplar; afeitar	يهبّ؛ يحلق	（風が）吹く；剃る	дуть; брить	φυσάει; ξυρίζω	(हवा) चलना; दाढ़ी बनाना	փչել; սափրել
+236	关系	relationship	Beziehung	relation	relación	علاقة	関係	отношения, связь	σχέση	संबंध	կապ, հարաբերություն
+237	关心	to care about	sich kümmern um	se soucier de	preocuparse por	يهتمّ بـ	気にかける	заботиться	νοιάζομαι	परवाह करना	հոգ տանել
+238	关于	about, concerning	über, bezüglich	à propos de	sobre	حول	〜について	о, насчёт	σχετικά με	के बारे में	մասին
+239	果汁	fruit juice	Fruchtsaft	jus de fruit	zumo	عصير	ジュース	сок	χυμός	जूस	հյութ
+240	过去	the past; to go over	Vergangenheit; hinübergehen	le passé; passer	el pasado; pasar	الماضي؛ يعبر	過去；通り過ぎる	прошлое; проходить	παρελθόν; περνάω	अतीत; गुज़रना	անցյալ; անցնել
+241	还是	or (in questions); still	oder (Frage); immer noch	ou (question); toujours	o (pregunta); todavía	أم؛ لا يزال	それとも；やはり	или (в вопросе); всё ещё	ή (ερώτηση); ακόμα	या; फिर भी	թե (հարց); դեռ
+242	黑板	blackboard	Tafel	tableau noir	pizarra	سبورة	黒板	доска	μαυροπίνακας	ब्लैकबोर्ड	գրատախտակ
+243	画	to draw, to paint; picture	malen; Bild	dessiner; tableau	dibujar; cuadro	يرسم؛ لوحة	描く；絵	рисовать; картина	ζωγραφίζω; πίνακας	चित्र बनाना; चित्र	նկարել; նկար
+244	环境	environment	Umwelt	environnement	medio ambiente	بيئة	環境	окружающая среда	περιβάλλον	पर्यावरण	շրջակա միջավայր
+245	换	to change, to exchange	wechseln, tauschen	changer, échanger	cambiar	يبدّل	換える	менять	αλλάζω	बदलना	փոխել
+246	黄	yellow	gelb	jaune	amarillo	أصفر	黄色	жёлтый	κίτρινος	पीला	դեղին
+247	会议	meeting	Besprechung, Konferenz	réunion	reunión	اجتماع	会議	совещание	συνέδριο, σύσκεψη	बैठक	ժողով, հանդիպում
+248	或者	or	oder	ou	o	أو	あるいは	или	ή	या	կամ
+249	机会	chance, opportunity	Gelegenheit	occasion, chance	oportunidad	فرصة	機会	возможность, шанс	ευκαιρία	मौक़ा	հնարավորություն
+250	几乎	almost	fast	presque	casi	تقريباً	ほとんど	почти	σχεδόν	लगभग	գրեթե
+251	极	extremely	äußerst	extrêmement	sumamente	للغاية	極めて	крайне	εξαιρετικά	अत्यंत	չափազանց
+252	季节	season	Jahreszeit	saison	estación	فصل	季節	время года	εποχή	मौसम, ऋतु	եղանակ (տարվա)
+253	检查	to check, to examine	überprüfen, untersuchen	vérifier, examiner	revisar, examinar	يفحص	検査する	проверять, осматривать	ελέγχω, εξετάζω	जाँचना	ստուգել
+254	简单	simple	einfach	simple	sencillo	بسيط	簡単	простой	απλός	सरल	պարզ
+255	见面	to meet (each other)	sich treffen	se voir	verse	يلتقي	会う	встречаться	συναντιέμαι	मिलना	հանդիպել
+256	健康	health; healthy	Gesundheit; gesund	santé; en bonne santé	salud; sano	صحة؛ صحي	健康；健康な	здоровье; здоровый	υγεία; υγιής	सेहत; स्वस्थ	առողջություն; առողջ
+257	讲	to speak, to explain	sprechen, erklären	parler, expliquer	hablar, explicar	يتحدث، يشرح	話す、説明する	говорить, объяснять	μιλάω, εξηγώ	बोलना, समझाना	խոսել, բացատրել
+258	教	to teach	unterrichten	enseigner	enseñar	يعلّم	教える	учить (кого-то)	διδάσκω	पढ़ाना	սովորեցնել
+259	角	jiao (0.1 yuan); corner; horn	Jiao; Ecke; Horn	jiao; coin; corne	jiao; esquina; cuerno	جياو؛ زاوية؛ قرن	角（お金）；角	цзяо; угол; рог	τζιάο; γωνία; κέρατο	च्याओ; कोना; सींग	ցզյաո; անկյուն; եղջյուր
+260	接	to pick up (sb); to receive	abholen; empfangen	aller chercher; recevoir	recoger; recibir	يستقبل، يتلقى	迎える；受ける	встречать; принимать	παραλαμβάνω; δέχομαι	लेने जाना; प्राप्त करना	դիմավորել; ստանալ
+261	节目	programme, show	Sendung, Programm	émission, programme	programa	برنامج	番組	программа, передача	εκπομπή	कार्यक्रम	հաղորդում
+262	节日	festival, holiday	Feiertag, Fest	fête	fiesta	عيد	祝日、祭日	праздник	γιορτή	त्योहार	տոն
+263	结婚	to get married	heiraten	se marier	casarse	يتزوج	結婚する	жениться, выходить замуж	παντρεύομαι	शादी करना	ամուսնանալ
+264	结束	to end, to finish	enden, beenden	finir	terminar	ينتهي	終わる	заканчиваться	τελειώνω	ख़त्म होना	ավարտվել
+265	解决	to solve	lösen	résoudre	resolver	يحلّ	解決する	решать	λύνω	हल करना	լուծել
+266	借	to borrow; to lend	leihen	emprunter; prêter	pedir prestado; prestar	يستعير؛ يعير	借りる；貸す	брать/давать взаймы	δανείζομαι; δανείζω	उधार लेना/देना	փոխ առնել/տալ
+267	经过	to pass by; through	vorbeigehen; durch	passer par; à travers	pasar por; a través de	يمرّ بـ	通る、経る	проходить мимо; через	περνάω από	से गुज़रना	անցնել
+268	经理	manager	Manager	directeur	gerente	مدير	マネージャー	менеджер, управляющий	διευθυντής	मैनेजर	մենեջեր, կառավարիչ
+269	久	long (time)	lange	longtemps	mucho tiempo	طويل (وقت)	長い（時間）	долго	πολύ καιρό	लंबे समय तक	երկար (ժամանակ)
+270	举行	to hold (an event)	veranstalten	organiser, tenir	celebrar (un evento)	يقيم (حدثاً)	行う、開催する	проводить (мероприятие)	διοργανώνω	आयोजित करना	անցկացնել
+271	句子	sentence	Satz	phrase	oración	جملة	文	предложение	πρόταση	वाक्य	նախադասություն
+272	可爱	cute, lovely	niedlich	mignon	mono, adorable	لطيف	かわいい	милый	χαριτωμένος	प्यारा	սիրունիկ
+273	刻	quarter (of an hour)	Viertelstunde	quart d'heure	cuarto (de hora)	ربع ساعة	15分	четверть часа	τέταρτο	पंद्रह मिनट	քառորդ ժամ
+274	客人	guest	Gast	invité	invitado	ضيف	客	гость	επισκέπτης	मेहमान	հյուր
+275	空调	air conditioning	Klimaanlage	climatisation	aire acondicionado	مكيّف	エアコン	кондиционер	κλιματιστικό	एसी	օդորակիչ
+276	口	mouth; (measure word for people in a family)	Mund; (Zählwort: Familienmitglieder)	bouche; (classificateur : personnes d'une famille)	boca; (clasificador: miembros de familia)	فم؛ (مميّز لأفراد الأسرة)	口；〜人（家族）	рот; (счётное слово для членов семьи)	στόμα; (αριθμητικό για μέλη οικογένειας)	मुँह; (परिवार के सदस्यों का परिमाणवाचक)	բերան; (ընտանիքի անդամների հաշվիչ)
+277	裤子	trousers	Hose	pantalon	pantalones	بنطال	ズボン	брюки	παντελόνι	पैंट	տաբատ
+278	筷子	chopsticks	Essstäbchen	baguettes	palillos	عيدان الأكل	箸	палочки для еды	ξυλάκια	चॉपस्टिक	փայտիկներ (ուտելու)
+279	蓝	blue	blau	bleu	azul	أزرق	青い	синий	μπλε	नीला	կապույտ
+280	老	old	alt	vieux	viejo	عجوز، قديم	年をとった、古い	старый	γέρος, παλιός	बूढ़ा, पुराना	ծեր, հին
+281	历史	history	Geschichte	histoire	historia	تاريخ	歴史	история	ιστορία	इतिहास	պատմություն
+282	练习	to practise; exercise	üben; Übung	s'exercer; exercice	practicar; ejercicio	يتمرّن؛ تمرين	練習する；練習	упражняться; упражнение	εξασκούμαι; άσκηση	अभ्यास करना; अभ्यास	վարժվել; վարժություն
+283	辆	(measure word for vehicles)	(Zählwort für Fahrzeuge)	(classificateur pour les véhicules)	(clasificador para vehículos)	(مميّز للمركبات)	〜台（車両）	(счётное слово для машин)	(αριθμητικό για οχήματα)	(वाहनों का परिमाणवाचक)	(տրանսպորտի հաշվիչ բառ)
+284	了解	to understand, to find out	verstehen, kennen	comprendre, se renseigner	entender, conocer	يفهم، يتعرّف على	理解する、知る	понимать, узнавать	κατανοώ, μαθαίνω	समझना, जानना	հասկանալ, իմանալ
+285	楼	building; floor	Gebäude; Stock	immeuble; étage	edificio; piso	مبنى؛ طابق	建物；〜階	здание; этаж	κτίριο; όροφος	इमारत; मंज़िल	շենք; հարկ
+286	绿	green	grün	vert	verde	أخضر	緑	зелёный	πράσινος	हरा	կանաչ
+287	马上	immediately	sofort	tout de suite	enseguida	فوراً	すぐに	сейчас же	αμέσως	फ़ौरन	անմիջապես
+288	满意	satisfied	zufrieden	satisfait	satisfecho	راضٍ	満足する	довольный	ικανοποιημένος	संतुष्ट	գոհ
+289	帽子	hat	Hut, Mütze	chapeau	sombrero	قبعة	帽子	шапка, шляпа	καπέλο	टोपी	գլխարկ
+290	米	metre; rice	Meter; Reis	mètre; riz	metro; arroz	متر؛ أرز	メートル；米	метр; рис	μέτρο; ρύζι	मीटर; चावल	մետր; բրինձ
+291	面条	noodles	Nudeln	nouilles	fideos	نودلز	麺	лапша	νουντλς	नूडल्स	արիշտա
+292	明白	to understand; clear	verstehen; klar	comprendre; clair	entender; claro	يفهم؛ واضح	分かる；明らか	понимать; ясный	καταλαβαίνω; σαφής	समझना; साफ़	հասկանալ; պարզ
+293	奶奶	grandma (father's mother)	Oma	mamie	abuela	جدة (أم الأب)	おばあさん（父方）	бабушка	γιαγιά	दादी	տատիկ
+294	南	south	Süden	sud	sur	الجنوب	南	юг	νότος	दक्षिण	հարավ
+295	年级	grade, year (at school)	Klassenstufe	année (scolaire)	curso, grado	سنة دراسية	学年	класс, курс	τάξη (έτος)	कक्षा (साल)	դասարան, կուրս
+296	努力	to work hard; effort	sich anstrengen	faire des efforts	esforzarse	يجتهد	努力する	стараться	προσπαθώ σκληρά	मेहनत करना	ջանալ
+297	爬山	to climb a mountain	bergsteigen	faire de la randonnée en montagne	subir una montaña	يتسلّق الجبل	山登りをする	подниматься в горы	ανεβαίνω βουνό	पहाड़ चढ़ना	լեռ բարձրանալ
+298	盘子	plate	Teller	assiette	plato	صحن	皿	тарелка	πιάτο	प्लेट	ափսե
+299	胖	fat, chubby	dick	gros	gordo	سمين	太っている	толстый	χοντρός	मोटा	գեր
+300	葡萄	grape	Traube	raisin	uva	عنب	ぶどう	виноград	σταφύλι	अंगूर	խաղող
+301	普通话	Mandarin (standard Chinese)	Hochchinesisch	mandarin	mandarín	الماندرين	標準中国語	путунхуа (литературный китайский)	μανδαρινικά	मानक चीनी	մանդարին (չինարեն)
+302	骑	to ride (bike, horse)	reiten, Rad fahren	monter (à vélo, à cheval)	montar (bici, caballo)	يركب	乗る（自転車・馬）	ехать верхом, на велосипеде	καβαλάω	चलाना, सवारी करना	հեծնել
+303	其实	actually	eigentlich	en fait	en realidad	في الواقع	実は	на самом деле	στην πραγματικότητα	असल में	իրականում
+304	其他	other	andere	autre	otro	آخر	その他	другой	άλλος	अन्य	այլ
+305	奇怪	strange	seltsam	bizarre	raro	غريب	不思議な、変な	странный	παράξενος	अजीब	տարօրինակ
+306	清楚	clear	klar, deutlich	clair	claro	واضح	はっきりした	ясный, чёткий	καθαρός, σαφής	साफ़, स्पष्ट	պարզ
+307	秋	autumn	Herbst	automne	otoño	الخريف	秋	осень	φθινόπωρο	शरद	աշուն
+308	然后	then, afterwards	dann	ensuite	luego	ثم	それから	потом	μετά	फिर	հետո
+309	热情	warm, enthusiastic	herzlich	chaleureux	cálido, entusiasta	ودود، متحمس	親切な、熱心な	радушный	εγκάρδιος	उत्साही, गर्मजोश	ջերմ, խանդավառ
+310	认为	to think, to believe	meinen, halten für	penser, estimer	creer, considerar	يعتقد	考える、思う	считать	θεωρώ	मानना	կարծել
+311	认真	serious, conscientious	ernsthaft, gewissenhaft	sérieux	serio, aplicado	جادّ	まじめな	серьёзный, старательный	σοβαρός, επιμελής	गंभीर, ध्यान से	լուրջ, բարեխիղճ
+312	如果	if	wenn, falls	si	si	إذا	もし	если	αν	अगर	եթե
+313	伞	umbrella	Regenschirm	parapluie	paraguas	مظلة	傘	зонт	ομπρέλα	छाता	անձրևանոց
+314	上网	to go online	ins Internet gehen	aller sur internet	conectarse a internet	يتصفّح الإنترنت	ネットをする	выходить в интернет	μπαίνω στο ίντερνετ	इंटरनेट चलाना	ինտերնետ մտնել
+315	声音	sound, voice	Klang, Stimme	son, voix	sonido, voz	صوت	音、声	звук, голос	ήχος, φωνή	आवाज़	ձայն
+316	使	to make, to cause	veranlassen	rendre, faire que	hacer que	يجعل	〜させる	заставлять	κάνω (να)	करवाना	ստիպել, դարձնել
+317	瘦	thin, slim	dünn, schlank	mince	delgado	نحيف	やせている	худой	αδύνατος	दुबला	նիհար
+318	舒服	comfortable	bequem, wohl	confortable	cómodo	مريح	気持ちいい	удобный, хорошо	άνετος	आरामदायक	հարմարավետ
+319	叔叔	uncle (father's younger brother)	Onkel	oncle	tío	عمّ	おじさん	дядя	θείος	चाचा	հորեղբայր
+320	数学	maths	Mathematik	mathématiques	matemáticas	رياضيات	数学	математика	μαθηματικά	गणित	մաթեմատիկա
+321	刷	to brush	bürsten, putzen	brosser	cepillar	ينظّف بالفرشاة	磨く	чистить (щёткой)	βουρτσίζω	ब्रश करना	խոզանակել
+322	双	pair (measure word)	Paar	paire	par	زوج	〜足、〜組	пара	ζευγάρι	जोड़ा	զույգ
+323	水平	level, standard	Niveau	niveau	nivel	مستوى	レベル	уровень	επίπεδο	स्तर	մակարդակ
+324	司机	driver	Fahrer	chauffeur	conductor	سائق	運転手	водитель	οδηγός	ड्राइवर	վարորդ
+325	虽然	although	obwohl	bien que	aunque	مع أن	〜けれども	хотя	αν και	हालाँकि	թեև
+326	特别	especially; special	besonders	spécialement; spécial	especialmente; especial	خاصة؛ خاص	特に；特別な	особенно; особый	ειδικά; ιδιαίτερος	ख़ास तौर पर; ख़ास	հատկապես; հատուկ
+327	疼	to hurt, to ache	wehtun	faire mal	doler	يؤلم	痛い	болеть	πονάω	दर्द होना	ցավել
+328	提高	to raise, to improve	verbessern, erhöhen	améliorer, élever	mejorar, elevar	يرفع، يحسّن	高める	повышать	βελτιώνω, αυξάνω	बढ़ाना, सुधारना	բարձրացնել, բարելավել
+329	体育	physical education, sport	Sport	sport, éducation physique	deporte, educación física	رياضة	体育	физкультура, спорт	γυμναστική, αθλητισμός	खेल, शारीरिक शिक्षा	ֆիզկուլտուրա, սպորտ
+330	条	(measure word for long thin things)	(Zählwort für lange, dünne Dinge)	(classificateur : objets longs)	(clasificador: objetos largos)	(مميّز للأشياء الطويلة)	〜本、〜匹（細長いもの）	(счётное слово для длинных предметов)	(αριθμητικό για μακριά αντικείμενα)	(लंबी चीज़ों का परिमाणवाचक)	(երկար իրերի հաշվիչ բառ)
+331	同事	colleague	Kollege	collègue	compañero de trabajo	زميل عمل	同僚	коллега	συνάδελφος	सहकर्मी	գործընկեր
+332	同意	to agree	zustimmen	être d'accord	estar de acuerdo	يوافق	同意する	соглашаться	συμφωνώ	सहमत होना	համաձայնել
+333	突然	suddenly	plötzlich	soudain	de repente	فجأة	突然	вдруг	ξαφνικά	अचानक	հանկարծ
+334	碗	bowl	Schale	bol	cuenco	وعاء	茶碗	миска	μπολ	कटोरा	թաս
+335	万	ten thousand	zehntausend	dix mille	diez mil	عشرة آلاف	万	десять тысяч	δέκα χιλιάδες	दस हज़ार	տասը հազար
+336	为了	in order to	um … zu	afin de	para	من أجل	〜のために	чтобы	για να	के लिए	որպեսզի
+337	为什么	why	warum	pourquoi	por qué	لماذا	なぜ	почему	γιατί	क्यों	ինչու
+338	位	(polite measure word for people)	(höfliches Zählwort für Personen)	(classificateur poli pour les personnes)	(clasificador cortés para personas)	(مميّز مهذّب للأشخاص)	〜名、〜方	(вежливое счётное слово для людей)	(ευγενικό αριθμητικό για άτομα)	(व्यक्तियों का आदरसूचक परिमाणवाचक)	(մարդկանց քաղաքավարի հաշվիչ բառ)
+339	文化	culture	Kultur	culture	cultura	ثقافة	文化	культура	πολιτισμός	संस्कृति	մշակույթ
+340	西	west	Westen	ouest	oeste	الغرب	西	запад	δύση	पश्चिम	արևմուտք
+341	习惯	habit; to be used to	Gewohnheit; gewohnt sein	habitude; être habitué	costumbre; acostumbrarse	عادة؛ يعتاد	習慣；慣れる	привычка; привыкнуть	συνήθεια; συνηθίζω	आदत; आदी होना	սովորություն; սովորել
+342	洗手间	toilet	Toilette	toilettes	baño	حمّام، دورة مياه	トイレ	туалет	τουαλέτα	शौचालय	զուգարան
+343	洗澡	to take a bath, to shower	baden, duschen	se laver, prendre un bain	bañarse, ducharse	يستحمّ	お風呂に入る	мыться	κάνω μπάνιο	नहाना	լողանալ
+344	夏	summer	Sommer	été	verano	الصيف	夏	лето	καλοκαίρι	गर्मी	ամառ
+345	先	first, before	zuerst	d'abord	primero	أولاً	先に、まず	сначала	πρώτα	पहले	նախ
+346	像	to look like; like	ähneln; wie	ressembler; comme	parecerse; como	يشبه؛ مثل	似ている；〜のような	быть похожим; как	μοιάζω; σαν	जैसा दिखना; जैसा	նմանվել; ինչպես
+347	小心	to be careful	vorsichtig sein	faire attention	tener cuidado	يحذر	気をつける	быть осторожным	προσέχω	सावधान रहना	զգույշ լինել
+348	校长	headmaster, principal	Schulleiter, Rektor	directeur (d'école)	director (de escuela)	مدير المدرسة	校長	директор школы	διευθυντής σχολείου	प्रधानाचार्य	դպրոցի տնօրեն
+349	新鲜	fresh	frisch	frais	fresco	طازج	新鮮な	свежий	φρέσκος	ताज़ा	թարմ
+350	行李箱	suitcase	Koffer	valise	maleta	حقيبة سفر	スーツケース	чемодан	βαλίτσα	सूटकेस	ճամպրուկ
+351	兴趣	interest	Interesse	intérêt	interés	اهتمام	興味	интерес	ενδιαφέρον	रुचि	հետաքրքրություն
+352	熊猫	panda	Panda	panda	panda	باندا	パンダ	панда	πάντα	पांडा	պանդա
+353	需要	to need	brauchen	avoir besoin de	necesitar	يحتاج	必要とする	нуждаться	χρειάζομαι	ज़रूरत होना	կարիք ունենալ
+354	眼镜	glasses	Brille	lunettes	gafas	نظارة	眼鏡	очки	γυαλιά	चश्मा	ակնոց
+355	要求	to demand; requirement	verlangen; Anforderung	exiger; exigence	exigir; requisito	يطلب؛ مطلب	要求する；要求	требовать; требование	απαιτώ; απαίτηση	माँग करना; माँग	պահանջել; պահանջ
+356	爷爷	grandpa (father's father)	Opa	papi	abuelo	جدّ (أبو الأب)	おじいさん（父方）	дедушка	παππούς	दादा	պապիկ
+357	一定	certainly, must	bestimmt	certainement	seguro, sin falta	بالتأكيد	きっと、必ず	обязательно	σίγουρα	ज़रूर	անպայման
+358	一共	altogether, in total	insgesamt	en tout	en total	المجموع	全部で	всего	συνολικά	कुल मिलाकर	ընդամենը
+359	一会儿	a little while	eine Weile	un moment	un rato	لحظة	しばらく	немного (времени)	λίγο	थोड़ी देर	մի քիչ
+360	一样	the same	gleich	pareil	igual	نفس الشيء	同じ	одинаковый	ίδιος	एक जैसा	նույն
+361	以后	after, later	danach, später	après, plus tard	después	بعد	以後、〜のあと	после, потом	μετά, αργότερα	बाद में	հետո
+362	以前	before, formerly	vorher, früher	avant	antes	قبل	以前	раньше	πριν, παλιά	पहले	առաջ
+363	以为	to think (wrongly)	glauben (irrtümlich)	croire (à tort)	creer (equivocadamente)	ظنّ (خطأً)	〜と思い込む	думать (ошибочно)	νόμιζα	समझना (ग़लती से)	կարծել (սխալմամբ)
+364	一般	usually; ordinary	normalerweise; gewöhnlich	généralement; ordinaire	normalmente; común	عادةً؛ عادي	普通、一般に	обычно; обычный	συνήθως; συνηθισμένος	आम तौर पर; साधारण	սովորաբար; սովորական
+365	一边	at the same time (doing two things); one side	gleichzeitig; eine Seite	en même temps; un côté	al mismo tiempo; un lado	في الوقت نفسه؛ جانب	〜しながら；片側	одновременно; одна сторона	ταυτόχρονα; μια πλευρά	साथ-साथ; एक तरफ़	միաժամանակ; մի կողմ
+366	一直	straight; all along	geradeaus; die ganze Zeit	tout droit; toujours	recto; siempre	مباشرة؛ دائماً	まっすぐ；ずっと	прямо; всё время	ευθεία; συνέχεια	सीधा; लगातार	ուղիղ; անընդհատ
+367	应该	should, ought to	sollen	devoir	deber	ينبغي	〜すべきだ	следует, должен	πρέπει	चाहिए	պետք է
+368	影响	to influence; influence	beeinflussen; Einfluss	influencer; influence	influir; influencia	يؤثر؛ تأثير	影響する；影響	влиять; влияние	επηρεάζω; επιρροή	प्रभावित करना; प्रभाव	ազդել; ազդեցություն
+369	又	again	wieder	de nouveau	otra vez	مرة أخرى	また	снова	πάλι	फिर से	կրկին
+370	遇到	to run into, to meet	treffen, begegnen	rencontrer	encontrarse con	يصادف	出会う、遭遇する	встретить, столкнуться	συναντώ	मिल जाना	հանդիպել
+371	愿意	to be willing	bereit sein	vouloir bien	estar dispuesto	يرغب	〜したいと思う	хотеть, быть готовым	είμαι πρόθυμος	राज़ी होना	ցանկանալ, համաձայն լինել
+372	越	the more… (越…越…)	je … desto …	plus… plus…	cuanto más… más…	كلما… كلما…	〜すればするほど	чем… тем…	όσο… τόσο…	जितना… उतना…	որքան… այնքան…
+373	云	cloud	Wolke	nuage	nube	سحابة	雲	облако	σύννεφο	बादल	ամպ
+374	站	station, stop; to stand	Station, Haltestelle; stehen	station, arrêt; être debout	estación, parada; estar de pie	محطة؛ يقف	駅、停留所；立つ	станция, остановка; стоять	σταθμός, στάση; στέκομαι	स्टेशन, स्टॉप; खड़ा होना	կանգառ; կանգնել
+375	着急	to be worried, anxious	sich Sorgen machen, ungeduldig	s'inquiéter, être pressé	estar preocupado, tener prisa	يقلق، يستعجل	焦る、心配する	волноваться, торопиться	αγχώνομαι, βιάζομαι	चिंतित होना, जल्दी होना	անհանգստանալ, շտապել
+376	照顾	to take care of	sich kümmern um	s'occuper de	cuidar de	يعتني بـ	世話をする	заботиться	φροντίζω	देखभाल करना	խնամել
+377	照片	photo	Foto	photo	foto	صورة	写真	фотография	φωτογραφία	फ़ोटो	լուսանկար
+378	照相机	camera	Kamera	appareil photo	cámara de fotos	كاميرا	カメラ	фотоаппарат	φωτογραφική μηχανή	कैमरा	ֆոտոխցիկ
+379	只	(measure word for animals); only	(Zählwort für Tiere); nur	(classificateur : animaux); seulement	(clasificador: animales); solo	(مميّز للحيوانات)؛ فقط	〜匹、〜羽；ただ〜だけ	(счётное слово для животных); только	(αριθμητικό για ζώα); μόνο	(जानवरों का परिमाणवाचक); केवल	(կենդանիների հաշվիչ); միայն
+380	终于	finally, at last	endlich	enfin	por fin	أخيراً	ついに	наконец	επιτέλους	आख़िरकार	վերջապես
+381	中间	middle, between	Mitte, zwischen	milieu, entre	en medio, entre	وسط، بين	真ん中、間	середина, между	μέση, ανάμεσα	बीच में	մեջտեղ, միջև
+382	种	kind, type; to plant	Art, Sorte; pflanzen	sorte; planter	tipo; plantar	نوع؛ يزرع	種類；植える	вид, сорт; сажать	είδος; φυτεύω	प्रकार; बोना	տեսակ; տնկել
+383	周末	weekend	Wochenende	week-end	fin de semana	عطلة نهاية الأسبوع	週末	выходные	σαββατοκύριακο	सप्ताहांत	շաբաթավերջ
+384	主要	main, mainly	hauptsächlich	principal	principal	رئيسي	主な、主に	главный, в основном	κύριος, κυρίως	मुख्य	գլխավոր
+385	祝	to wish (sb sth)	wünschen	souhaiter	desear	يتمنّى	祈る	желать	εύχομαι	शुभकामना देना	մաղթել
+386	注意	to pay attention	aufpassen	faire attention	prestar atención	ينتبه	注意する	обращать внимание	προσέχω	ध्यान देना	ուշադրություն դարձնել
+387	字典	dictionary (of characters)	Zeichenwörterbuch	dictionnaire (de caractères)	diccionario (de caracteres)	قاموس الحروف	字典	словарь иероглифов	λεξικό χαρακτήρων	शब्दकोश	բառարան (գրանշանների)
+388	自己	oneself	selbst	soi-même	uno mismo	نفسه	自分	сам, себя	ο ίδιος, εαυτός	ख़ुद	ինքը, ինքնուրույն
+389	最近	recently	in letzter Zeit	récemment	recientemente	مؤخراً	最近	в последнее время	τελευταία	हाल ही में	վերջերս
+390	作业	homework	Hausaufgaben	devoirs	deberes	واجب منزلي	宿題	домашнее задание	εργασία (για το σπίτι)	होमवर्क	տնային աշխատանք
+391	作用	effect, role	Wirkung, Rolle	effet, rôle	efecto, papel	تأثير، دور	作用、役割	действие, роль	επίδραση, ρόλος	प्रभाव, भूमिका	ազդեցություն, դեր
+392	爱情	(romantic) love	Liebe	amour	amor	حبّ	愛情	любовь	έρωτας	प्रेम	սեր
+393	安排	to arrange; arrangement	planen; Plan	organiser; organisation	organizar; plan	يرتّب؛ ترتيب	手配する；段取り	устраивать; план	κανονίζω; πρόγραμμα	व्यवस्था करना; इंतज़ाम	կազմակերպել; պլան
+394	安全	safe; safety	sicher; Sicherheit	sûr; sécurité	seguro; seguridad	آمن؛ أمان	安全な；安全	безопасный; безопасность	ασφαλής; ασφάλεια	सुरक्षित; सुरक्षा	անվտանգ; անվտանգություն
+395	暗	dark	dunkel	sombre	oscuro	مظلم	暗い	тёмный	σκοτεινός	अँधेरा	մութ
+396	按时	on time	pünktlich	à l'heure	a tiempo	في الوقت المحدد	時間通りに	вовремя	στην ώρα	समय पर	ժամանակին
+397	按照	according to	gemäß	selon	según	حسب	〜に従って	согласно	σύμφωνα με	के अनुसार	համաձայն
+398	包括	to include	einschließen	inclure	incluir	يشمل	含む	включать	περιλαμβάνω	शामिल करना	ներառել
+399	保护	to protect	schützen	protéger	proteger	يحمي	保護する	защищать	προστατεύω	बचाना, रक्षा करना	պաշտպանել
+400	保证	to guarantee; guarantee	garantieren; Garantie	garantir; garantie	garantizar; garantía	يضمن؛ ضمان	保証する；保証	гарантировать; гарантия	εγγυώμαι; εγγύηση	गारंटी देना; गारंटी	երաշխավորել; երաշխիք
+401	抱	to hug, to hold in one's arms	umarmen, im Arm halten	serrer dans ses bras	abrazar	يحضن	抱く	обнимать	αγκαλιάζω	गले लगाना	գրկել
+402	抱歉	sorry, to apologise	es tut mir leid	désolé	lo siento	آسف	申し訳ない	извините, сожалею	λυπάμαι	खेद है	ցավում եմ
+403	报道	to report; news report	berichten; Bericht	rapporter; reportage	informar; reportaje	يُبلغ؛ تقرير	報道する；報道	сообщать; репортаж	αναφέρω; ρεπορτάζ	रिपोर्ट करना; ख़बर	հաղորդել; ռեպորտաժ
+404	报名	to sign up, to register	sich anmelden	s'inscrire	inscribirse	يسجّل	申し込む	записаться	εγγράφομαι	नाम लिखवाना	գրանցվել
+405	倍	times (-fold)	-fach, mal	fois (multiplié)	veces (multiplicado)	ضعف	〜倍	раз (в столько-то раз)	φορές (διπλάσιο κ.λπ.)	गुना	անգամ (ավելի)
+406	本来	originally; of course	ursprünglich; natürlich	à l'origine; naturellement	originalmente; naturalmente	في الأصل؛ بطبيعة الحال	もともと	изначально; естественно	αρχικά; φυσικά	असल में; पहले	ի սկզբանե; իհարկե
+407	笨	stupid, clumsy	dumm, ungeschickt	bête, maladroit	tonto, torpe	غبي	バカな、不器用な	глупый, неуклюжий	χαζός, αδέξιος	बेवक़ूफ़	հիմար, անշնորհք
+408	笔记本	notebook; laptop	Notizbuch; Laptop	carnet; ordinateur portable	cuaderno; portátil	دفتر؛ حاسوب محمول	ノート；ノートパソコン	блокнот; ноутбук	σημειωματάριο; λάπτοπ	नोटबुक; लैपटॉप	տետր; նոութբուք
+409	毕业	to graduate	den Abschluss machen	obtenir son diplôme	graduarse	يتخرّج	卒業する	окончить учёбу	αποφοιτώ	स्नातक होना	ավարտել (ուսումը)
+410	遍	time (from start to finish)	Mal (von Anfang bis Ende)	fois (du début à la fin)	vez (de principio a fin)	مرة (من البداية للنهاية)	〜回、〜遍	раз (целиком)	φορά (από την αρχή ως το τέλος)	बार (पूरा)	անգամ (սկզբից մինչև վերջ)
+411	标准	standard	Standard	norme, standard	estándar	معيار	基準、標準	стандарт	πρότυπο	मानक	չափանիշ
+412	表达	to express	ausdrücken	exprimer	expresar	يعبّر	表現する	выражать	εκφράζω	अभिव्यक्त करना	արտահայտել
+413	表格	form, table	Formular, Tabelle	formulaire, tableau	formulario, tabla	استمارة، جدول	表、書式	бланк, таблица	έντυπο, πίνακας	फ़ॉर्म, तालिका	ձևաթուղթ, աղյուսակ
+414	表扬	to praise	loben	féliciter	elogiar	يمدح	褒める	хвалить	επαινώ	तारीफ़ करना	գովել
+415	饼干	biscuit, cracker	Keks	biscuit	galleta	بسكويت	ビスケット	печенье	μπισκότο	बिस्किट	թխվածքաբլիթ
+416	并且	and, moreover	und außerdem	et de plus	y además	وكذلك	かつ、しかも	и к тому же	και επιπλέον	और साथ ही	և նաև
+417	博士	doctor (PhD)	Doktor (Dr.)	docteur (doctorat)	doctor (doctorado)	دكتوراه	博士	доктор наук	διδάκτορας	पीएचडी, डॉक्टर	դոկտոր (գիտ.)
+418	不但	not only	nicht nur	non seulement	no solo	ليس فقط	〜だけでなく	не только	όχι μόνο	न केवल	ոչ միայն
+419	不过	but, however	aber, jedoch	mais, cependant	pero, sin embargo	لكن	でも、ただし	однако	όμως	पर, लेकिन	սակայն
+420	不得不	to have no choice but to	nicht umhinkönnen	être obligé de	no tener más remedio que	مضطر إلى	〜せざるを得ない	быть вынужденным	αναγκάζομαι να	मजबूरन करना पड़ना	ստիպված լինել
+421	不管	no matter (what, how)	egal (was, wie)	peu importe	no importa (qué, cómo)	مهما	〜にかかわらず	неважно (что, как)	ό,τι κι αν	चाहे जो हो	անկախ նրանից
+422	不仅	not only	nicht nur	non seulement	no solo	ليس فقط	〜だけでなく	не только	όχι μόνο	न केवल	ոչ միայն
+423	部分	part	Teil	partie	parte	جزء	部分	часть	μέρος	हिस्सा	մաս
+424	擦	to wipe	wischen	essuyer	limpiar, frotar	يمسح	拭く	вытирать	σκουπίζω	पोंछना	սրբել
+425	猜	to guess	raten	deviner	adivinar	يخمّن	当てる、推測する	угадывать	μαντεύω	अंदाज़ा लगाना	գուշակել
+426	材料	material; data	Material	matériau; documents	material	مادة؛ مواد	材料、資料	материал	υλικό	सामग्री	նյութ
+427	差不多	almost, about the same	fast, ungefähr gleich	presque, à peu près	casi, más o menos	تقريباً	だいたい、ほぼ同じ	почти, примерно	σχεδόν, περίπου	लगभग	գրեթե, մոտավորապես
+428	长城	the Great Wall	die Große Mauer	la Grande Muraille	la Gran Muralla	سور الصين العظيم	万里の長城	Великая Китайская стена	Σινικό Τείχος	चीन की महान दीवार	Չինական մեծ պատ
+429	长江	the Yangtze River	Jangtse	le Yangzi	el río Yangtsé	نهر اليانغتسي	長江	река Янцзы	ποταμός Γιανγκτσέ	यांग्त्ज़ी नदी	Յանցզի գետ
+430	尝	to taste	probieren	goûter	probar	يتذوّق	味見する	пробовать (на вкус)	δοκιμάζω	चखना	համտեսել
+431	场	(measure word for events: a game, a film); field	(Zählwort für Ereignisse); Platz	(classificateur : match, séance); terrain	(clasificador: partido, función); campo	(مميّز للمباريات والعروض)؛ ساحة	〜回（試合・上映）；場	(счётное слово: матч, сеанс); площадка	(αριθμητικό για αγώνες, προβολές); γήπεδο	(खेल, शो का परिमाणवाचक); मैदान	(միջոցառման հաշվիչ բառ); դաշտ
+432	超过	to exceed, to overtake	überschreiten, überholen	dépasser	superar	يتجاوز	超える	превышать, обгонять	ξεπερνώ	पार करना	գերազանցել
+433	吵	noisy; to quarrel	laut; streiten	bruyant; se disputer	ruidoso; discutir	صاخب؛ يتشاجر	うるさい；口げんかする	шумный; ссориться	θορυβώδης; μαλώνω	शोर वाला; झगड़ना	աղմկոտ; վիճել
+434	乘坐	to ride (in a vehicle)	fahren mit	prendre (un moyen de transport)	viajar en	يستقلّ	乗る	ехать на	επιβαίνω	सवारी करना	նստել (տրանսպորտ)
+435	成功	success; to succeed	Erfolg; gelingen	succès; réussir	éxito; tener éxito	نجاح؛ ينجح	成功；成功する	успех; добиться успеха	επιτυχία; πετυχαίνω	सफलता; सफल होना	հաջողություն; հաջողել
+436	成熟	mature, ripe	reif	mûr	maduro	ناضج	成熟した	зрелый	ώριμος	परिपक्व	հասուն
+437	成为	to become	werden	devenir	llegar a ser	يصبح	〜になる	становиться	γίνομαι	बनना	դառնալ
+438	诚实	honest	ehrlich	honnête	honesto	صادق	誠実な	честный	ειλικρινής	ईमानदार	ազնիվ
+439	吃惊	to be surprised	erschrecken, staunen	être surpris	sorprenderse	يندهش	驚く	удивляться	εκπλήσσομαι	हैरान होना	զարմանալ
+440	重新	again, anew	erneut	de nouveau	de nuevo	من جديد	改めて、もう一度	заново	ξανά	फिर से	նորից
+441	抽烟	to smoke	rauchen	fumer	fumar	يدخّن	たばこを吸う	курить	καπνίζω	सिगरेट पीना	ծխել
+442	出差	to go on a business trip	auf Geschäftsreise gehen	partir en déplacement professionnel	viajar por trabajo	يسافر في مهمة عمل	出張する	ехать в командировку	πηγαίνω επαγγελματικό ταξίδι	दफ़्तर के काम से यात्रा करना	գործուղման գնալ
+443	出发	to set off	aufbrechen	partir	salir, partir	ينطلق	出発する	отправляться	ξεκινάω	रवाना होना	մեկնել
+444	出生	to be born	geboren werden	naître	nacer	يولد	生まれる	родиться	γεννιέμαι	पैदा होना	ծնվել
+445	传真	fax	Fax	fax	fax	فاكس	ファックス	факс	φαξ	फ़ैक्स	ֆաքս
+446	词典	dictionary	Wörterbuch	dictionnaire	diccionario	قاموس	辞書	словарь	λεξικό	शब्दकोश	բառարան
+447	从来	always; (with neg.) never	schon immer; (verneint) nie	toujours; (négatif) jamais	siempre; (negativo) nunca	دائماً؛ (مع النفي) أبداً	これまで（ずっと）	всегда; (с отриц.) никогда	πάντα; (με άρνηση) ποτέ	हमेशा; (नकार) कभी नहीं	միշտ; (ժխտ.) երբեք
+448	粗心	careless	unvorsichtig, schlampig	étourdi	descuidado	مهمل	不注意な	невнимательный	απρόσεκτος	लापरवाह	անուշադիր
+449	打扮	to dress up	sich zurechtmachen	se faire beau	arreglarse	يتزيّن	身なりを整える	наряжаться	ντύνομαι, στολίζομαι	सजना-सँवरना	զարդարվել
+450	打扰	to disturb	stören	déranger	molestar	يزعج	邪魔する	беспокоить	ενοχλώ	परेशान करना	անհանգստացնել
+451	打印	to print	drucken	imprimer	imprimir	يطبع	印刷する	печатать	εκτυπώνω	प्रिंट करना	տպել
+452	打折	to give a discount	Rabatt geben	faire une réduction	hacer descuento	يخفض السعر	割引する	делать скидку	κάνω έκπτωση	छूट देना	զեղչ անել
+453	打针	to give/get an injection	eine Spritze geben/bekommen	faire une piqûre	poner una inyección	يعطي حقنة	注射する	делать укол	κάνω ένεση	इंजेक्शन लगाना	ներարկում անել
+454	大概	probably; roughly	wahrscheinlich; ungefähr	probablement; à peu près	probablemente; aproximadamente	ربما؛ تقريباً	たぶん；だいたい	наверное; примерно	μάλλον; περίπου	शायद; लगभग	հավանաբար; մոտավորապես
+455	大使馆	embassy	Botschaft	ambassade	embajada	سفارة	大使館	посольство	πρεσβεία	दूतावास	դեսպանատուն
+456	大约	about, approximately	ungefähr	environ	aproximadamente	حوالي	約	примерно	περίπου	लगभग	մոտավորապես
+457	戴	to wear (glasses, hat, watch)	tragen (Brille, Hut, Uhr)	porter (lunettes, chapeau)	llevar (gafas, sombrero)	يرتدي (نظارة، قبعة)	かける、かぶる、つける	носить (очки, шапку)	φοράω (γυαλιά, καπέλο)	पहनना (चश्मा, टोपी)	կրել (ակնոց, գլխարկ)
+458	代表	representative; to represent	Vertreter; vertreten	représentant; représenter	representante; representar	ممثّل؛ يمثّل	代表；代表する	представитель; представлять	εκπρόσωπος; εκπροσωπώ	प्रतिनिधि; प्रतिनिधित्व करना	ներկայացուցիչ; ներկայացնել
+459	代替	to replace, instead of	ersetzen	remplacer	sustituir	يحلّ محلّ	代わる	заменять	αντικαθιστώ	की जगह लेना	փոխարինել
+460	大夫	doctor (physician)	Arzt	médecin	médico	طبيب	医者	врач	γιατρός	डॉक्टर	բժիշկ
+461	当	to work as; when	als … arbeiten; als (wenn)	être, servir de; lorsque	trabajar de; cuando	يعمل كـ؛ عندما	〜になる；〜の時	работать (кем); когда	γίνομαι, κάνω (επάγγελμα); όταν	बनना; जब	աշխատել որպես; երբ
+462	当地	local	örtlich	local	local	محلي	地元の	местный	τοπικός	स्थानीय	տեղական
+463	当时	at that time	damals	à ce moment-là	en aquel momento	في ذلك الوقت	その時	в то время	τότε	उस समय	այն ժամանակ
+464	刀	knife	Messer	couteau	cuchillo	سكين	ナイフ	нож	μαχαίρι	चाकू	դանակ
+465	导游	tour guide	Reiseleiter	guide touristique	guía turístico	مرشد سياحي	ガイド	экскурсовод	ξεναγός	टूर गाइड	զբոսավար
+466	到处	everywhere	überall	partout	por todas partes	في كل مكان	至る所	везде	παντού	हर जगह	ամենուր
+467	到底	after all; on earth (in questions)	eigentlich, letztendlich	finalement; au juste	al final; ¿de verdad…?	في النهاية؛ بالضبط	いったい；結局	в конце концов; же (в вопросе)	τελικά	आख़िर	վերջապես; իրականում
+468	道歉	to apologise	sich entschuldigen	s'excuser	disculparse	يعتذر	謝る	извиняться	ζητώ συγγνώμη	माफ़ी माँगना	ներողություն խնդրել
+469	得意	pleased with oneself, proud	stolz, selbstzufrieden	content de soi	orgulloso	مزهوّ بنفسه	得意げな	довольный собой	καμαρωτός	घमंड से ख़ुश	ինքնագոհ
+470	底	bottom; end (of a period)	Boden; Ende	fond; fin	fondo; final	قاع؛ نهاية	底；末	дно; конец	πάτος; τέλος	तल; अंत	հատակ; վերջ
+471	地球	the Earth	Erde	la Terre	la Tierra	الأرض	地球	Земля	Γη	पृथ्वी	Երկիր
+472	地址	address	Adresse	adresse	dirección	عنوان	住所	адрес	διεύθυνση	पता	հասցե
+473	掉	to fall, to drop	fallen	tomber	caer	يسقط	落ちる	падать	πέφτω	गिरना	ընկնել
+474	调查	to investigate; survey	untersuchen; Umfrage	enquêter; enquête	investigar; encuesta	يحقّق؛ استطلاع	調査する；調査	расследовать; опрос	ερευνώ; έρευνα	जाँच करना; सर्वेक्षण	հետազոտել; հարցում
+475	动作	movement, action	Bewegung	mouvement	movimiento	حركة	動作	движение	κίνηση	हरकत	շարժում
+476	堵车	traffic jam	Stau	embouteillage	atasco	ازدحام مروري	渋滞	пробка	κυκλοφοριακό μποτιλιάρισμα	ट्रैफ़िक जाम	խցանում
+477	肚子	belly, stomach	Bauch	ventre	barriga	بطن	お腹	живот	κοιλιά	पेट	փոր
+478	断	to break (off)	brechen, abreißen	casser, couper	romperse, cortar	ينكسر، ينقطع	切れる、折れる	ломаться, прерываться	σπάω, κόβομαι	टूटना	կոտրվել, կտրվել
+479	对	correct; towards; to	richtig; gegenüber; zu	juste; envers	correcto; hacia	صحيح؛ تجاه	正しい；〜に対して	правильно; к, для	σωστό; προς	सही; के प्रति	ճիշտ; դեպի
+480	对话	dialogue	Dialog	dialogue	diálogo	حوار	対話	диалог	διάλογος	संवाद	երկխոսություն
+481	对面	opposite, across	gegenüber	en face	enfrente	مقابل	向かい	напротив	απέναντι	सामने	դիմացը
+482	顿	(measure word for meals)	(Zählwort für Mahlzeiten)	(classificateur pour les repas)	(clasificador para comidas)	(مميّز للوجبات)	〜回（食事）	(счётное слово для еды)	(αριθμητικό για γεύματα)	(भोजन का परिमाणवाचक)	(ճաշի հաշվիչ բառ)
+483	朵	(measure word for flowers, clouds)	(Zählwort für Blumen, Wolken)	(classificateur : fleurs, nuages)	(clasificador: flores, nubes)	(مميّز للأزهار والسحب)	〜輪（花・雲）	(счётное слово для цветов, облаков)	(αριθμητικό για λουλούδια, σύννεφα)	(फूल, बादल का परिमाणवाचक)	(ծաղիկների, ամպերի հաշվիչ բառ)
+484	而	and, but (written)	und, aber	et, mais	y, pero	و، لكن	そして、しかし	а, но	ενώ, και	और, लेकिन	իսկ, բայց
+485	儿童	child	Kind	enfant	niño	طفل	児童	ребёнок	παιδί	बच्चा	երեխա
+486	发	to send; to issue	senden; ausgeben	envoyer; émettre	enviar; emitir	يرسل؛ يصدر	送る、発する	отправлять	στέλνω	भेजना	ուղարկել
+487	发生	to happen	geschehen	se produire	ocurrir	يحدث	起こる	происходить	συμβαίνει	होना, घटना	տեղի ունենալ
+488	发展	to develop; development	entwickeln; Entwicklung	développer; développement	desarrollar; desarrollo	يتطور؛ تطور	発展する；発展	развиваться; развитие	αναπτύσσω; ανάπτυξη	विकास करना; विकास	զարգանալ; զարգացում
+489	法律	law	Gesetz	loi	ley	قانون	法律	закон	νόμος	क़ानून	օրենք
+490	翻译	to translate; translator	übersetzen; Übersetzer	traduire; traducteur	traducir; traductor	يترجم؛ مترجم	翻訳する；通訳	переводить; переводчик	μεταφράζω; μεταφραστής	अनुवाद करना; अनुवादक	թարգմանել; թարգմանիչ
+491	烦恼	worried, troubled	bekümmert	soucieux	preocupado	مهموم	悩む	переживать	στενοχωριέμαι	परेशान	մտահոգ
+492	反对	to oppose	dagegen sein	s'opposer	oponerse	يعارض	反対する	возражать	αντιτίθεμαι	विरोध करना	դեմ լինել
+493	反映	to reflect; to report	widerspiegeln; melden	refléter; signaler	reflejar; informar	يعكس؛ يبلّغ	反映する	отражать; сообщать	αντανακλώ; αναφέρω	दर्शाना; बताना	արտացոլել; հաղորդել
+494	范围	scope, range	Umfang, Bereich	portée, domaine	ámbito, alcance	نطاق	範囲	рамки, диапазон	εύρος	दायरा	շրջանակ
+495	方法	method	Methode	méthode	método	طريقة	方法	метод	μέθοδος	तरीक़ा	մեթոդ
+496	方面	aspect, side	Hinsicht, Aspekt	aspect	aspecto	جانب	方面	аспект, сторона	πλευρά, τομέας	पहलू	կողմ, ասպեկտ
+497	方向	direction	Richtung	direction	dirección	اتجاه	方向	направление	κατεύθυνση	दिशा	ուղղություն
+498	访问	to visit; interview	besuchen; Interview	rendre visite; interview	visitar; entrevista	يزور؛ مقابلة	訪問する	посещать; интервью	επισκέπτομαι; συνέντευξη	भेंट करना; साक्षात्कार	այցելել; հարցազրույց
+499	放弃	to give up	aufgeben	abandonner	renunciar	يتخلّى عن	あきらめる	отказываться	εγκαταλείπω	छोड़ देना	հրաժարվել
+500	放暑假	to have the summer holidays	Sommerferien haben	être en vacances d'été	tener vacaciones de verano	تبدأ العطلة الصيفية	夏休みになる	летние каникулы	κάνω καλοκαιρινές διακοπές	गर्मी की छुट्टियाँ होना	ամառային արձակուրդ
+501	分之	(fraction: …分之… = … out of …)	(Bruch: … von …)	(fraction : … sur …)	(fracción: … de …)	(كسر: … من …)	〜分の〜	(дробь: … из …)	(κλάσμα: … στα …)	(भिन्न: … में से …)	(կոտորակ՝ …-ից …)
+502	份	portion, copy (measure word)	Portion, Exemplar	portion, exemplaire	porción, ejemplar	حصة، نسخة	〜人分、〜部	порция, экземпляр	μερίδα, αντίτυπο	हिस्सा, प्रति	բաժին, օրինակ
+503	风景	scenery	Landschaft	paysage	paisaje	منظر طبيعي	風景	пейзаж	τοπίο	दृश्य	բնապատկեր
+504	丰富	rich, abundant	reichhaltig	riche, abondant	rico, abundante	غني، وفير	豊富な	богатый, обильный	πλούσιος, άφθονος	समृद्ध	հարուստ
+505	否则	otherwise	sonst	sinon	si no	وإلّا	さもなければ	иначе	αλλιώς	वरना	հակառակ դեպքում
+506	符合	to conform to	entsprechen	correspondre à	cumplir con	يطابق	合致する	соответствовать	ανταποκρίνομαι σε	अनुरूप होना	համապատասխանել
+507	负责	to be responsible for	verantwortlich sein	être responsable de	ser responsable de	مسؤول عن	責任を持つ	отвечать за	είμαι υπεύθυνος	ज़िम्मेदार होना	պատասխանատու լինել
+508	复印	to photocopy	kopieren	photocopier	fotocopiar	ينسخ (يصوّر)	コピーする	ксерокопировать	φωτοτυπώ	फ़ोटोकॉपी करना	պատճենահանել
+509	复杂	complicated	kompliziert	compliqué	complicado	معقد	複雑な	сложный	περίπλοκος	जटिल	բարդ
+510	干杯	cheers! (to drink a toast)	Prost!	santé !	¡salud!	في صحتك!	乾杯	за здоровье!	γεια μας!	चीयर्स!	կենացդ!
+511	干燥	dry	trocken	sec	seco	جاف	乾燥した	сухой	ξηρός	सूखा	չոր
+512	感动	to be moved, touched	gerührt sein	être ému	conmoverse	يتأثّر	感動する	быть тронутым	συγκινούμαι	भावुक होना	հուզվել
+513	感觉	to feel; feeling	fühlen; Gefühl	sentir; sensation	sentir; sensación	يشعر؛ شعور	感じる；感覚	чувствовать; ощущение	νιώθω; αίσθηση	महसूस करना; एहसास	զգալ; զգացողություն
+514	感情	feelings, emotion	Gefühl	sentiment	sentimiento	مشاعر	感情	чувства	συναισθήματα	भावना	զգացմունք
+515	感谢	to thank	danken	remercier	agradecer	يشكر	感謝する	благодарить	ευχαριστώ	धन्यवाद देना	շնորհակալություն հայտնել
+516	刚刚	just now, just	gerade eben	à l'instant	justo ahora	للتوّ	たった今	только что	μόλις	अभी-अभी	հենց նոր
+517	高级	senior, advanced; high-quality	hochrangig; hochwertig	supérieur; haut de gamme	avanzado; de alta calidad	متقدم؛ فاخر	高級な、上級の	высший; высококачественный	ανώτερος; πολυτελής	उच्च स्तरीय	բարձր կարգի
+518	个子	height (of a person)	Körpergröße	taille (d'une personne)	estatura	طول القامة	背丈	рост	ανάστημα	क़द	հասակ
+519	各	each, every	jede(r)	chaque	cada	كلّ	各	каждый	κάθε	हर एक	յուրաքանչյուր
+520	公里	kilometre	Kilometer	kilomètre	kilómetro	كيلومتر	キロメートル	километр	χιλιόμετρο	किलोमीटर	կիլոմետր
+521	工具	tool	Werkzeug	outil	herramienta	أداة	道具	инструмент	εργαλείο	औज़ार	գործիք
+522	工资	salary, wages	Lohn, Gehalt	salaire	salario	راتب	給料	зарплата	μισθός	वेतन	աշխատավարձ
+523	共同	common, together	gemeinsam	commun	común, juntos	مشترك	共同の	общий, совместный	κοινός	साझा, मिलकर	ընդհանուր, համատեղ
+524	够	enough	genug	assez	suficiente	كافٍ	足りる、十分	достаточно	αρκετά	काफ़ी	բավական
+525	购物	shopping	einkaufen	faire des courses	ir de compras	التسوّق	買い物	покупки	ψώνια	ख़रीदारी	գնումներ
+526	孤单	lonely	einsam	seul, solitaire	solo, solitario	وحيد	孤独な	одинокий	μοναχικός	अकेला	միայնակ
+527	估计	to estimate, to reckon	schätzen	estimer	estimar, calcular	يقدّر	推測する、見積もる	предполагать	υπολογίζω	अनुमान लगाना	գնահատել, ենթադրել
+528	鼓励	to encourage	ermutigen	encourager	animar	يشجّع	励ます	поощрять	ενθαρρύνω	प्रोत्साहित करना	խրախուսել
+529	鼓掌	to applaud	klatschen	applaudir	aplaudir	يصفّق	拍手する	аплодировать	χειροκροτώ	ताली बजाना	ծափահարել
+530	顾客	customer	Kunde	client	cliente	زبون	客	клиент, покупатель	πελάτης	ग्राहक	հաճախորդ
+531	故意	on purpose	absichtlich	exprès	a propósito	عمداً	わざと	нарочно	επίτηδες	जानबूझकर	դիտմամբ
+532	挂	to hang (up)	aufhängen	accrocher	colgar	يعلّق	掛ける	вешать	κρεμάω	टाँगना	կախել
+533	关键	key, crucial point	Schlüssel(punkt)	clé, point crucial	clave	مفتاح، نقطة حاسمة	鍵、要点	ключевой момент	κλειδί, καθοριστικό σημείο	मुख्य बात	բանալի, կարևոր կետ
+534	观众	audience, spectators	Zuschauer	public, spectateurs	público, espectadores	جمهور	観客	зрители	θεατές	दर्शक	հանդիսատես
+535	管理	to manage	verwalten	gérer	gestionar	يدير	管理する	управлять	διαχειρίζομαι	प्रबंधन करना	կառավարել
+536	光	light; only; used up	Licht; nur; aufgebraucht	lumière; seulement; épuisé	luz; solo; agotado	ضوء؛ فقط؛ نفد	光；ただ；なくなる	свет; только; закончиться	φως; μόνο; τελειώνω	रोशनी; केवल; ख़त्म	լույս; միայն; սպառվել
+537	广播	broadcast, radio	Rundfunk, Durchsage	radio, diffusion	radio, emisión	بثّ، إذاعة	放送	радиовещание	εκπομπή, ραδιόφωνο	प्रसारण	հեռարձակում, ռադիո
+538	广告	advertisement	Werbung	publicité	anuncio	إعلان	広告	реклама	διαφήμιση	विज्ञापन	գովազդ
+539	逛	to stroll, to window-shop	bummeln	flâner	pasear	يتجوّل	ぶらぶらする	гулять, бродить	κάνω βόλτα	घूमना	զբոսնել
+540	规定	rule, regulation; to stipulate	Vorschrift; festlegen	règlement; stipuler	norma; estipular	قاعدة؛ يحدّد	規定；定める	правило; устанавливать	κανονισμός; ορίζω	नियम; तय करना	կանոն; սահմանել
+541	国际	international	international	international	internacional	دولي	国際的な	международный	διεθνής	अंतरराष्ट्रीय	միջազգային
+542	果然	as expected	tatsächlich, wie erwartet	effectivement, comme prévu	tal como se esperaba	كما هو متوقع	やはり、案の定	как и ожидалось	όπως αναμενόταν	जैसी उम्मीद थी	ինչպես սպասվում էր
+543	过	(particle: have done before)	(Partikel: Erfahrung)	(particule : avoir déjà fait)	(partícula: haber hecho antes)	(أداة التجربة السابقة)	〜したことがある	(частица: уже делал раньше)	(μόριο εμπειρίας: έχω κάνει)	(पहले कर चुका का निपात)	(փորձառության մասնիկ)
+544	过程	process	Prozess, Verlauf	processus	proceso	عملية، مسار	過程	процесс	διαδικασία	प्रक्रिया	ընթացք
+545	海洋	ocean	Ozean	océan	océano	محيط	海洋	океан	ωκεανός	महासागर	օվկիանոս
+546	害羞	shy	schüchtern	timide	tímido	خجول	恥ずかしがる	стеснительный	ντροπαλός	शर्मीला	ամաչկոտ
+547	寒假	winter holidays	Winterferien	vacances d'hiver	vacaciones de invierno	العطلة الشتوية	冬休み	зимние каникулы	χειμερινές διακοπές	सर्दी की छुट्टियाँ	ձմեռային արձակուրդ
+548	汗	sweat	Schweiß	sueur	sudor	عرق	汗	пот	ιδρώτας	पसीना	քրտինք
+549	航班	flight	Flug	vol	vuelo	رحلة جوية	便（フライト）	рейс	πτήση	उड़ान	չվերթ
+550	好处	benefit, advantage	Vorteil	avantage	ventaja	فائدة	利点	польза	όφελος	फ़ायदा	օգուտ
+551	好像	to seem, as if	scheinen	sembler	parecer	يبدو	〜のようだ	кажется	φαίνεται	लगता है	կարծես
+552	号码	number	Nummer	numéro	número	رقم	番号	номер	αριθμός	नंबर	համար
+553	合格	qualified, up to standard	qualifiziert, bestanden	qualifié, réussi	apto, aprobado	مؤهّل، ناجح	合格の	соответствующий, сдал	επαρκής, πέρασα	योग्य, उत्तीर्ण	համապատասխան, անցած
+554	合适	suitable, fitting	passend	convenable	adecuado	مناسب	ちょうどいい	подходящий	κατάλληλος	उपयुक्त	հարմար
+555	盒子	box	Schachtel	boîte	caja	علبة	箱	коробка	κουτί	डिब्बा	տուփ
+556	猴子	monkey	Affe	singe	mono	قرد	猿	обезьяна	μαϊμού	बंदर	կապիկ
+557	厚	thick	dick	épais	grueso	سميك	厚い	толстый	χοντρός	मोटा	հաստ
+558	后悔	to regret	bereuen	regretter	arrepentirse	يندم	後悔する	жалеть	μετανιώνω	पछताना	զղջալ
+559	后来	afterwards, later	später, danach	ensuite	después	فيما بعد	その後	потом	αργότερα	बाद में	հետագայում
+560	忽然	suddenly	plötzlich	soudain	de repente	فجأة	突然	вдруг	ξαφνικά	अचानक	հանկարծ
+561	互相	each other	gegenseitig	mutuellement	mutuamente	بعضهم بعضاً	お互いに	друг друга	αμοιβαία	एक-दूसरे	միմյանց
+562	护士	nurse	Krankenpfleger	infirmier	enfermero	ممرّض	看護師	медсестра	νοσοκόμος	नर्स	բուժքույր
+563	怀疑	to doubt, to suspect	bezweifeln, verdächtigen	douter, soupçonner	dudar, sospechar	يشكّ	疑う	сомневаться, подозревать	αμφιβάλλω, υποψιάζομαι	शक करना	կասկածել
+564	回忆	to recall; memory	sich erinnern; Erinnerung	se souvenir; souvenir	recordar; recuerdo	يتذكّر؛ ذكرى	思い出す；思い出	вспоминать; воспоминание	θυμάμαι; ανάμνηση	याद करना; याद	հիշել; հուշ
+565	活动	activity; to move about	Aktivität; sich bewegen	activité; bouger	actividad; moverse	نشاط؛ يتحرّك	活動；体を動かす	мероприятие; двигаться	δραστηριότητα; κινούμαι	गतिविधि; चलना-फिरना	միջոցառում; շարժվել
+566	活泼	lively	lebhaft	vif, plein d'entrain	animado	مرح، نشيط	活発な	живой, бойкий	ζωηρός	चंचल	աշխույժ
+567	获得	to obtain, to win	erhalten, gewinnen	obtenir	obtener	يحصل على	獲得する	получать	αποκτώ	प्राप्त करना	ձեռք բերել
+568	基础	foundation, basis	Grundlage	base	base	أساس	基礎	основа	βάση	आधार	հիմք
+569	激动	excited	aufgeregt	ému, excité	emocionado	متحمّس	興奮する、感激する	взволнованный	συγκινημένος	उत्साहित	հուզված
+570	积极	active, positive	aktiv, positiv	actif, positif	activo, positivo	إيجابي، نشط	積極的な	активный	ενεργός, θετικός	सक्रिय	ակտիվ
+571	积累	to accumulate	ansammeln	accumuler	acumular	يراكم	蓄積する	накапливать	συσσωρεύω	जमा करना	կուտակել
+572	极其	extremely	äußerst	extrêmement	extremadamente	للغاية	極めて	чрезвычайно	εξαιρετικά	बेहद	ծայրահեղ
+573	即使	even if	selbst wenn	même si	aunque	حتى لو	たとえ〜でも	даже если	ακόμα κι αν	भले ही	նույնիսկ եթե
+574	及时	in time, timely	rechtzeitig	à temps	a tiempo	في الوقت المناسب	タイムリーに	вовремя	έγκαιρα	समय पर	ժամանակին
+575	集合	to gather, to assemble	sich versammeln	se rassembler	reunirse	يتجمّع	集合する	собираться	συγκεντρώνομαι	इकट्ठा होना	հավաքվել
+576	继续	to continue	fortsetzen	continuer	continuar	يواصل	続ける	продолжать	συνεχίζω	जारी रखना	շարունակել
+577	记者	journalist	Journalist	journaliste	periodista	صحفي	記者	журналист	δημοσιογράφος	पत्रकार	լրագրող
+578	计划	plan; to plan	Plan; planen	plan; prévoir	plan; planear	خطة؛ يخطّط	計画；計画する	план; планировать	σχέδιο; σχεδιάζω	योजना; योजना बनाना	ծրագիր; ծրագրել
+579	技术	technology, skill	Technik	technique, technologie	técnica, tecnología	تقنية	技術	техника, технология	τεχνολογία, τεχνική	तकनीक	տեխնիկա, տեխնոլոգիա
+580	既然	since (given that)	da (ja)	puisque	ya que	بما أنّ	〜した以上	раз уж	αφού	जब… तो	քանի որ
+581	家具	furniture	Möbel	meubles	muebles	أثاث	家具	мебель	έπιπλα	फ़र्नीचर	կահույք
+582	加班	to work overtime	Überstunden machen	faire des heures supplémentaires	hacer horas extra	يعمل وقتاً إضافياً	残業する	работать сверхурочно	κάνω υπερωρίες	ओवरटाइम करना	արտաժամյա աշխատել
+583	加油站	petrol station	Tankstelle	station-service	gasolinera	محطة وقود	ガソリンスタンド	заправка	βενζινάδικο	पेट्रोल पंप	բենզալցակայան
+584	假	fake, false	falsch, unecht	faux	falso	مزيّف	偽の	фальшивый	ψεύτικος	नक़ली	կեղծ
+585	坚持	to persist, to keep at	durchhalten	persévérer	persistir	يثابر	頑張り続ける	настаивать, упорствовать	επιμένω	डटे रहना	համառել, շարունակել
+586	减肥	to lose weight	abnehmen	maigrir	adelgazar	ينقص وزنه	ダイエットする	худеть	αδυνατίζω	वज़न घटाना	նիհարել
+587	减少	to reduce	verringern	réduire	reducir	يقلّل	減らす	уменьшать	μειώνω	कम करना	նվազեցնել
+588	将来	the future	Zukunft	l'avenir	el futuro	المستقبل	将来	будущее	μέλλον	भविष्य	ապագա
+589	奖金	bonus, prize money	Prämie	prime	prima, premio	مكافأة	ボーナス、賞金	премия	μπόνους, χρηματικό έπαθλο	बोनस, इनाम राशि	պարգևավճար
+590	降低	to lower	senken	baisser	bajar, reducir	يخفض	下げる	понижать	μειώνω, χαμηλώνω	घटाना	իջեցնել
+591	交	to hand in; to make (friends)	abgeben; (Freunde) finden	remettre; se faire (des amis)	entregar; hacer (amigos)	يسلّم؛ يكوّن (صداقات)	提出する；（友達を）作る	сдавать; заводить (друзей)	παραδίδω; κάνω (φίλους)	जमा करना; (दोस्त) बनाना	հանձնել; ընկերանալ
+592	交流	to exchange, to communicate	austauschen	échanger	intercambiar	يتبادل	交流する	общаться, обмениваться	ανταλλάσσω	आदान-प्रदान करना	փոխանակվել, շփվել
+593	交通	traffic, transport	Verkehr	circulation, transports	tráfico, transporte	مرور، مواصلات	交通	транспорт, движение	κυκλοφορία, συγκοινωνία	यातायात	երթևեկություն, տրանսպորտ
+594	骄傲	proud; arrogant	stolz; hochmütig	fier; arrogant	orgulloso; arrogante	فخور؛ متكبّر	誇り；傲慢な	гордый; высокомерный	περήφανος; αλαζονικός	गर्व; घमंडी	հպարտ; ամբարտավան
+595	饺子	dumpling	Teigtasche	ravioli chinois	empanadilla china	زلابية صينية	餃子	пельмени	ζιαοζί (ραβιόλι)	डंपलिंग	պելմեն
+596	教授	professor	Professor	professeur (d'université)	profesor (universitario)	أستاذ جامعي	教授	профессор	καθηγητής	प्रोफ़ेसर	պրոֆեսոր
+597	教育	education; to educate	Bildung; erziehen	éducation; éduquer	educación; educar	تعليم؛ يربّي	教育；教育する	образование; воспитывать	εκπαίδευση; εκπαιδεύω	शिक्षा; शिक्षित करना	կրթություն; դաստիարակել
+598	接受	to accept	annehmen	accepter	aceptar	يقبل	受け入れる	принимать	δέχομαι	स्वीकार करना	ընդունել
+599	节约	to save (resources)	sparen	économiser	ahorrar	يوفّر	節約する	экономить	εξοικονομώ	बचत करना	խնայել
+600	结果	result; as a result	Ergebnis; schließlich	résultat; finalement	resultado; al final	نتيجة؛ في النهاية	結果；結局	результат; в итоге	αποτέλεσμα; τελικά	नतीजा; आख़िरकार	արդյունք; արդյունքում
+601	紧张	nervous; tense	nervös; angespannt	nerveux; tendu	nervioso; tenso	متوتر	緊張した	нервный; напряжённый	αγχωμένος; τεταμένος	घबराया हुआ; तनावपूर्ण	նյարդային; լարված
+602	尽管	although, despite	obwohl	bien que	aunque, a pesar de	رغم أن	〜にもかかわらず	несмотря на	παρόλο που	हालाँकि	չնայած
+603	进行	to carry out, to be in progress	durchführen	effectuer, être en cours	llevar a cabo	يجري، يقوم بـ	行う、進行する	проводить, идти	διεξάγω	करना, चलना	անցկացնել, ընթանալ
+604	禁止	to forbid	verbieten	interdire	prohibir	يمنع	禁止する	запрещать	απαγορεύω	मना करना	արգելել
+605	精彩	wonderful, brilliant	großartig	formidable	estupendo	رائع	素晴らしい	замечательный	εξαιρετικός	शानदार	հիանալի
+606	精神	spirit; energy	Geist; Energie	esprit; énergie	espíritu; energía	روح؛ حيوية	精神；元気	дух; бодрость	πνεύμα; ενέργεια	भावना; जोश	ոգի; եռանդ
+607	经济	economy	Wirtschaft	économie	economía	اقتصاد	経済	экономика	οικονομία	अर्थव्यवस्था	տնտեսություն
+608	经历	experience (things lived through)	Erlebnis	expérience vécue	experiencia vivida	تجربة	経歴、経験	опыт, пережитое	εμπειρία	अनुभव	ապրած փորձ
+609	经验	experience (know-how)	Erfahrung	expérience	experiencia	خبرة	経験	опыт	πείρα	अनुभव	փորձ
+610	京剧	Beijing opera	Peking-Oper	opéra de Pékin	ópera de Pekín	أوبرا بكين	京劇	пекинская опера	όπερα του Πεκίνου	पेकिंग ओपेरा	պեկինյան օպերա
+611	竟然	unexpectedly, actually	tatsächlich (überraschend)	contre toute attente	inesperadamente	على غير المتوقع	意外にも	неожиданно, оказывается	απρόσμενα	हैरानी की बात	անսպասելիորեն
+612	竞争	to compete; competition	konkurrieren; Wettbewerb	rivaliser; concurrence	competir; competencia	يتنافس؛ منافسة	競争する；競争	конкурировать; конкуренция	ανταγωνίζομαι; ανταγωνισμός	प्रतिस्पर्धा करना; प्रतियोगिता	մրցել; մրցակցություն
+613	镜子	mirror	Spiegel	miroir	espejo	مرآة	鏡	зеркало	καθρέφτης	आईना	հայելի
+614	究竟	after all; (in questions) exactly	eigentlich, denn	au juste, finalement	en realidad, al final	في الحقيقة؛ بالضبط	いったい、結局	в конце концов; всё-таки	τελικά, άραγε	आख़िर	իրականում, վերջապես
+615	举办	to hold (an event)	veranstalten	organiser	organizar	ينظّم	開催する	проводить, организовывать	διοργανώνω	आयोजित करना	կազմակերպել
+616	拒绝	to refuse	ablehnen	refuser	rechazar	يرفض	断る	отказывать	αρνούμαι	मना करना	մերժել
+617	距离	distance	Entfernung	distance	distancia	مسافة	距離	расстояние	απόσταση	दूरी	հեռավորություն
+618	开玩笑	to joke	scherzen	plaisanter	bromear	يمزح	冗談を言う	шутить	αστειεύομαι	मज़ाक करना	կատակել
+619	看法	view, opinion	Ansicht	point de vue	opinión	رأي	見方、意見	мнение	άποψη	राय	կարծիք
+620	考虑	to consider	überlegen	réfléchir à	considerar	يفكّر في	考える、考慮する	обдумывать	σκέφτομαι	विचार करना	մտածել, քննարկել
+621	棵	(measure word for trees, plants)	(Zählwort für Bäume)	(classificateur pour les arbres)	(clasificador para árboles)	(مميّز للأشجار)	〜本（木）	(счётное слово для деревьев)	(αριθμητικό για δέντρα)	(पेड़ों का परिमाणवाचक)	(ծառերի հաշվիչ բառ)
+622	科学	science	Wissenschaft	science	ciencia	علم	科学	наука	επιστήμη	विज्ञान	գիտություն
+623	咳嗽	to cough	husten	tousser	toser	يسعل	咳をする	кашлять	βήχω	खाँसना	հազալ
+624	可怜	pitiful, poor	bedauernswert	pauvre, pitoyable	pobre, lamentable	مسكين	かわいそうな	бедный, жалкий	καημένος	बेचारा	խեղճ
+625	可是	but	aber	mais	pero	لكن	でも	но	αλλά	लेकिन	բայց
+626	可惜	what a pity	schade	dommage	qué pena	للأسف	惜しい、残念	жаль	κρίμα	अफ़सोस	ափսոս
+627	肯定	definitely; to affirm	bestimmt; bestätigen	certainement; affirmer	seguro; afirmar	بالتأكيد؛ يؤكّد	きっと；肯定する	точно; подтверждать	σίγουρα; επιβεβαιώνω	ज़रूर; पुष्टि करना	անկասկած; հաստատել
+628	空气	air	Luft	air	aire	هواء	空気	воздух	αέρας	हवा	օդ
+629	恐怕	I'm afraid (that), probably	leider, vermutlich	j'ai peur que, probablement	me temo que	أخشى أن	恐らく	боюсь, что	φοβάμαι ότι	शायद, डर है कि	վախենամ թե
+630	苦	bitter; hard (life)	bitter; hart	amer; dur	amargo; duro	مرّ؛ صعب	苦い；つらい	горький; тяжёлый	πικρός; δύσκολος	कड़वा; कठिन	դառը; ծանր
+631	宽	wide	breit	large	ancho	عريض	広い	широкий	φαρδύς	चौड़ा	լայն
+632	困	sleepy	müde	avoir sommeil	tener sueño	نعسان	眠い	сонный	νυσταγμένος	नींद आना	քնկոտ
+633	困难	difficulty; difficult	Schwierigkeit; schwierig	difficulté; difficile	dificultad; difícil	صعوبة؛ صعب	困難；難しい	трудность; трудный	δυσκολία; δύσκολος	कठिनाई; मुश्किल	դժվարություն; դժվար
+634	扩大	to expand	erweitern	élargir	ampliar	يوسّع	拡大する	расширять	επεκτείνω	बढ़ाना, विस्तार करना	ընդլայնել
+635	拉	to pull	ziehen	tirer	tirar	يسحب	引く	тянуть	τραβάω	खींचना	քաշել
+636	垃圾桶	rubbish bin	Mülleimer	poubelle	cubo de basura	سلة المهملات	ゴミ箱	мусорное ведро	κάδος σκουπιδιών	कूड़ेदान	աղբաման
+637	辣	spicy, hot	scharf	épicé	picante	حار	辛い	острый	καυτερός	तीखा	կծու
+638	来不及	there's not enough time	keine Zeit mehr haben	ne pas avoir le temps	no dar tiempo	لا يوجد وقت كافٍ	間に合わない	не успеть	δεν προλαβαίνω	समय न होना	չհասցնել
+639	来得及	there's still time	noch rechtzeitig	avoir encore le temps	dar tiempo	لا يزال هناك وقت	間に合う	успеть	προλαβαίνω	अभी समय है	հասցնել
+640	懒	lazy	faul	paresseux	perezoso	كسول	怠惰な	ленивый	τεμπέλης	आलसी	ծույլ
+641	浪费	to waste	verschwenden	gaspiller	desperdiciar	يهدر	無駄にする	тратить зря	σπαταλώ	बर्बाद करना	վատնել
+642	浪漫	romantic	romantisch	romantique	romántico	رومانسي	ロマンチックな	романтичный	ρομαντικός	रोमांटिक	ռոմանտիկ
+643	老虎	tiger	Tiger	tigre	tigre	نمر	トラ	тигр	τίγρη	बाघ	վագր
+644	冷静	calm	ruhig, gelassen	calme	tranquilo	هادئ	冷静な	спокойный	ψύχραιμος	शांत	հանգիստ
+645	礼貌	polite; manners	höflich; Höflichkeit	poli; politesse	educado; cortesía	مؤدّب؛ أدب	礼儀正しい；礼儀	вежливый; вежливость	ευγενικός; ευγένεια	शिष्ट; शिष्टाचार	քաղաքավարի; քաղաքավարություն
+646	理发	to have a haircut	sich die Haare schneiden lassen	se faire couper les cheveux	cortarse el pelo	يحلق شعره	散髪する	стричься	κουρεύομαι	बाल कटवाना	մազերը կտրել
+647	理解	to understand	verstehen	comprendre	comprender	يفهم	理解する	понимать	κατανοώ	समझना	հասկանալ
+648	理想	ideal; dream	Ideal; Traum	idéal; rêve	ideal; sueño	مثالي؛ حلم	理想	идеал; мечта	ιδανικό; όνειρο	आदर्श; सपना	իդեալ; երազանք
+649	厉害	impressive, awesome; severe	toll; heftig	impressionnant; terrible	impresionante; tremendo	مدهش؛ شديد	すごい；ひどい	крутой; сильный	φοβερός; έντονος	ज़बरदस्त; तेज़	ահավոր, զարմանալի
+650	力气	strength	Kraft	force	fuerza	قوة	力	сила	δύναμη	ताक़त	ուժ
+651	例如	for example	zum Beispiel	par exemple	por ejemplo	مثلاً	例えば	например	για παράδειγμα	उदाहरण के लिए	օրինակ
+652	俩	two (people), both	zwei, beide	tous les deux	los dos	الاثنان	二人	двое	οι δυο	दोनों	երկուսը
+653	连	even; to connect	sogar; verbinden	même; relier	incluso; conectar	حتى؛ يربط	〜さえ；つなぐ	даже; соединять	ακόμα και; συνδέω	तक; जोड़ना	նույնիսկ; միացնել
+654	联系	to contact; connection	kontaktieren; Verbindung	contacter; lien	contactar; relación	يتواصل؛ صلة	連絡する；つながり	связываться; связь	επικοινωνώ; σύνδεση	संपर्क करना; संबंध	կապվել; կապ
+655	凉快	pleasantly cool	angenehm kühl	frais (agréable)	fresco (agradable)	منعش، لطيف	涼しい	прохладно	δροσερός	ठंडा-ठंडा	զով
+656	亮	bright	hell	brillant, clair	brillante	ساطع	明るい	светлый	φωτεινός	चमकीला	պայծառ
+657	聊天	to chat	plaudern	bavarder	charlar	يدردش	おしゃべりする	болтать	κουβεντιάζω	बातचीत करना	զրուցել
+658	另外	in addition; other	außerdem; andere	en outre; autre	además; otro	بالإضافة؛ آخر	ほかに	кроме того; другой	επιπλέον; άλλος	इसके अलावा; दूसरा	բացի այդ; այլ
+659	留	to leave (behind); to stay	hinterlassen; bleiben	laisser; rester	dejar; quedarse	يترك؛ يبقى	残す；とどまる	оставлять; оставаться	αφήνω; μένω	छोड़ना; रुकना	թողնել; մնալ
+660	留学	to study abroad	im Ausland studieren	étudier à l'étranger	estudiar en el extranjero	يدرس في الخارج	留学する	учиться за границей	σπουδάζω στο εξωτερικό	विदेश में पढ़ना	արտերկրում սովորել
+661	流泪	to shed tears	Tränen vergießen	verser des larmes	llorar	يذرف الدموع	涙を流す	плакать	δακρύζω	आँसू बहाना	արցունք թափել
+662	流利	fluent	fließend	couramment	con fluidez	بطلاقة	流暢な	беглый	άπταιστος	धाराप्रवाह	սահուն
+663	流行	popular, fashionable	beliebt, in Mode	à la mode	de moda, popular	رائج	流行の	модный, популярный	της μόδας	लोकप्रिय, प्रचलित	մոդայիկ
+664	乱	messy, in a mess	unordentlich	en désordre	desordenado	فوضوي	散らかった	беспорядочный	ακατάστατος	बेतरतीब	խառնաշփոթ
+665	律师	lawyer	Anwalt	avocat	abogado	محامٍ	弁護士	адвокат	δικηγόρος	वकील	փաստաբան
+666	麻烦	troublesome; to trouble (sb)	lästig; belästigen	ennuyeux; déranger	molesto; molestar	مزعج؛ يزعج	面倒な；面倒をかける	хлопотный; беспокоить	ενοχλητικός; ενοχλώ	झंझट वाला; परेशान करना	անհարմար; անհանգստացնել
+667	马虎	careless	nachlässig	négligent	descuidado	مهمل	いい加減な	небрежный	απρόσεκτος	लापरवाह	անփույթ
+668	毛巾	towel	Handtuch	serviette	toalla	منشفة	タオル	полотенце	πετσέτα	तौलिया	սրբիչ
+669	美丽	beautiful	schön	beau	hermoso	جميل	美しい	красивый	όμορφος	सुंदर	գեղեցիկ
+670	密码	password	Passwort	mot de passe	contraseña	كلمة المرور	パスワード	пароль	κωδικός	पासवर्ड	գաղտնաբառ
+671	免费	free (of charge)	kostenlos	gratuit	gratis	مجاني	無料	бесплатный	δωρεάν	मुफ़्त	անվճար
+672	民族	ethnic group, nation	Volk, Nationalität	ethnie, nation	etnia, nación	قومية، شعب	民族	народ, национальность	έθνος	जाति, राष्ट्र	ազգ
+673	目的	purpose, aim	Zweck, Ziel	but	objetivo	هدف	目的	цель	σκοπός	उद्देश्य	նպատակ
+674	耐心	patient; patience	geduldig; Geduld	patient; patience	paciente; paciencia	صبور؛ صبر	根気強い；忍耐	терпеливый; терпение	υπομονετικός; υπομονή	धैर्यवान; धैर्य	համբերատար; համբերություն
+675	难道	(rhetorical) surely… not?	etwa? (rhetorisch)	est-ce que… vraiment ? (rhétorique)	¿acaso…?	هل يُعقل أن…؟	まさか〜ではあるまい	неужели	μήπως…;	क्या सच में…?	մի՞թե
+676	难受	to feel unwell, uncomfortable	sich unwohl fühlen	se sentir mal	sentirse mal	يشعر بالانزعاج	つらい、気分が悪い	плохо (себя чувствовать)	νιώθω άσχημα	तकलीफ़ होना	վատ զգալ
+677	内	inside, within	innen, innerhalb	à l'intérieur, dans	dentro	داخل	内	внутри	μέσα	भीतर	ներսում
+678	内容	content	Inhalt	contenu	contenido	محتوى	内容	содержание	περιεχόμενο	सामग्री, विषय	բովանդակություն
+679	能力	ability	Fähigkeit	capacité	capacidad	قدرة	能力	способность	ικανότητα	क्षमता	կարողություն
+680	年龄	age	Alter	âge	edad	العمر	年齢	возраст	ηλικία	उम्र	տարիք
+681	农村	countryside	Land (ländlich)	campagne	campo, zona rural	الريف	農村	деревня	ύπαιθρος, χωριό	गाँव	գյուղ
+682	弄	to do, to make (handle)	machen	faire	hacer	يفعل	する、いじる	делать	κάνω	करना	անել
+683	暖和	warm	warm	doux, chaud	templado	دافئ	暖かい	тёплый	ζεστός	गरम	տաք
+684	偶尔	occasionally	gelegentlich	de temps en temps	de vez en cuando	أحياناً	たまに	иногда	περιστασιακά	कभी-कभार	երբեմն
+685	排列	to arrange (in order)	anordnen	ranger	ordenar	يرتّب	並べる	располагать по порядку	ταξινομώ	क्रम में लगाना	դասավորել
+686	判断	to judge; judgement	beurteilen; Urteil	juger; jugement	juzgar; juicio	يحكم؛ حكم	判断する；判断	судить; суждение	κρίνω; κρίση	निर्णय करना; निर्णय	դատել; դատողություն
+687	陪	to accompany	begleiten	accompagner	acompañar	يرافق	付き添う	сопровождать	συνοδεύω	साथ देना	ուղեկցել
+688	批评	to criticise	kritisieren	critiquer	criticar	ينتقد	批判する	критиковать	επικρίνω	आलोचना करना	քննադատել
+689	皮肤	skin	Haut	peau	piel	بشرة	肌	кожа	δέρμα	त्वचा	մաշկ
+690	脾气	temper	Temperament	caractère, humeur	carácter, genio	مزاج، طبع	気性	характер, нрав	χαρακτήρας, θυμός	मिज़ाज	բնավորություն
+691	篇	(measure word for articles, essays)	(Zählwort für Texte)	(classificateur : articles, textes)	(clasificador: artículos)	(مميّز للمقالات)	〜編（文章）	(счётное слово для статей)	(αριθμητικό για κείμενα)	(लेखों का परिमाणवाचक)	(հոդվածների հաշվիչ բառ)
+692	骗	to deceive, to cheat	betrügen	tromper	engañar	يخدع	だます	обманывать	εξαπατώ	धोखा देना	խաբել
+693	乒乓球	table tennis	Tischtennis	ping-pong	ping-pong	كرة الطاولة	卓球	настольный теннис	πινγκ-πονγκ	टेबल टेनिस	սեղանի թենիս
+694	平时	usually, normally	normalerweise	d'habitude	normalmente	عادةً	普段	обычно	συνήθως	आम तौर पर	սովորաբար
+695	瓶子	bottle	Flasche	bouteille	botella	زجاجة	瓶	бутылка	μπουκάλι	बोतल	շիշ
+696	破	broken; to break	kaputt; zerbrechen	cassé; casser	roto; romper	مكسور؛ يكسر	壊れた；破る	сломанный; ломать	σπασμένος; σπάω	टूटा; तोड़ना	կոտրված; կոտրել
+697	普遍	widespread, common	allgemein, verbreitet	répandu, général	general, común	شائع	普遍的な	всеобщий, распространённый	γενικός, διαδεδομένος	आम, व्यापक	տարածված
+698	其次	next, secondly	zweitens	ensuite, deuxièmement	en segundo lugar	ثانياً	次に	во-вторых	δεύτερον	दूसरे	երկրորդ
+699	其中	among them	darunter	parmi eux	entre ellos	من بينها	その中	среди них	ανάμεσά τους	उनमें से	դրանց թվում
+700	起飞	to take off (plane)	abheben	décoller	despegar	يقلع	離陸する	взлетать	απογειώνομαι	उड़ान भरना	թռիչք կատարել
+701	起来	(after a verb: up; to start)	(nach Verb: auf; anfangen)	(après un verbe : se lever; commencer)	(tras verbo: levantar; empezar)	(بعد الفعل: النهوض؛ البدء)	〜し始める；起き上がる	(после глагола: вверх; начать)	(μετά από ρήμα: πάνω; αρχίζω)	(क्रिया के बाद: उठना; शुरू होना)	(բայից հետո՝ վեր; սկսել)
+702	气候	climate	Klima	climat	clima	مناخ	気候	климат	κλίμα	जलवायु	կլիմա
+703	千万	be sure to; ten million	unbedingt; zehn Millionen	surtout, absolument; dix millions	sin falta; diez millones	لا بدّ؛ عشرة ملايين	必ず；一千万	обязательно; десять миллионов	οπωσδήποτε; δέκα εκατομμύρια	ज़रूर; एक करोड़	անպայման; տասը միլիոն
+704	签证	visa	Visum	visa	visado	تأشيرة	ビザ	виза	βίζα	वीज़ा	վիզա
+705	敲	to knock	klopfen	frapper	llamar (a la puerta), golpear	يطرق	たたく、ノックする	стучать	χτυπάω	खटखटाना	թակել
+706	巧克力	chocolate	Schokolade	chocolat	chocolate	شوكولاتة	チョコレート	шоколад	σοκολάτα	चॉकलेट	շոկոլադ
+707	亲戚	relative	Verwandte(r)	parent (de la famille)	pariente	قريب	親戚	родственник	συγγενής	रिश्तेदार	ազգական
+708	轻	light (weight)	leicht	léger	ligero	خفيف	軽い	лёгкий	ελαφρύς	हल्का	թեթև
+709	轻松	relaxed, easy	locker, leicht	détendu, facile	relajado, fácil	مريح، سهل	気楽な	лёгкий, непринуждённый	χαλαρός, εύκολος	आसान, आरामदायक	հեշտ, թեթև
+710	情况	situation	Lage, Situation	situation	situación	وضع، حالة	状況	ситуация	κατάσταση	स्थिति	իրավիճակ
+711	请假	to ask for leave	um Urlaub bitten	demander un congé	pedir permiso	يطلب إجازة	休みをもらう	отпрашиваться	ζητώ άδεια	छुट्टी माँगना	արձակուրդ խնդրել
+712	请客	to treat (sb to a meal)	einladen	inviter (payer)	invitar (pagar)	يدعو على حسابه	おごる	угощать	κερνάω	दावत देना	հյուրասիրել
+713	区别	difference	Unterschied	différence	diferencia	فرق	違い	разница	διαφορά	अंतर	տարբերություն
+714	取	to take, to fetch	holen	prendre, retirer	recoger, sacar	يأخذ، يسحب	取る、受け取る	брать, получать	παίρνω	लेना, निकालना	վերցնել
+715	全部	all, whole	alles, ganz	tout, entier	todo	كلّ	全部	весь, всё	όλο	सब	ամբողջը
+716	缺点	shortcoming	Schwäche, Nachteil	défaut	defecto	عيب	欠点	недостаток	ελάττωμα	कमी	թերություն
+717	缺少	to lack	fehlen	manquer	faltar	ينقص	欠ける	не хватать	λείπω	कमी होना	պակասել
+718	却	but, yet	aber, jedoch	pourtant	sin embargo	لكن	しかし、かえって	однако	όμως	पर	սակայն
+719	确实	indeed, really	wirklich	vraiment	realmente	فعلاً	確かに	действительно	πράγματι	वाक़ई	իսկապես
+720	群	group, crowd	Gruppe, Menge	groupe, foule	grupo, multitud	مجموعة، حشد	群れ	группа, толпа	ομάδα, πλήθος	झुंड, समूह	խումբ, ամբոխ
+721	然而	however	jedoch	cependant	sin embargo	ومع ذلك	しかしながら	однако	ωστόσο	फिर भी	սակայն
+722	热闹	lively, bustling	belebt	animé	animado, bullicioso	صاخب، مفعم بالحيوية	にぎやかな	оживлённый	ζωντανός, πολυσύχναστος	चहल-पहल वाला	աշխույժ, մարդաշատ
+723	人民币	renminbi (RMB)	Renminbi	renminbi	renminbi	الرنمينبي	人民元	жэньминьби	ρενμίνμπι	रेनमिनबी	ժենմինբի
+724	任何	any	jede(r) beliebige	n'importe quel	cualquier	أيّ	いかなる	любой	οποιοσδήποτε	कोई भी	ցանկացած
+725	任务	task, mission	Aufgabe	tâche, mission	tarea	مهمة	任務	задание	αποστολή, καθήκον	काम, कार्य	առաջադրանք
+726	扔	to throw (away)	werfen, wegwerfen	jeter	tirar	يرمي	投げる、捨てる	бросать	πετάω	फेंकना	նետել
+727	仍然	still	immer noch	toujours	todavía	لا يزال	依然として	всё ещё	ακόμα	अब भी	դեռևս
+728	日记	diary	Tagebuch	journal intime	diario	مذكرات	日記	дневник	ημερολόγιο	डायरी	օրագիր
+729	入口	entrance	Eingang	entrée	entrada	مدخل	入口	вход	είσοδος	प्रवेश द्वार	մուտք
+730	软	soft	weich	mou	blando	ليّن	柔らかい	мягкий	μαλακός	मुलायम	փափուկ
+731	散步	to take a walk	spazieren gehen	se promener	pasear	يتمشّى	散歩する	гулять	κάνω περίπατο	टहलना	զբոսնել
+732	森林	forest	Wald	forêt	bosque	غابة	森林	лес	δάσος	जंगल	անտառ
+733	沙发	sofa	Sofa	canapé	sofá	أريكة	ソファー	диван	καναπές	सोफ़ा	բազմոց
+734	商量	to discuss, to talk over	besprechen	discuter, consulter	consultar, hablar	يتشاور	相談する	советоваться	συζητώ	सलाह करना	խորհրդակցել
+735	伤心	sad, heartbroken	traurig	triste	triste	حزين	悲しい	грустный	λυπημένος	दुखी	տխուր
+736	稍微	slightly	ein bisschen	un peu	un poco	قليلاً	少し	немного	λίγο	थोड़ा	մի փոքր
+737	社会	society	Gesellschaft	société	sociedad	مجتمع	社会	общество	κοινωνία	समाज	հասարակություն
+738	申请	to apply for	beantragen	demander, postuler	solicitar	يتقدّم بطلب	申請する	подавать заявку	κάνω αίτηση	आवेदन करना	դիմել
+739	甚至	even	sogar	même	incluso	حتى	〜さえ	даже	ακόμα και	यहाँ तक कि	նույնիսկ
+740	生命	life	Leben	vie	vida	حياة	生命	жизнь	ζωή	जीवन	կյանք
+741	省	province; to save	Provinz; sparen	province; économiser	provincia; ahorrar	مقاطعة؛ يوفّر	省；節約する	провинция; экономить	επαρχία; εξοικονομώ	प्रांत; बचाना	նահանգ; խնայել
+742	剩	to be left over	übrig bleiben	rester	sobrar	يتبقّى	余る	оставаться	περισσεύω	बचना	մնալ (ավելցուկ)
+743	失败	to fail; failure	scheitern; Misserfolg	échouer; échec	fracasar; fracaso	يفشل؛ فشل	失敗する；失敗	терпеть неудачу; неудача	αποτυγχάνω; αποτυχία	असफल होना; असफलता	ձախողվել; անհաջողություն
+744	失望	disappointed	enttäuscht	déçu	decepcionado	محبط	がっかりする	разочарованный	απογοητευμένος	निराश	հիասթափված
+745	师傅	master (craftsman); (term of address)	Meister	maître (artisan)	maestro (artesano)	معلّم (حرفي)	師匠、〜さん（職人）	мастер	μάστορας	उस्ताद	վարպետ
+746	湿润	moist, humid	feucht	humide	húmedo	رطب	湿った	влажный	υγρός	नम	խոնավ
+747	狮子	lion	Löwe	lion	león	أسد	ライオン	лев	λιοντάρι	शेर	առյուծ
+748	十分	very, fully	sehr	très	muy	جداً	とても	очень	πολύ	बहुत	շատ
+749	实际	actual, real	tatsächlich	réel	real	فعلي	実際の	фактический	πραγματικός	असल	իրական
+750	实在	really, honestly	wirklich	vraiment	de verdad	حقاً	本当に	действительно	πραγματικά	सचमुच	իսկապես
+751	食品	food (products)	Lebensmittel	aliments	alimentos	مواد غذائية	食品	продукты питания	τρόφιμα	खाद्य पदार्थ	սննդամթերք
+752	使用	to use	benutzen	utiliser	usar	يستخدم	使用する	использовать	χρησιμοποιώ	इस्तेमाल करना	օգտագործել
+753	市场	market	Markt	marché	mercado	سوق	市場	рынок	αγορά	बाज़ार	շուկա
+754	世纪	century	Jahrhundert	siècle	siglo	قرن	世紀	век	αιώνας	सदी	դար
+755	适合	to suit, to fit	passen zu	convenir à	ser adecuado para	يناسب	合う、適する	подходить	ταιριάζω	उपयुक्त होना	հարմար լինել
+756	适应	to adapt	sich anpassen	s'adapter	adaptarse	يتكيّف	適応する	приспосабливаться	προσαρμόζομαι	ढलना	հարմարվել
+757	收	to receive; to put away	erhalten; wegräumen	recevoir; ranger	recibir; guardar	يستلم؛ يجمع	受け取る；しまう	получать; убирать	λαμβάνω; μαζεύω	प्राप्त करना; समेटना	ստանալ; հավաքել
+758	收入	income	Einkommen	revenu	ingresos	دخل	収入	доход	εισόδημα	आमदनी	եկամուտ
+759	收拾	to tidy up	aufräumen	ranger	ordenar	يرتّب	片付ける	убирать, наводить порядок	τακτοποιώ	सँवारना, साफ़ करना	կարգի բերել
+760	首都	capital (city)	Hauptstadt	capitale	capital	عاصمة	首都	столица	πρωτεύουσα	राजधानी	մայրաքաղաք
+761	首先	first of all	zuerst	tout d'abord	en primer lugar	أولاً	まず	прежде всего	πρώτα απ' όλα	सबसे पहले	նախ և առաջ
+762	受不了	can't stand	nicht ertragen können	ne pas supporter	no soportar	لا يُحتمل	耐えられない	невыносимо	δεν αντέχω	बर्दाश्त न होना	չդիմանալ
+763	受到	to receive (praise, influence)	erhalten, erfahren	recevoir, subir	recibir	يتلقّى	受ける	получать, подвергаться	δέχομαι	पाना	ստանալ
+764	售货员	shop assistant	Verkäufer	vendeur	dependiente	بائع	店員	продавец	πωλητής	विक्रेता	վաճառող
+765	输	to lose (a game)	verlieren	perdre	perder	يخسر	負ける	проигрывать	χάνω	हारना	պարտվել
+766	熟悉	to be familiar with	vertraut sein	connaître bien	estar familiarizado	يعرف جيداً	よく知っている	хорошо знать	είμαι εξοικειωμένος	परिचित होना	լավ ճանաչել
+767	数量	quantity	Menge	quantité	cantidad	كمية	数量	количество	ποσότητα	मात्रा	քանակ
+768	数字	number, digit	Zahl, Ziffer	nombre, chiffre	número, cifra	رقم	数字	число, цифра	αριθμός	अंक	թիվ
+769	帅	handsome	gut aussehend	beau	guapo	وسيم	かっこいい	красивый (о мужчине)	όμορφος	सुंदर (लड़का)	գեղեցիկ (տղա)
+770	顺便	in passing, on the way	nebenbei	en passant	de paso	بالمرّة	ついでに	заодно	παρεμπιπτόντως	साथ ही	ճանապարհին, միաժամանակ
+771	顺利	smoothly	reibungslos	sans problème	sin problemas	بسلاسة	順調に	гладко	ομαλά	अच्छी तरह	հաջող
+772	顺序	order, sequence	Reihenfolge	ordre	orden	ترتيب	順序	порядок	σειρά	क्रम	հերթականություն
+773	说明	to explain; explanation	erklären; Erklärung	expliquer; explication	explicar; explicación	يوضّح؛ شرح	説明する；説明	объяснять; объяснение	εξηγώ; εξήγηση	स्पष्ट करना; विवरण	բացատրել; բացատրություն
+774	硕士	master's degree	Master	master	máster	ماجستير	修士	магистр	μεταπτυχιακό	मास्टर डिग्री	մագիստրոս
+775	死	to die; dead	sterben; tot	mourir; mort	morir; muerto	يموت؛ ميت	死ぬ	умирать; мёртвый	πεθαίνω; νεκρός	मरना; मृत	մեռնել; մեռած
+776	速度	speed	Geschwindigkeit	vitesse	velocidad	سرعة	速度	скорость	ταχύτητα	गति	արագություն
+777	塑料袋	plastic bag	Plastiktüte	sac en plastique	bolsa de plástico	كيس بلاستيك	ビニール袋	полиэтиленовый пакет	πλαστική σακούλα	प्लास्टिक की थैली	պոլիէթիլենային տոպրակ
+778	酸	sour	sauer	acide	ácido, agrio	حامض	酸っぱい	кислый	ξινός	खट्टा	թթու
+779	算	to count; to consider as	rechnen; gelten als	compter; considérer comme	contar; considerar	يحسب؛ يُعتبر	計算する；〜とみなす	считать; считаться	μετράω; θεωρώ	गिनना; मानना	հաշվել; համարել
+780	随便	as you like; casual	wie du willst; beliebig	comme tu veux; n'importe	como quieras; cualquiera	كما تشاء	ご自由に、適当に	как хочешь; небрежно	ό,τι θέλεις; πρόχειρα	जैसा चाहो	ինչպես ուզում ես
+781	随着	along with	mit (im Zuge)	avec, au fur et à mesure	a medida que	مع	〜につれて	по мере	καθώς	के साथ-साथ	զուգընթաց
+782	孙子	grandson	Enkel	petit-fils	nieto	حفيد	孫	внук	εγγονός	पोता	թոռ
+783	所有	all	alle	tous	todos	كلّ	すべての	все	όλοι	सभी	բոլոր
+784	抬	to lift, to raise	heben	lever	levantar	يرفع	持ち上げる	поднимать	σηκώνω	उठाना	բարձրացնել
+785	台	(measure word for machines); stage	(Zählwort für Geräte); Bühne	(classificateur : appareils); scène	(clasificador: aparatos); escenario	(مميّز للأجهزة)؛ منصة	〜台；舞台	(счётное слово для техники); сцена	(αριθμητικό για συσκευές); σκηνή	(मशीनों का परिमाणवाचक); मंच	(սարքերի հաշվիչ բառ); բեմ
+786	态度	attitude	Haltung, Einstellung	attitude	actitud	موقف	態度	отношение	στάση	रवैया	վերաբերմունք
+787	谈	to talk, to discuss	sprechen über	parler de	hablar de	يتحدث عن	話す、話し合う	разговаривать	συζητώ	बात करना	զրուցել
+788	弹	to play (piano, guitar)	spielen (Klavier, Gitarre)	jouer (piano, guitare)	tocar (piano, guitarra)	يعزف	弾く	играть (на пианино)	παίζω (πιάνο, κιθάρα)	बजाना	նվագել
+789	汤	soup	Suppe	soupe	sopa	حساء	スープ	суп	σούπα	सूप	ապուր
+790	躺	to lie down	liegen	être allongé	tumbarse	يستلقي	横になる	лежать	ξαπλώνω	लेटना	պառկել
+791	趟	(measure word for trips)	(Zählwort für Fahrten)	(classificateur : trajets)	(clasificador: viajes)	(مميّز للرحلات)	〜回（行き来）	(счётное слово для поездок)	(αριθμητικό για διαδρομές)	(चक्कर, यात्रा का परिमाणवाचक)	(երթուղու հաշվիչ բառ)
+792	讨论	to discuss	diskutieren	discuter	discutir	يناقش	討論する	обсуждать	συζητώ	चर्चा करना	քննարկել
+793	讨厌	to dislike; annoying	nicht mögen; nervig	détester; agaçant	odiar; molesto	يكره؛ مزعج	嫌う；嫌な	не любить; противный	σιχαίνομαι; ενοχλητικός	नापसंद करना; चिढ़ाने वाला	ատել; զզվելի
+794	特点	characteristic	Merkmal	caractéristique	característica	سمة	特徴	особенность	χαρακτηριστικό	विशेषता	առանձնահատկություն
+795	提供	to provide	anbieten, bereitstellen	fournir	proporcionar	يقدّم	提供する	предоставлять	παρέχω	उपलब्ध कराना	տրամադրել
+796	提前	in advance, earlier	im Voraus	à l'avance	con antelación	مسبقاً	前もって、繰り上げる	заранее	νωρίτερα, εκ των προτέρων	पहले से	նախօրոք
+797	提醒	to remind	erinnern	rappeler	recordar (a alguien)	يذكّر	注意を促す	напоминать	υπενθυμίζω	याद दिलाना	հիշեցնել
+798	填空	to fill in the blanks	Lücken ausfüllen	remplir les blancs	rellenar huecos	يملأ الفراغات	空欄を埋める	заполнить пропуски	συμπληρώνω κενά	रिक्त स्थान भरना	բաց թողածը լրացնել
+799	条件	condition	Bedingung	condition	condición	شرط	条件	условие	προϋπόθεση	शर्त	պայման
+800	停止	to stop	aufhören	arrêter	detener, parar	يتوقف	止める	прекращать	σταματώ	रुकना, रोकना	դադարեցնել
+801	挺	quite, rather	ziemlich	assez	bastante	تماماً، إلى حدّ ما	なかなか、けっこう	довольно	αρκετά	काफ़ी	բավականին
+802	通过	through, by means of; to pass	durch; bestehen	par; passer	mediante; aprobar	عبر؛ يجتاز	〜を通して；通過する	через; пройти	μέσω; περνάω	के ज़रिए; पास करना	միջոցով; անցնել
+803	通知	to notify; notice	benachrichtigen; Mitteilung	informer; avis	avisar; aviso	يبلغ؛ إشعار	通知する；通知	уведомлять; уведомление	ειδοποιώ; ειδοποίηση	सूचित करना; सूचना	ծանուցել; ծանուցում
+804	同情	to sympathise	Mitleid haben	compatir	compadecer	يتعاطف	同情する	сочувствовать	συμπονώ	सहानुभूति रखना	կարեկցել
+805	推	to push	schieben	pousser	empujar	يدفع	押す	толкать	σπρώχνω	धक्का देना	հրել
+806	推迟	to postpone	verschieben	reporter	aplazar	يؤجّل	延期する	откладывать	αναβάλλω	टालना	հետաձգել
+807	脱	to take off (clothes)	ausziehen	enlever	quitarse	يخلع	脱ぐ	снимать (одежду)	βγάζω (ρούχα)	उतारना	հանել
+808	袜子	socks	Socken	chaussettes	calcetines	جوارب	靴下	носки	κάλτσες	मोज़े	գուլպաներ
+809	完全	completely	völlig	complètement	completamente	تماماً	完全に	полностью	εντελώς	पूरी तरह	ամբողջովին
+810	往	towards	in Richtung	vers	hacia	نحو	〜へ	в сторону	προς	की ओर	դեպի
+811	往往	often, usually	oft	souvent	a menudo	غالباً	しばしば	часто	συχνά	अक्सर	հաճախ
+812	网球	tennis	Tennis	tennis	tenis	كرة المضرب	テニス	теннис	τένις	टेनिस	թենիս
+813	网站	website	Webseite	site web	sitio web	موقع إلكتروني	ウェブサイト	сайт	ιστοσελίδα	वेबसाइट	կայք
+814	味道	taste, flavour	Geschmack	goût	sabor	طعم	味	вкус	γεύση	स्वाद	համ
+815	温度	temperature	Temperatur	température	temperatura	درجة الحرارة	温度	температура	θερμοκρασία	तापमान	ջերմաստիճան
+816	文章	article, essay	Artikel, Aufsatz	article, texte	artículo, ensayo	مقالة	文章	статья	άρθρο	लेख	հոդված
+817	握手	to shake hands	die Hand schütteln	se serrer la main	darse la mano	يصافح	握手する	пожимать руку	δίνω τα χέρια	हाथ मिलाना	ձեռք սեղմել
+818	污染	pollution; to pollute	Verschmutzung; verschmutzen	pollution; polluer	contaminación; contaminar	تلوّث؛ يلوّث	汚染；汚染する	загрязнение; загрязнять	ρύπανση; μολύνω	प्रदूषण; प्रदूषित करना	աղտոտում; աղտոտել
+819	无	without, no	ohne, kein	sans	sin	بلا	無い	без, нет	χωρίς	बिना	առանց
+820	无聊	bored, boring	langweilig	ennuyeux	aburrido	ممل	つまらない	скучный	βαρετός	बोरिंग, ऊबा हुआ	ձանձրալի
+821	无论	no matter (what, how)	egal, wie	peu importe	no importa	مهما	〜にかかわらず	независимо от	οτιδήποτε κι αν	चाहे कुछ भी	անկախ
+822	误会	to misunderstand; misunderstanding	missverstehen; Missverständnis	mal comprendre; malentendu	malinterpretar; malentendido	يسيء الفهم؛ سوء فهم	誤解する；誤解	неправильно понять; недоразумение	παρεξηγώ; παρεξήγηση	ग़लतफ़हमी होना; ग़लतफ़हमी	սխալ հասկանալ; թյուրիմացություն
+823	吸引	to attract	anziehen	attirer	atraer	يجذب	引きつける	привлекать	ελκύω	आकर्षित करना	գրավել
+824	洗衣机	washing machine	Waschmaschine	machine à laver	lavadora	غسالة	洗濯機	стиральная машина	πλυντήριο	वॉशिंग मशीन	լվացքի մեքենա
+825	咸	salty	salzig	salé	salado	مالح	しょっぱい	солёный	αλμυρός	नमकीन	աղի
+826	现代	modern; modern times	modern; Moderne	moderne; époque moderne	moderno; época moderna	حديث؛ العصر الحديث	現代	современный; современность	σύγχρονος; νεότερη εποχή	आधुनिक; आधुनिक युग	ժամանակակից
+827	羡慕	to envy, to admire	beneiden	envier	envidiar	يحسد، يغبط	うらやむ	завидовать	ζηλεύω	ईर्ष्या करना	նախանձել
+828	限制	to limit; limit	beschränken; Grenze	limiter; limite	limitar; límite	يقيّد؛ قيد	制限する；制限	ограничивать; ограничение	περιορίζω; περιορισμός	सीमित करना; सीमा	սահմանափակել; սահմանափակում
+829	香	fragrant; tasty	duftend; lecker	parfumé; savoureux	aromático; sabroso	عطِر؛ لذيذ	いい香り；おいしい	ароматный; вкусный	αρωματικός; νόστιμος	ख़ुशबूदार; स्वादिष्ट	բուրավետ; համեղ
+830	相反	opposite, on the contrary	entgegengesetzt; im Gegenteil	contraire; au contraire	contrario; al contrario	معاكس؛ على العكس	反対の；逆に	противоположный; наоборот	αντίθετος; αντίθετα	उल्टा; इसके विपरीत	հակառակ
+831	详细	detailed	ausführlich	détaillé	detallado	مفصّل	詳しい	подробный	λεπτομερής	विस्तृत	մանրամասն
+832	响	to ring, to sound; loud	klingeln, tönen; laut	sonner; fort	sonar; fuerte	يرنّ؛ عالٍ	鳴る；（音が）大きい	звенеть, звучать; громкий	χτυπάω (κουδούνι); δυνατός	बजना; ऊँची आवाज़	հնչել, զնգալ; բարձր
+833	消息	news, information	Nachricht	nouvelle	noticia	خبر	知らせ、ニュース	новость, известие	νέα, είδηση	ख़बर, समाचार	լուր
+834	小说	novel	Roman	roman	novela	رواية	小説	роман	μυθιστόρημα	उपन्यास	վեպ
+835	笑话	joke; to laugh at	Witz; auslachen	blague; se moquer de	chiste; burlarse de	نكتة؛ يسخر من	冗談；笑いものにする	шутка; смеяться над	ανέκδοτο; κοροϊδεύω	चुटकुला; मज़ाक उड़ाना	անեկդոտ; ծաղրել
+836	效果	effect, result	Wirkung	effet	efecto	تأثير، نتيجة	効果	эффект	αποτέλεσμα	असर	արդյունք
+837	心情	mood	Stimmung	humeur	estado de ánimo	مزاج	気分	настроение	διάθεση	मूड	տրամադրություն
+838	辛苦	hard, tiring; thanks for your hard work	anstrengend; danke für die Mühe	pénible; merci pour vos efforts	duro, cansado	متعب، شاق	大変な；お疲れさま	тяжёлый, утомительный	κουραστικός	कठिन, थकाऊ	ծանր, հոգնեցուցիչ
+839	信任	to trust; trust	vertrauen; Vertrauen	faire confiance; confiance	confiar; confianza	يثق؛ ثقة	信頼する；信頼	доверять; доверие	εμπιστεύομαι; εμπιστοσύνη	भरोसा करना; भरोसा	վստահել; վստահություն
+840	信心	confidence	Zuversicht	confiance	confianza	ثقة بالنفس	自信	уверенность	αυτοπεποίθηση	आत्मविश्वास	վստահություն
+841	信用卡	credit card	Kreditkarte	carte de crédit	tarjeta de crédito	بطاقة ائتمان	クレジットカード	кредитная карта	πιστωτική κάρτα	क्रेडिट कार्ड	վարկային քարտ
+842	兴奋	excited	aufgeregt	excité	emocionado	متحمّس	興奮する	взволнованный	ενθουσιασμένος	उत्साहित	ոգևորված
+843	行	OK, all right; to walk	in Ordnung; gehen	d'accord; marcher	vale, de acuerdo; andar	حسناً؛ يمشي	いいよ、大丈夫；歩く	ладно, можно; идти	εντάξει; περπατάω	ठीक है; चलना	լավ, կարելի է; քայլել
+844	醒	to wake up	aufwachen	se réveiller	despertarse	يستيقظ	目が覚める	просыпаться	ξυπνάω	जागना	արթնանալ
+845	性别	sex, gender	Geschlecht	sexe, genre	sexo, género	الجنس (ذكر/أنثى)	性別	пол	φύλο	लिंग	սեռ
+846	性格	personality	Charakter	caractère	personalidad	شخصية	性格	характер	χαρακτήρας	स्वभाव	բնավորություն
+847	幸福	happiness; happy	Glück; glücklich	bonheur; heureux	felicidad; feliz	سعادة؛ سعيد	幸せ	счастье; счастливый	ευτυχία; ευτυχισμένος	ख़ुशी; ख़ुश	երջանկություն; երջանիկ
+848	修	to repair	reparieren	réparer	reparar	يصلح	修理する	ремонтировать	επισκευάζω	मरम्मत करना	նորոգել
+849	许多	many, a lot of	viele	beaucoup de	muchos	كثير	たくさんの	много	πολλοί	बहुत सारे	շատ
+850	血	blood	Blut	sang	sangre	دم	血	кровь	αίμα	ख़ून	արյուն
+851	压力	pressure, stress	Druck, Stress	pression, stress	presión, estrés	ضغط	プレッシャー	давление, стресс	πίεση, άγχος	दबाव, तनाव	ճնշում, սթրես
+852	牙膏	toothpaste	Zahnpasta	dentifrice	pasta de dientes	معجون أسنان	歯磨き粉	зубная паста	οδοντόκρεμα	टूथपेस्ट	ատամի մածուկ
+853	亚洲	Asia	Asien	Asie	Asia	آسيا	アジア	Азия	Ασία	एशिया	Ասիա
+854	呀	(exclamation particle, like 啊)	(Ausrufpartikel)	(particule exclamative)	(partícula exclamativa)	(أداة تعجب)	〜よ、〜ね（感嘆）	(восклицательная частица)	(επιφωνηματικό μόριο)	(विस्मयादिबोधक निपात)	(բացականչական մասնիկ)
+855	严格	strict	streng	strict	estricto	صارم	厳しい	строгий	αυστηρός	सख़्त	խիստ
+856	严重	serious, severe	ernst, schwer	grave	grave	خطير	深刻な	серьёзный	σοβαρός	गंभीर	լուրջ
+857	研究生	graduate student	Masterstudent, Doktorand	étudiant de master/doctorat	estudiante de posgrado	طالب دراسات عليا	大学院生	аспирант, магистрант	μεταπτυχιακός φοιτητής	स्नातकोत्तर छात्र	մագիստրանտ, ասպիրանտ
+858	演出	to perform; performance	aufführen; Aufführung	se produire; représentation	actuar; función	يعرض؛ عرض	公演する；公演	выступать; выступление	παίζω; παράσταση	मंचन करना; प्रदर्शन	ելույթ ունենալ; ներկայացում
+859	演员	actor, actress	Schauspieler	acteur, actrice	actor, actriz	ممثّل	俳優	актёр, актриса	ηθοποιός	अभिनेता, अभिनेत्री	դերասան
+860	阳光	sunshine	Sonnenschein	soleil	luz del sol	أشعة الشمس	日光	солнечный свет	ηλιοφάνεια	धूप	արևի լույս
+861	养成	to form (a habit)	sich angewöhnen	prendre (une habitude)	adquirir (un hábito)	يكتسب (عادة)	身につける	вырабатывать (привычку)	αποκτώ (συνήθεια)	(आदत) डालना	(սովորություն) ձեռք բերել
+862	样子	appearance, look	Aussehen	apparence	aspecto	مظهر	様子、格好	вид, внешность	εμφάνιση	रूप, शक्ल	տեսք
+863	邀请	to invite; invitation	einladen; Einladung	inviter; invitation	invitar; invitación	يدعو؛ دعوة	招待する；招待	приглашать; приглашение	προσκαλώ; πρόσκληση	आमंत्रित करना; निमंत्रण	հրավիրել; հրավեր
+864	也许	perhaps	vielleicht	peut-être	quizás	ربما	もしかすると	может быть	ίσως	शायद	գուցե
+865	页	page	Seite	page	página	صفحة	ページ	страница	σελίδα	पन्ना	էջ
+866	叶子	leaf	Blatt	feuille	hoja	ورقة (شجر)	葉	лист (растения)	φύλλο	पत्ता	տերև
+867	一切	everything	alles	tout	todo	كلّ شيء	すべて	всё	τα πάντα	सब कुछ	ամեն ինչ
+868	以	with, by means of	mit, durch	avec, par	con, mediante	بـ، بواسطة	〜で、〜をもって	с помощью	με	से, द्वारा	միջոցով
+869	亿	hundred million	hundert Millionen	cent millions	cien millones	مئة مليون	億	сто миллионов	εκατό εκατομμύρια	दस करोड़	հարյուր միլիոն
+870	意见	opinion; objection	Meinung; Einwand	avis; objection	opinión; objeción	رأي؛ اعتراض	意見；不満	мнение; возражение	γνώμη; αντίρρηση	राय; आपत्ति	կարծիք; առարկություն
+871	艺术	art	Kunst	art	arte	فن	芸術	искусство	τέχνη	कला	արվեստ
+872	因此	therefore	daher	par conséquent	por lo tanto	لذلك	したがって	поэтому	επομένως	इसलिए	հետևաբար
+873	引起	to cause	verursachen	provoquer	causar	يسبّب	引き起こす	вызывать	προκαλώ	पैदा करना	առաջացնել
+874	饮料	drink, beverage	Getränk	boisson	bebida	مشروب	飲み物	напиток	ποτό	पेय	ըմպելիք
+875	印象	impression	Eindruck	impression	impresión	انطباع	印象	впечатление	εντύπωση	प्रभाव, छाप	տպավորություն
+876	硬	hard	hart	dur	duro	صلب	硬い	твёрдый	σκληρός	सख़्त	կոշտ
+877	勇敢	brave	mutig	courageux	valiente	شجاع	勇敢な	смелый	γενναίος	बहादुर	քաջ
+878	永远	forever	für immer	pour toujours	para siempre	إلى الأبد	永遠に	навсегда	για πάντα	हमेशा के लिए	հավերժ
+879	优点	strength, merit	Vorzug, Stärke	qualité, atout	virtud, ventaja	ميزة	長所	достоинство	πλεονέκτημα, προτέρημα	ख़ूबी	առավելություն
+880	优秀	excellent	ausgezeichnet	excellent	excelente	ممتاز	優秀な	отличный	εξαιρετικός	उत्कृष्ट	գերազանց
+881	幽默	humour; humorous	Humor; humorvoll	humour; drôle	humor; gracioso	فكاهة؛ ظريف	ユーモア；ユーモラスな	юмор; с юмором	χιούμορ; χιουμορίστας	हास्य; मज़ाकिया	հումոր; հումորով
+882	由	by; from	von; durch	par; de	por; desde	من قِبل؛ من	〜によって；〜から	(кем-то); от	από	द्वारा; से	կողմից; -ից
+883	由于	due to, because of	aufgrund	en raison de	debido a	بسبب	〜のため	из-за	λόγω	के कारण	պատճառով
+884	尤其	especially	vor allem	surtout	sobre todo	خاصةً	特に	особенно	ιδιαίτερα	ख़ासकर	հատկապես
+885	有趣	interesting, fun	interessant, lustig	intéressant, amusant	interesante, divertido	ممتع	面白い	интересный	ενδιαφέρων, διασκεδαστικός	मज़ेदार	հետաքրքիր
+886	友好	friendly	freundlich	amical	amistoso	ودّي	友好的な	дружелюбный	φιλικός	मित्रतापूर्ण	բարեկամական
+887	友谊	friendship	Freundschaft	amitié	amistad	صداقة	友情	дружба	φιλία	दोस्ती	բարեկամություն
+888	愉快	pleasant, happy	angenehm, fröhlich	agréable, joyeux	agradable, alegre	بهيج	楽しい	приятный, радостный	ευχάριστος	सुखद	հաճելի
+889	于是	so, thereupon	daraufhin	alors	entonces	وعندها	そこで	и тогда	κι έτσι	तब, इसलिए	ուստի
+890	与	and, with (written)	und, mit	et, avec	y, con	و، مع	〜と	и, с	και, με	और, के साथ	և, հետ
+891	语法	grammar	Grammatik	grammaire	gramática	قواعد اللغة	文法	грамматика	γραμματική	व्याकरण	քերականություն
+892	羽毛球	badminton	Badminton	badminton	bádminton	الريشة الطائرة	バドミントン	бадминтон	μπάντμιντον	बैडमिंटन	բադմինտոն
+893	预习	to prepare a lesson (in advance)	(Lektion) vorbereiten	préparer (une leçon)	preparar (la lección)	يحضّر الدرس	予習する	готовиться к уроку	προετοιμάζω το μάθημα	पाठ पहले से पढ़ना	դասը նախապատրաստել
+894	圆	round; circle	rund; Kreis	rond; cercle	redondo; círculo	مستدير؛ دائرة	丸い；円	круглый; круг	στρογγυλός; κύκλος	गोल; वृत्त	կլոր; շրջան
+895	原来	so it turns out; original	ach so, eigentlich; ursprünglich	en fait; d'origine	resulta que; original	اتضح أن؛ أصلي	なんだ〜だったのか；もとの	оказывается; первоначальный	τελικά (αποδεικνύεται); αρχικός	तो यह बात है; मूल	պարզվում է; սկզբնական
+896	原谅	to forgive	verzeihen	pardonner	perdonar	يسامح	許す	прощать	συγχωρώ	माफ़ करना	ներել
+897	约会	date, appointment	Verabredung	rendez-vous	cita	موعد	デート、約束	свидание, встреча	ραντεβού	मुलाक़ात, डेट	ժամադրություն
+898	阅读	to read; reading	lesen; Lektüre	lire; lecture	leer; lectura	يقرأ؛ قراءة	読む；読解	читать; чтение	διαβάζω; ανάγνωση	पढ़ना; पठन	կարդալ; ընթերցանություն
+899	允许	to allow	erlauben	permettre	permitir	يسمح	許可する	разрешать	επιτρέπω	अनुमति देना	թույլ տալ
+900	杂志	magazine	Zeitschrift	magazine	revista	مجلة	雑誌	журнал	περιοδικό	पत्रिका	ամսագիր
+901	咱们	we (including you)	wir (mit dir)	nous (toi et moi)	nosotros (incluido tú)	نحن (أنا وأنت)	私たち（相手を含む）	мы (с тобой)	εμείς (μαζί σου)	हम (आप सहित)	մենք (դու էլ)
+902	暂时	temporarily	vorübergehend	temporairement	temporalmente	مؤقتاً	しばらく、一時的に	временно	προσωρινά	फ़िलहाल	ժամանակավորապես
+903	责任	responsibility	Verantwortung	responsabilité	responsabilidad	مسؤولية	責任	ответственность	ευθύνη	ज़िम्मेदारी	պատասխանատվություն
+904	增加	to increase	erhöhen	augmenter	aumentar	يزيد	増える、増やす	увеличивать	αυξάνω	बढ़ाना	ավելացնել
+905	增长	to grow	wachsen	croître	crecer	ينمو	増加する	расти	αυξάνομαι	बढ़ना	աճել
+906	窄	narrow	eng	étroit	estrecho	ضيّق	狭い	узкий	στενός	सँकरा	նեղ
+907	招聘	to recruit (staff)	einstellen, ausschreiben	recruter	contratar, convocar	يوظّف	募集する	набирать (персонал)	προσλαμβάνω	भर्ती करना	աշխատանքի ընդունել
+908	真正	real, genuine	echt	véritable	verdadero	حقيقي	本当の	настоящий	αληθινός	असली	իսկական
+909	整理	to tidy up, to sort out	ordnen	ranger, organiser	ordenar	ينظّم	整理する	приводить в порядок	τακτοποιώ	व्यवस्थित करना	կարգավորել
+910	整齐	neat, tidy	ordentlich	bien rangé	ordenado	مرتّب	きちんとした	аккуратный	τακτοποιημένος	सुव्यवस्थित	կոկիկ
+911	正常	normal	normal	normal	normal	طبيعي	正常な	нормальный	φυσιολογικός	सामान्य	նորմալ
+912	正好	just right; happen to	genau richtig; zufällig	juste; justement	justo; precisamente	تماماً؛ صادف	ちょうど	как раз	ακριβώς, τυχαίνει	बिल्कुल ठीक; संयोग से	հենց; պատահաբար
+913	正确	correct	richtig	correct	correcto	صحيح	正しい	правильный	σωστός	सही	ճիշտ
+914	正式	formal, official	offiziell	officiel	formal, oficial	رسمي	正式な	официальный	επίσημος	औपचारिक	պաշտոնական
+915	证明	to prove; certificate	beweisen; Nachweis	prouver; certificat	demostrar; certificado	يثبت؛ شهادة	証明する；証明書	доказывать; справка	αποδεικνύω; πιστοποιητικό	साबित करना; प्रमाण पत्र	ապացուցել; տեղեկանք
+916	之	of (written)	von (schriftsprachlich)	de (écrit)	de (escrito)	من (فصحى)	〜の（文語）	(книжн.) …а, …ого	(λόγιο) του	का (साहित्यिक)	(գրական) -ի
+917	支持	to support	unterstützen	soutenir	apoyar	يدعم	支持する	поддерживать	υποστηρίζω	समर्थन करना	աջակցել
+918	知识	knowledge	Wissen	connaissance	conocimiento	معرفة	知識	знания	γνώση	ज्ञान	գիտելիք
+919	直接	direct, directly	direkt	direct	directo	مباشر	直接	прямой, прямо	άμεσος, απευθείας	सीधा	ուղղակի
+920	值得	to be worth it	sich lohnen	valoir la peine	valer la pena	يستحق	〜する価値がある	стоить того	αξίζει	लायक होना	արժե
+921	职业	occupation, profession	Beruf	profession	profesión	مهنة	職業	профессия	επάγγελμα	पेशा	մասնագիտություն
+922	植物	plant	Pflanze	plante	planta	نبات	植物	растение	φυτό	पौधा	բույս
+923	指	to point at; finger	zeigen; Finger	montrer du doigt; doigt	señalar; dedo	يشير؛ إصبع	指す；指	указывать; палец	δείχνω; δάχτυλο	इशारा करना; उँगली	ցույց տալ; մատ
+924	只好	to have no choice but to	nichts anderes übrig haben, als	être obligé de	no tener más remedio que	لا خيار سوى	〜するしかない	придётся	αναγκάζομαι	मजबूरी में	ստիպված
+925	只要	as long as	solange	pourvu que	siempre que	طالما	〜さえすれば	лишь бы, если только	αρκεί να	बशर्ते	միայն թե
+926	制造	to manufacture	herstellen	fabriquer	fabricar	يصنع	製造する	производить	κατασκευάζω	बनाना, निर्माण करना	արտադրել
+927	至少	at least	mindestens	au moins	al menos	على الأقل	少なくとも	по крайней мере	τουλάχιστον	कम से कम	առնվազն
+928	质量	quality	Qualität	qualité	calidad	جودة	品質	качество	ποιότητα	गुणवत्ता	որակ
+929	中文	Chinese (language)	Chinesisch	chinois	chino	اللغة الصينية	中国語	китайский язык	κινέζικα	चीनी भाषा	չինարեն
+930	重点	key point, focus	Schwerpunkt	point essentiel	punto clave	نقطة رئيسية	重点	главное, акцент	κύριο σημείο	मुख्य बिंदु	կարևոր կետ
+931	重视	to attach importance to	Wert legen auf	accorder de l'importance à	dar importancia a	يولي أهمية	重視する	придавать значение	δίνω σημασία	महत्व देना	կարևորել
+932	周围	surroundings, around	Umgebung, ringsum	alentours, autour	alrededor	المحيط، حول	周り	вокруг	γύρω	आसपास	շրջակայք, շուրջը
+933	猪	pig	Schwein	cochon	cerdo	خنزير	豚	свинья	γουρούνι	सूअर	խոզ
+934	逐渐	gradually	allmählich	progressivement	gradualmente	تدريجياً	だんだん	постепенно	σταδιακά	धीरे-धीरे	աստիճանաբար
+935	主动	on one's own initiative	aus eigener Initiative	de sa propre initiative	por iniciativa propia	بمبادرة ذاتية	自ら進んで	по своей инициативе	με δική μου πρωτοβουλία	अपनी पहल से	սեփական նախաձեռնությամբ
+936	祝贺	to congratulate	gratulieren	féliciter	felicitar	يهنّئ	祝う	поздравлять	συγχαίρω	बधाई देना	շնորհավորել
+937	著名	famous	berühmt	célèbre	famoso	مشهور	有名な	знаменитый	διάσημος	प्रसिद्ध	հայտնի
+938	专门	specially; specialised	extra; speziell	spécialement; spécialisé	especialmente; especializado	خصيصاً؛ متخصص	わざわざ；専門の	специально; специальный	ειδικά; εξειδικευμένος	ख़ास तौर पर; विशेष	հատուկ
+939	专业	major (field of study); professional	Fachrichtung; professionell	spécialité; professionnel	carrera, especialidad; profesional	تخصص؛ احترافي	専攻；プロの	специальность; профессиональный	ειδικότητα; επαγγελματικός	विषय, विशेषज्ञता; पेशेवर	մասնագիտություն; պրոֆեսիոնալ
+940	赚	to earn (money)	verdienen	gagner (de l'argent)	ganar (dinero)	يكسب	稼ぐ	зарабатывать	κερδίζω	कमाना	վաստակել
+941	撞	to bump into, to crash	zusammenstoßen	heurter	chocar	يصطدم	ぶつかる	врезаться	συγκρούομαι	टकराना	բախվել
+942	准确	accurate	genau	exact, précis	exacto	دقيق	正確な	точный	ακριβής	सटीक	ճշգրիտ
+943	准时	on time, punctual	pünktlich	ponctuel	puntual	في الموعد	時間通りに	вовремя	στην ώρα	समय पर	ճշտապահ
+944	仔细	careful, thorough	sorgfältig	soigneux, attentif	cuidadoso	دقيق، متأنٍّ	注意深い	внимательный, тщательный	προσεκτικός	ध्यान से	ուշադիր, մանրակրկիտ
+945	自然	nature; natural; naturally	Natur; natürlich	nature; naturel	naturaleza; natural	طبيعة؛ طبيعي	自然；自然な	природа; естественный	φύση; φυσικός	प्रकृति; स्वाभाविक	բնություն; բնական
+946	总结	to sum up; summary	zusammenfassen; Fazit	résumer; bilan	resumir; resumen	يلخّص؛ ملخّص	まとめる；総括	подводить итоги; итог	συνοψίζω; σύνοψη	सारांश करना; सारांश	ամփոփել; ամփոփում
+947	租	to rent	mieten	louer	alquilar	يستأجر	借りる（賃貸）	арендовать	νοικιάζω	किराए पर लेना	վարձել
+948	组成	to form, to make up	bilden	former, composer	formar, componer	يشكّل	構成する	составлять	αποτελώ, σχηματίζω	बनाना, गठित करना	կազմել
+949	组织	to organise; organisation	organisieren; Organisation	organiser; organisation	organizar; organización	ينظّم؛ منظمة	組織する；組織	организовывать; организация	οργανώνω; οργανισμός	संगठित करना; संगठन	կազմակերպել; կազմակերպություն
+950	最好	best; had better	am besten; besser (sollte)	le mieux; il vaut mieux	lo mejor; mejor que	الأفضل	一番いい；〜したほうがいい	лучше всего	καλύτερα να	सबसे अच्छा; बेहतर है	լավագույնը; ավելի լավ է
+951	最后	last, finally	zuletzt, schließlich	dernier, finalement	último, al final	الأخير، أخيراً	最後；最後に	последний, в конце	τελευταίος, στο τέλος	आख़िरी; आख़िर में	վերջին; վերջում
+952	尊重	to respect	respektieren	respecter	respetar	يحترم	尊重する	уважать	σέβομαι	सम्मान करना	հարգել
+953	做生意	to do business	Geschäfte machen	faire des affaires	hacer negocios	يمارس التجارة	商売をする	заниматься бизнесом	κάνω δουλειές (εμπόριο)	व्यापार करना	բիզնեսով զբաղվել
+954	座	(measure word for buildings, mountains)	(Zählwort für Gebäude, Berge)	(classificateur : bâtiments, montagnes)	(clasificador: edificios, montañas)	(مميّز للمباني والجبال)	〜棟、〜座（建物・山）	(счётное слово для зданий, гор)	(αριθμητικό για κτίρια, βουνά)	(इमारतों, पहाड़ों का परिमाणवाचक)	(շենքերի, լեռների հաշվիչ բառ)
+955	座位	seat	Sitzplatz	place assise	asiento	مقعد	座席	место (сидячее)	θέση	सीट	նստատեղ
+956	作者	author	Autor	auteur	autor	مؤلف	作者	автор	συγγραφέας	लेखक	հեղինակ
