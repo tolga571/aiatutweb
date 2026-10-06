@@ -622,6 +622,50 @@ class Database {
                 error_log('languages_rev_3 failed (will retry next request): ' . $e->getMessage());
             }
         }
+        // HSK cards users added before 2026-10-06 carry the old English gloss,
+        // often a dictionary's first sense (对不起 "unworthy"), whatever the
+        // user's language. Cards still showing exactly that gloss get today's
+        // meaning in the user's language; cards the user edited are left alone. One set-based
+        // UPDATE (via a temp table) rather than a query per word, since this
+        // runs on a request. All or nothing, never fatal.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'vocab_hsk_rev_1'")->fetchColumn()) {
+            $this->pdo->beginTransaction();
+            try {
+                $oldEn = json_decode((string)@file_get_contents(__DIR__ . '/../data/vocab/hsk_old_en.json'), true) ?: [];
+                $rows = [];
+                foreach (json_decode((string)@file_get_contents(__DIR__ . '/../data/vocab/zh.json'), true) ?: [] as $c) {
+                    if (($c['category'] ?? '') === 'HSK') {
+                        // hsk_old_en.json lists only the glosses that changed;
+                        // for the rest the old gloss is today's English one.
+                        $was = $oldEn[$c['word']] ?? $c['translations']['en'];
+                        foreach ($c['translations'] as $lang => $meaning) {
+                            $rows[] = [$c['word'], $was, $lang, $meaning];
+                        }
+                    }
+                }
+                if ($rows) {
+                    $this->pdo->exec('CREATE TEMP TABLE hsk_fix (word TEXT, old_en TEXT, lang TEXT, meaning TEXT) ON COMMIT DROP');
+                    foreach (array_chunk($rows, 500) as $chunk) {
+                        $this->pdo->prepare('INSERT INTO hsk_fix VALUES ' . implode(', ', array_fill(0, count($chunk), '(?, ?, ?, ?)')))
+                            ->execute(array_merge(...$chunk));
+                    }
+                    $this->pdo->exec(
+                        "UPDATE vocabulary_words v SET translation = f.meaning, updated_at = CURRENT_TIMESTAMP
+                         FROM users u, hsk_fix f
+                         WHERE u.id = v.user_id AND v.language = 'zh' AND v.source = 'pack'
+                           AND f.word = v.word AND v.translation = f.old_en AND f.meaning <> f.old_en
+                           AND f.lang = CASE WHEN u.native_lang IN ('en','de','fr','es','ar','ja','ru','el','hi','hy') THEN u.native_lang ELSE 'en' END"
+                    );
+                }
+                $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('vocab_hsk_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('vocab_hsk_rev_1 failed (will retry next request): ' . $e->getMessage());
+            }
+        }
     }
 
     public function getPdo(): \PDO {
