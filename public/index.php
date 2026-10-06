@@ -995,6 +995,14 @@ switch ($page) {
         switch ((string)($cardIn['action'] ?? '')) {
             case 'create':
                 $r = $fc->createCard($auth->userId(), $fcDeckLang(), $fields);
+                // A new card goes into the list that's open, else "Saved".
+                if (!empty($r['card'])) {
+                    $cl = new \App\Src\CardLists($db);
+                    $into = (int)($cardIn['list_id'] ?? 0);
+                    $into = $into && $cl->get($auth->userId(), $into) ? $into : $cl->defaultId($auth->userId(), $fcDeckLang());
+                    $cl->add($auth->userId(), $into, [(int)$r['card']['id']]);
+                    $r['card'] = $fc->getCard($auth->userId(), (int)$r['card']['id']);
+                }
                 break;
             case 'update':
                 $r = $fc->updateCard($auth->userId(), $cardId, $fields);
@@ -1017,6 +1025,52 @@ switch ($page) {
             $key = 'fc.err_' . $r['error'];
             $msg = __($key);
             echo json_encode(['success' => false, 'error' => $r['error'], 'message' => $msg === $key ? __('fc.err_generic') : $msg] + array_intersect_key($r, ['existing_id' => 1]));
+        } else {
+            echo json_encode(['success' => true] + $r);
+        }
+        exit;
+
+    case 'card-list':
+        // Card lists (playlists): create / rename / delete a list, put cards
+        // in (optionally moving them out of another list) or take them out.
+        // JSON in and out, CSRF-checked, never a 5xx.
+        $requirePlan();
+        header('Content-Type: application/json');
+        $listIn = json_decode(file_get_contents('php://input'), true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($listIn) || !csrf_verify($listIn['csrf_token'] ?? null)) {
+            echo json_encode(['success' => false, 'error' => 'invalid_request', 'message' => __('fc.err_generic')]);
+            exit;
+        }
+        $cl = new \App\Src\CardLists($db);
+        $listId = (int)($listIn['id'] ?? 0);
+        $vocabIds = is_array($listIn['cards'] ?? null) ? $listIn['cards'] : [];
+        switch ((string)($listIn['action'] ?? '')) {
+            case 'create':
+                $r = $cl->create($auth->userId(), $fcDeckLang(), (string)($listIn['name'] ?? ''));
+                if (!empty($r['list']) && $vocabIds) {
+                    $cl->add($auth->userId(), $r['list']['id'], $vocabIds, (int)($listIn['from'] ?? 0));
+                    $r['list'] = $cl->get($auth->userId(), $r['list']['id']);
+                }
+                break;
+            case 'rename':
+                $r = $cl->rename($auth->userId(), $listId, (string)($listIn['name'] ?? ''));
+                break;
+            case 'delete':
+                $r = $cl->delete($auth->userId(), $listId);
+                break;
+            case 'add':
+                $r = $cl->add($auth->userId(), $listId, $vocabIds, (int)($listIn['from'] ?? 0));
+                break;
+            case 'remove':
+                $r = $cl->remove($auth->userId(), $listId, $vocabIds);
+                break;
+            default:
+                $r = ['error' => 'invalid_request'];
+        }
+        if (!empty($r['error'])) {
+            $key = 'fc.err_' . $r['error'];
+            $msg = __($key);
+            echo json_encode(['success' => false, 'error' => $r['error'], 'message' => $msg === $key ? __('fc.err_generic') : $msg]);
         } else {
             echo json_encode(['success' => true] + $r);
         }

@@ -107,10 +107,13 @@ class Flashcard {
     /** Word-list views: everything, starred, known, the user's own cards, saved from chat. */
     public const VIEWS = ['all', 'favorites', 'learned', 'mine', 'chat'];
 
+    /** Comma-separated ids of the lists a card (vw) is in, e.g. "3,7" — '' for none. */
+    private const LIST_IDS_SQL = "COALESCE((SELECT string_agg(cli2.list_id::text, ',' ORDER BY cli2.list_id) FROM card_list_items cli2 WHERE cli2.vocab_id = vw.id), '') AS list_ids";
+
     /**
      * Get cards with optional view/category/level/search filters.
      */
-    public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60, ?string $level = null, string $view = 'all', int $offset = 0): array {
+    public function getAllCards(int $userId, string $lang, ?string $category = null, ?string $search = null, int $limit = 60, ?string $level = null, string $view = 'all', int $offset = 0, int $listId = 0): array {
         // Cards actually due for spaced-repetition review are sorted to the
         // front so the deck reflects what the user should practice today,
         // not just alphabetical/category order.
@@ -119,12 +122,20 @@ class Flashcard {
                     uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
                     uf.correct_count, uf.incorrect_count, uf.id as flashcard_id, uf.learned_at,
                     CASE WHEN uf.next_review IS NOT NULL AND uf.next_review <= " . $this->db->now() . "
-                         AND COALESCE(uf.status, 'new') != 'new' AND uf.learned_at IS NULL THEN 0 ELSE 1 END as due_priority
+                         AND COALESCE(uf.status, 'new') != 'new' AND uf.learned_at IS NULL THEN 0 ELSE 1 END as due_priority,
+                    " . self::LIST_IDS_SQL . "
                 FROM vocabulary_words vw
-                LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
-                WHERE vw.user_id = ? AND vw.language = ?";
-        $params = [$userId, $lang];
-        $order = 'due_priority ASC, vw.category ASC, vw.id ASC';
+                LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id";
+        $params = [];
+        // One list (see CardLists): its cards in the order they were added.
+        if ($listId > 0) {
+            $sql .= ' JOIN card_list_items cli ON cli.vocab_id = vw.id AND cli.list_id = ?';
+            $params[] = $listId;
+        }
+        $sql .= ' WHERE vw.user_id = ? AND vw.language = ?';
+        $params[] = $userId;
+        $params[] = $lang;
+        $order = $listId > 0 ? 'cli.added_at ASC, vw.id ASC' : 'due_priority ASC, vw.category ASC, vw.id ASC';
 
         switch ($view) {
             case 'favorites':
@@ -171,7 +182,8 @@ class Flashcard {
         $row = $this->db->fetchOne(
             "SELECT vw.*, COALESCE(uf.status, 'new') as review_status,
                     uf.ease_factor, uf.interval, uf.repetitions, uf.next_review,
-                    uf.correct_count, uf.incorrect_count, uf.id as flashcard_id, uf.learned_at
+                    uf.correct_count, uf.incorrect_count, uf.id as flashcard_id, uf.learned_at,
+                    " . self::LIST_IDS_SQL . "
              FROM vocabulary_words vw
              LEFT JOIN user_flashcards uf ON uf.vocab_id = vw.id AND uf.user_id = vw.user_id
              WHERE vw.id = ? AND vw.user_id = ?",

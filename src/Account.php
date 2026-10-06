@@ -25,6 +25,12 @@ class Account
             ),
             'vocabulary_words' => $db->fetchAll('SELECT * FROM vocabulary_words WHERE user_id = ?', [$userId]),
             'flashcards' => $db->fetchAll('SELECT * FROM user_flashcards WHERE user_id = ?', [$userId]),
+            'card_lists' => $db->fetchAll(
+                "SELECT l.id, l.language, l.name, l.is_default, l.created_at,
+                        COALESCE((SELECT string_agg(i.vocab_id::text, ',' ORDER BY i.added_at) FROM card_list_items i WHERE i.list_id = l.id), '') AS vocab_ids
+                 FROM card_lists l WHERE l.user_id = ? ORDER BY l.language, l.is_default DESC, l.id",
+                [$userId]
+            ),
             'alphabet_progress' => $db->fetchAll('SELECT * FROM alphabet_progress WHERE user_id = ?', [$userId]),
             'mistakes' => $db->fetchAll(
                 'SELECT language, original, corrected, rule, sentence, practice_count, correct_count, learned_at, created_at FROM user_mistakes WHERE user_id = ? ORDER BY created_at',

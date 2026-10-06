@@ -195,6 +195,28 @@ class Database {
             seeded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (user_id, language)
         )");
+        // Card lists, like playlists (see CardLists): per language, one
+        // default "Saved" list (name '' — the label is translated) plus the
+        // user's own. A card can sit in several lists; review progress stays
+        // on the card (user_flashcards), so it counts in every list.
+        $this->exec("CREATE TABLE IF NOT EXISTS card_lists (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            language TEXT NOT NULL,
+            name TEXT NOT NULL DEFAULT '',
+            is_default BOOLEAN NOT NULL DEFAULT FALSE,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_card_lists_user ON card_lists (user_id, language)");
+        $this->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_card_lists_default ON card_lists (user_id, language) WHERE is_default");
+        $this->exec("CREATE TABLE IF NOT EXISTS card_list_items (
+            list_id INTEGER NOT NULL REFERENCES card_lists(id) ON DELETE CASCADE,
+            vocab_id INTEGER NOT NULL REFERENCES vocabulary_words(id) ON DELETE CASCADE,
+            added_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (list_id, vocab_id)
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_card_list_items_vocab ON card_list_items (vocab_id)");
         // "My mistakes" notebook: one row per chat correction, copied out of
         // messages.metadata by Mistakes::sync(). (message_id, position) keeps
         // a re-sync from duplicating rows; deleting the conversation (or the

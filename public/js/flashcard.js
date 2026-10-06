@@ -140,7 +140,7 @@
       if (!editing) data.is_favorite = form.elements.is_favorite.checked;
       const submit = form.querySelector('[type=submit]');
       submit.disabled = true;
-      cardAction(editing ? 'update' : 'create', editing ? { id: editing.id, card: data } : { card: data })
+      cardAction(editing ? 'update' : 'create', editing ? { id: editing.id, card: data } : { card: data, list_id: cfg.listId || 0 })
         .then(function (res) {
           submit.disabled = false;
           if (!res.success) {
@@ -154,6 +154,7 @@
             cards[editingIdx] = res.card;
           } else {
             cards.unshift(res.card);
+            listIdsOf(res.card).forEach(function (id) { bumpList(id, 1); });
           }
           rerender();
         });
@@ -233,6 +234,7 @@
   };
 
   window.flipCardGrid = function (idx) {
+    if (selecting) { toggleSelect(idx); return; }
     const cardInner = document.getElementById('fc-inner-' + idx);
     if (cardInner) cardInner.classList.toggle('is-flipped');
   };
@@ -367,6 +369,7 @@
                 <span class="flex-1 text-[10px] text-outline flex items-center justify-center gap-1 opacity-70 pointer-events-none">
                   <span class="material-symbols-outlined text-[14px]">touch_app</span>${escHtml(L.tapToFlip)}
                 </span>
+                <button onclick="fcSaveTo(${i}, event)" class="fc-icon-btn" title="${escAttr(L.saveTo)}" aria-label="${escAttr(L.saveTo)}"><span class="material-symbols-outlined text-[18px]">playlist_add</span></button>
                 <button onclick="fcEdit(${i}, event)" class="fc-icon-btn" title="${escAttr(L.edit)}" aria-label="${escAttr(L.edit)}"><span class="material-symbols-outlined text-[18px]">edit</span></button>
               </div>
             </div>
@@ -395,6 +398,7 @@
       `;
       cardsGrid.insertAdjacentHTML('beforeend', html);
       renderCardItemVisuals(i);
+      if (selected.has(c.id)) document.getElementById('grid-card-' + i).classList.add('is-selected');
     });
   }
 
@@ -500,5 +504,510 @@
     applyFilters(searchInput ? searchInput.value.toLowerCase() : '', getActiveCategory());
   }
 
+  // ── Card lists (playlists) ─────────────────────────────────────────
+  // cfg.lists: [{id, label, name, is_default, cards, learned}], default first.
+  let lists = cfg.lists || [];
+  const selected = new Set(); // card ids
+  let selecting = false;
+
+  function fmt(s, vars) {
+    return String(s || '').replace(/\{(\w+)\}/g, function (m, k) { return k in vars ? vars[k] : m; });
+  }
+  function listIdsOf(c) {
+    return String(c.list_ids || '').split(',').filter(Boolean).map(Number);
+  }
+  function setListIds(c, ids) { c.list_ids = ids.join(','); }
+  function listById(id) { return lists.find(function (l) { return l.id === id; }); }
+  function bumpList(id, by) { var l = listById(id); if (l) { l.cards = Math.max(0, l.cards + by); renderListNav(); } }
+
+  function listCall(action, payload) {
+    return fetch('?page=card-list', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ action: action, csrf_token: cfg.csrf || '' }, payload)),
+    })
+      .then(function (r) { return r.json(); })
+      .catch(function () { return { success: false, message: L.errGeneric }; });
+  }
+
+  // Sidebar list links and the phone chips, kept in step with `lists`.
+  function renderListNav() {
+    var nav = document.getElementById('fc-list-nav');
+    var icon = function (l) { return l.is_default ? 'bookmark' : 'playlist_play'; };
+    if (nav) {
+      nav.innerHTML = lists.map(function (l) {
+        var on = l.id === cfg.listId;
+        return '<a href="?page=flashcards&amp;list=' + l.id + '" class="fc-view' + (on ? ' is-active" aria-current="page"' : '"') + '>' +
+          '<span class="material-symbols-outlined text-[18px]">' + icon(l) + '</span>' +
+          '<span class="flex-1 truncate">' + escHtml(l.label) + '</span><span class="fc-view-n">' + l.cards + '</span></a>';
+      }).join('');
+    }
+    var chips = document.querySelector('.fc-list-chips');
+    if (chips) {
+      var add = chips.querySelector('[data-new-list]');
+      chips.querySelectorAll('a').forEach(function (a) { a.remove(); });
+      lists.forEach(function (l) {
+        var on = l.id === cfg.listId;
+        var a = document.createElement('a');
+        a.href = '?page=flashcards&list=' + l.id;
+        a.className = 'fc-chip' + (on ? ' is-active' : '');
+        if (on) a.setAttribute('aria-current', 'page');
+        a.innerHTML = '<span class="material-symbols-outlined text-[15px]">' + icon(l) + '</span>' + escHtml(l.label) + '<span class="fc-view-n">' + l.cards + '</span>';
+        chips.insertBefore(a, add);
+      });
+    }
+  }
+
+  function openDialog(d) { if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', ''); }
+  function closeDialog(d) { if (typeof d.close === 'function') d.close(); else d.removeAttribute('open'); }
+  document.querySelectorAll('#fc-save-modal, #fc-list-modal').forEach(function (d) {
+    d.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeDialog(d); }); });
+    d.addEventListener('click', function (e) { if (e.target === d) closeDialog(d); });
+  });
+
+  // Cards leaving the open list disappear from it.
+  function dropIds(ids) {
+    var gone = new Set(ids);
+    cards = cards.filter(function (c) { return !gone.has(c.id); });
+    ids.forEach(function (id) { selected.delete(id); });
+    rerender();
+    updateSelbar();
+  }
+
+  // ── "Save to…" ──
+  const saveModal = document.getElementById('fc-save-modal');
+  let saveFor = null; // {single: card} or {ids: [...]}
+
+  function renderSaveRows() {
+    var box = document.getElementById('fc-save-list');
+    if (!box || !saveFor) return;
+    box.innerHTML = '';
+    lists.forEach(function (l) {
+      var row = document.createElement('div');
+      row.className = 'fc-save-row';
+      if (saveFor.single) {
+        var inIt = listIdsOf(saveFor.single).indexOf(l.id) >= 0;
+        row.innerHTML = '<input type="checkbox" id="fc-save-' + l.id + '"' + (inIt ? ' checked' : '') + '>' +
+          '<label class="fc-save-name" for="fc-save-' + l.id + '">' + escHtml(l.label) + '</label><span class="fc-view-n">' + l.cards + '</span>';
+        row.querySelector('input').addEventListener('change', function (e) { toggleCardIn(l, e.target); });
+      } else {
+        var canMove = cfg.listId && l.id !== cfg.listId;
+        row.innerHTML = '<span class="material-symbols-outlined text-[18px] text-outline">' + (l.is_default ? 'bookmark' : 'playlist_play') + '</span>' +
+          '<span class="fc-save-name">' + escHtml(l.label) + '</span><span class="fc-view-n">' + l.cards + '</span>' +
+          (l.id !== cfg.listId ? '<button type="button" class="fc-ghost-btn" data-act="add">' + escHtml(L.listAdd) + '</button>' : '') +
+          (canMove ? '<button type="button" class="fc-new-btn" data-act="move">' + escHtml(L.listMove) + '</button>' : '');
+        row.querySelectorAll('[data-act]').forEach(function (b) {
+          b.addEventListener('click', function () { putSelected(l, b.dataset.act === 'move'); });
+        });
+      }
+      box.appendChild(row);
+    });
+  }
+
+  function openSaveTo(target) {
+    if (!saveModal) return;
+    saveFor = target;
+    document.getElementById('fc-save-sub').textContent = target.single
+      ? fmt(L.saveToOne, { word: target.single.word })
+      : fmt(L.saveToMany, { n: target.ids.length });
+    renderSaveRows();
+    document.getElementById('fc-save-new').reset();
+    openDialog(saveModal);
+  }
+
+  window.fcSaveTo = function (idx, event) {
+    if (event) event.stopPropagation();
+    openSaveTo({ single: cards[idx] });
+  };
+
+  function toggleCardIn(list, box) {
+    var c = saveFor.single;
+    var on = box.checked;
+    box.disabled = true;
+    listCall(on ? 'add' : 'remove', { id: list.id, cards: [c.id] }).then(function (res) {
+      box.disabled = false;
+      if (!res.success) { box.checked = !on; showToast(res.message || L.errGeneric, 'error'); return; }
+      var ids = listIdsOf(c).filter(function (x) { return x !== list.id; });
+      if (on) ids.push(list.id);
+      setListIds(c, ids);
+      list.cards = res.list ? res.list.cards : list.cards;
+      renderListNav();
+      renderSaveRows();
+      showToast(fmt(on ? L.listAdded : L.listRemoved, { name: list.label }), 'success');
+      if (!on && list.id === cfg.listId) { closeDialog(saveModal); dropIds([c.id]); }
+    });
+  }
+
+  function putSelected(list, move) {
+    var ids = saveFor.ids.slice();
+    listCall('add', { id: list.id, cards: ids, from: move ? cfg.listId : 0 }).then(function (res) {
+      if (!res.success) { showToast(res.message || L.errGeneric, 'error'); return; }
+      cards.forEach(function (c) {
+        if (ids.indexOf(c.id) < 0) return;
+        var cur = listIdsOf(c).filter(function (x) { return x !== list.id && !(move && x === cfg.listId); });
+        cur.push(list.id);
+        setListIds(c, cur);
+      });
+      list.cards = res.list ? res.list.cards : list.cards;
+      if (move) bumpList(cfg.listId, -ids.length);
+      renderListNav();
+      closeDialog(saveModal);
+      showToast(fmt(move ? L.listMoved : L.listAdded, { name: list.label }), 'success');
+      if (move) dropIds(ids);
+      exitSelect();
+    });
+  }
+
+  var saveNew = document.getElementById('fc-save-new');
+  if (saveNew) {
+    saveNew.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = saveNew.elements.name.value.trim();
+      if (!name || !saveFor) return;
+      var ids = saveFor.single ? [saveFor.single.id] : saveFor.ids.slice();
+      listCall('create', { name: name, cards: ids }).then(function (res) {
+        if (!res.success) { showToast(res.message || L.errGeneric, 'error'); return; }
+        var l = res.list;
+        l.label = l.name;
+        lists.push(l);
+        cards.forEach(function (c) {
+          if (ids.indexOf(c.id) >= 0) setListIds(c, listIdsOf(c).concat([l.id]));
+        });
+        renderListNav();
+        saveNew.reset();
+        showToast(fmt(L.listAdded, { name: l.label }), 'success');
+        if (saveFor.single) renderSaveRows(); else { closeDialog(saveModal); exitSelect(); }
+      });
+    });
+  }
+
+  // ── New list / rename / delete ──
+  const listModal = document.getElementById('fc-list-modal');
+  const listForm = document.getElementById('fc-list-form');
+  let renaming = false;
+  function openListForm(rename) {
+    if (!listModal) return;
+    renaming = rename;
+    listForm.reset();
+    document.getElementById('fc-list-modal-title').textContent = rename ? L.listRename : L.listNew;
+    if (rename) listForm.elements.name.value = (listById(cfg.listId) || {}).name || '';
+    document.getElementById('fc-list-error').classList.add('hidden');
+    openDialog(listModal);
+    setTimeout(function () { listForm.elements.name.focus(); }, 30);
+  }
+  document.querySelectorAll('[data-new-list]').forEach(function (b) {
+    b.addEventListener('click', function () { openListForm(false); });
+  });
+  var renameBtn = document.getElementById('btn-list-rename');
+  if (renameBtn) renameBtn.addEventListener('click', function () { openListForm(true); });
+  if (listForm) {
+    listForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = listForm.elements.name.value.trim();
+      var err = document.getElementById('fc-list-error');
+      listCall(renaming ? 'rename' : 'create', renaming ? { id: cfg.listId, name: name } : { name: name }).then(function (res) {
+        if (!res.success) { err.textContent = res.message || L.errGeneric; err.classList.remove('hidden'); return; }
+        if (renaming) {
+          var l = listById(cfg.listId);
+          if (l) { l.name = l.label = res.list.name; }
+          var h = document.getElementById('fc-list-name');
+          if (h) h.textContent = res.list.name;
+          cfg.studyName = res.list.name;
+          renderListNav();
+          closeDialog(listModal);
+          showToast(L.saved, 'success');
+        } else {
+          window.location.href = '?page=flashcards&list=' + res.list.id;
+        }
+      });
+    });
+  }
+  var deleteListBtn = document.getElementById('btn-list-delete');
+  if (deleteListBtn) {
+    deleteListBtn.addEventListener('click', function () {
+      if (!window.confirm(L.listDeleteConfirm)) return;
+      listCall('delete', { id: cfg.listId }).then(function (res) {
+        if (!res.success) { showToast(res.message || L.errGeneric, 'error'); return; }
+        window.location.href = '?page=flashcards';
+      });
+    });
+  }
+
+  // ── Selecting several cards ──
+  const selbar = document.getElementById('fc-selbar');
+  function visibleIdx() {
+    var out = [];
+    cards.forEach(function (c, i) {
+      var el = document.getElementById('grid-card-' + i);
+      if (!el || el.style.display !== 'none') out.push(i);
+    });
+    return out;
+  }
+  function updateSelbar() {
+    if (!selbar) return;
+    selbar.hidden = !selecting;
+    // Sit above the cookie banner while it's showing (it's fixed to the bottom too).
+    var cb = document.getElementById('cookie-banner');
+    var lift = cb && !cb.classList.contains('translate-y-full') ? cb.offsetHeight : 0;
+    selbar.style.bottom = lift ? (lift + 12) + 'px' : '';
+    document.getElementById('fc-selbar-n').textContent = fmt(L.selected, { n: selected.size });
+    ['fc-sel-save', 'fc-sel-remove'].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) b.disabled = selected.size === 0;
+    });
+  }
+  function toggleSelect(idx) {
+    var c = cards[idx];
+    if (selected.has(c.id)) selected.delete(c.id); else selected.add(c.id);
+    var el = document.getElementById('grid-card-' + idx);
+    if (el) el.classList.toggle('is-selected', selected.has(c.id));
+    updateSelbar();
+  }
+  function enterSelect() {
+    selecting = true;
+    if (cardsGrid) cardsGrid.classList.add('is-selecting');
+    updateSelbar();
+  }
+  function exitSelect() {
+    selecting = false;
+    selected.clear();
+    if (cardsGrid) {
+      cardsGrid.classList.remove('is-selecting');
+      cardsGrid.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    }
+    updateSelbar();
+  }
+  var selectBtn = document.getElementById('btn-select');
+  if (selectBtn) selectBtn.addEventListener('click', function () { if (selecting) exitSelect(); else enterSelect(); });
+  var selDone = document.getElementById('fc-sel-done');
+  if (selDone) selDone.addEventListener('click', exitSelect);
+  var selAll = document.getElementById('fc-sel-all');
+  if (selAll) {
+    selAll.addEventListener('click', function () {
+      visibleIdx().forEach(function (i) {
+        selected.add(cards[i].id);
+        var el = document.getElementById('grid-card-' + i);
+        if (el) el.classList.add('is-selected');
+      });
+      updateSelbar();
+    });
+  }
+  var selSave = document.getElementById('fc-sel-save');
+  if (selSave) selSave.addEventListener('click', function () { if (selected.size) openSaveTo({ ids: Array.from(selected) }); });
+  var selRemove = document.getElementById('fc-sel-remove');
+  if (selRemove) {
+    selRemove.addEventListener('click', function () {
+      var ids = Array.from(selected);
+      if (!ids.length) return;
+      listCall('remove', { id: cfg.listId, cards: ids }).then(function (res) {
+        if (!res.success) { showToast(res.message || L.errGeneric, 'error'); return; }
+        var l = listById(cfg.listId);
+        if (l && res.list) { l.cards = res.list.cards; renderListNav(); }
+        showToast(fmt(L.listRemoved, { name: l ? l.label : '' }), 'success');
+        dropIds(ids);
+        exitSelect();
+      });
+    });
+  }
+
+  // ── Study mode: one card at a time; swipe for the next, tap to flip ──
+  // Passing a card without flipping it counts as "knew it" (Good), flipping
+  // it as "didn't know" (Again) — once per card per round, through the same
+  // SM-2 review as the grid buttons.
+  const study = document.getElementById('fc-study');
+  const sCard = document.getElementById('fc-study-card');
+  const S = { base: [], order: [], pos: 0, flippedNow: false, graded: {}, knew: 0, missed: [], shuffle: false };
+
+  function shuffled(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  function startStudy(idxs) {
+    if (!study) return;
+    if (!idxs.length) { showToast(L.studyEmpty, 'error'); return; }
+    S.base = idxs.slice();
+    S.order = S.shuffle ? shuffled(idxs) : idxs.slice();
+    S.pos = 0; S.graded = {}; S.knew = 0; S.missed = [];
+    document.getElementById('fc-study-name').textContent = cfg.studyName || '';
+    document.getElementById('fc-study-done').hidden = true;
+    document.getElementById('fc-study-play').style.display = '';
+    study.hidden = false;
+    document.body.style.overflow = 'hidden';
+    renderStudy();
+    document.getElementById('fc-study-flip').focus();
+  }
+
+  function renderStudy() {
+    var c = cards[S.order[S.pos]];
+    S.flippedNow = false;
+    sCard.classList.remove('is-flipped');
+    document.getElementById('fc-study-cat').textContent = catLabel(c.category);
+    document.getElementById('fc-study-word').textContent = c.word || '';
+    document.getElementById('fc-study-pron').textContent = c.pronunciation || '';
+    document.getElementById('fc-study-trans').textContent = c.translation || '';
+    document.getElementById('fc-study-ex').textContent = c.example || '';
+    document.getElementById('fc-study-ex-tr').textContent = c.example_translation || '';
+    document.getElementById('fc-study-note').textContent = c.note || '';
+    document.getElementById('fc-study-count').textContent = (S.pos + 1) + ' / ' + S.order.length;
+    document.getElementById('fc-study-fill').style.width = Math.round((S.pos / S.order.length) * 100) + '%';
+    document.getElementById('fc-study-prev').disabled = S.pos === 0;
+  }
+
+  function studyFlip() {
+    sCard.classList.toggle('is-flipped');
+    if (sCard.classList.contains('is-flipped')) S.flippedNow = true;
+  }
+
+  function gradeCurrent() {
+    var idx = S.order[S.pos];
+    var c = cards[idx];
+    if (!c || c.id in S.graded) return;
+    var knew = !S.flippedNow;
+    S.graded[c.id] = knew;
+    if (knew) S.knew++; else S.missed.push(idx);
+    fetch('?page=flashcard-review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vocab_id: c.id, quality: knew ? 2 : 0, csrf_token: cfg.csrf || '' }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.success) return;
+        c.review_status = data.status;
+        if (data.status === 'mastered' && !c.learned_at) c.learned_at = new Date().toISOString();
+        earnedXp += data.xp || 0;
+        var xpEl = document.getElementById('session-xp');
+        if (xpEl) xpEl.textContent = T.xpEarned.replace('%d', earnedXp);
+      })
+      .catch(function () {});
+  }
+
+  function slide(dir, then) {
+    // dir -1 = out to the left (next), 1 = out to the right (previous)
+    sCard.style.transition = 'transform .18s ease-in, opacity .18s';
+    sCard.style.transform = 'translateX(' + (dir * 120) + '%) rotate(' + (dir * 8) + 'deg)';
+    sCard.style.opacity = '0';
+    setTimeout(function () {
+      sCard.style.transition = 'none';
+      sCard.style.transform = '';
+      sCard.style.opacity = '';
+      then();
+    }, 180);
+  }
+
+  function studyNext() {
+    gradeCurrent();
+    if (S.pos + 1 >= S.order.length) { studyDone(); return; }
+    S.pos++;
+    renderStudy();
+  }
+  function studyPrev() {
+    if (S.pos === 0) return;
+    S.pos--;
+    renderStudy();
+  }
+
+  function studyDone() {
+    document.getElementById('fc-study-fill').style.width = '100%';
+    document.getElementById('fc-study-play').style.display = 'none';
+    document.getElementById('fc-study-done').hidden = false;
+    document.getElementById('fc-study-done-body').textContent = fmt(L.studyDone, { known: S.knew, total: S.order.length });
+    var again = document.getElementById('fc-study-flipped');
+    again.hidden = S.missed.length === 0;
+    again.textContent = fmt(L.studyFlipped, { n: S.missed.length });
+    (S.missed.length ? again : document.getElementById('fc-study-again')).focus();
+  }
+
+  function closeStudy() {
+    if (!study || study.hidden) return;
+    study.hidden = true;
+    document.body.style.overflow = '';
+    rerender();
+    var b = document.getElementById('btn-study');
+    if (b) b.focus();
+  }
+
+  if (study) {
+    document.getElementById('btn-study').addEventListener('click', function () {
+      var idxs = selecting && selected.size
+        ? cards.map(function (c, i) { return selected.has(c.id) ? i : -1; }).filter(function (i) { return i >= 0; })
+        : visibleIdx();
+      startStudy(idxs);
+    });
+    document.getElementById('fc-study-close').addEventListener('click', closeStudy);
+    document.getElementById('fc-study-exit').addEventListener('click', closeStudy);
+    document.getElementById('fc-study-again').addEventListener('click', function () { startStudy(S.base); });
+    document.getElementById('fc-study-flipped').addEventListener('click', function () { startStudy(S.missed.slice()); });
+    document.getElementById('fc-study-flip').addEventListener('click', studyFlip);
+    document.getElementById('fc-study-next').addEventListener('click', function () { slide(-1, studyNext); });
+    document.getElementById('fc-study-prev').addEventListener('click', function () { if (S.pos > 0) slide(1, studyPrev); });
+    var shuf = document.getElementById('fc-study-shuffle');
+    shuf.addEventListener('click', function () {
+      S.shuffle = !S.shuffle;
+      shuf.setAttribute('aria-pressed', S.shuffle ? 'true' : 'false');
+      shuf.classList.toggle('text-primary', S.shuffle);
+      // Re-order only what's still ahead in this round.
+      var ahead = S.order.slice(S.pos + 1);
+      ahead = S.shuffle ? shuffled(ahead) : ahead.sort(function (a, b) { return S.base.indexOf(a) - S.base.indexOf(b); });
+      S.order = S.order.slice(0, S.pos + 1).concat(ahead);
+    });
+    document.getElementById('fc-study-speak').addEventListener('click', function (e) {
+      e.stopPropagation();
+      var c = cards[S.order[S.pos]];
+      if (!c || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(c.word);
+      u.lang = cfg.speechLocale || 'en-US';
+      u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    });
+
+    // Swipe left = next, right = previous; a tap flips.
+    var drag = null;
+    sCard.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('button')) return;
+      drag = { x: e.clientX, y: e.clientY, dx: 0, moved: false, id: e.pointerId };
+    });
+    sCard.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag.dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(drag.dx) > 10 && Math.abs(drag.dx) > Math.abs(e.clientY - drag.y)) {
+        drag.moved = true;
+        sCard.classList.add('is-dragging');
+        try { sCard.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      if (drag.moved) sCard.style.transform = 'translateX(' + drag.dx + 'px) rotate(' + (drag.dx / 25) + 'deg)';
+    });
+    function endDrag(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag;
+      drag = null;
+      sCard.classList.remove('is-dragging');
+      if (!d.moved) { if (e.type === 'pointerup') studyFlip(); return; }
+      if (d.dx < -80) { slide(-1, studyNext); return; }
+      if (d.dx > 80 && S.pos > 0) { slide(1, studyPrev); return; }
+      sCard.style.transition = 'transform .2s';
+      sCard.style.transform = '';
+      setTimeout(function () { sCard.style.transition = ''; }, 200);
+    }
+    sCard.addEventListener('pointerup', endDrag);
+    sCard.addEventListener('pointercancel', endDrag);
+
+    document.addEventListener('keydown', function (e) {
+      if (study.hidden || !document.getElementById('fc-study-done').hidden && e.key !== 'Escape') return;
+      if (e.key === 'Escape') { e.preventDefault(); closeStudy(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); slide(-1, studyNext); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); if (S.pos > 0) slide(1, studyPrev); }
+      else if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        if (e.target.closest && e.target.closest('button') && e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+        e.preventDefault();
+        studyFlip();
+      }
+    });
+  }
+
   rerender();
+  updateSelbar();
 })();

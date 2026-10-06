@@ -19,7 +19,23 @@ $isRtlTarget = in_array($targetLang, $rtlLangs, true);
 $activeView = in_array($_GET['view'] ?? '', \App\Src\Flashcard::VIEWS, true) ? $_GET['view'] : 'all';
 $activeLevel = in_array($_GET['level'] ?? '', \App\Src\Flashcard::PACK_LEVELS, true) ? $_GET['level'] : 'all';
 $levelArg = $activeLevel === 'all' ? null : $activeLevel;
-$cards = $flashcard->getAllCards($currentUser['id'], $targetLang, null, null, $levelArg ? 1000 : 400, $levelArg, $activeView);
+// ?list= opens one of the user's card lists (playlists) instead of a view.
+$cardLists = new \App\Src\CardLists($db);
+$lists = $cardLists->all($currentUser['id'], $targetLang);
+$listLabel = fn(array $l): string => $l['is_default'] ? __('fc.list_saved') : $l['name'];
+$activeList = null;
+foreach ($lists as $l) {
+    if ($l['id'] === (int)($_GET['list'] ?? 0)) {
+        $activeList = $l;
+    }
+}
+if ($activeList) {
+    $activeView = 'list';
+    $activeLevel = 'all';
+    $cards = $flashcard->getAllCards($currentUser['id'], $targetLang, null, null, \App\Src\CardLists::MAX_ITEMS, null, 'all', 0, $activeList['id']);
+} else {
+    $cards = $flashcard->getAllCards($currentUser['id'], $targetLang, null, null, $levelArg ? 1000 : 400, $levelArg, $activeView);
+}
 $fcStats = $flashcard->getStats($currentUser['id'], $targetLang);
 $viewTabs = [
     'all' => ['label' => __('fc.view_all'), 'icon' => 'style', 'n' => $fcStats['total']],
@@ -52,7 +68,7 @@ $firstCard = $cards[0] ?? null;
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<link rel="stylesheet" href="css/flashcard.css?v=7">
+<link rel="stylesheet" href="css/flashcard.css?v=8">
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
@@ -115,7 +131,23 @@ $firstCard = $cards[0] ?? null;
         <?php endforeach; ?>
       </nav>
 
-      <?php if (count(array_filter($levelCounts)) > 1 || $activeLevel !== 'all'): ?>
+      <div>
+        <div class="fc-lists-head">
+          <span class="fc-lists-title"><?= __('fc.lists') ?></span>
+          <button type="button" class="fc-icon-btn" data-new-list title="<?= htmlspecialchars(__('fc.list_new')) ?>" aria-label="<?= htmlspecialchars(__('fc.list_new')) ?>"><span class="material-symbols-outlined text-[18px]">playlist_add</span></button>
+        </div>
+        <nav class="fc-views" id="fc-list-nav" aria-label="<?= htmlspecialchars(__('fc.lists')) ?>">
+          <?php foreach ($lists as $l): $isOn = $activeList && $activeList['id'] === $l['id']; ?>
+          <a href="?page=flashcards&amp;list=<?= $l['id'] ?>" class="fc-view <?= $isOn ? 'is-active' : '' ?>"<?= $isOn ? ' aria-current="page"' : '' ?>>
+            <span class="material-symbols-outlined text-[18px]"><?= $l['is_default'] ? 'bookmark' : 'playlist_play' ?></span>
+            <span class="flex-1 truncate"><?= htmlspecialchars($listLabel($l)) ?></span>
+            <span class="fc-view-n"><?= $l['cards'] ?></span>
+          </a>
+          <?php endforeach; ?>
+        </nav>
+      </div>
+
+      <?php if (!$activeList && (count(array_filter($levelCounts)) > 1 || $activeLevel !== 'all')): ?>
       <div class="flex flex-wrap gap-xs" id="level-filters" aria-label="CEFR">
         <a href="<?= $fcUrl(['level' => 'all']) ?>" class="level-chip <?= $activeLevel === 'all' ? 'is-active' : '' ?>"><?= __('fc.all') ?></a>
         <?php foreach (\App\Src\Flashcard::PACK_LEVELS as $lv): if (empty($levelCounts[$lv])) continue; ?>
@@ -165,7 +197,7 @@ $firstCard = $cards[0] ?? null;
       <!-- Header Area (Top Bar & Progress) -->
       <div class="w-full max-w-6xl flex flex-col gap-6 shrink-0 pt-2">
         <!-- Top Bar -->
-        <div class="flex items-center justify-between gap-md">
+        <div class="flex items-center justify-between gap-md flex-wrap">
           <div class="flex items-center gap-2 min-w-0">
             <button onclick="fcToggleSidebar()" class="lg:hidden shrink-0 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center p-1.5 rounded-full hover:bg-surface-container-high/50 border border-outline-variant/20" aria-label="<?= __('fc.word_list') ?>">
               <span class="material-symbols-outlined text-[18px]">list</span>
@@ -178,15 +210,40 @@ $firstCard = $cards[0] ?? null;
               <?php endforeach; ?>
             </select>
           </div>
-          <div class="flex items-center gap-3 shrink-0">
+          <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
             <span class="hidden sm:flex items-center gap-2 text-label-md text-primary font-bold">
               <span class="material-symbols-outlined text-[16px] text-yellow-500 animate-pulse">workspace_premium</span>
               <span id="session-xp"><?= sprintf(__('fc.xp_earned'), 0) ?></span>
             </span>
+            <button type="button" id="btn-select" class="fc-ghost-btn <?= count($cards) ? '' : 'hidden' ?>"><?= __('fc.select') ?></button>
+            <button type="button" id="btn-study" class="fc-study-btn" <?= count($cards) ? '' : 'disabled' ?>>
+              <span class="material-symbols-outlined text-[18px]">play_arrow</span><span><?= __('fc.study') ?></span>
+            </button>
             <button type="button" id="btn-new-card" class="fc-new-btn">
-              <span class="material-symbols-outlined text-[18px]">add</span><span><?= __('fc.new_card') ?></span>
+              <span class="material-symbols-outlined text-[18px]">add</span><span class="hidden sm:inline"><?= __('fc.new_card') ?></span>
             </button>
           </div>
+        </div>
+
+        <?php if ($activeList): ?>
+        <div class="fc-list-title">
+          <span class="material-symbols-outlined text-[20px] text-primary"><?= $activeList['is_default'] ? 'bookmark' : 'playlist_play' ?></span>
+          <h1 id="fc-list-name"><?= htmlspecialchars($listLabel($activeList)) ?></h1>
+          <?php if (!$activeList['is_default']): ?>
+          <button type="button" class="fc-icon-btn" id="btn-list-rename" title="<?= htmlspecialchars(__('fc.list_rename')) ?>" aria-label="<?= htmlspecialchars(__('fc.list_rename')) ?>"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+          <button type="button" class="fc-icon-btn" id="btn-list-delete" title="<?= htmlspecialchars(__('fc.list_delete')) ?>" aria-label="<?= htmlspecialchars(__('fc.list_delete')) ?>"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+          <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- Lists as chips on phones (the sidebar is a drawer there) -->
+        <div class="fc-list-chips lg:hidden" aria-label="<?= htmlspecialchars(__('fc.lists')) ?>">
+          <?php foreach ($lists as $l): $isOn = $activeList && $activeList['id'] === $l['id']; ?>
+          <a href="?page=flashcards&amp;list=<?= $l['id'] ?>" class="fc-chip <?= $isOn ? 'is-active' : '' ?>"<?= $isOn ? ' aria-current="page"' : '' ?>>
+            <span class="material-symbols-outlined text-[15px]"><?= $l['is_default'] ? 'bookmark' : 'playlist_play' ?></span><?= htmlspecialchars($listLabel($l)) ?><span class="fc-view-n"><?= $l['cards'] ?></span>
+          </a>
+          <?php endforeach; ?>
+          <button type="button" class="fc-chip" data-new-list><span class="material-symbols-outlined text-[15px]">add</span><?= __('fc.list_new') ?></button>
         </div>
 
         <!-- Progress Bar -->
@@ -216,6 +273,7 @@ $firstCard = $cards[0] ?? null;
             'learned' => __('fc.empty_learned'),
             'mine' => __('fc.empty_mine'),
             'chat' => __('fc.no_chat_cards'),
+            'list' => __('fc.list_empty'),
           ][$activeView] ?? null;
           ?>
           <?php if ($emptyText): ?>
@@ -284,6 +342,92 @@ $firstCard = $cards[0] ?? null;
   </form>
 </dialog>
 
+<!-- Selection bar: what to do with the selected cards -->
+<div id="fc-selbar" class="fc-selbar" hidden role="toolbar" aria-label="<?= htmlspecialchars(__('fc.select')) ?>">
+  <span id="fc-selbar-n" class="fc-selbar-n"></span>
+  <button type="button" class="fc-ghost-btn" id="fc-sel-all"><?= __('fc.select_all') ?></button>
+  <button type="button" class="fc-new-btn" id="fc-sel-save"><span class="material-symbols-outlined text-[18px]">playlist_add</span><?= __('fc.list_save_to') ?></button>
+  <?php if ($activeList): ?>
+  <button type="button" class="fc-danger-btn" id="fc-sel-remove"><span class="material-symbols-outlined text-[18px]">playlist_remove</span><?= __('fc.list_remove_selected') ?></button>
+  <?php endif; ?>
+  <button type="button" class="fc-ghost-btn" id="fc-sel-done"><?= __('fc.done') ?></button>
+</div>
+
+<!-- "Save to…": tick the lists a card belongs in (or, for a selection, add / move) -->
+<dialog id="fc-save-modal" class="fc-modal" aria-labelledby="fc-save-title">
+  <div class="flex items-center justify-between gap-2">
+    <h2 id="fc-save-title" class="text-base font-bold text-on-surface"><?= __('fc.list_save_to') ?></h2>
+    <button type="button" class="fc-icon-btn" data-close aria-label="<?= __('fc.cancel') ?>"><span class="material-symbols-outlined text-[20px]">close</span></button>
+  </div>
+  <p id="fc-save-sub" class="text-xs text-on-surface-variant mt-1"></p>
+  <div id="fc-save-list" class="fc-save-list"></div>
+  <form id="fc-save-new" class="fc-save-new" autocomplete="off">
+    <input name="name" maxlength="60" placeholder="<?= htmlspecialchars(__('fc.list_name')) ?>" aria-label="<?= htmlspecialchars(__('fc.list_name')) ?>">
+    <button type="submit" class="fc-new-btn"><span class="material-symbols-outlined text-[18px]">add</span><?= __('fc.list_new') ?></button>
+  </form>
+</dialog>
+
+<!-- New list / rename -->
+<dialog id="fc-list-modal" class="fc-modal" aria-labelledby="fc-list-modal-title">
+  <form id="fc-list-form" method="dialog" class="flex flex-col gap-3" autocomplete="off">
+    <h2 id="fc-list-modal-title" class="text-base font-bold text-on-surface"><?= __('fc.list_new') ?></h2>
+    <label class="fc-field"><span><?= __('fc.list_name') ?></span><input name="name" maxlength="60" required></label>
+    <p id="fc-list-error" class="text-xs text-red-400 hidden" role="alert"></p>
+    <div class="flex gap-2 justify-end">
+      <button type="button" class="fc-ghost-btn" data-close><?= __('fc.cancel') ?></button>
+      <button type="submit" class="fc-new-btn"><?= __('fc.save') ?></button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Study mode -->
+<div id="fc-study" class="fc-study" hidden role="dialog" aria-modal="true" aria-labelledby="fc-study-name">
+  <div class="fc-study-top">
+    <button type="button" class="fc-icon-btn" id="fc-study-close" aria-label="<?= htmlspecialchars(__('fc.study_close')) ?>"><span class="material-symbols-outlined">close</span></button>
+    <span id="fc-study-name" class="fc-study-name"></span>
+    <span id="fc-study-count" class="fc-study-count"></span>
+    <button type="button" class="fc-icon-btn" id="fc-study-shuffle" aria-pressed="false" title="<?= htmlspecialchars(__('fc.study_shuffle')) ?>" aria-label="<?= htmlspecialchars(__('fc.study_shuffle')) ?>"><span class="material-symbols-outlined">shuffle</span></button>
+  </div>
+  <div class="fc-study-track"><div id="fc-study-fill" class="fc-study-fill"></div></div>
+  <div id="fc-study-play" class="contents">
+    <div class="fc-study-stage">
+      <div id="fc-study-card" class="fc-study-card">
+        <div class="fc-study-inner">
+          <div class="fc-study-face fc-study-front">
+            <span id="fc-study-cat" class="fc-study-tag"></span>
+            <button type="button" class="fc-icon-btn fc-study-speak" id="fc-study-speak" aria-label="<?= htmlspecialchars(__('fc.audio_btn')) ?>"><span class="material-symbols-outlined">volume_up</span></button>
+            <div id="fc-study-word" class="fc-study-word" dir="<?= $isRtlTarget ? 'rtl' : 'auto' ?>"></div>
+            <div id="fc-study-pron" class="fc-study-pron"></div>
+          </div>
+          <div class="fc-study-face fc-study-back">
+            <span class="fc-study-tag"><?= __('fc.translation_label') ?></span>
+            <div id="fc-study-trans" class="fc-study-trans"></div>
+            <div id="fc-study-ex" class="fc-study-ex" dir="<?= $isRtlTarget ? 'rtl' : 'auto' ?>"></div>
+            <div id="fc-study-ex-tr" class="fc-study-ex-tr"></div>
+            <div id="fc-study-note" class="fc-note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-study-nav">
+      <button type="button" class="fc-study-round" id="fc-study-prev" aria-label="<?= htmlspecialchars(__('fc.study_prev')) ?>"><span class="material-symbols-outlined">arrow_back</span></button>
+      <button type="button" class="fc-study-round is-main" id="fc-study-flip" aria-label="<?= htmlspecialchars(__('fc.study_flip')) ?>"><span class="material-symbols-outlined">flip</span></button>
+      <button type="button" class="fc-study-round" id="fc-study-next" aria-label="<?= htmlspecialchars(__('fc.study_next')) ?>"><span class="material-symbols-outlined">arrow_forward</span></button>
+    </div>
+    <p class="fc-study-hint"><?= __('fc.study_hint') ?></p>
+  </div>
+  <div id="fc-study-done" class="fc-study-done" hidden>
+    <span class="material-symbols-outlined text-[48px] text-teal-300">celebration</span>
+    <h2><?= __('fc.study_done_title') ?></h2>
+    <p id="fc-study-done-body"></p>
+    <div class="flex flex-wrap gap-2 justify-center">
+      <button type="button" class="fc-study-btn" id="fc-study-flipped"></button>
+      <button type="button" class="fc-new-btn" id="fc-study-again"><?= __('fc.study_again') ?></button>
+      <button type="button" class="fc-ghost-btn" id="fc-study-exit"><?= __('fc.study_close') ?></button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container" class="fixed bottom-lg right-lg flex flex-col gap-sm z-50 pointer-events-none"></div>
 
 <script>
@@ -335,13 +479,21 @@ window.__FC_CONFIG__ = {
     'saved' => __('fc.saved'), 'deleted' => __('fc.deleted'), 'markedLearned' => __('fc.marked_learned'),
     'unmarkedLearned' => __('fc.unmarked_learned'), 'errGeneric' => __('fc.err_generic'), 'noted' => __('fc.marked_review'),
     'learnedBadge' => __('fc.view_learned'),
+    'saveTo' => __('fc.list_save_to'), 'listNew' => __('fc.list_new'), 'listRename' => __('fc.list_rename'), 'listDeleteConfirm' => __('fc.list_delete_confirm'),
+    'listAdded' => __('fc.list_added'), 'listRemoved' => __('fc.list_removed'), 'listMoved' => __('fc.list_moved'),
+    'listAdd' => __('fc.list_add_here'), 'listMove' => __('fc.list_move_here'), 'listCreated' => __('fc.list_created'),
+    'saveToOne' => __('fc.list_save_hint'), 'saveToMany' => __('fc.list_save_hint_many'), 'selected' => __('fc.selected'),
+    'studyDone' => __('fc.study_done_body'), 'studyFlipped' => __('fc.study_flipped_again'), 'studyEmpty' => __('fc.study_empty'),
   ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
   catLabels: <?= json_encode($catLabels, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
   view: "<?= $activeView ?>",
+  lists: <?= json_encode(array_map(fn($l) => $l + ['label' => $listLabel($l)], $lists), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
+  listId: <?= $activeList ? (int)$activeList['id'] : 0 ?>,
+  studyName: <?= json_encode($activeList ? $listLabel($activeList) : ($viewTabs[$activeView]['label'] ?? ''), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
   speechLocale: <?= json_encode(\App\Src\Language::speechLocale($targetLang)) ?>,
   csrf: "<?= htmlspecialchars(csrf_token()) ?>",
 };
 </script>
-<script src="js/flashcard.js?v=9"></script>
+<script src="js/flashcard.js?v=10"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>

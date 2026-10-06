@@ -310,6 +310,13 @@ if ($motionOn): ?>
    visitor prefers reduced motion. */
 (function (d) {
   window.__motionCfg = {smooth: <?= $motionSmooth ? 'true' : 'false' ?>, gsap: <?= $motionGsap ? 'true' : 'false' ?>, page: <?= json_encode($motionPage) ?>};
+  // Leaving a page mid-transition (fast clicks) aborts the page-to-page view
+  // transition and rejects its promises. That's expected, not an error.
+  var quiet = function (vt) {
+    if (vt) ['ready', 'finished', 'updateCallbackDone'].forEach(function (k) { if (vt[k]) vt[k].catch(function () {}); });
+  };
+  window.addEventListener('pagereveal', function (e) { quiet(e.viewTransition); });
+  window.addEventListener('pageswap', function (e) { quiet(e.viewTransition); });
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   d.documentElement.classList.add('js-motion');
   setTimeout(function () { if (!window.__motionReady) d.documentElement.classList.remove('js-motion'); }, 3000);

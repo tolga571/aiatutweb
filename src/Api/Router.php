@@ -6,6 +6,7 @@ use App\Src\Account;
 use App\Src\Auth;
 use App\Src\Chat;
 use App\Src\Database;
+use App\Src\CardLists;
 use App\Src\Flashcard;
 use App\Src\GeminiClient;
 use App\Src\Language;
@@ -122,6 +123,14 @@ class Router
             ['DELETE', 'flashcards/(\d+)', 'flashcardDelete', 'plan'],
             ['POST', 'flashcards/(\d+)/favorite', 'flashcardFavorite', 'plan'],
             ['POST', 'flashcards/(\d+)/learned', 'flashcardLearned', 'plan'],
+
+            ['GET', 'lists', 'lists', 'plan'],
+            ['POST', 'lists', 'listCreate', 'plan'],
+            ['PATCH', 'lists/(\d+)', 'listRename', 'plan'],
+            ['DELETE', 'lists/(\d+)', 'listDelete', 'plan'],
+            ['GET', 'lists/(\d+)/cards', 'listCards', 'plan'],
+            ['POST', 'lists/(\d+)/cards', 'listAdd', 'plan'],
+            ['POST', 'lists/(\d+)/cards/remove', 'listRemove', 'plan'],
 
             ['GET', 'mistakes', 'mistakes', 'plan'],
             ['POST', 'mistakes/(\d+)/review', 'mistakeReview', 'plan'],
@@ -618,7 +627,86 @@ class Router
 
     private function flashcardCreate(): void
     {
-        $this->cardResult((new Flashcard($this->db))->createCard((int)$this->user['id'], $this->deckLang(), $this->input));
+        $fc = new Flashcard($this->db);
+        $uid = (int)$this->user['id'];
+        $r = $fc->createCard($uid, $this->deckLang(), $this->input);
+        // Same as the web: a new card goes into the open list, else "Saved".
+        if (!empty($r['card'])) {
+            $cl = new CardLists($this->db);
+            $into = (int)($this->input['list_id'] ?? 0);
+            $into = $into && $cl->get($uid, $into) ? $into : $cl->defaultId($uid, $this->deckLang());
+            $cl->add($uid, $into, [(int)$r['card']['id']]);
+            $r['card'] = $fc->getCard($uid, (int)$r['card']['id']);
+        }
+        $this->cardResult($r);
+    }
+
+    // ── Card lists (playlists), see CardLists ──────────────────────
+
+    /** Error codes from CardLists → HTTP status (never 5xx). */
+    private function listResult(array $r, string $key): void
+    {
+        if (!empty($r['error'])) {
+            $status = ['list_not_found' => 404, 'not_found' => 404, 'list_default' => 409, 'list_limit' => 409, 'list_full' => 409][$r['error']] ?? 422;
+            throw new ApiError($r['error'], t('fc.err_' . $r['error']), $status);
+        }
+        $this->ok($key === '' ? $r : [$key => $r[$key]] + array_intersect_key($r, ['added' => 1]));
+    }
+
+    /** ?lang= — the lists of one deck language, "Saved" first. */
+    private function lists(): void
+    {
+        $lang = $this->deckLang();
+        $this->ok(['lists' => (new CardLists($this->db))->all((int)$this->user['id'], $lang), 'lang' => $lang]);
+    }
+
+    /** {name, lang?, cards?: [ids]} */
+    private function listCreate(): void
+    {
+        $cl = new CardLists($this->db);
+        $uid = (int)$this->user['id'];
+        $r = $cl->create($uid, $this->deckLang(), $this->str('name'));
+        if (!empty($r['list']) && is_array($this->input['cards'] ?? null)) {
+            $cl->add($uid, $r['list']['id'], $this->input['cards']);
+            $r['list'] = $cl->get($uid, $r['list']['id']);
+        }
+        $this->listResult($r, 'list');
+    }
+
+    private function listRename(string $id): void
+    {
+        $this->listResult((new CardLists($this->db))->rename((int)$this->user['id'], (int)$id, $this->str('name')), 'list');
+    }
+
+    private function listDelete(string $id): void
+    {
+        $this->listResult((new CardLists($this->db))->delete((int)$this->user['id'], (int)$id), '');
+    }
+
+    /** ?offset= — the list's cards in the order they were added (up to 200 a page). */
+    private function listCards(string $id): void
+    {
+        $uid = (int)$this->user['id'];
+        $list = (new CardLists($this->db))->get($uid, (int)$id);
+        if (!$list) {
+            throw new ApiError('list_not_found', t('fc.err_list_not_found'), 404);
+        }
+        $cards = (new Flashcard($this->db))->getAllCards($uid, $list['language'], null, null, 200, null, 'all', max(0, (int)($_GET['offset'] ?? 0)), (int)$id);
+        $this->ok(['list' => $list, 'cards' => $cards]);
+    }
+
+    /** {cards: [ids], from?: listId} — "from" makes it a move. */
+    private function listAdd(string $id): void
+    {
+        $ids = is_array($this->input['cards'] ?? null) ? $this->input['cards'] : [];
+        $this->listResult((new CardLists($this->db))->add((int)$this->user['id'], (int)$id, $ids, (int)($this->input['from'] ?? 0)), 'list');
+    }
+
+    /** {cards: [ids]} */
+    private function listRemove(string $id): void
+    {
+        $ids = is_array($this->input['cards'] ?? null) ? $this->input['cards'] : [];
+        $this->listResult((new CardLists($this->db))->remove((int)$this->user['id'], (int)$id, $ids), 'list');
     }
 
     private function flashcard(string $id): void
