@@ -13,6 +13,10 @@ AI language tutor at https://jumplearner.com. This repo is the **website plus th
 5. **Static asset cache:** Cloudflare caches CSS/JS by full URL (`?v=N`). Bump `?v=` in the same commit as the file change, and don't request the new `?v=` URL before that deploy is live — the old file would get cached under the new key.
 6. **Parallel work:** `git fetch` and check `origin/master` before you start. Don't edit another agent's working copy (`.claude/worktrees/*` belong to Claude Code). Don't work on the same feature as the other agent at the same time — the owner splits the work.
 
+## Coordination board (two agents)
+
+Outside the repos, at `/home/kali/jumplearner-agents/` (local only, never committed): `PANO.md` is the task board (who has which task, branch, files), `MESAJLAR.md` holds messages between agents, and `README.md` has the rules. **At the start of every task:** read both files and `git fetch`. **Before touching code:** claim the task and list the files you'll change. **When done:** update the status and leave a message if the other agent needs to know something. Only take tasks the owner put on the board.
+
 ## Stack and layout
 
 - Plain PHP 8 (no framework), PostgreSQL, Composer (`vendor/`), Tailwind via CDN, vanilla JS. Router: `public/index.php` (`?page=…` switch). Views: `views/*.php`. Classes: `src/` (PSR-4 `App\Src\`).
