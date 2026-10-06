@@ -26,7 +26,7 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="css/flashcard.css?v=9">
+<link rel="stylesheet" href="/css/flashcard.css?v=9">
 
 <main class="flex-1 bg-surface-dim">
   <div class="fc-words">
@@ -97,6 +97,6 @@ window.__WB__ = {
   ], $jsonFlags) ?>,
 };
 </script>
-<script src="js/words.js?v=1"></script>
+<script src="/js/words.js?v=1"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>

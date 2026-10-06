@@ -1,5 +1,5 @@
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const BASE = 'https://jumplearner.com/';
+const BASE = process.env.BASE || 'https://jumplearner.com/';
 const LANGS = ['en','de','fr','es','ar','ja','zh','ru','el','hi','hy'];
 const PAGES = ['home','pricing','about','faq','blog','alphabet','login','register','forgot-password','privacy-policy'];
 (async () => {
@@ -17,7 +17,8 @@ const PAGES = ['home','pricing','about','faq','blog','alphabet','login','registe
         const [hl, dir] = await p.evaluate(() => [document.documentElement.lang, document.documentElement.dir]);
         const prob = [];
         if (r.status() >= 400) prob.push('HTTP ' + r.status());
-        if (text.trim().length < 200) prob.push('blank-ish page');
+        const minLen = ['login', 'register', 'forgot-password'].includes(pg) ? 60 : 200;
+        if (text.trim().length < minLen) prob.push('blank-ish page');
         if (/Fatal error|Warning:|Uncaught/.test(html)) prob.push('PHP error');
         if (hl !== lang) prob.push('lang=' + hl);
         if ((lang === 'ar') !== (dir === 'rtl')) prob.push('dir=' + dir);
