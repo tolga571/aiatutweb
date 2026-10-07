@@ -104,6 +104,8 @@ class Router
             ['POST', 'onboarding', 'onboarding', 'user'],
             ['POST', 'trial/start', 'startTrial', 'user'],
             ['GET', 'dashboard', 'dashboard', 'plan'],
+            ['GET', 'words/context', 'getWordContextApi', 'user'],
+            ['POST', 'cards/bulk', 'addCardsBulk', 'user'],
 
             ['GET', 'topics', 'topics', 'plan'],
             ['GET', 'conversations', 'conversations', 'plan'],
