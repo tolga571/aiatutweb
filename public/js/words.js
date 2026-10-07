@@ -128,10 +128,10 @@
           payload.push({word: words[i].word, translation: words[i].meaning});
       });
       
-      fetch('/api/v1/cards/bulk', {
+      fetch('?page=cards-bulk', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ words: payload, lists: [] })
+          body: JSON.stringify({ words: payload, lists: [], csrf_token: cfg.csrf })
       })
       .then(r => r.json())
       .then(res => {
@@ -185,7 +185,7 @@
         e.target.textContent = 'Hide Example';
         if (cell.innerHTML === '') {
             cell.innerHTML = '<div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="material-symbols-outlined animate-spin text-[16px]">sync</span> Loading context...</div>';
-            fetch('/api/v1/words/context?word=' + encodeURIComponent(w.word))
+            fetch('?page=words-context&word=' + encodeURIComponent(w.word))
                 .then(r => r.json())
                 .then(res => {
                     if (!res.ok || !res.data) { cell.innerHTML = '<div class="text-red-500 text-sm">Failed to load example.</div>'; return; }

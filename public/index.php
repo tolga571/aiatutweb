@@ -1135,6 +1135,58 @@ switch ($page) {
         }
         exit;
 
+    case 'words-context':
+        $requirePlan();
+        header('Content-Type: application/json');
+        $word = $_GET['word'] ?? '';
+        if (!$word) {
+            echo json_encode(['ok' => false, 'error' => 'word is required']);
+            exit;
+        }
+        $currentUser = $auth->currentUser();
+        $targetLang = $fcDeckLang();
+        $nativeLang = $currentUser['native_lang'] ?? 'en';
+        
+        $gemini = new \App\Src\GeminiClient($config['gemini_api_key'], $config['gemini_api_key_backup'] ?? '');
+        $context = (new \App\Src\Flashcard($db))->getWordContext($targetLang, $nativeLang, $word, $gemini);
+        
+        echo json_encode(['ok' => true, 'data' => $context]);
+        exit;
+
+    case 'cards-bulk':
+        $requirePlan();
+        header('Content-Type: application/json');
+        $input = json_decode(file_get_contents('php://input'), true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($input['csrf_token'] ?? null)) {
+            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+            exit;
+        }
+        
+        $words = $input['words'] ?? [];
+        $lists = $input['lists'] ?? [];
+        if (!$words || !is_array($words)) {
+            echo json_encode(['ok' => false, 'error' => 'Words array required']);
+            exit;
+        }
+        
+        $fc = new \App\Src\Flashcard($db);
+        $addedCount = 0;
+        foreach ($words as $w) {
+            $wordStr = $w['word'] ?? '';
+            $translationStr = $w['translation'] ?? '';
+            if ($wordStr === '') continue;
+            
+            $id = $fc->addWord($auth->userId(), $wordStr, $translationStr, 'web_bulk');
+            if ($id) {
+                $addedCount++;
+                if (!empty($lists)) {
+                    $fc->setWordLists($auth->userId(), $id, $lists);
+                }
+            }
+        }
+        echo json_encode(['ok' => true, 'data' => ['added' => $addedCount]]);
+        exit;
+
     case 'flashcard-import-pack':
         // Adds one CEFR level of the extra vocabulary pack (data/vocab/) to the
         // user's deck. Responds with JSON only — never a 5xx (Cloudflare would
