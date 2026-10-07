@@ -108,6 +108,10 @@ window.__WB__ = {
   t: <?= json_encode([
     'add' => __('fc.words_add'), 'added' => __('fc.words_added'), 'inDeck' => __('fc.words_in_deck'),
     'count' => __('fc.words_count'), 'listen' => __('fc.audio_btn'), 'err' => __('fc.err_generic'),
+    'showExample' => __('fc.words_show_example'), 'hideExample' => __('fc.words_hide_example'),
+    'loading' => __('fc.words_loading_context'), 'aiGen' => __('fc.words_ai_generated'),
+    'playSentence' => __('fc.words_play_sentence'), 'errLoad' => __('fc.words_err_loading'),
+    'addSel' => __('fc.words_add_selected'), 'bulkAdded' => __('fc.words_bulk_added'),
   ], $jsonFlags) ?>,
 };
 </script>

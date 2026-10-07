@@ -49,7 +49,7 @@
         '<td data-label=""><div class="fc-words-word"><span dir="' + (cfg.rtl ? 'rtl' : 'auto') + '">' + esc(w.word) + '</span>' +
           '<button type="button" class="fc-icon-btn" data-speak="' + i + '" aria-label="' + esc(L.listen) + '"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span></button></div>' +
           (w.pronunciation ? '<div class="fc-words-pron">' + esc(w.pronunciation) + '</div>' : '') + 
-          '<div class="mt-2"><button type="button" class="text-xs text-primary underline wb-show-context" data-i="'+i+'">Show Example (AI)</button></div>' +
+          '<div class="mt-2"><button type="button" class="text-xs text-primary underline wb-show-context" data-i="'+i+'">'+esc(L.showExample)+'</button></div>' +
           '</td>' +
         '<td class="fc-words-meaning">' + esc(w.meaning) + '</td>' +
         '<td class="fc-words-narrow"><span class="level-badge">' + esc(w.level) + '</span></td>' +
@@ -136,14 +136,14 @@
       .then(r => r.json())
       .then(res => {
           btn.disabled = false;
-          btn.textContent = 'Add Selected';
+          btn.textContent = L.addSel;
           if (!res.ok) { toast(res.error || L.err, true); return; }
           bulkIds.forEach(function(i) { words[i].card_id = true; });
           bulkIds.clear();
           render();
-          toast(res.added + ' words added.');
+          toast(fmt(L.bulkAdded, {n: res.added}));
       })
-      .catch(() => { btn.disabled = false; btn.textContent = 'Add Selected'; toast(L.err, true); });
+      .catch(() => { btn.disabled = false; btn.textContent = L.addSel; toast(L.err, true); });
   });
 
   rows.addEventListener('change', function(e) {
@@ -178,19 +178,19 @@
         var cell = $('wb-ctx-cell-' + i);
         if (!row.hidden) {
             row.hidden = true;
-            e.target.textContent = 'Show Example (AI)';
+            e.target.textContent = L.showExample;
             return;
         }
         row.hidden = false;
-        e.target.textContent = 'Hide Example';
+        e.target.textContent = L.hideExample;
         if (cell.innerHTML === '') {
-            cell.innerHTML = '<div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="material-symbols-outlined animate-spin text-[16px]">sync</span> Loading context...</div>';
+            cell.innerHTML = '<div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="material-symbols-outlined animate-spin text-[16px]">sync</span> '+esc(L.loading)+'</div>';
             fetch('?page=words-context&word=' + encodeURIComponent(w.word))
                 .then(r => r.json())
                 .then(res => {
-                    if (!res.ok || !res.data) { cell.innerHTML = '<div class="text-red-500 text-sm">Failed to load example.</div>'; return; }
+                    if (!res.ok || !res.data) { cell.innerHTML = '<div class="text-red-500 text-sm">'+esc(L.errLoad)+'</div>'; return; }
                     var d = res.data;
-                    var sourceBadge = d.source === 'ai_translation' ? '<span class="text-[10px] bg-primary/20 text-primary px-1 rounded uppercase tracking-wide">AI Generated</span>' : '';
+                    var sourceBadge = d.source === 'ai_translation' ? '<span class="text-[10px] bg-primary/20 text-primary px-1 rounded uppercase tracking-wide">'+esc(L.aiGen)+'</span>' : '';
                     var html = '<div class="mb-2">' + sourceBadge + '</div>';
                     if (d.tokens) {
                         html += '<div id="wb-tokens-'+i+'" class="flex flex-wrap gap-x-2 gap-y-3 items-end text-[1.1rem] mt-1"></div>';
@@ -200,13 +200,13 @@
                     if (d.translation) {
                         html += '<div class="text-sm text-muted-foreground mt-2 italic">' + esc(d.translation) + '</div>';
                     }
-                    html += '<div class="mt-4"><button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide hover:bg-primary/20 transition-colors" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> Play Sentence</button></div>';
+                    html += '<div class="mt-4"><button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide hover:bg-primary/20 transition-colors" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> '+esc(L.playSentence)+'</button></div>';
                     cell.innerHTML = html;
                     if (d.tokens) {
                         renderContextTokens(d.tokens, $('wb-tokens-'+i));
                     }
                 })
-                .catch(() => { cell.innerHTML = '<div class="text-red-500 text-sm">Error loading.</div>'; });
+                .catch(() => { cell.innerHTML = '<div class="text-red-500 text-sm">'+esc(L.errLoad)+'</div>'; });
         }
         return;
     }
