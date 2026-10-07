@@ -111,6 +111,6 @@ window.__WB__ = {
   ], $jsonFlags) ?>,
 };
 </script>
-<script src="/js/words.js?v=1"></script>
+<script src="/js/words.js?v=2"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>
