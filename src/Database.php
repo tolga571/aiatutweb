@@ -695,8 +695,6 @@ class Database {
                 error_log('email_verify_rev_1 failed (will retry next request): ' . $e->getMessage());
             }
         }
-    }
-
 
         if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'word_contexts_rev_1'")->fetchColumn()) {
             $this->pdo->exec("
@@ -714,6 +712,7 @@ class Database {
             ");
             $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('word_contexts_rev_1', '1') ON CONFLICT (key) DO NOTHING");
         }
+    }
 
     public function getPdo(): \PDO {
         return $this->pdo;
