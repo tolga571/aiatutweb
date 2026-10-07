@@ -671,6 +671,17 @@ class Database {
         // 2026-10-07. Accounts created before that never had to confirm
         // their address and must not be locked out, so they count as
         // confirmed. Runs once; never fatal.
+        
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'turkish_purge_rev_1'")->fetchColumn()) {
+            $this->pdo->exec("UPDATE vocabulary_words SET translation = '' WHERE translation ~ '[ğĞşŞıİçÇöÖüÜ]' OR example_translation ~ '[ğĞşŞıİçÇöÖüÜ]' OR note ~ '[ğĞşŞıİçÇöÖüÜ]'");
+            $this->pdo->exec("UPDATE vocabulary_words SET example_translation = '' WHERE example_translation ~ '[ğĞşŞıİçÇöÖüÜ]'");
+            $this->pdo->exec("UPDATE vocabulary_words SET note = '' WHERE note ~ '[ğĞşŞıİçÇöÖüÜ]'");
+            $this->pdo->exec("UPDATE messages SET translation = '' WHERE translation ~ '[ğĞşŞıİçÇöÖüÜ]'");
+            $this->pdo->exec("DELETE FROM user_mistakes WHERE rule ~ '[ğĞşŞıİçÇöÖüÜ]'");
+            $this->pdo->exec("UPDATE users SET native_lang = 'en' WHERE native_lang = 'tr'");
+            $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('turkish_purge_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+        }
+
         if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'email_verify_rev_1'")->fetchColumn()) {
             $this->pdo->beginTransaction();
             try {
