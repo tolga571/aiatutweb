@@ -324,6 +324,7 @@ class Auth {
             'UPDATE users SET native_lang=?, target_lang=?, cefr_level=?, learning_goal=?, interest_area=?, ui_lang=?, onboarding_completed=1 WHERE id=?',
             [$nativeLang, $targetLang, $cefrLevel, $learningGoal, $interestArea, $uiLang, $userId]
         );
+        (new Flashcard($this->db))->ensureStarterDeck($userId, $targetLang, $nativeLang);
     }
 
     public function activatePlan(int $userId): void {

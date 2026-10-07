@@ -961,7 +961,7 @@
     "fc.fallback_title": "Language Support Notice:",
     "fc.favorite_add": "Add to favorites",
     "fc.favorite_remove": "Remove from favorites",
-    "fc.field_category": "List",
+    "fc.field_category": "Category",
     "fc.field_example": "Example sentence (optional)",
     "fc.field_example_translation": "Example translation (optional)",
     "fc.field_note": "Note (optional)",
