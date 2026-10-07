@@ -175,7 +175,7 @@ class Database {
         $this->pdo->exec("ALTER TABLE vocabulary_words ADD COLUMN IF NOT EXISTS note TEXT NOT NULL DEFAULT ''");
         $this->pdo->exec("ALTER TABLE vocabulary_words ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NULL");
         $this->pdo->exec("ALTER TABLE user_flashcards ADD COLUMN IF NOT EXISTS learned_at TIMESTAMP DEFAULT NULL");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_vocabulary_words_user_lang ON vocabulary_words (user_id, language)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_vocabulary_words_user_lang ON vocabulary_words (user_id, language)");
         // Abuse limits (AbuseGuard): which IP each free trial came from, and
         // small app-wide flags such as "budget alert already sent this month".
         $this->exec("CREATE TABLE IF NOT EXISTS trial_grants (
@@ -183,7 +183,7 @@ class Database {
             ip TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_trial_grants_ip ON trial_grants (ip, created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_trial_grants_ip ON trial_grants (ip, created_at)");
         $this->exec("CREATE TABLE IF NOT EXISTS app_state (
             key TEXT PRIMARY KEY,
             value TEXT,
@@ -208,7 +208,7 @@ class Database {
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_card_lists_user ON card_lists (user_id, language)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_card_lists_user ON card_lists (user_id, language)");
         $this->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_card_lists_default ON card_lists (user_id, language) WHERE is_default");
         $this->exec("CREATE TABLE IF NOT EXISTS card_list_items (
             list_id INTEGER NOT NULL REFERENCES card_lists(id) ON DELETE CASCADE,
@@ -216,7 +216,7 @@ class Database {
             added_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (list_id, vocab_id)
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_card_list_items_vocab ON card_list_items (vocab_id)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_card_list_items_vocab ON card_list_items (vocab_id)");
         // "My mistakes" notebook: one row per chat correction, copied out of
         // messages.metadata by Mistakes::sync(). (message_id, position) keeps
         // a re-sync from duplicating rows; deleting the conversation (or the
@@ -239,7 +239,7 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(message_id, position)
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_user_mistakes_user ON user_mistakes (user_id, language, created_at DESC)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_user_mistakes_user ON user_mistakes (user_id, language, created_at DESC)");
         // One row per Gemini request (see AiUsage). cost_usd is computed at
         // insert time from AiUsage::PRICES, so a later price change doesn't
         // rewrite history. SET NULL keeps totals intact when a user deletes
@@ -256,11 +256,11 @@ class Database {
             cost_usd NUMERIC(12,6) NOT NULL DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_created ON ai_usage (created_at)");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_ai_usage_user ON ai_usage (user_id, created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_ai_usage_created ON ai_usage (created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_ai_usage_user ON ai_usage (user_id, created_at)");
         // Admin dashboard time series filter on these.
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_messages_created ON messages (created_at)");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_users_created ON users (created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_messages_created ON messages (created_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_users_created ON users (created_at)");
         $this->exec("CREATE TABLE IF NOT EXISTS alphabet_progress (
             id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -274,15 +274,15 @@ class Database {
             data TEXT NOT NULL DEFAULT '',
             expires_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_sessions_expires ON sessions (expires_at)");
         $this->exec("CREATE TABLE IF NOT EXISTS login_attempts (
             id SERIAL PRIMARY KEY,
             ip TEXT NOT NULL,
             type TEXT NOT NULL,
             attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_login_attempts_lookup ON login_attempts (ip, type, attempted_at)");
         // Dedup for FastSpring webhook deliveries: retries resend the same
         // event id, so this is what actually decides "have I processed this
         // exact event before" — kept separate from the created-timestamp
@@ -309,7 +309,7 @@ class Database {
             used_at TIMESTAMP DEFAULT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets (token_hash)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_password_resets_token ON password_resets (token_hash)");
         // Same shape as password_resets, for the register-time email
         // verification link.
         $this->exec("CREATE TABLE IF NOT EXISTS email_verifications (
@@ -320,7 +320,7 @@ class Database {
             used_at TIMESTAMP DEFAULT NULL,
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications (token_hash)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_email_verifications_token ON email_verifications (token_hash)");
         // Human-readable billing/account timeline for the admin activity
         // monitor — every subscription start/upgrade/downgrade/cancel,
         // resume, and refund request, across all three providers, in one
@@ -336,7 +336,7 @@ class Database {
             detail TEXT NOT NULL DEFAULT '',
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_activity_events_created ON activity_events (created_at DESC)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_activity_events_created ON activity_events (created_at DESC)");
         $this->migrate();
     }
 
@@ -460,7 +460,7 @@ class Database {
         $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS target_user_id INTEGER");
         $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS detail TEXT");
         $this->pdo->exec("ALTER TABLE admin_audit ADD COLUMN IF NOT EXISTS ip TEXT");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_admin_audit_target ON admin_audit (target_user_id, performed_at DESC)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_admin_audit_target ON admin_audit (target_user_id, performed_at DESC)");
         // The original FK cascaded, deleting an admin's whole history with
         // them; switch it to SET NULL once.
         $cascade = $this->pdo->query("SELECT 1 FROM pg_constraint WHERE conname = 'admin_audit_admin_id_fkey' AND confdeltype = 'c'")->fetchColumn();
@@ -568,7 +568,7 @@ class Database {
             last_used_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             expires_at TIMESTAMP NOT NULL
         )");
-        $this->exec("CREATE INDEX IF NOT EXISTS idx_api_tokens_user ON api_tokens (user_id)");
+        $this->exec("CREATE INDEX IF NOT EXISTS IF NOT EXISTS idx_api_tokens_user ON api_tokens (user_id)");
         // A user flagging an AI tutor reply as offensive / wrong. Google Play
         // requires this for apps with AI-generated content.
         $this->exec("CREATE TABLE IF NOT EXISTS ai_reports (
@@ -708,7 +708,7 @@ class Database {
                     source VARCHAR(50) DEFAULT 'ai_translation',
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
-                CREATE INDEX idx_word_contexts_lookup ON word_contexts(target_lang, native_lang, word);
+                CREATE INDEX IF NOT EXISTS idx_word_contexts_lookup ON word_contexts(target_lang, native_lang, word);
             ");
             $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('word_contexts_rev_1', '1') ON CONFLICT (key) DO NOTHING");
         }
