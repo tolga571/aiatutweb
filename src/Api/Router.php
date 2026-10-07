@@ -95,6 +95,7 @@ class Router
             ['POST', 'auth/login', 'login', 'public'],
             ['POST', 'auth/register', 'register', 'public'],
             ['POST', 'auth/google', 'google', 'public'],
+            ['POST', 'auth/resend-verification', 'resendVerification', 'public'],
             ['POST', 'auth/forgot-password', 'forgotPassword', 'public'],
             ['POST', 'auth/logout', 'logout', 'user'],
 
@@ -244,6 +245,23 @@ class Router
         $this->auth->clearAttempts($ip, 'login');
         $this->auth->recordActivity($user);
         $this->signedIn((int)$user['id']);
+    }
+
+    
+    private function resendVerification(): void
+    {
+        $email = trim($this->str('email'));
+        $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
+        if ($user) {
+            $verifyToken = $this->auth->createEmailVerificationToken((int)$user['id']);
+            $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
+            (new Mailer($this->config))->send(
+                $email,
+                t('auth.verify_email_subject'),
+                '<p>' . t('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
+            );
+        }
+        $this->ok(['sent' => true]);
     }
 
     private function register(): void

@@ -306,6 +306,24 @@ switch ($page) {
         require __DIR__ . '/../views/pages/awaiting-verification.php';
         break;
 
+    case 'resend-verification':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
+            $email = trim($_POST['email']);
+            $user = $db->fetchOne('SELECT * FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
+            if ($user) {
+                $verifyToken = $auth->createEmailVerificationToken((int)$user['id']);
+                $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
+                (new \App\Src\Mailer($config))->send(
+                    $email,
+                    __('auth.verify_email_subject'),
+                    '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
+                );
+            }
+            $_SESSION['resend_success'] = true;
+        }
+        header('Location: ?page=awaiting-verification');
+        exit;
+
     case 'verify-email':
         $verifyOk = $auth->verifyEmailToken($_GET['token'] ?? '');
         if ($auth->isLoggedIn()) {
