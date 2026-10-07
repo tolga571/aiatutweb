@@ -68,7 +68,7 @@ $firstCard = $cards[0] ?? null;
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<link rel="stylesheet" href="/css/flashcard.css?v=9">
+<link rel="stylesheet" href="/css/flashcard.css?v=10">
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
@@ -204,7 +204,7 @@ $firstCard = $cards[0] ?? null;
             </button>
             <?= $targetFlag ?>
             <label class="sr-only" for="fc-lang"><?= __('fc.deck_language') ?></label>
-            <select id="fc-lang" class="fc-lang-select" title="<?= __('fc.deck_language') ?>" onchange="location.href='?page=flashcards&lang='+encodeURIComponent(this.value)">
+            <select id="fc-lang" class="fc-lang-select focus:ring-0 focus:border-outline/60 focus:outline-none" title="<?= __('fc.deck_language') ?>" onchange="location.href='?page=flashcards&lang='+encodeURIComponent(this.value)">
               <?php foreach ($deckLangs as $dl): ?>
               <option value="<?= htmlspecialchars($dl) ?>" <?= $dl === $targetLang ? 'selected' : '' ?>><?= htmlspecialchars(__('languages.' . $dl, \App\Src\Language::langName($dl))) ?></option>
               <?php endforeach; ?>
@@ -331,7 +331,7 @@ $firstCard = $cards[0] ?? null;
       <textarea name="example_translation" maxlength="400" rows="2"></textarea></label>
     <label class="fc-field"><span><?= __('fc.field_note') ?></span>
       <textarea name="note" maxlength="1000" rows="2"></textarea></label>
-    <label class="flex items-center gap-2 text-xs text-on-surface-variant"><input type="checkbox" name="is_favorite"> <?= __('fc.favorite_add') ?></label>
+    <label class="flex items-center gap-2 text-xs text-on-surface-variant"><input type="checkbox" name="is_favorite" class="form-checkbox h-4 w-4 rounded border-outline/50 bg-surface text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors"> <?= __('fc.favorite_add') ?></label>
     <p id="fc-form-error" class="text-xs text-red-400 hidden" role="alert"></p>
     <div class="flex items-center justify-between gap-2 pt-1">
       <button type="button" id="fc-delete" class="fc-danger-btn hidden"><span class="material-symbols-outlined text-[18px]">delete</span><?= __('fc.delete') ?></button>

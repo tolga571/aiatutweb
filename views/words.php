@@ -26,7 +26,7 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="/css/flashcard.css?v=9">
+<link rel="stylesheet" href="/css/flashcard.css?v=10">
 
 <main class="flex-1 bg-surface-dim">
   <div class="fc-words">
@@ -39,7 +39,7 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
       <div class="flex items-center gap-2 shrink-0">
         <?= flagImg($targetLang, 'w-6 h-4') ?>
         <label class="sr-only" for="fc-lang"><?= __('fc.deck_language') ?></label>
-        <select id="fc-lang" class="fc-lang-select" onchange="location.href='?page=words&lang='+encodeURIComponent(this.value)">
+        <select id="fc-lang" class="fc-lang-select focus:ring-0 focus:border-outline/60 focus:outline-none" onchange="location.href='?page=words&lang='+encodeURIComponent(this.value)">
           <?php foreach ($deckLangs as $dl): ?>
           <option value="<?= htmlspecialchars($dl) ?>" <?= $dl === $targetLang ? 'selected' : '' ?>><?= htmlspecialchars(__('languages.' . $dl, \App\Src\Language::langName($dl))) ?></option>
           <?php endforeach; ?>
@@ -63,17 +63,17 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
     <div class="fc-words-tools" role="search">
       <div class="relative flex-1 min-w-[12rem]">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]" aria-hidden="true">search</span>
-        <input type="search" id="wb-q" class="fc-words-input pl-9" placeholder="<?= htmlspecialchars(__('fc.words_search')) ?>" aria-label="<?= htmlspecialchars(__('fc.words_search')) ?>" autocomplete="off">
+        <input type="search" id="wb-q" class="fc-words-input focus:ring-0 focus:border-outline/60 focus:outline-none pl-9" placeholder="<?= htmlspecialchars(__('fc.words_search')) ?>" aria-label="<?= htmlspecialchars(__('fc.words_search')) ?>" autocomplete="off">
       </div>
-      <select id="wb-level" class="fc-words-input w-auto" aria-label="<?= htmlspecialchars(__('fc.col_level')) ?>">
+      <select id="wb-level" class="fc-words-input focus:ring-0 focus:border-outline/60 focus:outline-none w-auto" aria-label="<?= htmlspecialchars(__('fc.col_level')) ?>">
         <option value=""><?= __('fc.words_all_levels') ?></option>
         <?php foreach ($levels as $lv): ?><option value="<?= htmlspecialchars($lv) ?>"><?= htmlspecialchars($lv) ?></option><?php endforeach; ?>
       </select>
-      <select id="wb-cat" class="fc-words-input w-auto" aria-label="<?= htmlspecialchars(__('fc.col_category')) ?>">
+      <select id="wb-cat" class="fc-words-input focus:ring-0 focus:border-outline/60 focus:outline-none w-auto" aria-label="<?= htmlspecialchars(__('fc.col_category')) ?>">
         <option value=""><?= __('fc.words_all_cats') ?></option>
         <?php foreach ($categories as $c): ?><option value="<?= htmlspecialchars($c) ?>"><?= htmlspecialchars($catLabel($c)) ?></option><?php endforeach; ?>
       </select>
-      <label class="fc-words-check"><input type="checkbox" id="wb-new"> <?= __('fc.words_only_new') ?></label>
+      <label class="fc-words-check"><input type="checkbox" id="wb-new" class="form-checkbox h-4 w-4 rounded border-outline/50 bg-surface text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors"> <?= __('fc.words_only_new') ?></label>
     </div>
 
     <p id="wb-count" class="fc-words-count" aria-live="polite"></p>
@@ -111,6 +111,6 @@ window.__WB__ = {
   ], $jsonFlags) ?>,
 };
 </script>
-<script src="/js/words.js?v=3"></script>
+<script src="/js/words.js?v=10"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>

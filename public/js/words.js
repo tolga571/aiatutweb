@@ -193,14 +193,14 @@
                     var sourceBadge = d.source === 'ai_translation' ? '<span class="text-[10px] bg-primary/20 text-primary px-1 rounded uppercase tracking-wide">AI Generated</span>' : '';
                     var html = '<div class="mb-2">' + sourceBadge + '</div>';
                     if (d.tokens) {
-                        html += '<div id="wb-tokens-'+i+'"></div>';
+                        html += '<div id="wb-tokens-'+i+'" class="flex flex-wrap gap-x-2 gap-y-3 items-end text-[1.1rem] mt-1"></div>';
                     } else {
-                        html += '<div class="text-lg">' + esc(d.text) + '</div>';
+                        html += '<div class="text-lg font-medium text-foreground mt-1">' + esc(d.text) + '</div>';
                     }
                     if (d.translation) {
                         html += '<div class="text-sm text-muted-foreground mt-2 italic">' + esc(d.translation) + '</div>';
                     }
-                    html += '<div class="mt-2"><button type="button" class="fc-icon-btn" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> Play Sentence</button></div>';
+                    html += '<div class="mt-4"><button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide hover:bg-primary/20 transition-colors" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> Play Sentence</button></div>';
                     cell.innerHTML = html;
                     if (d.tokens) {
                         renderContextTokens(d.tokens, $('wb-tokens-'+i));
@@ -213,6 +213,7 @@
 
 
   
+    var sp = e.target.closest('[data-speak]');
     if (sp) {
       var w0 = words[+sp.dataset.speak];
       if (w0 && 'speechSynthesis' in window) {

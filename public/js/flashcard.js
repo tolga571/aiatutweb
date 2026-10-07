@@ -587,7 +587,7 @@
       row.className = 'fc-save-row';
       if (saveFor.single) {
         var inIt = listIdsOf(saveFor.single).indexOf(l.id) >= 0;
-        row.innerHTML = '<input type="checkbox" id="fc-save-' + l.id + '"' + (inIt ? ' checked' : '') + '>' +
+        row.innerHTML = '<input type="checkbox" id="fc-save-' + l.id + '" class="form-checkbox h-4 w-4 rounded border-outline/50 bg-surface text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors"' + (inIt ? ' checked' : '') + '>' +
           '<label class="fc-save-name" for="fc-save-' + l.id + '">' + escHtml(l.label) + '</label><span class="fc-view-n">' + l.cards + '</span>';
         row.querySelector('input').addEventListener('change', function (e) { toggleCardIn(l, e.target); });
       } else {
