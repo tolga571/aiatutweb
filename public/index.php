@@ -159,6 +159,9 @@ switch ($page) {
         if (!empty($_GET['suspended'])) {
             $loginError = __('auth.account_suspended');
         }
+        if (($_GET['email_verified'] ?? '') === '1') {
+            $loginSuccess = __('auth.email_verified_success');
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $clientIp = client_ip();
             if ($auth->tooManyAttempts($clientIp, 'login', 8, 900)) {

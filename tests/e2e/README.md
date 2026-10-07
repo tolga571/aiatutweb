@@ -4,7 +4,7 @@ Browser tests against the **local staging** site (see `AGENTS.md` → Local stag
 
 | Script | What it covers | Checks |
 |---|---|---|
-| `sweep.js <adminSid> <outDir> [sections]` | Whole site. Sections: `guest` (15 pages × 11 languages × desktop/phone), `user` (register → onboarding → chat → flashcards → mistakes → logout/login), `i18n` (logged-in UI in all 11 languages), `admin` (every admin page), `api` (mobile API incl. other-user/IDOR checks) | 418 |
+| `sweep.js <adminSid> <outDir> [sections]` | Whole site. Sections: `guest` (15 pages × 11 languages × desktop/phone), `user` (register → onboarding → chat → flashcards → mistakes → logout/login), `i18n` (logged-in UI in all 11 languages), `admin` (every admin page), `api` (mobile API incl. other-user/IDOR checks) | 421 |
 | `lists_test.js <outDir> [phone]` | Card lists (playlists) + study mode, web | 17 |
 | `words_test.js <outDir>` | Word bank page + API, 5 UI languages | 16 |
 | `api_lists_test.sh` | Card-list API incl. other-user (IDOR) checks | 22 |

@@ -3,7 +3,11 @@
 B=${API_BASE:-http://127.0.0.1:8090/api/v1}; S=$(date +%s); P="Api-pass-$S"
 j() { python3 -c "import sys,json; d=json.load(sys.stdin); print(eval(sys.argv[1]))" "$1"; }
 pass=0; fail=0; ok() { if [ "$1" = "$2" ]; then pass=$((pass+1)); echo "PASS $3"; else fail=$((fail+1)); echo "FAIL $3 (got '$1', want '$2')"; fi; }
-reg() { curl -s -X POST $B/auth/register -H 'Content-Type: application/json' -d "{\"name\":\"Api $1\",\"email\":\"api-$1-$S@example.test\",\"password\":\"$P\",\"accept_terms\":true}" | j "d['data']['token']"; }
+# Sign-up gives no token until the email is confirmed: confirm it in the DB, then sign in.
+reg() { local e="api-$1-$S@example.test"
+  curl -s -X POST $B/auth/register -H 'Content-Type: application/json' -d "{\"name\":\"Api $1\",\"email\":\"$e\",\"password\":\"$P\",\"accept_terms\":true}" >/dev/null
+  psql ${PSQL_ARGS:--h /tmp/jlpg -p 5433 -d aitut} -qAtc "UPDATE users SET email_verified_at = now() WHERE email = '$e'"
+  curl -s -X POST $B/auth/login -H 'Content-Type: application/json' -d "{\"email\":\"$e\",\"password\":\"$P\"}" | j "d['data']['token']"; }
 A=$(reg a); Bt=$(reg b)
 for t in $A $Bt; do curl -s -X POST $B/onboarding -H "Authorization: Bearer $t" -H 'Content-Type: application/json' -d '{"native_lang":"en","target_lang":"es","cefr_level":"A1"}' >/dev/null; done
 H="Authorization: Bearer $A"; J='Content-Type: application/json'

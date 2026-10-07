@@ -6,6 +6,14 @@ const APP = 'http://localhost:8083/';
 const API = 'http://127.0.0.1:8090/api/v1/';
 const [, , OUT = '.'] = process.argv;
 const sql = q => execSync(`psql ${process.env.PSQL_ARGS || '-h /tmp/jlpg -p 5433 -d aitut'} -qAtc "${q}"`).toString().trim();
+// API sign-up returns no token until the email is confirmed: confirm it in the DB, then sign in.
+async function apiSignUp(api, body) {
+  const post = (p, b) => fetch(api + p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) }).then(r => r.json());
+  const reg = await post('auth/register', body);
+  if (!reg.ok) return reg;
+  sql(`UPDATE users SET email_verified_at = now() WHERE email = '${body.email}'`);
+  return post('auth/login', { email: body.email, password: body.password });
+}
 const results = [];
 function rec(ok, name, d = '') { results.push({ ok }); console.log((ok ? 'PASS ' : 'FAIL ') + name + (d ? '  — ' + d : '')); }
 async function check(name, fn) { try { const r = await fn(); rec(true, name, typeof r === 'string' ? r : ''); } catch (e) { rec(false, name, String(e.message || e).split('\n').slice(0, 6).join(' ¦ ').slice(0, 600)); } }
@@ -16,7 +24,7 @@ function assert(c, m) { if (!c) throw new Error(m); }
   const stamp = Date.now().toString(36);
   const email = `mob-${stamp}@example.test`, pass = 'Mob-pass-' + stamp;
   // Account made through the API the app uses; the UI test signs in with it.
-  const reg = await fetch(API + 'auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Mob Test', email, password: pass, accept_terms: true }) }).then(r => r.json());
+  const reg = await apiSignUp(API, { name: 'Mob Test', email, password: pass, accept_terms: true });
   const tok = reg.data.token;
   await fetch(API + 'onboarding', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify({ native_lang: 'en', target_lang: 'es', cefr_level: 'A1' }) });
 

@@ -7,6 +7,13 @@ const BASE = 'http://127.0.0.1:8090/';
 const [, , OUT = '.', MODE = ''] = process.argv;
 const phone = MODE === 'phone';
 const sql = q => execSync(`psql ${process.env.PSQL_ARGS || '-h /tmp/jlpg -p 5433 -d aitut'} -qAtc "${q}"`).toString().trim();
+// Sign-up ends on "check your email": confirm the address in the DB, then sign in.
+async function signInVerified(page, email, pass) {
+  sql(`UPDATE users SET email_verified_at = now() WHERE email = '${email}'`);
+  await page.goto(BASE + '?page=login');
+  await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
+  await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
+}
 const results = [];
 function rec(ok, name, d = '') { results.push({ ok, name, d }); console.log((ok ? 'PASS ' : 'FAIL ') + name + (d ? '  — ' + d : '')); }
 async function check(name, fn) { try { const r = await fn(); rec(true, name, typeof r === 'string' ? r : ''); } catch (e) { rec(false, name, String(e.message || e).split('\n').slice(0, 9).join(' ¦ ').slice(0, 900)); } }
@@ -36,6 +43,7 @@ function assert(c, m) { if (!c) throw new Error(m); }
     await page.fill('input[name=name]', 'Lists User'); await page.fill('input[name=email]', email);
     await page.fill('input[name=password]', pass); await page.fill('input[name=password_confirm]', pass);
     await page.check('#terms'); await page.click('#register-submit-btn'); await page.waitForLoadState();
+    await signInVerified(page, email, pass);
     await page.evaluate(() => { selectLang('native', 'en', 'us', 'English'); selectLang('target', 'es', 'es', 'Spanish'); });
     for (const n of ['cefr_level', 'learning_goal', 'interest_area']) await page.locator(`input[name=${n}]`).first().check({ force: true });
     await Promise.all([page.waitForNavigation(), page.locator('#onboarding-form [type=submit]').click()]);
@@ -196,6 +204,7 @@ function assert(c, m) { if (!c) throw new Error(m); }
     await p2.fill('input[name=name]', 'Other User'); await p2.fill('input[name=email]', e2);
     await p2.fill('input[name=password]', pass); await p2.fill('input[name=password_confirm]', pass);
     await p2.check('#terms'); await p2.click('#register-submit-btn'); await p2.waitForLoadState();
+    await signInVerified(p2, e2, pass);
     await p2.evaluate(() => { selectLang('native', 'en', 'us', 'English'); selectLang('target', 'es', 'es', 'Spanish'); });
     for (const n of ['cefr_level', 'learning_goal', 'interest_area']) await p2.locator(`input[name=${n}]`).first().check({ force: true });
     await Promise.all([p2.waitForNavigation(), p2.locator('#onboarding-form [type=submit]').click()]);

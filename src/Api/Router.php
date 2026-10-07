@@ -234,6 +234,9 @@ class Router
             throw new ApiError('rate_limited', t('auth.error_too_many_attempts'), 429);
         }
         $user = $this->auth->verifyCredentials(trim($this->str('email')), $this->str('password'));
+        if (!$user && $this->auth->lastErrorCode === 'unverified') {
+            throw new ApiError('email_unverified', $this->auth->lastError, 403);
+        }
         if (!$user) {
             $this->auth->recordAttempt($ip, 'login');
             throw new ApiError('invalid_credentials', $this->auth->lastError ?: t('auth.invalid_credentials'), 401);
@@ -283,8 +286,8 @@ class Router
             t('auth.verify_email_subject'),
             '<p>' . t('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
         );
-        $this->auth->recordActivity($user);
-        $this->signedIn((int)$user['id'], 201);
+        // Like the website: no session until the address is confirmed.
+        $this->ok(['awaiting_verification' => true, 'email' => $email], 201);
     }
 
     /** Sign in / up with a Google ID token obtained by the app's native Google Sign-In. */

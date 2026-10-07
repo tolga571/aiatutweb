@@ -4,6 +4,8 @@ namespace App\Src;
 class Auth {
     private Database $db;
     public string $lastError = '';
+    /** 'unverified' when verifyCredentials() refused only because the email isn't confirmed yet. */
+    public string $lastErrorCode = '';
     /** $startSession is false for the mobile API, which uses bearer tokens instead of a session. */
     public function __construct(Database $db, bool $startSession = true) {
         $this->db = $db;
@@ -28,6 +30,7 @@ class Auth {
      * the mobile API.
      */
     public function verifyCredentials(string $email, string $password): ?array {
+        $this->lastErrorCode = '';
         $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ?', [$email]);
         // One message for "no such email" and "wrong password" — separate
         // ones let anyone check which emails have an account here. The
@@ -42,6 +45,7 @@ class Auth {
         }
         if (empty($user['email_verified_at']) && empty($user['google_id'])) {
             $this->lastError = __('auth.error_unverified_email');
+            $this->lastErrorCode = 'unverified';
             return null;
         }
         return $user;

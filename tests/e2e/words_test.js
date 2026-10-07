@@ -4,6 +4,21 @@ const { execSync } = require('child_process');
 const BASE = 'http://127.0.0.1:8090/';
 const [, , OUT = '.'] = process.argv;
 const sql = q => execSync(`psql ${process.env.PSQL_ARGS || '-h /tmp/jlpg -p 5433 -d aitut'} -qAtc "${q}"`).toString().trim();
+// Sign-up ends on "check your email": confirm the address in the DB, then sign in.
+async function signInVerified(page, email, pass) {
+  sql(`UPDATE users SET email_verified_at = now() WHERE email = '${email}'`);
+  await page.goto(BASE + '?page=login');
+  await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
+  await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
+}
+// API sign-up returns no token until the email is confirmed: confirm it in the DB, then sign in.
+async function apiSignUp(api, body) {
+  const post = (p, b) => fetch(api + p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) }).then(r => r.json());
+  const reg = await post('auth/register', body);
+  if (!reg.ok) return reg;
+  sql(`UPDATE users SET email_verified_at = now() WHERE email = '${body.email}'`);
+  return post('auth/login', { email: body.email, password: body.password });
+}
 const results = [];
 function rec(ok, name, d = '') { results.push(ok); console.log((ok ? 'PASS ' : 'FAIL ') + name + (d ? '  — ' + d : '')); }
 async function check(name, fn) { try { const r = await fn(); rec(true, name, typeof r === 'string' ? r : ''); } catch (e) { rec(false, name, String(e.message || e).split('\n').slice(0, 5).join(' ¦ ').slice(0, 500)); } }
@@ -17,6 +32,7 @@ async function newUser(browser, opts, native, target, ui) {
   await page.fill('input[name=name]', 'Wb User'); await page.fill('input[name=email]', email);
   await page.fill('input[name=password]', pass); await page.fill('input[name=password_confirm]', pass);
   await page.check('#terms'); await page.click('#register-submit-btn'); await page.waitForLoadState();
+  await signInVerified(page, email, pass);
   await page.evaluate(([n, t]) => { selectLang('native', n, n, n); selectLang('target', t, t, t); }, [native, target]);
   for (const n of ['cefr_level', 'learning_goal', 'interest_area']) await page.locator(`input[name=${n}]`).first().check({ force: true });
   await Promise.all([page.waitForNavigation(), page.locator('#onboarding-form [type=submit]').click()]);
@@ -132,7 +148,7 @@ async function newUser(browser, opts, native, target, ui) {
     sql('DELETE FROM login_attempts; DELETE FROM trial_grants;');
     const A = 'http://127.0.0.1:8090/api/v1/';
     const j = (r) => r.json();
-    const reg = await fetch(A + 'auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Api Wb', email: `apiwb-${Date.now()}@example.test`, password: 'Api-wb-pass-1', accept_terms: true }) }).then(j);
+    const reg = await apiSignUp(A, { name: 'Api Wb', email: `apiwb-${Date.now()}@example.test`, password: 'Api-wb-pass-1', accept_terms: true });
     const H = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + reg.data.token };
     await fetch(A + 'onboarding', { method: 'POST', headers: H, body: JSON.stringify({ native_lang: 'ru', target_lang: 'de' }) });
     const w = await fetch(A + 'words?lang=de', { headers: H }).then(j);

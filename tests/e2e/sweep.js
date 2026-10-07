@@ -83,11 +83,27 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
     assert(/page=register/.test(page.url()) || await page.locator('input[name=password_confirm]').count(), 'not kept on register');
     await pageSane(page, bag, { lang: 'de' });
   });
-  await check('register: success → onboarding', async () => {
+  await check('register: success → check your email', async () => {
     await page.goto(BASE + '?page=register');
     await page.fill('input[name=name]', 'Sweep User'); await page.fill('input[name=email]', email);
     await page.fill('input[name=password]', pass); await page.fill('input[name=password_confirm]', pass);
     await page.check('#terms'); await page.click('#register-submit-btn'); await page.waitForLoadState();
+    assert(/awaiting-verification/.test(page.url()), 'landed on ' + page.url());
+    await pageSane(page, bag, { lang: 'de' });
+  });
+  await check('login: refused until the email is confirmed', async () => {
+    await page.goto(BASE + '?page=login');
+    await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
+    await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
+    assert(/page=login/.test(page.url()), 'signed in unverified: ' + page.url());
+  });
+  await check('verify link → login → onboarding', async () => {
+    const token = 'sweep' + stamp;
+    sql(`INSERT INTO email_verifications (user_id, token_hash, expires_at) SELECT id, encode(sha256('${token}'), 'hex'), now() + interval '1 day' FROM users WHERE email = '${email}'`);
+    await page.goto(BASE + '?page=verify-email&token=' + token); await page.waitForLoadState();
+    assert(/email_verified=1/.test(page.url()), 'verify failed: ' + page.url());
+    await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
+    await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
     assert(/onboarding/.test(page.url()), 'landed on ' + page.url());
     await pageSane(page, bag, { lang: 'de' });
   });
@@ -370,8 +386,15 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
   await check('api register needs terms', async () => {
     const j = await J(await A('POST', 'auth/register', { name: 'Api Sweep', email: `api0-${stamp}@example.test`, password: pass })); assert(j.error, 'accepted without terms');
   });
-  await check('api register + onboarding (native ru, target en)', async () => {
-    const j = await J(await A('POST', 'auth/register', { name: 'Api Sweep', email: `api-${stamp}@example.test`, password: pass, accept_terms: true }));
+  await check('api register → awaiting verification, login refused until confirmed', async () => {
+    const em = `api-${stamp}@example.test`;
+    const j = await J(await A('POST', 'auth/register', { name: 'Api Sweep', email: em, password: pass, accept_terms: true }));
+    assert(j.data && j.data.awaiting_verification && !tokOf(j), JSON.stringify(j).slice(0, 150));
+    const l = await J(await A('POST', 'auth/login', { email: em, password: pass })); assert(l.error && l.error.code === 'email_unverified', JSON.stringify(l).slice(0, 150));
+  });
+  await check('api login after confirmation + onboarding (native ru, target en)', async () => {
+    sql(`UPDATE users SET email_verified_at = now() WHERE email = 'api-${stamp}@example.test'`);
+    const j = await J(await A('POST', 'auth/login', { email: `api-${stamp}@example.test`, password: pass }));
     tok = tokOf(j); assert(tok, JSON.stringify(j).slice(0, 150));
     const o = await J(await A('POST', 'onboarding', { native_lang: 'ru', target_lang: 'en', cefr_level: 'A1', learning_goal: 'travel', interest_area: 'travel' }, tok));
     assert(!o.error, JSON.stringify(o).slice(0, 150));
@@ -406,7 +429,9 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
     assert(gs.includes('яблоко!'), 'update lost'); assert(/"is_favorite":(true|"t"|1)/.test(gs), 'favorite lost: ' + gs.slice(0, 300)); assert(/"learned_at":"/.test(gs), 'learned lost');
   });
   await check('api IDOR: user B cannot read/edit/delete user A card or conversation', async () => {
-    const j = await J(await A('POST', 'auth/register', { name: 'Api Sweep B', email: `apib-${stamp}@example.test`, password: pass, accept_terms: true }));
+    await J(await A('POST', 'auth/register', { name: 'Api Sweep B', email: `apib-${stamp}@example.test`, password: pass, accept_terms: true }));
+    sql(`UPDATE users SET email_verified_at = now() WHERE email = 'apib-${stamp}@example.test'`);
+    const j = await J(await A('POST', 'auth/login', { email: `apib-${stamp}@example.test`, password: pass }));
     tokB = tokOf(j); assert(tokB, 'no token B');
     await J(await A('POST', 'onboarding', { native_lang: 'fr', target_lang: 'es', cefr_level: 'A1', learning_goal: 'travel', interest_area: 'travel' }, tokB));
     for (const [m, p, d] of [['GET', 'flashcards/' + cardId], ['PATCH', 'flashcards/' + cardId, { translation: 'hacked' }], ['DELETE', 'flashcards/' + cardId], ['GET', 'conversations/' + convId]]) {

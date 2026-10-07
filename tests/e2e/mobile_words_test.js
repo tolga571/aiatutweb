@@ -3,13 +3,21 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const { execSync } = require('child_process');
 const API = 'http://127.0.0.1:8090/api/v1/';
 const sql = q => execSync(`psql ${process.env.PSQL_ARGS || '-h /tmp/jlpg -p 5433 -d aitut'} -qAtc "${q}"`).toString().trim();
+// API sign-up returns no token until the email is confirmed: confirm it in the DB, then sign in.
+async function apiSignUp(api, body) {
+  const post = (p, b) => fetch(api + p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) }).then(r => r.json());
+  const reg = await post('auth/register', body);
+  if (!reg.ok) return reg;
+  sql(`UPDATE users SET email_verified_at = now() WHERE email = '${body.email}'`);
+  return post('auth/login', { email: body.email, password: body.password });
+}
 const res = []; function rec(ok, n, d = '') { res.push(ok); console.log((ok ? 'PASS ' : 'FAIL ') + n + (d ? '  — ' + d : '')); }
 async function check(n, fn) { try { const r = await fn(); rec(true, n, typeof r === 'string' ? r : ''); } catch (e) { rec(false, n, String(e.message).split('\n').slice(0, 4).join(' ¦ ').slice(0, 400)); } }
 const assert = (c, m) => { if (!c) throw new Error(m); };
 (async () => {
   sql('DELETE FROM login_attempts; DELETE FROM trial_grants;');
   const stamp = Date.now().toString(36), email = `mw-${stamp}@example.test`, pass = 'Mw-pass-' + stamp;
-  const reg = await fetch(API + 'auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Mw', email, password: pass, accept_terms: true }) }).then(r => r.json());
+  const reg = await apiSignUp(API, { name: 'Mw', email, password: pass, accept_terms: true });
   await fetch(API + 'onboarding', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + reg.data.token }, body: JSON.stringify({ native_lang: 'ru', target_lang: 'en', cefr_level: 'A1' }) });
   const b = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
   const p = await (await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })).newPage();

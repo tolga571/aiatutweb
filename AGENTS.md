@@ -55,7 +55,7 @@ The app's web preview runs on :8083 against this API. These ports are shared bet
 ## Before you hand work over
 
 - `php -l` every changed PHP file; `node --check` changed JS.
-- Run the matching suite in `tests/e2e/` plus `sweep.js` (see its README). Everything passes today (418/418 + the feature suites).
+- Run the matching suite in `tests/e2e/` plus `sweep.js` (see its README). Everything passes today (421/421 + the feature suites).
 - After a deploy: wait until production serves the new code, then smoke-test it (`tests/e2e/prodcheck.js`, `BASE=https://jumplearner.com/ node tests/e2e/sweep.js x /tmp guest`).
 
 ## Commit style

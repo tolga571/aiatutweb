@@ -666,6 +666,24 @@ class Database {
                 error_log('vocab_hsk_rev_1 failed (will retry next request): ' . $e->getMessage());
             }
         }
+
+        // Email verification became required for password sign-in on
+        // 2026-10-07. Accounts created before that never had to confirm
+        // their address and must not be locked out, so they count as
+        // confirmed. Runs once; never fatal.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'email_verify_rev_1'")->fetchColumn()) {
+            $this->pdo->beginTransaction();
+            try {
+                $this->pdo->exec('UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE email_verified_at IS NULL');
+                $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('email_verify_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('email_verify_rev_1 failed (will retry next request): ' . $e->getMessage());
+            }
+        }
     }
 
     public function getPdo(): \PDO {
