@@ -18,6 +18,11 @@
     </div>
 
     <div class="bg-surface-container border border-outline-variant/20 rounded-2xl p-5 sm:p-8">
+      <?php if (!empty($loginSuccess)): ?>
+        <div class="bg-primary/10 border border-primary/30 text-primary rounded-xl px-4 py-3 mb-5 text-body-md">
+          <?= htmlspecialchars($loginSuccess) ?>
+        </div>
+      <?php endif; ?>
       <?php if (!empty($loginError)): ?>
         <div class="bg-error-container/30 border border-error/30 text-error rounded-xl px-4 py-3 mb-5 text-body-md">
           <?= htmlspecialchars($loginError) ?>

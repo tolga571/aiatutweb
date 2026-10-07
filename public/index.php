@@ -230,8 +230,8 @@ switch ($page) {
                                 '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
                             );
                         }
-                        $redirect = isset($_GET['redirect']) ? '&redirect=' . urlencode($_GET['redirect']) : '';
-                        header('Location: ?page=onboarding' . $redirect); exit;
+                        $auth->logout(); // Force them to verify email before logging in
+                        header('Location: ?page=awaiting-verification'); exit;
                     }
                     $errors[] = $auth->lastError ?: __('auth.registration_failed');
                 }
@@ -297,6 +297,10 @@ switch ($page) {
             }
         }
         require __DIR__ . '/../views/reset-password.php';
+        break;
+
+    case 'awaiting-verification':
+        require __DIR__ . '/../views/pages/awaiting-verification.php';
         break;
 
     case 'verify-email':

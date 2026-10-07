@@ -40,6 +40,10 @@ class Auth {
             $this->lastError = __('auth.account_suspended');
             return null;
         }
+        if (empty($user['email_verified_at']) && empty($user['google_id'])) {
+            $this->lastError = __('auth.error_unverified_email');
+            return null;
+        }
         return $user;
     }
 
