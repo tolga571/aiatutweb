@@ -4,6 +4,28 @@ namespace App\Src;
 class Flashcard {
     private Database $db;
 
+
+    public function getWordContext(string $targetLang, string $nativeLang, string $word, \App\Src\GeminiClient $gemini): array {
+        $stmt = $this->db->pdo->prepare("SELECT content, source FROM word_contexts WHERE target_lang = ? AND native_lang = ? AND word = ? LIMIT 1");
+        $stmt->execute([$targetLang, $nativeLang, $word]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            $content = json_decode($row['content'], true);
+            $content['source'] = $row['source'];
+            return $content;
+        }
+        
+        $context = $gemini->generateContextForWord($word, $targetLang, $nativeLang);
+        if ($context) {
+            $stmt = $this->db->pdo->prepare("INSERT INTO word_contexts (target_lang, native_lang, word, content, source) VALUES (?, ?, ?, ?, 'ai_translation')");
+            $stmt->execute([$targetLang, $nativeLang, $word, json_encode($context)]);
+            $context['source'] = 'ai_translation';
+        }
+        
+        return $context ?: [];
+    }
+
     public function __construct(Database $db) {
         $this->db = $db;
     }

@@ -144,6 +144,46 @@ class GeminiClient {
         throw new \RuntimeException($errorMsg);
     }
 
+
+    public function generateContextForWord(string $word, string $targetLang, string $nativeLang): array {
+        $prompt = "You are a language teacher. The user is learning '$targetLang' and their native language is '$nativeLang'. 
+Create a realistic, short dialogue or sentence using the word '$word'. 
+Return a JSON object with this exact structure:
+{
+  \"text\": \"the full text/dialogue in target language\",
+  \"translation\": \"full translation in native language\",
+  \"tokens\": [
+    { \"token\": \"word1\", \"pinyin\": \"pronunciation1\", \"translation\": \"meaning1\" }
+  ]
+}
+Make sure 'tokens' breaks down the entire text into words (including punctuation as separate tokens if necessary, or just skip punctuation) so the UI can render them word by word.";
+
+        $payload = [
+            'contents' => [['role' => 'user', 'parts' => [['text' => $prompt]]]],
+            'generationConfig' => [
+                'responseMimeType' => 'application/json',
+                'thinkingConfig' => ['thinkingBudget' => 0]
+            ]
+        ];
+
+        foreach ($this->apiKeys as $ki => $key) {
+            foreach ($this->models as $model) {
+                try {
+                    $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
+                    $response = $this->httpPost($url, $payload);
+                    $data = json_decode($response, true);
+                    $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                    if ($text) {
+                        return json_decode($text, true) ?: [];
+                    }
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+        }
+        return [];
+    }
+
     private function httpPost(string $url, array $data): string {
         $json = json_encode($data);
         $ch = curl_init($url);

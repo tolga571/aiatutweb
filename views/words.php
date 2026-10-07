@@ -47,6 +47,19 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
       </div>
     </div>
 
+    
+    <!-- Bulk Actions Toolbar -->
+    <div id="wb-bulk-toolbar" class="hidden flex items-center justify-between bg-primary text-primary-foreground p-3 rounded-lg mb-4 shadow-md sticky top-16 z-40 transition-all duration-300">
+      <div class="flex items-center gap-3">
+        <button id="wb-bulk-close" class="material-symbols-outlined hover:text-white" title="Close">close</button>
+        <span id="wb-bulk-count" class="font-bold">0 selected</span>
+      </div>
+      <div class="flex gap-2">
+        <button id="wb-bulk-select-all" class="px-3 py-1 text-sm bg-white/20 hover:bg-white/30 rounded">Select All Visible</button>
+        <button id="wb-bulk-add" class="px-3 py-1 text-sm bg-white text-primary hover:bg-surface rounded font-bold">Add Selected</button>
+      </div>
+    </div>
+
     <div class="fc-words-tools" role="search">
       <div class="relative flex-1 min-w-[12rem]">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]" aria-hidden="true">search</span>
@@ -68,6 +81,7 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
     <table class="fc-words-table">
       <thead>
         <tr>
+          <th scope="col" class="w-10"><input type="checkbox" id="wb-bulk-master" aria-label="Select all"></th>
           <th scope="col"><?= __('fc.col_word') ?></th>
           <th scope="col"><?= __('fc.col_meaning') ?></th>
           <th scope="col" class="fc-words-narrow"><?= __('fc.col_level') ?></th>

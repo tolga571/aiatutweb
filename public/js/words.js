@@ -43,18 +43,23 @@
     var html = '';
     list.slice(0, shown).forEach(function (w) {
       var i = words.indexOf(w);
-      html += '<tr>' +
+      var checkbox = !w.card_id ? '<input type="checkbox" class="wb-bulk-cb w-4 h-4" data-i="'+i+'">' : '';
+      html += '<tr class="wb-row" data-i="'+i+'">' +
+        '<td>'+checkbox+'</td>' +
         '<td data-label=""><div class="fc-words-word"><span dir="' + (cfg.rtl ? 'rtl' : 'auto') + '">' + esc(w.word) + '</span>' +
           '<button type="button" class="fc-icon-btn" data-speak="' + i + '" aria-label="' + esc(L.listen) + '"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span></button></div>' +
-          (w.pronunciation ? '<div class="fc-words-pron">' + esc(w.pronunciation) + '</div>' : '') + '</td>' +
+          (w.pronunciation ? '<div class="fc-words-pron">' + esc(w.pronunciation) + '</div>' : '') + 
+          '<div class="mt-2"><button type="button" class="text-xs text-primary underline wb-show-context" data-i="'+i+'">Show Example (AI)</button></div>' +
+          '</td>' +
         '<td class="fc-words-meaning">' + esc(w.meaning) + '</td>' +
         '<td class="fc-words-narrow"><span class="level-badge">' + esc(w.level) + '</span></td>' +
         '<td class="fc-words-cat">' + esc((cfg.cats || {})[w.category] || w.category) + '</td>' +
         '<td class="fc-words-narrow" id="wb-act-' + i + '">' + actionCell(w, i) + '</td>' +
-      '</tr>';
+      '</tr><tr id="wb-ctx-row-'+i+'" hidden><td colspan="6" class="bg-surface-dimmer p-4" id="wb-ctx-cell-'+i+'"></td></tr>';
     });
     rows.innerHTML = html;
     more.hidden = list.length <= shown;
+    updateBulkToolbar();
   }
 
   function toast(msg, bad) {
@@ -69,8 +74,145 @@
     setTimeout(function () { t.remove(); }, 2600);
   }
 
+  var bulkIds = new Set();
+  var bulkMaster = $('wb-bulk-master');
+  var bulkToolbar = $('wb-bulk-toolbar');
+  
+  function updateBulkToolbar() {
+    var cbs = document.querySelectorAll('.wb-bulk-cb');
+    var checked = 0;
+    cbs.forEach(function(cb) { if(cb.checked) checked++; });
+    if(bulkMaster) bulkMaster.checked = (cbs.length > 0 && checked === cbs.length);
+    
+    if (bulkIds.size > 0) {
+        bulkToolbar.classList.remove('hidden');
+        $('wb-bulk-count').textContent = bulkIds.size + ' selected';
+    } else {
+        bulkToolbar.classList.add('hidden');
+    }
+  }
+
+  if (bulkMaster) {
+      bulkMaster.addEventListener('change', function(e) {
+          var cbs = document.querySelectorAll('.wb-bulk-cb');
+          cbs.forEach(function(cb) {
+              cb.checked = e.target.checked;
+              if (e.target.checked) bulkIds.add(cb.dataset.i);
+              else bulkIds.delete(cb.dataset.i);
+          });
+          updateBulkToolbar();
+      });
+  }
+
+  $('wb-bulk-close')?.addEventListener('click', function() {
+      bulkIds.clear();
+      document.querySelectorAll('.wb-bulk-cb').forEach(cb => cb.checked = false);
+      updateBulkToolbar();
+  });
+
+  $('wb-bulk-select-all')?.addEventListener('click', function() {
+      document.querySelectorAll('.wb-bulk-cb').forEach(cb => {
+          cb.checked = true;
+          bulkIds.add(cb.dataset.i);
+      });
+      updateBulkToolbar();
+  });
+
+  $('wb-bulk-add')?.addEventListener('click', function() {
+      if (bulkIds.size === 0) return;
+      var btn = this;
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+      var payload = [];
+      bulkIds.forEach(function(i) {
+          payload.push({word: words[i].word, translation: words[i].meaning});
+      });
+      
+      fetch('/api/v1/cards/bulk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ words: payload, lists: [] })
+      })
+      .then(r => r.json())
+      .then(res => {
+          btn.disabled = false;
+          btn.textContent = 'Add Selected';
+          if (!res.ok) { toast(res.error || L.err, true); return; }
+          bulkIds.forEach(function(i) { words[i].card_id = true; });
+          bulkIds.clear();
+          render();
+          toast(res.added + ' words added.');
+      })
+      .catch(() => { btn.disabled = false; btn.textContent = 'Add Selected'; toast(L.err, true); });
+  });
+
+  rows.addEventListener('change', function(e) {
+      if (e.target.classList.contains('wb-bulk-cb')) {
+          if (e.target.checked) bulkIds.add(e.target.dataset.i);
+          else bulkIds.delete(e.target.dataset.i);
+          updateBulkToolbar();
+      }
+  });
+
+  // Interactive Popup logic
+  function renderContextTokens(tokens, container) {
+      var html = '<div class="flex flex-wrap gap-2 text-lg items-center">';
+      tokens.forEach(function(t) {
+          html += '<div class="group relative cursor-pointer text-center">';
+          html += '<div class="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface px-1 rounded shadow">' + esc(t.pinyin || '') + '</div>';
+          html += '<span class="hover:text-primary transition-colors border-b border-transparent hover:border-primary">' + esc(t.token) + '</span>';
+          if (t.translation) {
+              html += '<div class="text-xs text-on-surface opacity-0 group-hover:opacity-100 transition-opacity absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-high px-2 py-1 rounded shadow-lg z-50">' + esc(t.translation) + '</div>';
+          }
+          html += '</div>';
+      });
+      html += '</div>';
+      container.innerHTML = html;
+  }
+
   rows.addEventListener('click', function (e) {
-    var sp = e.target.closest('[data-speak]');
+    if (e.target.classList.contains('wb-show-context')) {
+        var i = e.target.dataset.i;
+        var w = words[i];
+        var row = $('wb-ctx-row-' + i);
+        var cell = $('wb-ctx-cell-' + i);
+        if (!row.hidden) {
+            row.hidden = true;
+            e.target.textContent = 'Show Example (AI)';
+            return;
+        }
+        row.hidden = false;
+        e.target.textContent = 'Hide Example';
+        if (cell.innerHTML === '') {
+            cell.innerHTML = '<div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="material-symbols-outlined animate-spin text-[16px]">sync</span> Loading context...</div>';
+            fetch('/api/v1/words/context?word=' + encodeURIComponent(w.word))
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok || !res.data) { cell.innerHTML = '<div class="text-red-500 text-sm">Failed to load example.</div>'; return; }
+                    var d = res.data;
+                    var sourceBadge = d.source === 'ai_translation' ? '<span class="text-[10px] bg-primary/20 text-primary px-1 rounded uppercase tracking-wide">AI Generated</span>' : '';
+                    var html = '<div class="mb-2">' + sourceBadge + '</div>';
+                    if (d.tokens) {
+                        html += '<div id="wb-tokens-'+i+'"></div>';
+                    } else {
+                        html += '<div class="text-lg">' + esc(d.text) + '</div>';
+                    }
+                    if (d.translation) {
+                        html += '<div class="text-sm text-muted-foreground mt-2 italic">' + esc(d.translation) + '</div>';
+                    }
+                    html += '<div class="mt-2"><button type="button" class="fc-icon-btn" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> Play Sentence</button></div>';
+                    cell.innerHTML = html;
+                    if (d.tokens) {
+                        renderContextTokens(d.tokens, $('wb-tokens-'+i));
+                    }
+                })
+                .catch(() => { cell.innerHTML = '<div class="text-red-500 text-sm">Error loading.</div>'; });
+        }
+        return;
+    }
+
+
+  
     if (sp) {
       var w0 = words[+sp.dataset.speak];
       if (w0 && 'speechSynthesis' in window) {

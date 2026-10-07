@@ -697,6 +697,24 @@ class Database {
         }
     }
 
+
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'word_contexts_rev_1'")->fetchColumn()) {
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS word_contexts (
+                    id SERIAL PRIMARY KEY,
+                    target_lang VARCHAR(10) NOT NULL,
+                    native_lang VARCHAR(10) NOT NULL,
+                    word VARCHAR(255) NOT NULL,
+                    context_type VARCHAR(20) DEFAULT 'sentence',
+                    content JSONB NOT NULL,
+                    source VARCHAR(50) DEFAULT 'ai_translation',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+                CREATE INDEX idx_word_contexts_lookup ON word_contexts(target_lang, native_lang, word);
+            ");
+            $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('word_contexts_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+        }
+
     public function getPdo(): \PDO {
         return $this->pdo;
     }
