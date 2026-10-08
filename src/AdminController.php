@@ -630,6 +630,55 @@ class AdminController {
         require __DIR__ . '/../views/admin/conversation_detail.php';
     }
 
+    // ------------------- AI reply reports -------------------
+    /** "Report this reply" from the app (Google Play requires a way to flag AI content, and someone to look at it). */
+    public function listReports(array $query): void {
+        $this->requireAdmin();
+        $status = in_array($query['status'] ?? '', ['open', 'reviewed', 'dismissed', 'all'], true) ? $query['status'] : 'open';
+        $perPage = 50;
+        $pageNum = max(1, (int)($query['p'] ?? 1));
+        $where = $status === 'all' ? 'TRUE' : 'r.status = ?';
+        $params = $status === 'all' ? [] : [$status];
+        $totalCount = (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM ai_reports r WHERE {$where}", $params)['c'];
+        $counts = [];
+        foreach ($this->db->fetchAll('SELECT status, COUNT(*) AS c FROM ai_reports GROUP BY status') as $row) {
+            $counts[$row['status']] = (int)$row['c'];
+        }
+        $reports = $this->db->fetchAll(
+            "SELECT r.id, r.user_id, r.message_id, r.reason, r.note, r.message_snapshot, r.source, r.status, r.created_at,
+                    u.email AS user_email, m.conversation_id
+             FROM ai_reports r LEFT JOIN users u ON u.id = r.user_id LEFT JOIN messages m ON m.id = r.message_id
+             WHERE {$where} ORDER BY r.created_at DESC LIMIT {$perPage} OFFSET " . (($pageNum - 1) * $perPage),
+            $params
+        );
+        $totalPages = max(1, (int)ceil($totalCount / $perPage));
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/reports.php';
+    }
+
+    public function reportAction(array $post): void {
+        $this->requireAdmin();
+        $back = '?page=admin-reports' . (in_array($post['back'] ?? '', ['open', 'reviewed', 'dismissed', 'all'], true) ? '&status=' . $post['back'] : '');
+        if (!$this->validateCsrfToken((string)($post['csrf'] ?? ''))) {
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ' . $back);
+            exit;
+        }
+        $id = (int)($post['id'] ?? 0);
+        $status = (string)($post['status'] ?? '');
+        $report = $this->db->fetchOne('SELECT id, user_id FROM ai_reports WHERE id = ?', [$id]);
+        if (!$report || !in_array($status, ['open', 'reviewed', 'dismissed'], true)) {
+            $this->flash('danger', t('admin.report_not_found'));
+            header('Location: ' . $back);
+            exit;
+        }
+        $this->db->execute('UPDATE ai_reports SET status = ? WHERE id = ?', [$status, $id]);
+        $this->audit('ai_report_' . $status, $report['user_id'] !== null ? (int)$report['user_id'] : null, "report #{$id}");
+        $this->flash('success', t('admin.report_updated', ['id' => $id]));
+        header('Location: ' . $back);
+        exit;
+    }
+
     // ------------------- Languages & UI strings -------------------
     public function languages(): void {
         $this->requireAdmin();
@@ -972,6 +1021,12 @@ class AdminController {
     // ------------------- CSV Export -------------------
     public function exportCsv(string $type): void {
         $this->requireAdmin();
+        if (!in_array($type, ['users', 'payments', 'admins'], true)) {
+            header('Location: ?page=admin-dashboard');
+            exit;
+        }
+        // A file with every user's e-mail leaves the system: keep a record.
+        $this->audit('data_exported', null, $type . '.csv');
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $type . '.csv"');
         $output = fopen('php://output', 'w');

@@ -30,6 +30,9 @@ if (str_starts_with($apiPath, '/api/v1/') || $apiPath === '/api/v1') {
 // Session stays alive for 90 days of inactivity, refreshed on each visit
 $sessionLifetime = 86400 * 90; // 90 days
 ini_set('session.gc_maxlifetime', $sessionLifetime);
+// Expired rows are swept on about 1 in 100 requests (some builds ship 0 = never).
+ini_set('session.gc_probability', '1');
+ini_set('session.gc_divisor', '100');
 ini_set('session.cookie_lifetime', $sessionLifetime);
 session_set_cookie_params([
     'lifetime' => $sessionLifetime,
@@ -96,6 +99,12 @@ if ($auth->isLoggedIn()) {
         $auth->logout();
         header('Location: ?page=login' . ($wasSuspended ? '&suspended=1' : ''));
         exit;
+    }
+    // Last active + day streak on the first visit of each day, not only at
+    // sign-in: a session stays open for 90 days.
+    if (($currentUser['last_activity_date'] ?? null) !== date('Y-m-d')) {
+        $auth->recordActivity($currentUser);
+        $currentUser = $auth->currentUser();
     }
     if (!empty($currentUser['ui_lang']) && Language::isUsable($currentUser['ui_lang'], 'ui')) {
         $detectedLang = $currentUser['ui_lang'];
@@ -345,6 +354,12 @@ switch ($page) {
         exit;
 
     case 'google-login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['credential']) && !csrf_verify($_POST['csrf_token'] ?? null)) {
+            // Login CSRF: a foreign page posting its own Google token would sign the visitor in to that account.
+            $_SESSION['login_error'] = __('auth.error_generic');
+            header('Location: ?page=login');
+            exit;
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['credential'])) {
             $credential = $_POST['credential'];
             $googleClientId = $config['google_client_id'] ?? '';
@@ -1401,6 +1416,14 @@ switch ($page) {
             $adminCtrl->revenueAction($_POST);
         }
         header('Location: ?page=admin-payments'); exit;
+    case 'admin-reports':
+        $adminCtrl->listReports($_GET);
+        break;
+    case 'admin-report-action':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminCtrl->reportAction($_POST);
+        }
+        header('Location: ?page=admin-reports'); exit;
     case 'admin-activity':
         $adminCtrl->listActivity($_GET);
         break;

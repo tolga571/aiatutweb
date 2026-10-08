@@ -148,6 +148,12 @@ function handleCredentialResponse(response) {
     input.value = response.credential;
     
     form.appendChild(input);
+    // Our CSRF token: another site can't post someone else's Google sign-in here.
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden';
+    csrf.name = 'csrf_token';
+    csrf.value = <?= json_encode(csrf_token()) ?>;
+    form.appendChild(csrf);
     document.body.appendChild(form);
     form.submit();
   }

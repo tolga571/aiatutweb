@@ -74,6 +74,11 @@ class Router
             $this->bearer = $this->readBearer();
             if ($this->bearer !== '') {
                 $this->user = $this->tokens->user($this->bearer);
+                // Last active + day streak on the first call of each day (a token lasts 90 days).
+                if ($this->user && ($this->user['last_activity_date'] ?? null) !== date('Y-m-d')) {
+                    $this->auth->recordActivity($this->user);
+                    $this->user = $this->freshUser((int)$this->user['id']);
+                }
             }
             $this->loadLanguage();
             $this->dispatch($method, trim($path, '/'));

@@ -29,7 +29,7 @@ $delta = function (array $k, bool $neutral = false): string {
     return '<span class="kpi-delta ' . $cls . '"><i class="ti ti-' . $icon . '"></i> ' . ($pct >= 0 ? '+' : '') . number_format($pct, 0, ',', '.') . '%</span>';
 };
 
-$todoCount = count($todos['manual_cancellations']) + count($todos['refunds']);
+$todoCount = count($todos['manual_cancellations']) + count($todos['refunds']) + ($todos['open_reports'] ? 1 : 0);
 $aiFailRate = $todos['ai_total_24h'] ? $todos['ai_failed_24h'] / $todos['ai_total_24h'] * 100 : 0;
 
 ob_start(); ?>
@@ -137,6 +137,14 @@ ob_start();
                     </div>
                 </a>
                 <?php endforeach; ?>
+                <?php if ($todos['open_reports']): ?>
+                <a href="?page=admin-reports" class="list-group-item list-group-item-action">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="status-dot status-dot-animated bg-orange"></span>
+                        <div class="text-truncate"><strong><?= $e(t('admin.reports_open_todo', ['n' => $todos['open_reports']])) ?></strong><div class="text-secondary small"><?= $e(t('admin.reports_todo_hint')) ?></div></div>
+                    </div>
+                </a>
+                <?php endif; ?>
                 <?php foreach ($todos['manual_cancellations'] as $r): ?>
                 <a href="?page=admin-payments#queue" class="list-group-item list-group-item-action">
                     <div class="d-flex align-items-center gap-2">

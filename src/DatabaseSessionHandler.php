@@ -30,7 +30,15 @@ class DatabaseSessionHandler implements \SessionHandlerInterface
 
     public function write(string $id, string $data): bool
     {
-        $lifetime = (int) ini_get('session.gc_maxlifetime');
+        // Nothing to keep (a first visit, or after sign-out): no row at all,
+        // and drop an old one so a signed-out session id can't be reused.
+        if ($data === '') {
+            return $this->destroy($id);
+        }
+        // Signed-in sessions get the full lifetime; anonymous ones (crawlers,
+        // visitors who never sign in) a day, so they can't pile up 90-day rows.
+        $signedIn = str_contains($data, 'user_id|') || str_contains($data, 'admin_id|');
+        $lifetime = $signedIn ? (int) ini_get('session.gc_maxlifetime') : 86400;
         $expires = date('Y-m-d H:i:s', time() + $lifetime);
 
         $sql = "INSERT INTO sessions (id, data, expires_at) VALUES (?, ?, ?)

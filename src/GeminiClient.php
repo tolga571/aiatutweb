@@ -8,6 +8,11 @@ class GeminiClient {
     // while Flash-Lite answers fast and costs less. gemini-2.5-flash-lite
     // is listed but refuses new projects ("no longer available to new
     // users", HTTP 404 — found 2026-10-03), so the fallback is 3.1.
+    /** Wall-clock budget for one call, all keys/models/retries included. */
+    private const TOTAL_SECONDS = 25;
+    /** No new attempt with less time than this left. */
+    private const MIN_CALL_SECONDS = 4;
+
     private array $models = [
         'gemini-2.5-flash',
         'gemini-3.1-flash-lite',
@@ -106,14 +111,23 @@ class GeminiClient {
 
         $errors = [];
         $this->lastUsage = null;
+        // One deadline for every key/model/retry together: each waiting
+        // request holds a PHP worker, so a slow or down Gemini must not keep
+        // requests open for minutes and starve the rest of the site.
+        $deadline = microtime(true) + self::TOTAL_SECONDS;
         foreach ($this->apiKeys as $ki => $key) {
             $keyLabel = 'key' . ($ki + 1);
             foreach ($this->models as $model) {
                 $maxRetries = 2;
                 for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                    $left = $deadline - microtime(true);
+                    if ($left < self::MIN_CALL_SECONDS) {
+                        $errors[] = "{$keyLabel}/{$model}: skipped, out of time";
+                        break 3;
+                    }
                     try {
                         $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
-                        $response = $this->httpPost($url, $payload);
+                        $response = $this->httpPost($url, $payload, (int)ceil($left));
                         $data = json_decode($response, true);
                         $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
                         if ($text) {
@@ -128,7 +142,8 @@ class GeminiClient {
                         }
                     } catch (\Exception $e) {
                         $errMsg = $e->getMessage();
-                        if ($attempt < $maxRetries && (str_contains($errMsg, 'HTTP 503') || str_contains($errMsg, 'cURL error (28)'))) {
+                        // Retry a 503 once if there is time; a timeout is not retried (it already used its share).
+                        if ($attempt < $maxRetries && str_contains($errMsg, 'HTTP 503') && $deadline - microtime(true) > self::MIN_CALL_SECONDS + 2) {
                             usleep(2000000); // 2 seconds
                             continue;
                         }
@@ -180,7 +195,7 @@ class GeminiClient {
         return ['text' => $data['text'], 'translation' => (string)($data['translation'] ?? ''), 'tokens' => $tokens];
     }
 
-    private function httpPost(string $url, array $data): string {
+    private function httpPost(string $url, array $data, int $timeout = 30): string {
         $json = json_encode($data);
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -191,7 +206,7 @@ class GeminiClient {
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json),
             ],
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => max(1, min(30, $timeout)),
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);

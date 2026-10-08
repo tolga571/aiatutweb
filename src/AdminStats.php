@@ -121,6 +121,7 @@ class AdminStats {
             'refunds' => $this->db->fetchAll(
                 'SELECT id, email, plan_status, refund_requested_at FROM users WHERE ' . AdminRevenue::OPEN_REFUND . ' ORDER BY refund_requested_at'
             ),
+            'open_reports' => (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM ai_reports WHERE status = 'open'")['c'],
             'ai_total_24h' => (int)($ai['total'] ?? 0),
             'ai_failed_24h' => (int)($ai['failed'] ?? 0),
             'admin_login_fails_24h' => (int)$this->db->fetchOne(

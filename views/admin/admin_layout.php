@@ -15,6 +15,7 @@ $navSections = [
     t('admin.users') => [
         ['admin-users', 'users', t('admin.users')],
         ['admin-conversations', 'messages', t('admin.conversations')],
+        ['admin-reports', 'flag', t('admin.nav_reports')],
     ],
     t('admin.nav_revenue') => [
         ['admin-payments', 'credit-card', t('admin.nav_payments')],

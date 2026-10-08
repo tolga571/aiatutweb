@@ -358,7 +358,7 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
     const ac = await browser.newContext({ viewport: { width: 1366, height: 860 } });
     await ac.addCookies([{ name: 'PHPSESSID', value: ADMIN_SID, url: BASE }]);
     const ap = await ac.newPage(); const abag = []; watch(ap, abag);
-    for (const p of ['admin-dashboard', 'admin-users', 'admin-admins', 'admin-payments', 'admin-activity', 'admin-conversations',
+    for (const p of ['admin-dashboard', 'admin-users', 'admin-admins', 'admin-payments', 'admin-activity', 'admin-conversations', 'admin-reports', 'admin-reports&status=all',
       'admin-ai-usage', 'admin-settings', 'admin-health', 'admin-audit', 'admin-2fa', 'admin-languages', 'admin-language-strings&lang=hy', 'admin-lexicon']) {
       await check(`admin ${p}`, async () => {
         const r = await ap.goto(BASE + '?page=' + p); assert(r.status() < 400, 'HTTP ' + r.status());
