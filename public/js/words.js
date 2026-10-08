@@ -86,7 +86,7 @@
     
     if (bulkIds.size > 0) {
         bulkToolbar.classList.remove('hidden');
-        $('wb-bulk-count').textContent = bulkIds.size + ' selected';
+        $('wb-bulk-count').textContent = fmt(L.selected, { n: bulkIds.size });
     } else {
         bulkToolbar.classList.add('hidden');
     }
@@ -122,10 +122,9 @@
       if (bulkIds.size === 0) return;
       var btn = this;
       btn.disabled = true;
-      btn.textContent = 'Adding...';
       var payload = [];
       bulkIds.forEach(function(i) {
-          payload.push({word: words[i].word, translation: words[i].meaning});
+          payload.push({ word: words[i].word });
       });
       
       fetch('?page=cards-bulk', {
@@ -200,7 +199,7 @@
                     if (d.translation) {
                         html += '<div class="text-sm text-muted-foreground mt-2 italic">' + esc(d.translation) + '</div>';
                     }
-                    html += '<div class="mt-4"><button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide hover:bg-primary/20 transition-colors" onclick="var u = new SpeechSynthesisUtterance(\'' + esc(d.text).replace(/'/g, "\'") + '\'); u.lang = \'' + cfg.speechLocale + '\'; window.speechSynthesis.speak(u);" aria-label="Listen"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> '+esc(L.playSentence)+'</button></div>';
+                    html += '<div class="mt-4"><button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide hover:bg-primary/20 transition-colors" data-say="' + esc(d.text) + '" aria-label="' + esc(L.playSentence) + '"><span class="material-symbols-outlined text-[16px]" aria-hidden="true">volume_up</span> '+esc(L.playSentence)+'</button></div>';
                     cell.innerHTML = html;
                     if (d.tokens) {
                         renderContextTokens(d.tokens, $('wb-tokens-'+i));
@@ -213,6 +212,16 @@
 
 
   
+    var say = e.target.closest('[data-say]');
+    if (say) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        var su = new SpeechSynthesisUtterance(say.dataset.say);
+        su.lang = cfg.speechLocale || 'en-US';
+        window.speechSynthesis.speak(su);
+      }
+      return;
+    }
     var sp = e.target.closest('[data-speak]');
     if (sp) {
       var w0 = words[+sp.dataset.speak];

@@ -4,12 +4,13 @@ Browser tests against the **local staging** site (see `AGENTS.md` → Local stag
 
 | Script | What it covers | Checks |
 |---|---|---|
-| `sweep.js <adminSid> <outDir> [sections]` | Whole site. Sections: `guest` (15 pages × 11 languages × desktop/phone), `user` (register → onboarding → chat → flashcards → mistakes → logout/login), `i18n` (logged-in UI in all 11 languages), `admin` (every admin page), `api` (mobile API incl. other-user/IDOR checks) | 421 |
+| `sweep.js <adminSid> <outDir> [sections]` | Whole site. Sections: `guest` (15 pages × 11 languages × desktop/phone), `user` (register → onboarding → chat → flashcards → mistakes → logout/login), `i18n` (logged-in UI in all 11 languages), `admin` (every admin page), `api` (mobile API incl. other-user/IDOR checks) | 422 |
 | `lists_test.js <outDir> [phone]` | Card lists (playlists) + study mode, web | 17 |
 | `words_test.js <outDir>` | Word bank page + API, 5 UI languages | 16 |
 | `api_lists_test.sh` | Card-list API incl. other-user (IDOR) checks | 22 |
 | `mobile_lists_test.js <outDir>` | Mobile app (Expo web on :8083) lists + study screen | 9 |
 | `mobile_words_test.js` | Mobile app word bank, Russian UI | 4 |
+| `mobile_parity_test.js` | Mobile app ↔ website: sign-up + resend, Home stats, word bank (category, example, bulk add), chat study session, mistakes stats, Profile pages + data export | 9 |
 | `prodcheck.js` | Read-only smoke test of **production** guest pages (no sign-ups) | 110 |
 
 ## Running

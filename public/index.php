@@ -1,6 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+error_reporting(0);
 
 require __DIR__ . '/../autoload.php';
 $config = require __DIR__ . '/../config.php';
@@ -177,6 +176,11 @@ switch ($page) {
                     $redirect = $_GET['redirect'] ?? 'dashboard';
                     header('Location: ?page=' . urlencode($redirect)); exit;
                 }
+                if ($auth->lastErrorCode === 'unverified') {
+                    // Right password, address not confirmed yet: the page that can resend the link.
+                    $_SESSION['pending_verify_email'] = $email;
+                    header('Location: ?page=awaiting-verification'); exit;
+                }
                 $auth->recordAttempt($clientIp, 'login');
                 $loginError = $auth->lastError ?: __('auth.error_generic');
             }
@@ -224,9 +228,11 @@ switch ($page) {
                     if ($auth->register($email, $pass, $name)) {
                         $auth->clearAttempts($clientIp, 'register');
                         $abuse->recordSignup($clientIp);
-                        $auth->login($email, $pass);
-                        if ($auth->userId()) {
-                            $verifyToken = $auth->createEmailVerificationToken($auth->userId());
+                        // No session until the address is confirmed: mail the link and
+                        // show "check your email" with the address.
+                        $newUser = $db->fetchOne('SELECT id FROM users WHERE email = ?', [$email]);
+                        if ($newUser) {
+                            $verifyToken = $auth->createEmailVerificationToken((int)$newUser['id']);
                             $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
                             (new \App\Src\Mailer($config))->send(
                                 $email,
@@ -234,7 +240,7 @@ switch ($page) {
                                 '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
                             );
                         }
-                        $auth->logout(); // Force them to verify email before logging in
+                        $_SESSION['pending_verify_email'] = $email;
                         header('Location: ?page=awaiting-verification'); exit;
                     }
                     $errors[] = $auth->lastError ?: __('auth.registration_failed');
@@ -308,17 +314,21 @@ switch ($page) {
         break;
 
     case 'resend-verification':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
-            $email = trim($_POST['email']);
-            $user = $db->fetchOne('SELECT * FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
-            if ($user) {
-                $verifyToken = $auth->createEmailVerificationToken((int)$user['id']);
-                $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
-                (new \App\Src\Mailer($config))->send(
-                    $email,
-                    __('auth.verify_email_subject'),
-                    '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
-                );
+        // Same answer whether or not the address has an unconfirmed account.
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_verify($_POST['csrf_token'] ?? null)) {
+            $email = trim((string)($_POST['email'] ?? ''));
+            if (filter_var($email, FILTER_VALIDATE_EMAIL) && !(new \App\Src\AbuseGuard($db, $config))->resendBlocked(client_ip(), $email)) {
+                $user = $db->fetchOne('SELECT id FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
+                if ($user) {
+                    $verifyToken = $auth->createEmailVerificationToken((int)$user['id']);
+                    $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
+                    (new \App\Src\Mailer($config))->send(
+                        $email,
+                        __('auth.verify_email_subject'),
+                        '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
+                    );
+                }
+                $_SESSION['pending_verify_email'] = $email;
             }
             $_SESSION['resend_success'] = true;
         }
@@ -1136,55 +1146,38 @@ switch ($page) {
         exit;
 
     case 'words-context':
+        // Example sentence for a word-bank word (Flashcard::wordContext). JSON, never a 5xx.
         $requirePlan();
         header('Content-Type: application/json');
-        $word = $_GET['word'] ?? '';
-        if (!$word) {
-            echo json_encode(['ok' => false, 'error' => 'word is required']);
-            exit;
+        $r = (new \App\Src\Flashcard($db))->wordContext(
+            $auth->userId(), $fcDeckLang(), $auth->currentUser()['native_lang'] ?? 'en', (string)($_GET['word'] ?? ''),
+            $gemini, new \App\Src\AbuseGuard($db, $config)
+        );
+        if (!empty($r['context'])) {
+            echo json_encode(['ok' => true, 'data' => $r['context']]);
+        } else {
+            $code = $r['error'] ?? 'context_failed';
+            $msg = $code === 'word_not_in_bank' ? __('fc.err_word_not_in_bank') : (in_array($code, ['ai_paused', 'rate_minute', 'rate_hour'], true) ? __('error.' . $code) : __('fc.words_err_loading'));
+            echo json_encode(['ok' => false, 'error' => $msg]);
         }
-        $currentUser = $auth->currentUser();
-        $targetLang = $fcDeckLang();
-        $nativeLang = $currentUser['native_lang'] ?? 'en';
-        
-        $gemini = new \App\Src\GeminiClient($config['gemini_api_key'], $config['gemini_api_key_backup'] ?? '');
-        $context = (new \App\Src\Flashcard($db))->getWordContext($targetLang, $nativeLang, $word, $gemini);
-        
-        echo json_encode(['ok' => true, 'data' => $context]);
         exit;
 
     case 'cards-bulk':
+        // Several word-bank words at once → the user's cards + "Saved" list. JSON, CSRF-checked, never a 5xx.
         $requirePlan();
         header('Content-Type: application/json');
         $input = json_decode(file_get_contents('php://input'), true);
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($input['csrf_token'] ?? null)) {
-            echo json_encode(['ok' => false, 'error' => 'invalid_request']);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($input) || !csrf_verify($input['csrf_token'] ?? null) || !is_array($input['words'] ?? null)) {
+            echo json_encode(['ok' => false, 'error' => __('fc.err_generic')]);
             exit;
         }
-        
-        $words = $input['words'] ?? [];
-        $lists = $input['lists'] ?? [];
-        if (!$words || !is_array($words)) {
-            echo json_encode(['ok' => false, 'error' => 'Words array required']);
-            exit;
+        $words = array_map(fn($w) => is_array($w) ? (string)($w['word'] ?? '') : (string)$w, $input['words']);
+        $ids = (new \App\Src\Flashcard($db))->addBankWords($auth->userId(), $fcDeckLang(), $auth->currentUser()['native_lang'] ?? 'en', $words);
+        if ($ids) {
+            $cl = new \App\Src\CardLists($db);
+            $cl->add($auth->userId(), $cl->defaultId($auth->userId(), $fcDeckLang()), $ids);
         }
-        
-        $fc = new \App\Src\Flashcard($db);
-        $addedCount = 0;
-        foreach ($words as $w) {
-            $wordStr = $w['word'] ?? '';
-            $translationStr = $w['translation'] ?? '';
-            if ($wordStr === '') continue;
-            
-            $id = $fc->addWord($auth->userId(), $wordStr, $translationStr, 'web_bulk');
-            if ($id) {
-                $addedCount++;
-                if (!empty($lists)) {
-                    $fc->setWordLists($auth->userId(), $id, $lists);
-                }
-            }
-        }
-        echo json_encode(['ok' => true, 'data' => ['added' => $addedCount]]);
+        echo json_encode(['ok' => true, 'added' => count($ids), 'data' => ['added' => count($ids)]]);
         exit;
 
     case 'flashcard-import-pack':

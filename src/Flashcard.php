@@ -5,27 +5,6 @@ class Flashcard {
     private Database $db;
 
 
-    public function getWordContext(string $targetLang, string $nativeLang, string $word, \App\Src\GeminiClient $gemini): array {
-        $stmt = $this->db->getPdo()->prepare("SELECT content, source FROM word_contexts WHERE target_lang = ? AND native_lang = ? AND word = ? LIMIT 1");
-        $stmt->execute([$targetLang, $nativeLang, $word]);
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
-        if ($row) {
-            $content = json_decode($row['content'], true);
-            $content['source'] = $row['source'];
-            return $content;
-        }
-        
-        $context = $gemini->generateContextForWord($word, $targetLang, $nativeLang);
-        if ($context) {
-            $stmt = $this->db->getPdo()->prepare("INSERT INTO word_contexts (target_lang, native_lang, word, content, source) VALUES (?, ?, ?, ?, 'ai_translation')");
-            $stmt->execute([$targetLang, $nativeLang, $word, json_encode($context)]);
-            $context['source'] = 'ai_translation';
-        }
-        
-        return $context ?: [];
-    }
-
     public function __construct(Database $db) {
         $this->db = $db;
     }
@@ -650,6 +629,67 @@ class Flashcard {
             return $existing ? ['card' => $this->getCard($userId, (int)$existing['id'])] : ['error' => 'generic'];
         }
         return ['error' => 'word_not_in_bank'];
+    }
+
+    /**
+     * Adds several word-bank words at once (same rules as addFromBank, at
+     * most 200). Returns the ids of the user's cards for them.
+     * @return int[]
+     */
+    public function addBankWords(int $userId, string $lang, string $nativeLang, array $words): array {
+        $ids = [];
+        foreach (array_slice(array_unique(array_filter(array_map(fn($w) => is_string($w) ? trim($w) : '', $words))), 0, 200) as $word) {
+            $r = $this->addFromBank($userId, $lang, $nativeLang, $word);
+            if (!empty($r['card'])) {
+                $ids[] = (int)$r['card']['id'];
+            }
+        }
+        return $ids;
+    }
+
+    /**
+     * Example sentence for a word-bank word: ['context' => [text,
+     * translation, tokens, source]] or ['error' => code]. Generated once per
+     * word and language pair, then served from word_contexts to everyone.
+     * Only bank words, so what can be generated (and spent) is bounded.
+     */
+    public function wordContext(int $userId, string $lang, string $nativeLang, string $word, GeminiClient $gemini, AbuseGuard $guard): array {
+        $useLang = in_array($nativeLang, self::NATIVE_LANGS, true) ? $nativeLang : 'en';
+        $key = mb_strtolower(trim($word));
+        $bankWord = null;
+        foreach ($this->bankSource($lang) as $card) {
+            if (mb_strtolower((string)($card['word'] ?? '')) === $key) {
+                $bankWord = (string)$card['word'];
+                break;
+            }
+        }
+        if ($bankWord === null) {
+            return ['error' => 'word_not_in_bank'];
+        }
+        $row = $this->db->fetchOne(
+            'SELECT content, source FROM word_contexts WHERE target_lang = ? AND native_lang = ? AND word = ? ORDER BY id LIMIT 1',
+            [$lang, $useLang, $bankWord]
+        );
+        if ($row) {
+            return ['context' => (json_decode((string)$row['content'], true) ?: []) + ['source' => $row['source']]];
+        }
+        if ($refusal = $guard->contextRefusal($userId)) {
+            return ['error' => $refusal];
+        }
+        $guard->recordContext($userId);
+        try {
+            $context = $gemini->generateContextForWord($bankWord, $lang, $useLang);
+        } catch (\Throwable $e) {
+            AiUsage::record($this->db, $userId, null, false, 'word_context');
+            error_log('wordContext failed: ' . $e->getMessage());
+            return ['error' => 'context_failed'];
+        }
+        AiUsage::record($this->db, $userId, $gemini->getLastUsage(), true, 'word_context');
+        $this->db->execute(
+            "INSERT INTO word_contexts (target_lang, native_lang, word, content, source) VALUES (?, ?, ?, ?, 'ai_translation')",
+            [$lang, $useLang, $bankWord, json_encode($context, JSON_UNESCAPED_UNICODE)]
+        );
+        return ['context' => $context + ['source' => 'ai_translation']];
     }
 
     /** Starter deck first (marked _from=starter), then the pack. */

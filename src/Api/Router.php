@@ -104,8 +104,6 @@ class Router
             ['POST', 'onboarding', 'onboarding', 'user'],
             ['POST', 'trial/start', 'startTrial', 'user'],
             ['GET', 'dashboard', 'dashboard', 'plan'],
-            ['GET', 'words/context', 'getWordContextApi', 'user'],
-            ['POST', 'cards/bulk', 'addCardsBulk', 'user'],
 
             ['GET', 'topics', 'topics', 'plan'],
             ['GET', 'conversations', 'conversations', 'plan'],
@@ -129,6 +127,8 @@ class Router
 
             ['GET', 'words', 'words', 'plan'],
             ['POST', 'words', 'wordAdd', 'plan'],
+            ['GET', 'words/context', 'wordContext', 'plan'],
+            ['POST', 'words/bulk', 'wordAddBulk', 'plan'],
 
             ['GET', 'lists', 'lists', 'plan'],
             ['POST', 'lists', 'listCreate', 'plan'],
@@ -205,6 +205,15 @@ class Router
                 'privacy' => 'https://jumplearner.com/privacy-policy',
                 'terms' => 'https://jumplearner.com/terms-and-conditions',
                 'account_deletion' => 'https://jumplearner.com/?page=account-delete-confirm',
+                // The website's other pages; the app adds &ui_lang=.
+                'instructions' => 'https://jumplearner.com/?page=chat-tips',
+                'faq' => 'https://jumplearner.com/?page=faq',
+                'about' => 'https://jumplearner.com/?page=about',
+                'contact' => 'https://jumplearner.com/?page=contact',
+                'blog' => 'https://jumplearner.com/?page=blog',
+                'refund' => 'https://jumplearner.com/?page=refund-policy',
+                'cookies' => 'https://jumplearner.com/?page=cookie-policy',
+                'license' => 'https://jumplearner.com/?page=license-agreement',
             ],
             'support_email' => 'info@jumplearner.com',
         ]);
@@ -249,19 +258,21 @@ class Router
         $this->signedIn((int)$user['id']);
     }
 
-    
+    /** {email} — a new verification link for an unconfirmed account. Same answer whether or not it exists. */
     private function resendVerification(): void
     {
         $email = trim($this->str('email'));
-        $user = $this->db->fetchOne('SELECT * FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
-        if ($user) {
-            $verifyToken = $this->auth->createEmailVerificationToken((int)$user['id']);
-            $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
-            (new Mailer($this->config))->send(
-                $email,
-                t('auth.verify_email_subject'),
-                '<p>' . t('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
-            );
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) && !(new AbuseGuard($this->db, $this->config))->resendBlocked(client_ip(), $email)) {
+            $user = $this->db->fetchOne('SELECT id FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
+            if ($user) {
+                $verifyToken = $this->auth->createEmailVerificationToken((int)$user['id']);
+                $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
+                (new Mailer($this->config))->send(
+                    $email,
+                    t('auth.verify_email_subject'),
+                    '<p>' . t('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
+                );
+            }
         }
         $this->ok(['sent' => true]);
     }
@@ -689,6 +700,40 @@ class Router
         $cl = new CardLists($this->db);
         $cl->add($uid, $cl->defaultId($uid, $lang), [(int)$r['card']['id']]);
         $this->ok(['card' => (new Flashcard($this->db))->getCard($uid, (int)$r['card']['id'])]);
+    }
+
+    /** ?word=&lang= — example sentence for a word-bank word (see Flashcard::wordContext). */
+    private function wordContext(): void
+    {
+        $r = (new Flashcard($this->db))->wordContext(
+            (int)$this->user['id'], $this->deckLang(), $this->user['native_lang'] ?? 'en', (string)($_GET['word'] ?? ''),
+            new GeminiClient($this->config['gemini_api_key'] ?? '', $this->config['gemini_api_key_backup'] ?? ''),
+            new AbuseGuard($this->db, $this->config)
+        );
+        if (empty($r['context'])) {
+            $code = $r['error'] ?? 'context_failed';
+            $status = ['word_not_in_bank' => 404, 'ai_paused' => 429, 'rate_minute' => 429, 'rate_hour' => 429][$code] ?? 422;
+            $msg = $code === 'word_not_in_bank' ? t('fc.err_word_not_in_bank') : (in_array($code, ['ai_paused', 'rate_minute', 'rate_hour'], true) ? t('error.' . $code) : t('fc.words_err_loading'));
+            throw new ApiError($code, $msg, $status);
+        }
+        $this->ok(['context' => $r['context']]);
+    }
+
+    /** {words: [..], lang} — adds several word-bank words to the user's cards and their "Saved" list. */
+    private function wordAddBulk(): void
+    {
+        $uid = (int)$this->user['id'];
+        $lang = $this->deckLang();
+        $words = $this->input['words'] ?? [];
+        if (!is_array($words) || !$words) {
+            throw new ApiError('validation', t('fc.err_generic'), 422);
+        }
+        $ids = (new Flashcard($this->db))->addBankWords($uid, $lang, $this->user['native_lang'] ?? 'en', $words);
+        if ($ids) {
+            $cl = new CardLists($this->db);
+            $cl->add($uid, $cl->defaultId($uid, $lang), $ids);
+        }
+        $this->ok(['added' => count($ids), 'card_ids' => $ids]);
     }
 
     // ── Card lists (playlists), see CardLists ──────────────────────

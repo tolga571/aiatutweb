@@ -91,11 +91,19 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
     assert(/awaiting-verification/.test(page.url()), 'landed on ' + page.url());
     await pageSane(page, bag, { lang: 'de' });
   });
-  await check('login: refused until the email is confirmed', async () => {
+  await check('login: refused until the email is confirmed → resend page with the address', async () => {
     await page.goto(BASE + '?page=login');
     await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
     await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
-    assert(/page=login/.test(page.url()), 'signed in unverified: ' + page.url());
+    assert(/awaiting-verification/.test(page.url()), 'landed on ' + page.url());
+    assert(await page.inputValue('#resend-email') === email, 'address not prefilled');
+    const r = await page.request.get(BASE + '?page=dashboard', { maxRedirects: 0 }); assert(r.status() === 302, 'dashboard reachable unverified');
+  });
+  await check('resend verification: same answer, page stays', async () => {
+    await Promise.all([page.waitForNavigation(), page.locator('form[action*=resend-verification] button[type=submit]').click()]);
+    assert(/awaiting-verification/.test(page.url()), page.url());
+    assert(await page.locator('[role=status]').count(), 'no confirmation shown');
+    await pageSane(page, bag, { lang: 'de' });
   });
   await check('verify link → login → onboarding', async () => {
     const token = 'sweep' + stamp;

@@ -25,6 +25,9 @@ class AbuseGuard {
     public const CHAT_PER_MINUTE = 6;
     public const CHAT_PER_HOUR = 120;
     public const TRIAL_CHAT_PER_IP_PER_DAY = 45;
+    public const CONTEXT_PER_MINUTE = 20;
+    public const CONTEXT_PER_HOUR = 200;
+    public const RESEND_PER_HOUR = 5;
 
     /** Common throw-away mailbox domains; trials from these are refused. */
     private const DISPOSABLE_DOMAINS = [
@@ -135,6 +138,43 @@ class AbuseGuard {
         if ($isTrial) {
             $this->record('trial-chat', $ip);
         }
+    }
+
+    // ── Word-bank example sentences, verification e-mails ─────
+
+    /**
+     * Why a new example sentence must not be generated, or null when it may
+     * (cached ones are always served). 'ai_paused' | 'rate_minute' | 'rate_hour'
+     */
+    public function contextRefusal(int $userId): ?string {
+        $budget = $this->budget();
+        if ($budget > 0 && $this->monthlySpend() >= $budget) {
+            return 'ai_paused';
+        }
+        $key = 'u:' . $userId;
+        if ($this->count('word-context', $key, 60) >= self::CONTEXT_PER_MINUTE) {
+            return 'rate_minute';
+        }
+        if ($this->count('word-context', $key, 3600) >= self::CONTEXT_PER_HOUR) {
+            return 'rate_hour';
+        }
+        return null;
+    }
+
+    public function recordContext(int $userId): void {
+        $this->record('word-context', 'u:' . $userId);
+    }
+
+    /** True when this IP or address asked for too many verification e-mails; counts the request. */
+    public function resendBlocked(string $ip, string $email): bool {
+        $mailKey = 'm:' . hash('sha256', mb_strtolower(trim($email)));
+        if ($this->count('resend-verify', $ip, 3600) >= self::RESEND_PER_HOUR * 2
+            || $this->count('resend-verify', $mailKey, 3600) >= self::RESEND_PER_HOUR) {
+            return true;
+        }
+        $this->record('resend-verify', $ip);
+        $this->record('resend-verify', $mailKey);
+        return false;
     }
 
     // ── Spend ─────────────────────────────────────────────────
