@@ -12,6 +12,7 @@
       <a href="?page=terms-and-conditions" class="hover:underline py-2 md:py-0"><?= __('footer.terms') ?></a>
       <a href="?page=refund-policy" class="hover:underline py-2 md:py-0"><?= __('footer.refund') ?></a>
       <a href="?page=cookie-policy" class="hover:underline py-2 md:py-0"><?= __('footer.cookie') ?></a>
+      <a href="?page=delete-account" class="hover:underline py-2 md:py-0"><?= __('footer.delete_account') ?></a>
       <a href="?page=pricing" class="hover:underline py-2 md:py-0"><?= __('footer.pricing') ?></a>
       <a href="?page=about" class="hover:underline py-2 md:py-0"><?= __('footer.about') ?></a>
       <a href="?page=contact" class="hover:underline py-2 md:py-0"><?= __('footer.contact') ?></a>

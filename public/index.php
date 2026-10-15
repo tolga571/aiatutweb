@@ -945,6 +945,7 @@ switch ($page) {
             $accountDeleteError = $_SESSION['account_delete_error'];
             unset($_SESSION['account_delete_error']);
         }
+        $deleteViaEmail = !empty($auth->currentUser()['google_id']);
         require __DIR__ . '/../views/account-delete-confirm.php';
         break;
 
@@ -956,8 +957,14 @@ switch ($page) {
             exit;
         }
         $deleteUser = $auth->currentUser();
-        if (!password_verify($_POST['password'] ?? '', $deleteUser['password'] ?? '')) {
-            $_SESSION['account_delete_error'] = __('account.wrong_password');
+        // Google sign-in accounts never chose a password, so they confirm by
+        // typing their e-mail address instead (same rule as the app's API).
+        $deleteConfirmEmail = trim((string)($_POST['confirm_email'] ?? ''));
+        $deleteConfirmed = password_verify((string)($_POST['password'] ?? ''), $deleteUser['password'] ?? '')
+            || (!empty($deleteUser['google_id']) && $deleteConfirmEmail !== ''
+                && strcasecmp($deleteConfirmEmail, (string)$deleteUser['email']) === 0);
+        if (!$deleteConfirmed) {
+            $_SESSION['account_delete_error'] = $deleteConfirmEmail !== '' ? __('account.delete_email_mismatch') : __('account.wrong_password');
             header('Location: ?page=account-delete-confirm');
             exit;
         }
@@ -1543,11 +1550,12 @@ switch ($page) {
     case 'refund-policy':
     case 'license-agreement':
     case 'cookie-policy':
+    case 'delete-account':
     case 'about':
     case 'contact':
     case 'faq':
     case 'alphabet':
-        $allowed = ['chat-tips','privacy-policy','terms-and-conditions','refund-policy','license-agreement','cookie-policy','about','contact','faq','alphabet'];
+        $allowed = ['chat-tips','privacy-policy','terms-and-conditions','refund-policy','license-agreement','cookie-policy','delete-account','about','contact','faq','alphabet'];
         if (in_array($page, $allowed, true)) {
             require __DIR__ . '/../views/pages/' . $page . '.php';
         }

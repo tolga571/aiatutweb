@@ -297,7 +297,7 @@ tailwind.config = {
 // MOTION_ENABLED=0 (see config.php).
 $motionPage   = $_GET['page'] ?? 'home';
 $motionOn     = ($config['motion_enabled'] ?? true) && strpos($motionPage, 'admin') !== 0;
-$motionSmooth = in_array($motionPage, ['home', 'pricing', 'about', 'faq', 'contact', 'blog', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cookie-policy', 'license-agreement'], true);
+$motionSmooth = in_array($motionPage, ['home', 'pricing', 'about', 'faq', 'contact', 'blog', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cookie-policy', 'license-agreement', 'delete-account'], true);
 $motionGsap   = in_array($motionPage, ['home', 'pricing'], true);
 $motionVer    = static function (string $rel): string {
     $f = __DIR__ . '/../../public/' . $rel;

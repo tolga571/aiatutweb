@@ -28,12 +28,20 @@
 
       <form method="POST" action="?page=account-delete" class="space-y-4" id="delete-account-form">
         <?= csrf_field() ?>
+        <?php if (!empty($deleteViaEmail)): ?>
         <div>
-          <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('account.delete_password_label') ?></label>
-          <input type="password" name="password" required autocomplete="current-password"
+          <label for="delete-confirm-email" class="block text-body-md text-on-surface-variant mb-1.5"><?= __('mobile.delete_type_email') ?></label>
+          <input id="delete-confirm-email" type="email" name="confirm_email" required autocomplete="email"
+            class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-error transition" />
+        </div>
+        <?php else: ?>
+        <div>
+          <label for="delete-password" class="block text-body-md text-on-surface-variant mb-1.5"><?= __('account.delete_password_label') ?></label>
+          <input id="delete-password" type="password" name="password" required autocomplete="current-password"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-error transition"
             placeholder="••••••••" />
         </div>
+        <?php endif; ?>
         <button type="submit" id="delete-account-btn"
           class="w-full bg-error text-on-error font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed">
           <?= __('account.delete_confirm_btn') ?>

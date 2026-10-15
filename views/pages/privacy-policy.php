@@ -13,6 +13,7 @@
         </div>
         <div>
           <h1 class="font-headline-lg text-headline-lg text-on-surface"><?= __('privacy.heading') ?></h1>
+          <p class="text-body-md text-on-surface-variant mt-1"><?= __('privacy.updated') ?></p>
         </div>
       </div>
 
@@ -34,6 +35,8 @@
             <li><?= __('privacy.s1_2') ?></li>
             <li><?= __('privacy.s1_3') ?></li>
             <li><?= __('privacy.s1_4') ?></li>
+            <li><?= __('privacy.s1_5') ?></li>
+            <li><?= __('privacy.s1_6') ?></li>
           </ul>
         </div>
 
@@ -56,6 +59,9 @@
           <ul class="list-disc list-inside space-y-2 ml-4 mt-2">
             <li><?= __('privacy.s3_1') ?></li>
             <li><?= __('privacy.s3_2') ?></li>
+            <li><?= __('privacy.s3_3') ?></li>
+            <li><?= __('privacy.s3_4') ?></li>
+            <li><?= __('privacy.s3_5') ?></li>
           </ul>
         </div>
 
@@ -63,6 +69,20 @@
           <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s4_title') ?></h2>
           <p>
             <?= __('privacy.s4_body') ?>
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s5_title') ?></h2>
+          <p>
+            <?= __('privacy.s5_body') ?>
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s6_title') ?></h2>
+          <p>
+            <?= __('privacy.s6_body') ?>
           </p>
         </div>
       </div>
