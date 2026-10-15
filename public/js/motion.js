@@ -182,7 +182,12 @@
   }
 
   function initChoreography() {
-    if (!cfg.gsap) return;
+    // No choreography on this page: show any data-m element at once, or the
+    // js-motion gate would keep it hidden (markReady cancels the failsafe).
+    if (!cfg.gsap) {
+      document.querySelectorAll('[data-m]').forEach(function (el) { el.classList.add('m-done'); });
+      return;
+    }
     try {
       if (!window.gsap) throw new Error('gsap unavailable');
       initMarketing();
