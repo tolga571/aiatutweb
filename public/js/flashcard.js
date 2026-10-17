@@ -632,7 +632,11 @@
       setListIds(c, ids);
       list.cards = res.list ? res.list.cards : list.cards;
       renderListNav();
-      renderSaveRows();
+      // Only this row's count changes. Redrawing every row here would swap
+      // out a checkbox the user is ticking while the other request is still
+      // on its way, and the two changes could cross.
+      var n = box.closest('.fc-save-row').querySelector('.fc-view-n');
+      if (n) n.textContent = list.cards;
       showToast(fmt(on ? L.listAdded : L.listRemoved, { name: list.label }), 'success');
       if (!on && list.id === cfg.listId) { closeDialog(saveModal); dropIds([c.id]); }
     });

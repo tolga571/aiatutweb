@@ -271,7 +271,7 @@
 /* Word bank (views/words.php) */
 .fc-words { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; color: #e3e5ff; }
 .fc-words-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-.fc-words-back { display: inline-flex; align-items: center; gap: .25rem; font-size: .75rem; font-weight: 600; color: #b4c5ff; margin-bottom: .5rem; }
+.fc-words-back { display: inline-flex; align-items: center; gap: .25rem; min-height: 24px; font-size: .75rem; font-weight: 600; color: #b4c5ff; margin-bottom: .5rem; }
 .fc-words-title { font-size: 1.5rem; font-weight: 800; }
 .fc-words-sub { font-size: .85rem; color: #c4c6d6; margin-top: .25rem; max-width: 40rem; }
 .fc-words-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1.25rem; }

@@ -35,7 +35,7 @@
         <?= csrf_field() ?>
         <div>
           <label class="block text-body-md text-on-surface-variant mb-1.5"><?= __('auth.email') ?></label>
-          <input type="email" name="email" required autocomplete="email"
+          <input type="email" dir="ltr" name="email" required autocomplete="email"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary transition"
             placeholder="you@example.com" />
         </div>

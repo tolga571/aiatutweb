@@ -422,7 +422,7 @@ if ($quotaPercent > 75) {
           </span>
           <?php if ($isTrial): ?>
             <span class="text-outline">·</span>
-            <a href="?page=pricing" class="text-primary hover:underline font-semibold"><?= __('chat.upgrade_plan') ?></a>
+            <a href="?page=pricing" class="inline-block py-1 -my-1 text-primary hover:underline font-semibold"><?= __('chat.upgrade_plan') ?></a>
           <?php endif; ?>
         </div>
       </div>

@@ -31,7 +31,7 @@
         <?php if (!empty($deleteViaEmail)): ?>
         <div>
           <label for="delete-confirm-email" class="block text-body-md text-on-surface-variant mb-1.5"><?= __('mobile.delete_type_email') ?></label>
-          <input id="delete-confirm-email" type="email" name="confirm_email" required autocomplete="email"
+          <input id="delete-confirm-email" type="email" dir="ltr" name="confirm_email" required autocomplete="email"
             class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-error transition" />
         </div>
         <?php else: ?>

@@ -24,7 +24,7 @@ unset($_SESSION['resend_success']);
       <?= csrf_field() ?>
       <p class="text-on-surface font-semibold text-center"><?= __('auth.resend_question') ?></p>
       <label for="resend-email" class="block text-label-md text-on-surface-variant"><?= __('auth.email') ?></label>
-      <input id="resend-email" type="email" name="email" required autocomplete="email" value="<?= htmlspecialchars($pendingEmail) ?>"
+      <input id="resend-email" type="email" dir="ltr" name="email" required autocomplete="email" value="<?= htmlspecialchars($pendingEmail) ?>"
         class="w-full bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 text-on-surface focus:outline-none focus:border-primary">
       <?php if ($resent): ?>
         <p class="text-body-md text-primary" role="status"><?= __('auth.resend_done') ?></p>

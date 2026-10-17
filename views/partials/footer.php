@@ -8,15 +8,15 @@
       <?= sprintf(__('footer.copyright'), date('Y')) ?>
     </div>
     <nav class="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-0 md:gap-4">
-      <a href="?page=privacy-policy" class="hover:underline py-2 md:py-0"><?= __('footer.privacy') ?></a>
-      <a href="?page=terms-and-conditions" class="hover:underline py-2 md:py-0"><?= __('footer.terms') ?></a>
-      <a href="?page=refund-policy" class="hover:underline py-2 md:py-0"><?= __('footer.refund') ?></a>
-      <a href="?page=cookie-policy" class="hover:underline py-2 md:py-0"><?= __('footer.cookie') ?></a>
-      <a href="?page=delete-account" class="hover:underline py-2 md:py-0"><?= __('footer.delete_account') ?></a>
-      <a href="?page=pricing" class="hover:underline py-2 md:py-0"><?= __('footer.pricing') ?></a>
-      <a href="?page=about" class="hover:underline py-2 md:py-0"><?= __('footer.about') ?></a>
-      <a href="?page=contact" class="hover:underline py-2 md:py-0"><?= __('footer.contact') ?></a>
-      <a href="?page=faq" class="hover:underline py-2 md:py-0"><?= __('footer.faq') ?></a>
+      <a href="?page=privacy-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.privacy') ?></a>
+      <a href="?page=terms-and-conditions" class="hover:underline py-2 md:py-0.5"><?= __('footer.terms') ?></a>
+      <a href="?page=refund-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.refund') ?></a>
+      <a href="?page=cookie-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.cookie') ?></a>
+      <a href="?page=delete-account" class="hover:underline py-2 md:py-0.5"><?= __('footer.delete_account') ?></a>
+      <a href="?page=pricing" class="hover:underline py-2 md:py-0.5"><?= __('footer.pricing') ?></a>
+      <a href="?page=about" class="hover:underline py-2 md:py-0.5"><?= __('footer.about') ?></a>
+      <a href="?page=contact" class="hover:underline py-2 md:py-0.5"><?= __('footer.contact') ?></a>
+      <a href="?page=faq" class="hover:underline py-2 md:py-0.5"><?= __('footer.faq') ?></a>
     </nav>
     <?php
     // Interface-language picker, reachable on every screen size.

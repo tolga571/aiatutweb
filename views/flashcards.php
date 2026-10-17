@@ -68,7 +68,7 @@ $firstCard = $cards[0] ?? null;
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
 
-<link rel="stylesheet" href="/css/flashcard.css?v=10">
+<link rel="stylesheet" href="/css/flashcard.css?v=11">
 
 
 <main class="flex-1 flex flex-col relative h-[calc(100vh-56px)] bg-surface-dim overflow-hidden">
@@ -495,6 +495,6 @@ window.__FC_CONFIG__ = {
   csrf: "<?= htmlspecialchars(csrf_token()) ?>",
 };
 </script>
-<script src="/js/flashcard.js?v=10"></script>
+<script src="/js/flashcard.js?v=11"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>
