@@ -217,7 +217,11 @@ class Auth {
             return false;
         }
         $hash = password_hash($newPassword, PASSWORD_BCRYPT);
-        $this->db->execute('UPDATE users SET password = ? WHERE id = ?', [$hash, $row['user_id']]);
+        // The link came by email, so following it proves the address too.
+        $this->db->execute(
+            'UPDATE users SET password = ?, email_verified_at = COALESCE(email_verified_at, CURRENT_TIMESTAMP) WHERE id = ?',
+            [$hash, $row['user_id']]
+        );
         $this->db->execute("UPDATE password_resets SET used_at = CURRENT_TIMESTAMP WHERE id = ?", [$row['id']]);
         // Any other outstanding reset links for this user should die with it,
         // and so should the app sign-ins made with the old password.

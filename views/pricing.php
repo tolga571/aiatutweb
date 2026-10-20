@@ -692,8 +692,8 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
   <?php if (($_GET['dodo_return'] ?? '') === '1'): ?>
   // Landed back here from Dodo's hosted checkout page (see the return_url
   // set in the ?page=dodo-checkout handler). Reuses the exact same polling
-  // modal as Paddle/FastSpring — check-payment-status already covers Dodo
-  // via the pending_purchase_plan fields that route set before redirecting.
+  // modal as Paddle/FastSpring: it waits until the Dodo webhook has
+  // granted the paid plan (check-payment-status).
   handleCheckoutSuccess();
   <?php endif; ?>
 

@@ -539,9 +539,9 @@ switch ($page) {
         // Dodo has no client-side checkout widget like Paddle/FastSpring —
         // the pricing page just links here, this creates a hosted checkout
         // session server-side, and the browser is redirected to it. Records
-        // the same payment_pending_at / pending_purchase_plan fields Paddle
-        // uses so the existing check-payment-status timeout fallback (see
-        // below) covers Dodo too without any Dodo-specific polling logic.
+        // payment_pending_at / pending_purchase_plan for tracking only; the
+        // plan itself is granted by the Dodo webhook, which the pricing page
+        // waits for through check-payment-status.
         $requireAuth();
         $planKey = $_GET['plan'] ?? '';
         $interval = $_GET['interval'] ?? 'month';
@@ -585,10 +585,14 @@ switch ($page) {
         // client-controllable flags (payment_pending_at /
         // pending_purchase_plan) to grant paid plans without any payment —
         // a free-subscription bypass. Polling this endpoint now only
-        // reflects webhook-confirmed state.
+        // reflects webhook-confirmed state. A free trial is not a payment:
+        // hasPaid() is true for it, which sent trial users back from the
+        // checkout to the chat before (or without) a confirmed payment.
         $requireAuth();
         header('Content-Type: application/json');
-        echo json_encode(['paid' => $auth->hasPaid()]);
+        $payUser = $auth->currentUser();
+        echo json_encode(['paid' => (int)($payUser['has_paid'] ?? 0) === 1
+            || in_array($payUser['plan_status'] ?? '', ['starter', 'pro', 'active'], true)]);
         exit;
 
     case 'start-trial':
@@ -1025,7 +1029,7 @@ switch ($page) {
         exit;
 
     case 'flashcard-import':
-        $requireAuth();
+        $requirePlan();
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_verify($_POST['csrf_token'] ?? null)) {
             $fc = new \App\Src\Flashcard($db);
@@ -1526,11 +1530,11 @@ switch ($page) {
             echo json_encode(['error' => 'invalid_request']);
             exit;
         }
-        $lang = $_POST['lang'] ?? 'en';
-        $letterKey = trim($_POST['letter_key'] ?? '');
-        if ($letterKey === '') {
+        $lang = is_string($_POST['lang'] ?? null) ? $_POST['lang'] : 'en';
+        $letterKey = is_string($_POST['letter_key'] ?? null) ? trim($_POST['letter_key']) : '';
+        if (!alphabet_letter_valid($lang, $letterKey)) {
             http_response_code(400);
-            echo json_encode(['error' => 'missing_letter_key']);
+            echo json_encode(['error' => 'invalid_letter_key']);
             exit;
         }
         $existing = $db->fetchOne('SELECT id FROM alphabet_progress WHERE user_id = ? AND lang = ? AND letter_key = ?', [$auth->userId(), $lang, $letterKey]);

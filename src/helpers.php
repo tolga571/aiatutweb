@@ -143,3 +143,20 @@ function jsq(string $s): string
     $json = json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     return str_replace(['`', '${'], ['\\u0060', '\\u0024{'], substr((string)$json, 1, -1));
 }
+
+/**
+ * Whether $key is a letter of $lang's alphabet that can be marked as learned
+ * (data/alphabets.php; the key is the letter's "upper" or "char", the same
+ * value the website and the app send).
+ */
+function alphabet_letter_valid(string $lang, string $key): bool
+{
+    static $alphabets = null;
+    $alphabets ??= require __DIR__ . '/../data/alphabets.php';
+    foreach ($alphabets[$lang]['letters'] ?? [] as $letter) {
+        if (($letter['upper'] ?? $letter['char'] ?? null) === $key) {
+            return true;
+        }
+    }
+    return false;
+}

@@ -405,23 +405,26 @@ class Flashcard {
         $correctDelta = ($quality >= 2) ? 1 : 0;
         $incorrectDelta = ($quality < 2) ? 1 : 0;
 
-        // Calculate next review datetime
-        $nextReview = date('Y-m-d H:i:s', strtotime("+{$sm2['interval']} days"));
-
+        // Next review, computed by the database: due cards are found by
+        // comparing with its clock, which can be in another time zone than PHP's.
         $this->db->execute(
             'UPDATE user_flashcards 
              SET ease_factor = ?, interval = ?, repetitions = ?, 
-                 next_review = ?, last_reviewed = ' . $this->db->now() . ',
+                 next_review = ' . $this->db->now() . ' + make_interval(days => ?), last_reviewed = ' . $this->db->now() . ',
                  correct_count = correct_count + ?, incorrect_count = incorrect_count + ?,
                  status = ?,
                  learned_at = CASE WHEN ?::boolean THEN COALESCE(learned_at, ' . $this->db->now() . ') ELSE learned_at END
              WHERE user_id = ? AND vocab_id = ?',
             [
                 $sm2['ease_factor'], $sm2['interval'], $sm2['repetitions'],
-                $nextReview, $correctDelta, $incorrectDelta, $status, $status === 'mastered' ? 'true' : 'false',
+                $sm2['interval'], $correctDelta, $incorrectDelta, $status, $status === 'mastered' ? 'true' : 'false',
                 $userId, $vocabId
             ]
         );
+        $nextReview = (string)($this->db->fetchOne(
+            "SELECT to_char(next_review, 'YYYY-MM-DD HH24:MI:SS') AS t FROM user_flashcards WHERE user_id = ? AND vocab_id = ?",
+            [$userId, $vocabId]
+        )['t'] ?? '');
 
         // XP: 5 for correct, 2 for attempt
         $xp = ($quality >= 2) ? 5 : 2;

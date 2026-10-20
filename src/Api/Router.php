@@ -913,7 +913,7 @@ class Router
     {
         $lang = $this->str('lang');
         $key = trim($this->str('letter_key'));
-        if ($lang === '' || $key === '') {
+        if (!alphabet_letter_valid($lang, $key)) {
             throw new ApiError('validation', t('api.invalid_value'), 422);
         }
         $uid = $this->user['id'];

@@ -213,10 +213,11 @@ class FastSpringBilling
         $oldPlanStatus = $user['plan_status'] ?? 'inactive';
 
         if (!$isActive) {
-            // Only deactivate if this is still the user's current
-            // subscription — not an old one they already replaced.
-            if (!empty($user['fastspring_subscription_id']) && $user['fastspring_subscription_id'] !== $subId) {
-                return "ignored deactivation of old subscription {$subId}";
+            // Only deactivate the user's current subscription. One that was
+            // never linked to the user (e.g. a failed first payment) must
+            // not end their free trial or a plan they already have.
+            if (empty($user['fastspring_subscription_id']) || $user['fastspring_subscription_id'] !== $subId) {
+                return "ignored deactivation of subscription {$subId} (not the user's current one)";
             }
             $this->db->execute(
                 "UPDATE users SET plan_status = 'canceled', has_paid = 0, payment_pending_at = NULL,

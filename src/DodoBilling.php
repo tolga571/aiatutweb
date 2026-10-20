@@ -84,7 +84,7 @@ class DodoBilling
         $subId = (string)($sub['subscription_id'] ?? '');
         $productId = (string)($sub['product_id'] ?? '');
         $status = (string)($sub['status'] ?? '');
-        $isActive = in_array($status, ['active', 'pending'], true);
+        $isActive = $status === 'active';
         $customerId = (string)($sub['customer']['customer_id'] ?? '');
         $nextBilledAt = $this->toTimestamp($sub['next_billing_date'] ?? null);
 
@@ -107,11 +107,17 @@ class DodoBilling
 
         $oldPlanStatus = $user['plan_status'] ?? 'inactive';
 
+        // 'pending' = created but not paid yet: grants nothing, takes nothing away.
+        if ($status === 'pending') {
+            return "ignored pending subscription {$subId}";
+        }
+
         if (!$isActive) {
-            // Only deactivate if this is still the user's current
-            // subscription — not an old one they already replaced.
-            if (!empty($user['dodo_subscription_id']) && $user['dodo_subscription_id'] !== $subId) {
-                return "ignored deactivation of old subscription {$subId}";
+            // Only deactivate the user's current subscription. A checkout
+            // whose first payment failed was never linked to the user, and
+            // must not end their free trial or a plan they already have.
+            if (empty($user['dodo_subscription_id']) || $user['dodo_subscription_id'] !== $subId) {
+                return "ignored deactivation of subscription {$subId} (not the user's current one)";
             }
             $this->db->execute(
                 "UPDATE users SET plan_status = 'canceled', has_paid = 0, payment_pending_at = NULL,
