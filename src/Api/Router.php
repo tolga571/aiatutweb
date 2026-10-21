@@ -101,6 +101,7 @@ class Router
             ['POST', 'auth/register', 'register', 'public'],
             ['POST', 'auth/google', 'google', 'public'],
             ['POST', 'auth/resend-verification', 'resendVerification', 'public'],
+            ['POST', 'auth/verify-email', 'verifyEmail', 'public'],
             ['POST', 'auth/forgot-password', 'forgotPassword', 'public'],
             ['POST', 'auth/logout', 'logout', 'user'],
 
@@ -296,6 +297,11 @@ class Router
         $errors = [];
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = t('auth.error_invalid_email');
+        } else {
+            $domain = strtolower(substr(strrchr($email, '@') ?: '', 1));
+            if ($domain !== '' && $abuse->isDisposable($domain)) {
+                $errors['email'] = t('error.disposable_email');
+            }
         }
         if (mb_strlen($name) < 2) {
             $errors['name'] = t('auth.error_invalid_name');
@@ -324,6 +330,19 @@ class Router
         );
         // Like the website: no session until the address is confirmed.
         $this->ok(['awaiting_verification' => true, 'email' => $email], 201);
+    }
+
+    /** {token} — validates the email verification token, marks email verified, returns session token + user. */
+    private function verifyEmail(): void
+    {
+        $token = trim($this->str('token'));
+        $userId = $this->auth->verifyEmailToken($token);
+        if (!$userId) {
+            throw new ApiError('invalid_token', t('auth.reset_invalid_token'), 422);
+        }
+        $user = $this->freshUser($userId);
+        $this->auth->recordActivity($user);
+        $this->signedIn($userId, 200);
     }
 
     /** Sign in / up with a Google ID token obtained by the app's native Google Sign-In. */

@@ -4,6 +4,8 @@ $pageTitle = __('auth.verify_email_subject');
 $pendingEmail = (string)($_SESSION['pending_verify_email'] ?? '');
 $resent = !empty($_SESSION['resend_success']);
 unset($_SESSION['resend_success']);
+$mailFailed = isset($_SESSION['verify_mail_sent']) && $_SESSION['verify_mail_sent'] === false;
+unset($_SESSION['verify_mail_sent']);
 ?>
 <?php require __DIR__ . '/../partials/head.php'; ?>
 <?php require __DIR__ . '/../partials/navbar.php'; ?>
@@ -12,6 +14,12 @@ unset($_SESSION['resend_success']);
   <div class="max-w-md w-full bg-surface-container rounded-3xl p-8 border border-outline-variant/30 text-center" data-m="rise">
     <span class="material-symbols-outlined text-primary text-6xl mb-4" aria-hidden="true">mail</span>
     <h1 class="text-headline-sm font-semibold text-on-surface mb-3"><?= __('auth.verify_email_subject') ?></h1>
+    <?php if ($mailFailed): ?>
+      <div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl px-4 py-3 mb-4 text-body-md text-left flex items-start gap-2">
+        <span class="material-symbols-outlined text-[18px] mt-0.5 shrink-0">info</span>
+        <span><?= __('auth.resend_question') ?> <?= __('auth.resend_btn') ?></span>
+      </div>
+    <?php endif; ?>
     <p class="text-body-md text-on-surface-variant mb-6">
       <?= htmlspecialchars($pendingEmail !== '' ? t('auth.check_email_sent', ['email' => $pendingEmail]) : __('auth.check_email_generic')) ?>
     </p>

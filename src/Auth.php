@@ -257,19 +257,23 @@ class Auth {
         return $token;
     }
 
-    /** Validates the token, marks the user's email verified, and marks the token used. */
-    public function verifyEmailToken(string $token): bool {
+    /** Validates the token, marks the user's email verified, and marks the token used. Returns the verified user_id, or null on failure. */
+    public function verifyEmailToken(string $token): ?int {
+        if (trim($token) === '') {
+            return null;
+        }
         $tokenHash = hash('sha256', $token);
         $row = $this->db->fetchOne(
             "SELECT id, user_id FROM email_verifications WHERE token_hash = ? AND used_at IS NULL AND expires_at > CURRENT_TIMESTAMP",
             [$tokenHash]
         );
         if (!$row) {
-            return false;
+            return null;
         }
-        $this->db->execute('UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE id = ?', [$row['user_id']]);
+        $userId = (int)$row['user_id'];
+        $this->db->execute('UPDATE users SET email_verified_at = CURRENT_TIMESTAMP WHERE id = ?', [$userId]);
         $this->db->execute("UPDATE email_verifications SET used_at = CURRENT_TIMESTAMP WHERE id = ?", [$row['id']]);
-        return true;
+        return $userId;
     }
 
     public function isLoggedIn(): bool {

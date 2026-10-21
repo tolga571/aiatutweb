@@ -20,8 +20,8 @@ namespace App\Src;
  * across the web and the app.
  */
 class AbuseGuard {
-    public const SIGNUPS_PER_IP_PER_DAY = 3;
-    public const TRIALS_PER_IP_PER_30D = 2;
+    public const SIGNUPS_PER_IP_PER_DAY = 10;
+    public const TRIALS_PER_IP_PER_30D = 5;
     public const CHAT_PER_MINUTE = 6;
     public const CHAT_PER_HOUR = 120;
     public const TRIAL_CHAT_PER_IP_PER_DAY = 45;

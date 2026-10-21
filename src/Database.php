@@ -126,7 +126,7 @@ class Database {
         )");
         $this->exec("CREATE TABLE IF NOT EXISTS token_usage (
             id SERIAL PRIMARY KEY,
-            user_id INTEGER NOT NULL REFERENCES users(id),
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
             used_this_month INTEGER DEFAULT 0,
             bonus_limit INTEGER DEFAULT 0,
             last_reset_month TEXT
@@ -702,6 +702,23 @@ class Database {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
         $this->exec("CREATE INDEX IF NOT EXISTS idx_word_contexts_lookup ON word_contexts (target_lang, native_lang, word)");
+
+        // Ensure token_usage cascades on user delete (token_usage_cascade_rev_1).
+        // Prevents foreign key violations when an account is deleted.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'token_usage_cascade_rev_1'")->fetchColumn()) {
+            $this->pdo->beginTransaction();
+            try {
+                $this->pdo->exec("ALTER TABLE token_usage DROP CONSTRAINT IF EXISTS token_usage_user_id_fkey");
+                $this->pdo->exec("ALTER TABLE token_usage ADD CONSTRAINT token_usage_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE");
+                $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('token_usage_cascade_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('token_usage_cascade_rev_1 failed (will retry next request): ' . $e->getMessage());
+            }
+        }
     }
 
     public function getPdo(): \PDO {

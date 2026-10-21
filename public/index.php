@@ -220,6 +220,11 @@ switch ($page) {
                 }
                 if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $errors[] = __('auth.error_invalid_email');
+                } else {
+                    $emailDomain = strtolower(substr(strrchr($email, '@') ?: '', 1));
+                    if ($abuse->isDisposable($emailDomain)) {
+                        $errors[] = __('error.disposable_email');
+                    }
                 }
                 if (empty($name) || mb_strlen($name) < 2) {
                     $errors[] = __('auth.error_invalid_name');
@@ -243,11 +248,12 @@ switch ($page) {
                         if ($newUser) {
                             $verifyToken = $auth->createEmailVerificationToken((int)$newUser['id']);
                             $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
-                            (new \App\Src\Mailer($config))->send(
+                            $mailSent = (new \App\Src\Mailer($config))->send(
                                 $email,
                                 __('auth.verify_email_subject'),
                                 '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
                             );
+                            $_SESSION['verify_mail_sent'] = $mailSent;
                         }
                         $_SESSION['pending_verify_email'] = $email;
                         header('Location: ?page=awaiting-verification'); exit;
@@ -326,16 +332,19 @@ switch ($page) {
         // Same answer whether or not the address has an unconfirmed account.
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_verify($_POST['csrf_token'] ?? null)) {
             $email = trim((string)($_POST['email'] ?? ''));
-            if (filter_var($email, FILTER_VALIDATE_EMAIL) && !(new \App\Src\AbuseGuard($db, $config))->resendBlocked(client_ip(), $email)) {
+            $emailDomain = strtolower(substr(strrchr($email, '@') ?: '', 1));
+            $abuse = new \App\Src\AbuseGuard($db, $config);
+            if (filter_var($email, FILTER_VALIDATE_EMAIL) && !$abuse->isDisposable($emailDomain) && !$abuse->resendBlocked(client_ip(), $email)) {
                 $user = $db->fetchOne('SELECT id FROM users WHERE email = ? AND email_verified_at IS NULL AND google_id IS NULL', [$email]);
                 if ($user) {
                     $verifyToken = $auth->createEmailVerificationToken((int)$user['id']);
                     $verifyUrl = 'https://jumplearner.com/?page=verify-email&token=' . urlencode($verifyToken);
-                    (new \App\Src\Mailer($config))->send(
+                    $mailSent = (new \App\Src\Mailer($config))->send(
                         $email,
                         __('auth.verify_email_subject'),
                         '<p>' . __('auth.verify_email_body') . '</p><p><a href="' . htmlspecialchars($verifyUrl) . '">' . htmlspecialchars($verifyUrl) . '</a></p>'
                     );
+                    $_SESSION['verify_mail_sent'] = $mailSent;
                 }
                 $_SESSION['pending_verify_email'] = $email;
             }
@@ -345,12 +354,18 @@ switch ($page) {
         exit;
 
     case 'verify-email':
-        $verifyOk = $auth->verifyEmailToken($_GET['token'] ?? '');
-        if ($auth->isLoggedIn()) {
-            header('Location: ?page=dashboard&email_verified=' . ($verifyOk ? '1' : '0'));
+        $verifiedUserId = $auth->verifyEmailToken($_GET['token'] ?? '');
+        if ($verifiedUserId) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $verifiedUserId;
+            $user = $db->fetchOne('SELECT * FROM users WHERE id = ?', [$verifiedUserId]);
+            if ($user) {
+                $auth->recordActivity($user);
+            }
+            header('Location: ?page=dashboard&email_verified=1');
             exit;
         }
-        header('Location: ?page=login&email_verified=' . ($verifyOk ? '1' : '0'));
+        header('Location: ?page=login&email_verified=0');
         exit;
 
     case 'google-login':
