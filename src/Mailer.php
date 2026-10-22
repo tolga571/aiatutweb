@@ -43,7 +43,7 @@ class Mailer
                     ],
                     'subject' => $subject,
                     'text' => $textBody ?? strip_tags($htmlBody),
-                    'html' => $htmlBody,
+                    'html' => self::withLogo($htmlBody),
                 ],
             ]);
 
@@ -52,5 +52,14 @@ class Mailer
             error_log("Mailtrap send error: " . $e->getMessage());
             return false;
         }
+    }
+
+    // Every mail goes out with the seal on top. Absolute URL and PNG because
+    // mail clients neither resolve relative paths nor reliably show WebP.
+    private static function withLogo(string $htmlBody): string
+    {
+        return '<div style="text-align:center;margin:0 0 16px">'
+            . '<img src="https://jumplearner.com/brand/seal-gold-light-240.png" alt="Jumplearner" width="96" height="96" style="display:inline-block;border:0">'
+            . '</div>' . $htmlBody;
     }
 }

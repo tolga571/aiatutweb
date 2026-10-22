@@ -9,6 +9,8 @@
   </div>
 
   <div class="relative z-10 max-w-2xl">
+    <img data-m="rise" data-m-at="0" src="/brand/seal-gold-240.webp" alt="Jumplearner — Language Learning"
+      width="144" height="144" class="w-24 h-24 sm:w-36 sm:h-36 mx-auto mb-5" fetchpriority="high" decoding="async">
     <div data-m="rise" data-m-at="0"
       class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-primary text-sm mb-6">
       <span class="w-2 h-2 bg-primary rounded-full animate-pulse m-still"></span>

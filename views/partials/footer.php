@@ -4,8 +4,9 @@
 <footer class="bg-surface-container-low/80 border-t border-outline-variant/20 py-4 mt-8">
   <div
     class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-on-surface-variant">
-    <div class="mb-2 md:mb-0">
-      <?= sprintf(__('footer.copyright'), date('Y')) ?>
+    <div class="mb-2 md:mb-0 flex items-center gap-3">
+      <img src="/brand/seal-silver-240.webp" alt="" width="40" height="40" class="w-10 h-10 shrink-0 opacity-90" loading="lazy" decoding="async">
+      <span><?= sprintf(__('footer.copyright'), date('Y')) ?></span>
     </div>
     <nav class="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-0 md:gap-4">
       <a href="?page=privacy-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.privacy') ?></a>

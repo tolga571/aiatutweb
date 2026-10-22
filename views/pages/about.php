@@ -8,9 +8,7 @@
       
       <!-- Icon & Header -->
       <div class="flex items-center gap-4 mb-8">
-        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
-          <span class="material-symbols-outlined text-primary text-3xl">info</span>
-        </div>
+        <img src="/brand/seal-gold-240.webp" alt="" width="80" height="80" class="w-20 h-20 shrink-0" decoding="async">
         <div>
           <h1 class="font-headline-lg text-headline-lg text-on-surface"><?= __('about.heading') ?></h1>
           <p class="text-body-md text-primary font-medium tracking-wider uppercase"><?= __('about.tagline') ?></p>
