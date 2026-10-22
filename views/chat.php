@@ -52,12 +52,8 @@ if ($quotaPercent > 75) {
 <!-- Refined Compact Top Navigation -->
 <nav
   class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-md sm:px-xl h-14 flex items-center justify-between z-50 shrink-0">
-  <a href="?page=home" class="flex items-center gap-2 shrink-0 group" aria-label="Jumplearner">
-    <img src="/brand/emblem-gold-96.webp" alt="" width="32" height="32" class="w-8 h-8 shrink-0" decoding="async">
-    <span class="flex flex-col">
-    <span class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight group-hover:opacity-80 transition-opacity"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></span>
-    <span class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</span>
-    </span>
+  <a href="?page=home" class="flex items-center shrink-0 group" aria-label="Jumplearner">
+    <img src="/brand/emblem-gold-96.webp" alt="" width="40" height="40" class="w-10 h-10 group-hover:opacity-80 transition-opacity" decoding="async">
   </a>
   <div class="hidden md:flex items-center gap-lg">
     <a href="?page=chat"

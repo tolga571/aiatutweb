@@ -3,12 +3,8 @@
   <link rel="stylesheet" href="/css/navbar.css?v=2">
   <script src="/js/navbar.js?v=3" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
-    <a href="?page=home" class="flex items-center gap-2 shrink-0">
-      <img src="/brand/emblem-gold-96.webp" alt="" width="32" height="32" class="w-8 h-8 shrink-0" decoding="async">
-      <div class="flex flex-col">
-      <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>
-      <p class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</p>
-      </div>
+    <a href="?page=home" class="flex items-center shrink-0" aria-label="Jumplearner">
+      <img src="/brand/emblem-gold-96.webp" alt="" width="40" height="40" class="w-10 h-10" decoding="async">
     </a>
     <?php if (isset($auth) && $auth->isLoggedIn()):
       $planBadge = $auth->currentUser()['plan_status'] ?? 'inactive';
@@ -285,12 +281,8 @@
   <div id="mobileMenuPanel"
     class="absolute left-0 right-0 top-0 max-h-[calc(100vh-1.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-1.5rem)] bg-surface-container-high border-b border-outline-variant/20 rounded-b-2xl shadow-2xl flex flex-col overflow-y-auto overscroll-contain">
     <div class="flex items-center justify-between p-4 border-b border-outline-variant/10">
-      <a href="?page=home" class="flex items-center gap-2">
-        <img src="/brand/emblem-gold-96.webp" alt="" width="32" height="32" class="w-8 h-8 shrink-0" decoding="async">
-        <span class="flex flex-col">
-        <span class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></span>
-        <span class="text-on-surface-variant text-[8px] uppercase tracking-[0.2em] font-bold">Elite Learning</span>
-        </span>
+      <a href="?page=home" class="flex items-center" aria-label="Jumplearner">
+        <img src="/brand/emblem-gold-96.webp" alt="" width="40" height="40" class="w-10 h-10" decoding="async">
       </a>
       <button id="hamburgerCloseBtn"
         class="flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
