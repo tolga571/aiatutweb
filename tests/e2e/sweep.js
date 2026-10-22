@@ -105,13 +105,11 @@ async function pageSane(page, bag, { lang, mobile } = {}) {
     assert(await page.locator('[role=status]').count(), 'no confirmation shown');
     await pageSane(page, bag, { lang: 'de' });
   });
-  await check('verify link → login → onboarding', async () => {
+  await check('verify link signs in → onboarding', async () => {
     const token = 'sweep' + stamp;
     sql(`INSERT INTO email_verifications (user_id, token_hash, expires_at) SELECT id, encode(sha256('${token}'), 'hex'), now() + interval '1 day' FROM users WHERE email = '${email}'`);
+    // Since b79543b the verification link signs the user in (dashboard → onboarding for a new account).
     await page.goto(BASE + '?page=verify-email&token=' + token); await page.waitForLoadState();
-    assert(/email_verified=1/.test(page.url()), 'verify failed: ' + page.url());
-    await page.fill('#login-form input[name=email]', email); await page.fill('#login-form input[name=password]', pass);
-    await Promise.all([page.waitForNavigation(), page.click('#login-submit-btn')]);
     assert(/onboarding/.test(page.url()), 'landed on ' + page.url());
     await pageSane(page, bag, { lang: 'de' });
   });

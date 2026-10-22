@@ -13,10 +13,11 @@ def sql(q):
     return res.stdout.strip()
 
 def make_token_for_user(uid):
-    cmd = f"php -r \"require 'autoload.php'; \\$config = require 'config.php'; \\$db = new \\App\\Src\\Database(\\$config['db_url']); \\$auth = new \\App\\Src\\Auth(\\$db); echo \\$auth->createEmailVerificationToken({uid});\""
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd='/root/Desktop/aiatutweb')
-    lines = [line.strip() for line in res.stdout.strip().splitlines() if line.strip() and not line.startswith('Database:')]
-    return lines[-1]
+    # Same row Auth::createEmailVerificationToken() writes (sha256 of the token),
+    # straight into the database the server under test uses.
+    token = 'regtest%d%d' % (uid, int(time.time() * 1000))
+    sql(f"INSERT INTO email_verifications (user_id, token_hash, expires_at) VALUES ({uid}, encode(sha256('{token}'), 'hex'), now() + interval '1 day')")
+    return token
 
 def ok(got, want, name):
     global n, fails
