@@ -189,6 +189,18 @@ class Database {
             value TEXT,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
+        // Mirror of the subscriptions that are active in the LIVE Dodo account,
+        // refreshed by DodoSync. The admin panel only counts these as real money.
+        $this->exec("CREATE TABLE IF NOT EXISTS dodo_live_subscriptions (
+            subscription_id TEXT PRIMARY KEY,
+            status TEXT NOT NULL,
+            product_id TEXT,
+            amount_cents INTEGER NOT NULL DEFAULT 0,
+            currency TEXT,
+            interval_unit TEXT,
+            interval_count INTEGER NOT NULL DEFAULT 1,
+            synced_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )");
         $this->exec("CREATE TABLE IF NOT EXISTS flashcard_decks (
             user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
             language TEXT NOT NULL,
@@ -717,6 +729,23 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('token_usage_cascade_rev_1 failed (will retry next request): ' . $e->getMessage());
+            }
+        }
+
+        // Daily MRR snapshots up to 2026-10-23 counted a users-table flag as real
+        // money. The live Dodo account had no subscription and no payment ever
+        // (checked through its API on 2026-10-23), so those days were $0.
+        if (!$this->pdo->query("SELECT 1 FROM app_state WHERE key = 'revenue_snapshots_reset_rev_1'")->fetchColumn()) {
+            $this->pdo->beginTransaction();
+            try {
+                $this->pdo->exec("UPDATE revenue_snapshots SET mrr = 0, real_subscribers = 0 WHERE day <= DATE '2026-10-23'");
+                $this->pdo->exec("INSERT INTO app_state (key, value) VALUES ('revenue_snapshots_reset_rev_1', '1') ON CONFLICT (key) DO NOTHING");
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('revenue_snapshots_reset_rev_1 failed (will retry next request): ' . $e->getMessage());
             }
         }
     }

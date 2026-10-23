@@ -4,16 +4,21 @@ namespace App\Src;
 /**
  * Numbers behind the admin dashboard.
  *
- * Revenue rule: only Dodo subscriptions are real money — Dodo is the live
- * provider. Paid plans without a Dodo subscription come from Paddle sandbox
- * test checkouts (or were granted by hand), so they're counted separately as
- * "test" and never summed into revenue.
+ * Revenue rule: only subscriptions that are active in the LIVE Dodo account
+ * (mirrored into dodo_live_subscriptions by DodoSync) are real money. A paid
+ * flag or a Dodo subscription id in users alone proves nothing: sandbox
+ * checkouts, test-mode subscriptions and hand-granted plans all set those.
+ * Such rows are "test"; ones that carry a Dodo id Dodo doesn't know as active
+ * are also reported as "unverified" so the mismatch is visible.
  */
 class AdminStats {
     /** SQL condition for a user paying real money. */
-    public const REAL_PAYING = "has_paid = 1 AND dodo_subscription_id IS NOT NULL";
-    /** SQL condition for a paid plan that isn't real money (sandbox / manual). */
-    public const TEST_PAYING = "has_paid = 1 AND dodo_subscription_id IS NULL";
+    public const LIVE_DODO_IDS = "SELECT subscription_id FROM dodo_live_subscriptions WHERE status = 'active'";
+    public const REAL_PAYING = "has_paid = 1 AND dodo_subscription_id IN (" . self::LIVE_DODO_IDS . ")";
+    /** SQL condition for a paid plan that isn't real money (sandbox, test mode, manual, stale). */
+    public const TEST_PAYING = "has_paid = 1 AND (dodo_subscription_id IS NULL OR dodo_subscription_id NOT IN (" . self::LIVE_DODO_IDS . "))";
+    /** Paid plan pointing at a Dodo subscription that isn't active in the live account. */
+    public const UNVERIFIED_PAYING = "has_paid = 1 AND dodo_subscription_id IS NOT NULL AND dodo_subscription_id NOT IN (" . self::LIVE_DODO_IDS . ")";
 
     private Database $db;
 
@@ -42,18 +47,23 @@ class AdminStats {
         ];
     }
 
-    /** Current recurring revenue from real (Dodo) subscriptions, plus test-plan counts. */
+    /**
+     * Current recurring revenue: Dodo's own amounts for the subscriptions that
+     * are active in the live account, normalised to a month. Plus test-plan counts.
+     */
     public function revenue(): array {
+        $months = ['Day' => 1 / 30, 'Week' => 7 / 30, 'Month' => 1, 'Year' => 12];
         $mrr = 0.0;
         foreach ($this->db->fetchAll(
-            'SELECT plan_status, billing_interval, COUNT(*) AS cnt FROM users WHERE ' . self::REAL_PAYING . ' GROUP BY 1, 2'
+            "SELECT amount_cents, interval_unit, interval_count FROM dodo_live_subscriptions WHERE status = 'active'"
         ) as $row) {
-            $interval = ($row['billing_interval'] ?? 'month') === 'year' ? 'year' : 'month';
-            $mrr += (AdminController::MONTHLY_PRICE_USD[$row['plan_status']][$interval] ?? 0) * (int)$row['cnt'];
+            $period = ($months[$row['interval_unit']] ?? 1) * max(1, (int)$row['interval_count']);
+            $mrr += (int)$row['amount_cents'] / 100 / $period;
         }
         return [
             'mrr' => $mrr,
-            'real_subscribers' => (int)$this->db->fetchOne('SELECT COUNT(*) AS c FROM users WHERE ' . self::REAL_PAYING)['c'],
+            'real_subscribers' => (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM dodo_live_subscriptions WHERE status = 'active'")['c'],
+            'unverified_subscribers' => (int)$this->db->fetchOne('SELECT COUNT(*) AS c FROM users WHERE ' . self::UNVERIFIED_PAYING)['c'],
             'test_subscribers' => (int)$this->db->fetchOne('SELECT COUNT(*) AS c FROM users WHERE ' . self::TEST_PAYING)['c'],
             'total_users' => (int)$this->db->fetchOne('SELECT COUNT(*) AS c FROM users')['c'],
             'trials' => (int)$this->db->fetchOne("SELECT COUNT(*) AS c FROM users WHERE plan_status = 'trial'")['c'],
@@ -88,7 +98,7 @@ class AdminStats {
                     COUNT(*) FILTER (WHERE u.plan_status <> 'inactive' OR u.has_paid = 1) AS started,
                     COUNT(*) FILTER (WHERE EXISTS (SELECT 1 FROM conversations c JOIN messages m ON m.conversation_id = c.id
                                                    WHERE c.user_id = u.id AND m.role = 'user')) AS messaged,
-                    COUNT(*) FILTER (WHERE u.has_paid = 1 AND u.dodo_subscription_id IS NOT NULL) AS paid
+                    COUNT(*) FILTER (WHERE " . self::REAL_PAYING . ") AS paid
              FROM users u WHERE u.created_at >= CURRENT_TIMESTAMP - INTERVAL '{$days} days'"
         ) ?? [];
         return array_map('intval', $row);
@@ -103,7 +113,7 @@ class AdminStats {
     /** Users per plan, with paid plans split into real (Dodo) and test. */
     public function plans(): array {
         return $this->db->fetchAll(
-            "SELECT CASE WHEN has_paid = 1 AND dodo_subscription_id IS NULL AND plan_status IN ('starter','pro','active')
+            "SELECT CASE WHEN " . self::TEST_PAYING . " AND plan_status IN ('starter','pro','active')
                          THEN plan_status || ':test' ELSE plan_status END AS plan, COUNT(*) AS cnt
              FROM users GROUP BY 1 ORDER BY 2 DESC"
         );

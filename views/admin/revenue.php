@@ -44,6 +44,7 @@ $resolveForm = function (array $r, string $kind) use ($csrf, $e): string {
 
 ob_start();
 ?>
+<?php $unverified = $kpis['unverified_subscribers'] ?? 0; require __DIR__ . '/_dodo_check.php'; ?>
 <div class="row row-deck row-cards mb-3">
     <?php foreach ([
         [$e(t('admin.real_mrr')), $usd($kpis['mrr']), t('admin.yearly_value', ['v' => $usd($kpis['arr'], 0)]), 'currency-dollar', 'green'],

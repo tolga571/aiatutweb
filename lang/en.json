@@ -1516,5 +1516,10 @@
     "tips.topic_interview": "Job interview",
     "tips.topic_interview_desc": "Introduce yourself, talk about experience.",
     "tips.topic_smalltalk": "Small talk",
-    "tips.topic_smalltalk_desc": "Talk about weather, hobbies, and weekends."
+    "tips.topic_smalltalk_desc": "Talk about weather, hobbies, and weekends.",
+    "admin.dodo_sync_failed": "Couldn't check the live Dodo account ({error}). Revenue below is from the last successful check ({ago}).",
+    "admin.dodo_unverified": "{n} paid plan(s) point to a Dodo subscription that isn't active in the live Dodo account. They are counted as test, not revenue.",
+    "admin.dodo_unverified_link": "See them",
+    "admin.dodo_checked": "Revenue checked against the live Dodo account {ago}.",
+    "admin.dodo_never": "never"
 }

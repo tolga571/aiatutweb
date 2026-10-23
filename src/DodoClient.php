@@ -59,6 +59,16 @@ class DodoClient
         return $data['checkout_url'] ?? null;
     }
 
+    /**
+     * GET /subscriptions — one page of subscriptions with the given status
+     * (Dodo pages are zero-based, at most 100 items). Null on failure.
+     */
+    public function listSubscriptions(string $status, int $page, int $pageSize = 100): ?array
+    {
+        $res = $this->request('GET', '/subscriptions?' . http_build_query(['status' => $status, 'page_size' => $pageSize, 'page_number' => $page]));
+        return $res === null ? null : ($res['items'] ?? []);
+    }
+
     /** GET /subscriptions/{id} — the subscription object, or null. */
     public function getSubscription(string $subscriptionId): ?array
     {

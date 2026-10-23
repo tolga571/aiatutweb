@@ -66,6 +66,7 @@ ob_start();
     <a href="?page=admin-2fa" class="btn btn-warning btn-sm"><?= $e(t('admin.turn_on_now')) ?></a>
 </div>
 <?php endif; ?>
+<?php $unverified = $revenue['unverified_subscribers'] ?? 0; require __DIR__ . '/_dodo_check.php'; ?>
 <!-- KPI cards -->
 <div class="row row-deck row-cards mb-3">
     <?php

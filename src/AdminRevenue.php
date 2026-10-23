@@ -2,8 +2,8 @@
 namespace App\Src;
 
 /**
- * Revenue & subscriptions page. Real money = Dodo subscriptions only (see
- * AdminStats::REAL_PAYING); Paddle sandbox plans are listed as "test".
+ * Revenue & subscriptions page. Real money = subscriptions active in the live
+ * Dodo account (see AdminStats::REAL_PAYING, DodoSync); everything else is "test".
  */
 class AdminRevenue {
     /** Open refund request: asked for and not closed since. */
@@ -131,9 +131,9 @@ class AdminRevenue {
         $where = ['u.has_paid = 1'];
         $params = [];
         if (($f['type'] ?? 'real') === 'real') {
-            $where[] = 'u.dodo_subscription_id IS NOT NULL';
+            $where[] = AdminStats::REAL_PAYING;
         } elseif (($f['type'] ?? '') === 'test') {
-            $where[] = 'u.dodo_subscription_id IS NULL';
+            $where[] = AdminStats::TEST_PAYING;
         }
         $where[] = match ($f['status'] ?? '') {
             'active' => 'u.cancel_requested_at IS NULL AND u.pending_plan_change IS NULL',

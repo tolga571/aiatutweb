@@ -268,12 +268,24 @@ class AdminController {
         exit;
     }
 
+    /** Refreshes the live-Dodo mirror revenue is counted from (throttled); returns its state. */
+    private function syncDodo(): ?array {
+        $sync = new DodoSync($this->db, $this->config);
+        try {
+            $sync->syncIfStale();
+        } catch (\Throwable $e) {
+            error_log('DodoSync failed: ' . $e->getMessage());
+        }
+        return $sync->state();
+    }
+
     // ------------------- Dashboard -------------------
     public function dashboard(): void {
         $this->requireAdmin();
         $range = (int)($_GET['d'] ?? 30);
         $range = in_array($range, [7, 30, 90], true) ? $range : 30;
         $stats = new AdminStats($this->db);
+        $dodoState = $this->syncDodo();
         (new AdminRevenue($this->db))->snapshot();
         $kpis = $stats->kpis($range);
         $revenue = $stats->revenue();
@@ -502,6 +514,7 @@ class AdminController {
     public function revenue(array $query): void {
         $this->requireAdmin();
         $rev = new AdminRevenue($this->db);
+        $dodoState = $this->syncDodo();
         $rev->snapshot();
         $filters = [
             'type' => in_array($query['type'] ?? 'real', ['real', 'test', 'all'], true) ? ($query['type'] ?? 'real') : 'real',
