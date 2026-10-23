@@ -45,6 +45,7 @@ session_set_cookie_params([
 $sessionHandler = new \App\Src\DatabaseSessionHandler($db->getPdo());
 session_set_save_handler($sessionHandler, true);
 session_start();
+csrf_boot($isHttps);
 
 $auth   = new Auth($db);
 $chat   = new Chat($db, $config);

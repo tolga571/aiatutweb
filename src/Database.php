@@ -3,6 +3,8 @@ namespace App\Src;
 
 class Database {
     private \PDO $pdo;
+    /** Set when a guarded migration failed and must be retried on the next request. */
+    private bool $initIncomplete = false;
 
     public function __construct(string $dbUrl) {
         if (empty($dbUrl)) {
@@ -34,8 +36,31 @@ class Database {
 
         $this->pdo = new \PDO($dsn);
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        error_log('Database: PostgreSQL connected (' . $host . ')');
+        $this->initializeIfChanged();
+    }
+
+    /**
+     * Schema setup and migrations are idempotent but cost ~100 queries, which
+     * made every page ~0.6 s slower in production. They now run only when this
+     * file differs from the last complete run (in practice: the first request
+     * after a deploy that touched it), and again on every request while a
+     * guarded migration keeps failing, so a retry still happens.
+     */
+    private function initializeIfChanged(): void {
+        $hash = md5_file(__FILE__);
+        try {
+            if ($this->pdo->query("SELECT value FROM app_state WHERE key = 'schema_hash'")->fetchColumn() === $hash) {
+                return;
+            }
+        } catch (\PDOException $e) {
+            // A fresh database has no app_state yet: set everything up below.
+        }
+        error_log('Database: running schema setup/migrations');
         $this->initialize();
+        if (!$this->initIncomplete) {
+            $this->pdo->prepare("INSERT INTO app_state (key, value) VALUES ('schema_hash', ?)
+                                 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = CURRENT_TIMESTAMP")->execute([$hash]);
+        }
     }
 
     private function exec(string $sql): void {
@@ -554,6 +579,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('languages_rev_2 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
         // UI strings on top of lang/<code>.json: AI translations and admin
@@ -632,6 +658,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('languages_rev_3 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
         // HSK cards users added before 2026-10-06 carry the old English gloss,
@@ -676,6 +703,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('vocab_hsk_rev_1 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
 
@@ -698,6 +726,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('email_verify_rev_1 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
 
@@ -729,6 +758,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('token_usage_cascade_rev_1 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
 
@@ -746,6 +776,7 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('revenue_snapshots_reset_rev_1 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
             }
         }
     }

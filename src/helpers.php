@@ -25,10 +25,48 @@ function t(string $key, array $vars = []): string
 }
 
 /**
- * Returns the current CSRF token, generating one for this session if needed.
+ * CSRF tokens. Signed-in users keep theirs in the session, as before.
+ * Visitors get a signed double-submit token instead: a random cookie plus
+ * an HMAC of it in the form. Keeping visitors' tokens out of the session
+ * means a crawler opening /login no longer writes a sessions row (they had
+ * piled up to ~100k a day).
+ */
+const CSRF_COOKIE = 'jl_csrf';
+
+function csrf_secret(): string
+{
+    static $secret = null;
+    // Server-only value; no extra config or query needed.
+    return $secret ??= hash('sha256', 'jl-csrf|' . (getenv('DATABASE_URL') ?: 'local'), true);
+}
+
+/** Call once per request before any output: gives a visitor the CSRF cookie if they have none. */
+function csrf_boot(bool $https): void
+{
+    $c = $_COOKIE[CSRF_COOKIE] ?? '';
+    if (!preg_match('/^[a-f0-9]{64}$/', $c)) {
+        $c = bin2hex(random_bytes(32));
+        setcookie(CSRF_COOKIE, $c, ['expires' => time() + 86400 * 7, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
+        $_COOKIE[CSRF_COOKIE] = $c;
+    }
+}
+
+function csrf_guest_token(): string
+{
+    $c = $_COOKIE[CSRF_COOKIE] ?? '';
+    return preg_match('/^[a-f0-9]{64}$/', $c) ? hash_hmac('sha256', $c, csrf_secret()) : '';
+}
+
+/**
+ * Returns the CSRF token for forms: the session's for signed-in users (or
+ * when the session already has one), otherwise the visitor token.
  */
 function csrf_token(): string
 {
+    $signedIn = !empty($_SESSION['user_id']) || !empty($_SESSION['admin_id']);
+    if (empty($_SESSION['csrf_token']) && !$signedIn && ($guest = csrf_guest_token()) !== '') {
+        return $guest;
+    }
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
@@ -44,14 +82,19 @@ function csrf_field(): string
 }
 
 /**
- * Verifies a submitted token against the session token using a timing-safe comparison.
+ * Verifies a submitted token against the session token or the visitor
+ * token, using timing-safe comparisons.
  */
 function csrf_verify(?string $submitted): bool
 {
-    if (empty($_SESSION['csrf_token']) || empty($submitted)) {
+    if (empty($submitted)) {
         return false;
     }
-    return hash_equals($_SESSION['csrf_token'], $submitted);
+    if (!empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $submitted)) {
+        return true;
+    }
+    $guest = csrf_guest_token();
+    return $guest !== '' && hash_equals($guest, $submitted);
 }
 
 /**

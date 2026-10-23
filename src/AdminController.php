@@ -99,17 +99,13 @@ class AdminController {
         }
     }
 
-    /** CSRF token generation */
+    /** CSRF token (shared helper: session token when signed in, visitor token on the sign-in page). */
     private function generateCsrfToken(): string {
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
-        return $_SESSION['csrf_token'];
+        return csrf_token();
     }
 
-    /** Verify CSRF token */
     private function validateCsrfToken(string $token): bool {
-        return hash_equals($_SESSION['csrf_token'] ?? '', $token);
+        return csrf_verify($token);
     }
 
     // ------------------- Auth -------------------
