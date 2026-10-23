@@ -53,7 +53,7 @@ if ($quotaPercent > 75) {
 <nav
   class="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/10 px-md sm:px-xl h-14 flex items-center justify-between z-50 shrink-0">
   <a href="?page=home" class="flex items-center shrink-0 group" aria-label="Jumplearner">
-    <img src="/brand/emblem.svg?v=2" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
+    <img src="/brand/emblem.svg?v=3" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
   </a>
   <div class="hidden md:flex items-center gap-lg">
     <a href="?page=chat"

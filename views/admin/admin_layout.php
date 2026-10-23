@@ -46,8 +46,8 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title><?= htmlspecialchars($title) ?> · Jumplearner Admin</title>
-    <link rel="icon" href="/favicon.ico?v=3" sizes="any">
-    <link rel="stylesheet" href="/css/brand.css?v=1">
+    <link rel="icon" href="/favicon.ico?v=4" sizes="any">
+    <link rel="stylesheet" href="/css/brand.css?v=2">
     <script>try { if (localStorage.getItem('jl_admin_sidebar') === 'collapsed') document.documentElement.classList.add('jl-sb-collapsed'); } catch (e) {}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -127,7 +127,7 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
             </button>
             <div class="jl-brand-row">
                 <a href="?page=admin-dashboard" class="navbar-brand navbar-brand-autodark jl-brand" title="Jumplearner admin">
-                    <img src="/brand/emblem.svg?v=2" alt="" width="26" height="28" class="jl-emblem"><span class="jl-brand-text"><span class="text-primary">jump</span>learner</span><span class="jl-admin-badge">admin</span>
+                    <img src="/brand/emblem.svg?v=3" alt="" width="26" height="28" class="jl-emblem"><span class="jl-brand-text"><span class="text-primary">jump</span>learner</span><span class="jl-admin-badge">admin</span>
                 </a>
                 <button type="button" class="jl-sb-toggle d-none d-lg-inline-flex" id="jl-sb-toggle" aria-controls="sidebar-menu" aria-expanded="true"
                     aria-label="<?= htmlspecialchars(t('admin.collapse_menu')) ?>" title="<?= htmlspecialchars(t('admin.collapse_menu')) ?>">

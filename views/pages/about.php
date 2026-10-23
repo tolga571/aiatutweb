@@ -8,7 +8,7 @@
       
       <!-- Icon & Header -->
       <div class="flex items-center gap-4 mb-8">
-        <img src="/brand/emblem.svg?v=2" alt="" width="73" height="80" class="jl-emblem h-20 shrink-0" decoding="async">
+        <img src="/brand/emblem.svg?v=3" alt="" width="73" height="80" class="jl-emblem h-20 shrink-0" decoding="async">
         <div>
           <h1 class="font-headline-lg text-headline-lg text-on-surface"><?= __('about.heading') ?></h1>
           <p class="text-body-md text-primary font-medium tracking-wider uppercase"><?= __('about.tagline') ?></p>

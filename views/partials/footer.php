@@ -5,7 +5,7 @@
   <div
     class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-on-surface-variant">
     <div class="mb-2 md:mb-0 flex items-center gap-3">
-      <img src="/brand/emblem.svg?v=2" alt="" width="37" height="40" class="jl-emblem h-10 shrink-0" loading="lazy" decoding="async">
+      <img src="/brand/emblem.svg?v=3" alt="" width="37" height="40" class="jl-emblem h-10 shrink-0" loading="lazy" decoding="async">
       <span><?= sprintf(__('footer.copyright'), date('Y')) ?></span>
     </div>
     <nav class="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-0 md:gap-4">

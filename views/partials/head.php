@@ -5,10 +5,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title><?= htmlspecialchars($pageTitle ?? 'Jumplearner') ?></title>
-<link rel="icon" href="/favicon.ico?v=3" sizes="any">
-<link rel="icon" type="image/png" href="/brand/favicon-64-v3.png">
-<link rel="apple-touch-icon" href="/brand/apple-touch-icon-v3.png">
-<link rel="stylesheet" href="/css/brand.css?v=1">
+<link rel="icon" href="/favicon.ico?v=4" sizes="any">
+<link rel="icon" type="image/png" href="/brand/favicon-64-v4.png">
+<link rel="apple-touch-icon" href="/brand/apple-touch-icon-v4.png">
+<link rel="stylesheet" href="/css/brand.css?v=2">
 <?php
 // Views may set $pageDescription for a page-specific summary; otherwise
 // this default covers the marketing/legal pages that don't set one.
@@ -22,12 +22,12 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
 <meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? 'Jumplearner') ?>"/>
 <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>"/>
 <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl) ?>"/>
-<meta property="og:image" content="https://jumplearner.com/brand/og-image-v3.jpg"/>
+<meta property="og:image" content="https://jumplearner.com/brand/og-image-v4.jpg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Jumplearner — Language Learning"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://jumplearner.com/brand/og-image-v3.jpg"/>
+<meta name="twitter:image" content="https://jumplearner.com/brand/og-image-v4.jpg"/>
 <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle ?? 'Jumplearner') ?>"/>
 <meta name="twitter:description" content="<?= htmlspecialchars($metaDescription) ?>"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>

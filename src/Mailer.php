@@ -59,7 +59,7 @@ class Mailer
     private static function withLogo(string $htmlBody): string
     {
         return '<div style="text-align:center;margin:0 0 16px">'
-            . '<img src="https://jumplearner.com/brand/emblem-email-v3.png" alt="Jumplearner" width="88" height="96" style="display:inline-block;border:0">'
+            . '<img src="https://jumplearner.com/brand/emblem-email-v4.png" alt="Jumplearner" width="88" height="96" style="display:inline-block;border:0">'
             . '</div>' . $htmlBody;
     }
 }
