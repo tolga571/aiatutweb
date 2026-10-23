@@ -6,7 +6,7 @@
 
   <div class="relative z-10 w-full max-w-md">
     <div class="text-center mb-8">
-      <img src="/brand/emblem.svg" alt="Jumplearner" width="102" height="112" class="jl-emblem h-28 mx-auto mb-5" decoding="async">
+      <img src="/brand/emblem.svg?v=2" alt="Jumplearner" width="102" height="112" class="jl-emblem h-28 mx-auto mb-5" decoding="async">
       <a href="?page=home" class="inline-flex items-center gap-2 font-bold text-xl mb-6">
         <div class="flex flex-col items-start">
           <p class="font-headline-md text-[18px] font-extrabold leading-none tracking-tight"><span class="text-primary">jump</span><span class="text-on-surface">learner</span></p>

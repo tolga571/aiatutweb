@@ -9,7 +9,7 @@ $h = fn($v) => htmlspecialchars((string)$v);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title><?= $h(t('admin.signin')) ?> · Jumplearner Admin</title>
-    <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+    <link rel="icon" href="/favicon.ico?v=3" sizes="any">
     <link rel="stylesheet" href="/css/brand.css?v=1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.1/dist/css/tabler.min.css" rel="stylesheet" />
@@ -37,7 +37,7 @@ $h = fn($v) => htmlspecialchars((string)$v);
 <div class="page page-center">
     <div class="container container-tight py-4" style="max-width: 26rem;">
         <div class="text-center mb-4">
-            <img src="/brand/emblem.svg" alt="" width="88" height="96" class="jl-emblem mx-auto mb-3" style="height:96px">
+            <img src="/brand/emblem.svg?v=2" alt="" width="88" height="96" class="jl-emblem mx-auto mb-3" style="height:96px">
             <div class="brand"><span class="text-primary">jump</span>learner</div>
             <div class="text-secondary small mt-1"><?= $h(t('admin.panel')) ?></div>
         </div>

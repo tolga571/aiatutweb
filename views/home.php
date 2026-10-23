@@ -9,7 +9,7 @@
   </div>
 
   <div class="relative z-10 max-w-2xl">
-    <img data-m="rise" data-m-at="0" src="/brand/emblem.svg" alt="Jumplearner"
+    <img data-m="rise" data-m-at="0" src="/brand/emblem.svg?v=2" alt="Jumplearner"
       width="175" height="192" class="jl-emblem h-36 sm:h-48 mx-auto mb-6" fetchpriority="high" decoding="async">
     <div data-m="rise" data-m-at="0"
       class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-primary text-sm mb-6">

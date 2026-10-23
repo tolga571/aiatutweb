@@ -4,7 +4,7 @@
   <script src="/js/navbar.js?v=3" defer></script>
   <div class="flex items-center min-w-0 col-start-1">
     <a href="?page=home" class="flex items-center shrink-0" aria-label="Jumplearner">
-      <img src="/brand/emblem.svg" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
+      <img src="/brand/emblem.svg?v=2" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
     </a>
     <?php if (isset($auth) && $auth->isLoggedIn()):
       $planBadge = $auth->currentUser()['plan_status'] ?? 'inactive';
@@ -282,7 +282,7 @@
     class="absolute left-0 right-0 top-0 max-h-[calc(100vh-1.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-1.5rem)] bg-surface-container-high border-b border-outline-variant/20 rounded-b-2xl shadow-2xl flex flex-col overflow-y-auto overscroll-contain">
     <div class="flex items-center justify-between p-4 border-b border-outline-variant/10">
       <a href="?page=home" class="flex items-center" aria-label="Jumplearner">
-        <img src="/brand/emblem.svg" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
+        <img src="/brand/emblem.svg?v=2" alt="" width="40" height="44" class="jl-emblem h-11" decoding="async">
       </a>
       <button id="hamburgerCloseBtn"
         class="flex items-center justify-center w-10 h-10 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors"
