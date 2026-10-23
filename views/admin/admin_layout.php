@@ -46,7 +46,8 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title><?= htmlspecialchars($title) ?> · Jumplearner Admin</title>
-    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+    <link rel="stylesheet" href="/css/brand.css?v=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.1/dist/css/tabler.min.css" rel="stylesheet" />
@@ -88,7 +89,7 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="?page=admin-dashboard" class="navbar-brand navbar-brand-autodark py-lg-3">
-                <img src="/brand/emblem-gold-96.webp" alt="" width="28" height="28" class="me-2"><span><span class="text-primary">jump</span>learner</span> <span class="badge bg-primary-lt ms-2">admin</span>
+                <img src="/brand/emblem.svg" alt="" width="27" height="30" class="jl-emblem me-2" style="height:30px;display:inline-block"><span><span class="text-primary">jump</span>learner</span> <span class="badge bg-primary-lt ms-2">admin</span>
             </a>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-1">

@@ -1,0 +1,17 @@
+/* The flame/snowflake emblem: a warm gold glow that slowly breathes.
+   The light sweep across the metal lives inside /brand/emblem.svg. */
+.jl-emblem {
+  display: block;
+  width: auto;
+  filter: drop-shadow(0 0 6px rgba(214, 178, 94, .35)) drop-shadow(0 0 18px rgba(214, 178, 94, .18));
+  animation: jl-emblem-glow 4.5s ease-in-out infinite;
+}
+a:hover > .jl-emblem, a:focus-visible > .jl-emblem {
+  filter: drop-shadow(0 0 8px rgba(232, 200, 120, .6)) drop-shadow(0 0 24px rgba(214, 178, 94, .35));
+}
+@keyframes jl-emblem-glow {
+  50% { filter: drop-shadow(0 0 9px rgba(232, 200, 120, .55)) drop-shadow(0 0 26px rgba(214, 178, 94, .3)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jl-emblem { animation: none; }
+}

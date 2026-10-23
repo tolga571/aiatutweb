@@ -54,12 +54,12 @@ class Mailer
         }
     }
 
-    // Every mail goes out with the seal on top. Absolute URL and PNG because
+    // Every mail goes out with the emblem on top. Absolute URL and PNG because
     // mail clients neither resolve relative paths nor reliably show WebP.
     private static function withLogo(string $htmlBody): string
     {
         return '<div style="text-align:center;margin:0 0 16px">'
-            . '<img src="https://jumplearner.com/brand/seal-gold-light-240.png" alt="Jumplearner" width="96" height="96" style="display:inline-block;border:0">'
+            . '<img src="https://jumplearner.com/brand/emblem-email.png" alt="Jumplearner" width="88" height="96" style="display:inline-block;border:0">'
             . '</div>' . $htmlBody;
     }
 }
