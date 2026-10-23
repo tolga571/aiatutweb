@@ -1521,5 +1521,7 @@
     "admin.dodo_unverified": "{n} paid plan(s) point to a Dodo subscription that isn't active in the live Dodo account. They are counted as test, not revenue.",
     "admin.dodo_unverified_link": "See them",
     "admin.dodo_checked": "Revenue checked against the live Dodo account {ago}.",
-    "admin.dodo_never": "never"
+    "admin.dodo_never": "never",
+    "admin.collapse_menu": "Collapse menu",
+    "admin.expand_menu": "Expand menu"
 }

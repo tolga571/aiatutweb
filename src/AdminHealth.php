@@ -21,7 +21,7 @@ class AdminHealth {
             'commit' => $sha !== '' ? substr($sha, 0, 7) : null,
             'commit_message' => (string)getenv('RAILWAY_GIT_COMMIT_MESSAGE') ?: null,
             'branch' => (string)getenv('RAILWAY_GIT_BRANCH') ?: null,
-            'environment' => (string)getenv('RAILWAY_ENVIRONMENT_NAME') ?: 'yerel',
+            'environment' => (string)getenv('RAILWAY_ENVIRONMENT_NAME') ?: 'local',
             'deployment' => (string)getenv('RAILWAY_DEPLOYMENT_ID') ?: null,
             'php' => PHP_VERSION,
             'server' => $_SERVER['SERVER_SOFTWARE'] ?? php_sapi_name(),

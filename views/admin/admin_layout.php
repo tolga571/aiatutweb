@@ -48,6 +48,7 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
     <title><?= htmlspecialchars($title) ?> · Jumplearner Admin</title>
     <link rel="icon" href="/favicon.ico?v=3" sizes="any">
     <link rel="stylesheet" href="/css/brand.css?v=1">
+    <script>try { if (localStorage.getItem('jl_admin_sidebar') === 'collapsed') document.documentElement.classList.add('jl-sb-collapsed'); } catch (e) {}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.6.1/dist/css/tabler.min.css" rel="stylesheet" />
@@ -65,7 +66,43 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
         }
         body { background: var(--tblr-body-bg); }
         .navbar-vertical { background: #0e1626 !important; border-right: 1px solid var(--tblr-border-color); }
-        .navbar-vertical .navbar-brand { font-weight: 800; letter-spacing: -.01em; }
+        /* Brand row: emblem, wordmark and a small ADMIN tag that always fit. */
+        .jl-brand-row { display: flex; align-items: center; gap: .5rem; min-width: 0; padding: 0 .35rem 0 .6rem; }
+        html.jl-sb-collapsed .jl-brand-row { padding: 0; }
+        .navbar-vertical .navbar-brand.jl-brand { display: flex; align-items: center; gap: .55rem; min-width: 0; margin: 0; padding: .9rem 0; font-weight: 800; letter-spacing: -.01em; font-size: 1.08rem; white-space: nowrap; }
+        .jl-brand .jl-emblem { height: 28px; flex: none; }
+        .jl-brand-text { overflow: hidden; text-overflow: ellipsis; }
+        .jl-admin-badge { flex: none; font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .22rem .42rem; border-radius: 6px;
+            color: #c7d2fe; background: rgba(109, 139, 255, .16); border: 1px solid rgba(109, 139, 255, .3); }
+        .jl-sb-toggle { margin-left: auto; flex: none; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: #94a3b8;
+            display: inline-flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
+        .jl-sb-toggle:hover, .jl-sb-toggle:focus-visible { background: rgba(148, 163, 184, .12); color: #e2e8f0; }
+        .jl-sb-toggle i { font-size: 1.15rem; transition: transform .2s; }
+        /* Thin scrollbar that matches the dark sidebar. */
+        .navbar-vertical, .navbar-vertical .navbar-collapse { scrollbar-width: thin; scrollbar-color: rgba(148, 163, 184, .22) transparent; }
+        .navbar-vertical ::-webkit-scrollbar, .navbar-vertical::-webkit-scrollbar { width: 6px; }
+        .navbar-vertical ::-webkit-scrollbar-track, .navbar-vertical::-webkit-scrollbar-track { background: transparent; }
+        .navbar-vertical ::-webkit-scrollbar-thumb, .navbar-vertical::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, .2); border-radius: 6px; }
+        .navbar-vertical ::-webkit-scrollbar-thumb:hover, .navbar-vertical::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, .38); }
+        @media (min-width: 992px) {
+            .navbar-vertical.navbar-expand-lg { transition: width .2s ease; overflow-x: hidden; }
+            .navbar-vertical.navbar-expand-lg ~ .page-wrapper { transition: margin-left .2s ease; }
+            /* Collapsed: icons only, names as tooltips. */
+            html.jl-sb-collapsed .navbar-vertical.navbar-expand-lg { width: 4.5rem; }
+            html.jl-sb-collapsed .navbar-vertical.navbar-expand-lg ~ .page-wrapper { margin-left: 4.5rem; }
+            html.jl-sb-collapsed .jl-brand-row { flex-direction: column; gap: .25rem; padding-top: .6rem; }
+            html.jl-sb-collapsed .navbar-vertical .navbar-brand.jl-brand { padding: .3rem 0; }
+            html.jl-sb-collapsed .jl-brand-text, html.jl-sb-collapsed .jl-admin-badge,
+            html.jl-sb-collapsed .navbar-vertical .nav-link-title, html.jl-sb-collapsed .jl-sb-footer-detail { display: none !important; }
+            html.jl-sb-collapsed .jl-sb-toggle { margin: 0 auto .4rem; }
+            html.jl-sb-collapsed .jl-sb-toggle i { transform: rotate(180deg); }
+            html.jl-sb-collapsed .nav-section { font-size: 0; padding: .6rem 1rem .3rem; }
+            html.jl-sb-collapsed .nav-section::after { content: ''; display: block; height: 1px; background: var(--tblr-border-color); }
+            html.jl-sb-collapsed .navbar-vertical .nav-link { justify-content: center; padding-left: 0; padding-right: 0; }
+            html.jl-sb-collapsed .navbar-vertical .nav-link-icon { margin: 0; }
+            html.jl-sb-collapsed .jl-sb-footer { padding: .6rem .3rem !important; }
+            html.jl-sb-collapsed .jl-sb-footer .jl-sb-account { flex-direction: column; }
+        }
         .nav-section { font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #64748b; padding: 1rem 1rem .35rem; }
         .navbar-vertical .nav-link.active { background: rgba(109, 139, 255, .14); color: #c7d2fe; border-radius: 8px; }
         .navbar-vertical .nav-link { border-radius: 8px; margin: 1px .5rem; }
@@ -88,16 +125,22 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="<?= htmlspecialchars(t('admin.menu')) ?>">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="?page=admin-dashboard" class="navbar-brand navbar-brand-autodark py-lg-3">
-                <img src="/brand/emblem.svg?v=2" alt="" width="27" height="30" class="jl-emblem me-2" style="height:30px;display:inline-block"><span><span class="text-primary">jump</span>learner</span> <span class="badge bg-primary-lt ms-2">admin</span>
-            </a>
+            <div class="jl-brand-row">
+                <a href="?page=admin-dashboard" class="navbar-brand navbar-brand-autodark jl-brand" title="Jumplearner admin">
+                    <img src="/brand/emblem.svg?v=2" alt="" width="26" height="28" class="jl-emblem"><span class="jl-brand-text"><span class="text-primary">jump</span>learner</span><span class="jl-admin-badge">admin</span>
+                </a>
+                <button type="button" class="jl-sb-toggle d-none d-lg-inline-flex" id="jl-sb-toggle" aria-controls="sidebar-menu" aria-expanded="true"
+                    aria-label="<?= htmlspecialchars(t('admin.collapse_menu')) ?>" title="<?= htmlspecialchars(t('admin.collapse_menu')) ?>">
+                    <i class="ti ti-layout-sidebar-left-collapse"></i>
+                </button>
+            </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-1">
                     <?php foreach ($navSections as $section => $items): ?>
                         <li class="nav-section"><?= htmlspecialchars($section) ?></li>
                         <?php foreach ($items as [$pageKey, $icon, $label]): ?>
                         <li class="nav-item">
-                            <a class="nav-link<?= $activePage === $pageKey ? ' active' : '' ?>" href="?page=<?= $pageKey ?>">
+                            <a class="nav-link<?= $activePage === $pageKey ? ' active' : '' ?>" href="?page=<?= $pageKey ?>" title="<?= htmlspecialchars($label) ?>">
                                 <span class="nav-link-icon"><i class="ti ti-<?= $icon ?> fs-2"></i></span>
                                 <span class="nav-link-title"><?= htmlspecialchars($label) ?></span>
                             </a>
@@ -106,14 +149,14 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                     <?php endforeach; ?>
                     <li class="nav-section"><?= htmlspecialchars(t('admin.nav_site')) ?></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/" target="_blank" rel="noopener">
+                        <a class="nav-link" href="/" target="_blank" rel="noopener" title="<?= htmlspecialchars(t('admin.open_site')) ?>">
                             <span class="nav-link-icon"><i class="ti ti-external-link fs-2"></i></span>
                             <span class="nav-link-title"><?= htmlspecialchars(t('admin.open_site')) ?></span>
                         </a>
                     </li>
                 </ul>
-                <div class="mt-auto p-3 border-top" style="border-color:var(--tblr-border-color)!important;">
-                    <label class="d-flex align-items-center gap-2 mb-2 small text-secondary">
+                <div class="mt-auto p-3 border-top jl-sb-footer" style="border-color:var(--tblr-border-color)!important;">
+                    <label class="d-flex align-items-center gap-2 mb-2 small text-secondary jl-sb-footer-detail">
                         <i class="ti ti-language"></i>
                         <span class="visually-hidden"><?= htmlspecialchars(t('admin.ui_language')) ?></span>
                         <select class="form-select form-select-sm" aria-label="<?= htmlspecialchars(t('admin.ui_language')) ?>"
@@ -123,9 +166,9 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
                             <?php endforeach; ?>
                         </select>
                     </label>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="avatar avatar-sm bg-primary-lt"><i class="ti ti-user"></i></span>
-                        <div class="flex-fill text-truncate" style="min-width:0;">
+                    <div class="d-flex align-items-center gap-2 jl-sb-account">
+                        <span class="avatar avatar-sm bg-primary-lt jl-sb-footer-detail"><i class="ti ti-user"></i></span>
+                        <div class="flex-fill text-truncate jl-sb-footer-detail" style="min-width:0;">
                             <div class="text-truncate small fw-semibold"><?= htmlspecialchars($adminRow['email'] ?? '') ?></div>
                             <div class="text-secondary" style="font-size:.7rem;"><?= htmlspecialchars($adminRole === 'admin' ? t('admin.role_full') : t('admin.role_readonly')) ?></div>
                         </div>
@@ -169,5 +212,24 @@ $activePage = $activeAlias[$currentPage] ?? $currentPage;
         </div>
     </div>
 </div>
+<script>
+// Desktop sidebar: collapse to icons and remember it in this browser.
+(function () {
+    var btn = document.getElementById('jl-sb-toggle'), root = document.documentElement;
+    if (!btn) return;
+    function sync() {
+        var collapsed = root.classList.contains('jl-sb-collapsed');
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        var label = collapsed ? <?= json_encode(t('admin.expand_menu')) ?> : <?= json_encode(t('admin.collapse_menu')) ?>;
+        btn.setAttribute('aria-label', label); btn.title = label;
+    }
+    btn.addEventListener('click', function () {
+        root.classList.toggle('jl-sb-collapsed');
+        try { localStorage.setItem('jl_admin_sidebar', root.classList.contains('jl-sb-collapsed') ? 'collapsed' : 'open'); } catch (e) {}
+        sync();
+    });
+    sync();
+})();
+</script>
 </body>
 </html>
