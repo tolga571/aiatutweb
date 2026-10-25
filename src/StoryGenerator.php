@@ -112,6 +112,13 @@ class StoryGenerator
         if (self::scriptShare($all, self::SCRIPTS[$lang] ?? '\p{L}') < 0.85) {
             $p[] = 'the text is not written in ' . Language::langName($lang) . ' script';
         }
+        // Title and summary on their own too: a short title left in English
+        // (or written in Latin letters) disappears inside a long story.
+        foreach (['title', 'summary'] as $k) {
+            if ($res[$k] !== '-' && $res[$k] !== '' && self::scriptShare($res[$k], self::SCRIPTS[$lang] ?? '\p{L}') < 0.5) {
+                $p[] = "the {$k} is not written in " . Language::langName($lang) . ' script';
+            }
+        }
         return $p;
     }
 
@@ -143,10 +150,17 @@ class StoryGenerator
         return $c === '' ? $m : $c;
     }
 
-    /** Cleans every meaning of an annotated text in place. */
+    /** A reading without sentence punctuation copied from the word ("an-nabīya," → "an-nabīya"); stress marks stay. */
+    public static function cleanReading(string $r): string {
+        $c = preg_replace('/^[\s"“”„«»「」『』\'‘’—–,;:!?¡¿。、，！？…]+|[\s"“”„«»「」『』\'‘’—–.,;:!?¡¿。、，！？…]+$/u', '', trim($r));
+        return $c === '' ? trim($r) : $c;
+    }
+
+    /** Cleans every meaning and reading of an annotated text in place. */
     public static function cleanText(array $text): array {
         foreach ($text['sentences'] as &$s) {
             foreach ($s['tokens'] as &$tk) {
+                $tk['r'] = self::cleanReading((string)($tk['r'] ?? ''));
                 foreach ($tk['m'] as $l => $m) {
                     $tk['m'][$l] = self::cleanMeaning((string)$m);
                 }

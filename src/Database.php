@@ -3,7 +3,7 @@ namespace App\Src;
 
 class Database {
     /** Bump when a release adds files to data/stories/ (see migrate()). */
-    private const STORY_SEED_REV = 1;
+    private const STORY_SEED_REV = 2;
 
     private \PDO $pdo;
     /** Set when a guarded migration failed and must be retried on the next request. */

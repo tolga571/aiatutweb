@@ -47,7 +47,7 @@ $tour = [
 ];
 $media = function (string $name): ?array {
     $dir = __DIR__ . '/../public/media/home/';
-    return is_file($dir . $name . '.mp4') ? ['mp4' => '/media/home/' . $name . '.mp4?v=1', 'poster' => is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=1' : ''] : null;
+    return is_file($dir . $name . '.mp4') ? ['mp4' => '/media/home/' . $name . '.mp4?v=2', 'poster' => is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=2' : ''] : null;
 };
 $plans = [
     ['id' => 'starter', 'features' => 4, 'rec' => false],
