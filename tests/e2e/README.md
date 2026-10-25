@@ -6,6 +6,7 @@ Browser tests against the **local staging** site (see `AGENTS.md` → Local stag
 |---|---|---|
 | `sweep.js <adminSid> <outDir> [sections]` | Whole site. Sections: `guest` (15 pages × 11 languages × desktop/phone), `user` (register → onboarding → chat → flashcards → mistakes → logout/login), `i18n` (logged-in UI in all 11 languages), `admin` (every admin page), `api` (mobile API incl. other-user/IDOR checks) | 424 |
 | `lists_test.js <outDir> [phone]` | Card lists (playlists) + study mode, web | 17 |
+| `stories_test.js <outDir> [adminSid]` | Stories list + reader in 11 languages (RTL, phone width, hreflang), word drawer, saving to cards (web + API), admin pages, new homepage + footer in 11 UI languages | 47 |
 | `words_test.js <outDir>` | Word bank page + API, 5 UI languages | 16 |
 | `api_lists_test.sh` | Card-list API incl. other-user (IDOR) checks | 22 |
 | `legal_pages_test.py [BASE]` | Privacy, terms, cookie and account-deletion pages in all 11 languages: real text present, lang/dir, no raw keys or `{placeholders}`, no Paddle | 44 |
