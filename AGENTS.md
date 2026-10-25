@@ -13,6 +13,15 @@ AI language tutor at https://jumplearner.com. This repo is the **website plus th
 5. **Static asset cache:** Cloudflare caches CSS/JS by full URL (`?v=N`). Bump `?v=` in the same commit as the file change, and don't request the new `?v=` URL before that deploy is live — the old file would get cached under the new key.
 6. **Parallel work:** `git fetch` and check `origin/master` before you start. Don't edit another agent's working copy (`.claude/worktrees/*` belong to Claude Code). Don't work on the same feature as the other agent at the same time — the owner splits the work.
 
+## Versions and rollback
+
+Every release that reaches production is a version: an annotated git tag `vMAJOR.MINOR` (`v1.2`) on the `master` commit that went live, plus an entry in `CHANGELOG.md`. The owner can always ask to go back to a named version.
+
+- Before a deploy: tag the current production commit if it has no version yet, and add the new version's entry to `CHANGELOG.md` (what changed, for the owner, in plain words).
+- After the deploy is live and checked: `git tag -a vX.Y <commit> -m "…"` and `git push origin vX.Y`. Tag the mobile app repo the same way when an app build ships.
+- Rolling back to a version: `git revert` the commits after it (or reset `master` to the tag with the owner's approval), then deploy. Database changes are additive (new tables/columns), so older code runs on a newer database; never drop data in a rollback.
+- The `pre-<feature>` tags stay as finer-grained rollback points.
+
 ## Coordination board (two agents)
 
 Outside the repos, at `/home/kali/jumplearner-agents/` (local only, never committed): `PANO.md` is the task board (who has which task, branch, files), `MESAJLAR.md` holds messages between agents, and `README.md` has the rules. **At the start of every task:** read both files and `git fetch`. **Before touching code:** claim the task and list the files you'll change. **When done:** update the status and leave a message if the other agent needs to know something. Only take tasks the owner put on the board.
