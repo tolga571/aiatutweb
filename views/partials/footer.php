@@ -4,8 +4,9 @@
 ?>
 <link rel="stylesheet" href="/css/footer.css?v=1">
 <?php
-// Full-height app screens (flashcards: no page scroll) set $hideFooter;
-// they keep only the cookie banner below.
+// Learning tools (flashcards, word bank, my mistakes, alphabet, quizzes,
+// the grammar card form) set $hideFooter: the link footer belongs to the
+// content pages, not under a tool. They keep only the cookie banner.
 if (empty($hideFooter)):
 $footGuest = !(isset($auth) && $auth->isLoggedIn()); ?>
 <footer class="jl-footer">

@@ -507,6 +507,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
     </div>
   </div>
 </main>
+<?php require __DIR__ . '/partials/footer.php'; ?>
 
 <!-- Payment processing modal -->
 <div id="payment-loading-modal" class="fixed inset-0 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center z-[100] hidden">

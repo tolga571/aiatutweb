@@ -4,7 +4,8 @@ Versions of jumplearner.com (web + API). Each one is a git tag on the `master` c
 
 ## v1.2.1 — 2026-10-25
 
-- **Flashcards:** the site footer no longer shows under the flashcards screen. It is a full-height app screen; the footer took space below it and covered nothing useful there (the cookie banner stays).
+- **Footer only on content pages:** the learning tools — flashcards, word bank, my mistakes, alphabet — no longer have the site's link footer under them (it took more room than some of the tools; the cookie banner stays).
+- **Pricing:** now has the footer, with the legal links (terms, refunds, privacy) every other content page has.
 
 ## v1.2 — 2026-10-25
 

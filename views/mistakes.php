@@ -381,4 +381,4 @@ $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APO
 </script>
 <?php endif; ?>
 
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php $hideFooter = true; require __DIR__ . '/partials/footer.php'; ?>

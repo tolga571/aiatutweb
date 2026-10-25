@@ -229,7 +229,7 @@ require __DIR__ . '/../partials/navbar.php';
       <?php endif; ?>
     </div>
   </div>
-  <?php require __DIR__ . '/../partials/footer.php'; ?>
+  <?php $hideFooter = true; require __DIR__ . '/../partials/footer.php'; ?>
 </main>
 
 <div id="tts-toast" class="tts-toast" role="status" aria-live="polite"></div>

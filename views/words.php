@@ -118,4 +118,4 @@ window.__WB__ = {
 </script>
 <script src="/js/words.js?v=11"></script>
 
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php $hideFooter = true; require __DIR__ . '/partials/footer.php'; ?>
