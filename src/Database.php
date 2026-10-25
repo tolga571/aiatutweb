@@ -2,6 +2,9 @@
 namespace App\Src;
 
 class Database {
+    /** Bump when a release adds files to data/stories/ (see migrate()). */
+    private const STORY_SEED_REV = 1;
+
     private \PDO $pdo;
     /** Set when a guarded migration failed and must be retried on the next request. */
     private bool $initIncomplete = false;
@@ -758,6 +761,79 @@ class Database {
                     $this->pdo->rollBack();
                 }
                 error_log('token_usage_cascade_rev_1 failed (will retry next request): ' . $e->getMessage());
+                $this->initIncomplete = true;
+            }
+        }
+
+        // Stories: short texts in every site language, read as plain text or
+        // word by word (reading + meaning in each other language). A story's
+        // English source (source_json) is what the admin wrote; story_texts
+        // holds one row per language, built by StoryGenerator.
+        $this->exec("CREATE TABLE IF NOT EXISTS story_categories (
+            slug TEXT PRIMARY KEY,
+            names JSONB NOT NULL DEFAULT '{}',
+            sort_order INTEGER NOT NULL DEFAULT 100
+        )");
+        $this->exec("INSERT INTO story_categories (slug, sort_order) VALUES
+            ('fairy-tale', 10), ('bedtime', 20), ('islamic', 30)
+            ON CONFLICT (slug) DO NOTHING");
+        $this->exec("CREATE TABLE IF NOT EXISTS stories (
+            id SERIAL PRIMARY KEY,
+            slug TEXT UNIQUE NOT NULL,
+            category TEXT NOT NULL REFERENCES story_categories(slug) ON UPDATE CASCADE,
+            length TEXT NOT NULL DEFAULT 'short' CHECK (length IN ('short', 'medium', 'long')),
+            status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+            source TEXT NOT NULL DEFAULT '',
+            source_json JSONB,
+            build_json JSONB,
+            sort_order INTEGER NOT NULL DEFAULT 100,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            published_at TIMESTAMP DEFAULT NULL
+        )");
+        $this->exec("CREATE INDEX IF NOT EXISTS idx_stories_list ON stories (status, category, length)");
+        $this->exec("CREATE TABLE IF NOT EXISTS story_texts (
+            story_id INTEGER NOT NULL REFERENCES stories(id) ON DELETE CASCADE,
+            lang TEXT NOT NULL,
+            title TEXT NOT NULL,
+            summary TEXT NOT NULL DEFAULT '',
+            content JSONB NOT NULL,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (story_id, lang)
+        )");
+        // Starter stories shipped in data/stories/<slug>.json: each one is
+        // added once, the first time a release that has its file runs this
+        // (this code runs when Database.php changes, so a release that adds
+        // a story file also bumps STORY_SEED_REV below).
+        // A story that already exists (by slug) is left alone, so admin
+        // edits stick. Never fatal: a broken file is logged and retried.
+        foreach (glob(dirname(__DIR__) . '/data/stories/*.json') ?: [] as $file) {
+            if (basename($file) === 'sources.json') {
+                continue;
+            }
+            $seed = json_decode((string)file_get_contents($file), true);
+            if (!is_array($seed) || empty($seed['slug']) || empty($seed['texts'])) {
+                continue;
+            }
+            try {
+                if ($this->pdo->query("SELECT 1 FROM stories WHERE slug = " . $this->pdo->quote($seed['slug']))->fetchColumn()) {
+                    continue;
+                }
+                $this->pdo->beginTransaction();
+                $st = $this->pdo->prepare("INSERT INTO stories (slug, category, length, status, source, sort_order, published_at)
+                                           VALUES (?, ?, ?, 'published', ?, ?, CURRENT_TIMESTAMP) RETURNING id");
+                $st->execute([$seed['slug'], $seed['category'], $seed['length'], (string)($seed['source'] ?? ''), (int)($seed['sort_order'] ?? 100)]);
+                $storyId = (int)$st->fetchColumn();
+                $tx = $this->pdo->prepare("INSERT INTO story_texts (story_id, lang, title, summary, content) VALUES (?, ?, ?, ?, ?)");
+                foreach ($seed['texts'] as $lang => $t) {
+                    $tx->execute([$storyId, $lang, $t['title'], $t['summary'], json_encode(['sentences' => $t['sentences']], JSON_UNESCAPED_UNICODE)]);
+                }
+                $this->pdo->commit();
+            } catch (\Throwable $e) {
+                if ($this->pdo->inTransaction()) {
+                    $this->pdo->rollBack();
+                }
+                error_log('story seed ' . $seed['slug'] . ' failed (will retry next request): ' . $e->getMessage());
                 $this->initIncomplete = true;
             }
         }

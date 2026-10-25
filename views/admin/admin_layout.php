@@ -24,6 +24,7 @@ $navSections = [
     t('admin.nav_content') => [
         ['admin-languages', 'language', t('admin.nav_languages')],
         ['admin-lexicon', 'vocabulary', t('admin.nav_lexicon')],
+        ['admin-stories', 'book', t('admin.nav_stories')],
     ],
     t('admin.nav_system') => [
         ['admin-health', 'heart-rate-monitor', t('admin.nav_health')],
@@ -34,7 +35,7 @@ $navSections = [
     ],
 ];
 // Detail pages highlight their parent list.
-$activeAlias = ['admin-conversation' => 'admin-conversations', 'admin-user' => 'admin-users', 'admin-language-strings' => 'admin-languages', 'admin-lexicon-entry' => 'admin-lexicon'];
+$activeAlias = ['admin-conversation' => 'admin-conversations', 'admin-user' => 'admin-users', 'admin-language-strings' => 'admin-languages', 'admin-lexicon-entry' => 'admin-lexicon', 'admin-story' => 'admin-stories'];
 $adminUiLang = \App\Src\Language::currentLang();
 $adminBack = '?' . http_build_query($_GET);
 $activePage = $activeAlias[$currentPage] ?? $currentPage;

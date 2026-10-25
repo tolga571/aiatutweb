@@ -133,6 +133,17 @@ if (isset($_GET['page'])) {
     $page = $requestPath;
 }
 
+// Stories have readable, indexable URLs: /stories/<slug> and
+// /stories/<slug>/<lang> (one page per story and language). The same path
+// as ?page= works too, so sign-in can send the reader back to the story.
+if (is_string($page) && preg_match('#^stories/([a-z0-9-]{1,80})(?:/([a-z]{2}))?$#', $page, $sm)) {
+    $page = 'story';
+    $_GET['slug'] = $sm[1];
+    if (!empty($sm[2])) {
+        $_GET['lang'] = $sm[2];
+    }
+}
+
 // Auth-required pages helper
 $requireAuth = function() use ($auth, $page) {
     if (!$auth->isLoggedIn()) {
@@ -1384,6 +1395,45 @@ switch ($page) {
         require __DIR__ . '/../views/chat.php';
         break;
 
+    // ── Stories (public; saving a word needs an account) ──────────
+    case 'stories':
+        require __DIR__ . '/../views/stories.php';
+        break;
+
+    case 'story':
+        $storyRow = (new \App\Src\Stories($db))->findBySlug((string)($_GET['slug'] ?? ''));
+        if (!$storyRow) {
+            http_response_code(404);
+            require __DIR__ . '/../views/stories.php';
+            break;
+        }
+        require __DIR__ . '/../views/story.php';
+        break;
+
+    case 'story-word-save':
+        // JSON in and out, CSRF-checked, never a 5xx. The word is looked up
+        // on the server from (story, language, sentence, word index).
+        header('Content-Type: application/json');
+        $swIn = json_decode(file_get_contents('php://input'), true);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_array($swIn) || !csrf_verify($swIn['csrf_token'] ?? null)) {
+            echo json_encode(['success' => false, 'error' => 'invalid_request', 'message' => __('stories.save_failed')]);
+            exit;
+        }
+        if (!$auth->isLoggedIn()) {
+            echo json_encode(['success' => false, 'error' => 'login_required', 'message' => __('stories.guest_save')]);
+            exit;
+        }
+        $swUser = $auth->currentUser();
+        $r = (new \App\Src\Stories($db))->saveWord(
+            $auth->userId(), strtolower((string)($swUser['native_lang'] ?? 'en')),
+            (string)($swIn['slug'] ?? ''), strtolower((string)($swIn['lang'] ?? '')),
+            (int)($swIn['s'] ?? -1), (int)($swIn['t'] ?? -1)
+        );
+        echo json_encode(empty($r['error'])
+            ? ['success' => true, 'card_id' => $r['card_id'], 'already' => !empty($r['already'])]
+            : ['success' => false, 'error' => $r['error'], 'message' => __('stories.save_failed')]);
+        exit;
+
     // ── Blog ──────────────────────────────────────────────────────
     case 'blog':
         $posts = $db->fetchAll("SELECT id,title,slug,created_at FROM posts WHERE published=1 AND category='blog' ORDER BY created_at DESC LIMIT 20");
@@ -1513,6 +1563,15 @@ switch ($page) {
         header('Location: ?page=admin-languages'); exit;
     case 'admin-language-export':
         $adminCtrl->languageExport((string)($_GET['code'] ?? ''));
+        break;
+    case 'admin-stories':
+        $adminCtrl->stories();
+        break;
+    case 'admin-story':
+        $adminCtrl->storyEdit();
+        break;
+    case 'admin-story-action':
+        $adminCtrl->storyAction($config);
         break;
     case 'admin-lexicon':
         $adminCtrl->lexicon($_GET);

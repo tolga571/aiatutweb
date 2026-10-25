@@ -885,6 +885,105 @@ class AdminController {
         exit;
     }
 
+    // ------------------- Stories -------------------
+    public function stories(): void {
+        $this->requireAdmin();
+        $st = new Stories($this->db);
+        $list = $st->all();
+        $categories = $st->categories('en');
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/stories.php';
+    }
+
+    public function storyEdit(): void {
+        $this->requireAdmin();
+        $st = new Stories($this->db);
+        $id = (int)($_GET['id'] ?? 0);
+        $story = $id ? $st->find($id) : null;
+        if ($id && !$story) {
+            $this->flash('danger', t('admin.story_missing'));
+            header('Location: ?page=admin-stories');
+            exit;
+        }
+        $source = $story ? (json_decode((string)$story['source_json'], true) ?: null) : null;
+        $have = $story ? $st->languagesOf($id) : [];
+        $langs = array_column(Language::registry(), 'code');
+        $steps = $story ? $st->stepCount($id) : 0;
+        $categories = $st->categories('en');
+        $csrf = $this->generateCsrfToken();
+        require __DIR__ . '/../views/admin/story_edit.php';
+    }
+
+    /**
+     * Story writes. Form posts (save, publish, unpublish, delete, category)
+     * redirect back; "build" is called by the edit page's script, one step
+     * at a time, and answers JSON (never a 5xx: Cloudflare eats the body).
+     */
+    public function storyAction(array $config): void {
+        $this->requireAdmin();
+        $this->requireFullAdmin();
+        $isJson = ($_POST['action'] ?? '') === 'build';
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validateCsrfToken((string)($_POST['csrf'] ?? ''))) {
+            if ($isJson) {
+                header('Content-Type: application/json');
+                echo json_encode(['ok' => false, 'error' => 'csrf']);
+                exit;
+            }
+            $this->flash('danger', t('admin.csrf_failed'));
+            header('Location: ?page=admin-stories');
+            exit;
+        }
+        $st = new Stories($this->db);
+        $id = (int)($_POST['id'] ?? 0);
+        switch ((string)($_POST['action'] ?? '')) {
+            case 'save':
+                $r = $st->saveDraft($_POST, $id);
+                if (!empty($r['error'])) {
+                    $this->flash('danger', t('admin.story_err_' . $r['error']));
+                    header('Location: ?page=admin-story' . ($id ? '&id=' . $id : ''));
+                    exit;
+                }
+                $this->audit('story_save', null, 'story ' . $r['id']);
+                $this->flash('success', t('admin.story_saved'));
+                header('Location: ?page=admin-story&id=' . $r['id']);
+                exit;
+            case 'build':
+                header('Content-Type: application/json');
+                @set_time_limit(120);
+                $gen = new StoryGenerator(new GeminiClient($config['gemini_api_key'], $config['gemini_api_key_backup']), $this->db, array_column(Language::registry(), 'code'));
+                $r = $st->buildStep($id, strtolower((string)($_POST['lang'] ?? '')), (int)($_POST['step'] ?? -1), $gen);
+                echo json_encode(empty($r['error']) ? ['ok' => true] + $r : ['ok' => false] + $r);
+                exit;
+            case 'publish':
+            case 'unpublish':
+                $r = $st->setStatus($id, $_POST['action'] === 'publish' ? 'published' : 'draft');
+                if (!empty($r['error'])) {
+                    $this->flash('danger', $r['error'] === 'missing_languages'
+                        ? t('admin.story_err_missing', ['langs' => implode(', ', $r['missing'])])
+                        : t('admin.story_missing'));
+                } else {
+                    $this->audit('story_' . $_POST['action'], null, 'story ' . $id);
+                    $this->flash('success', t($_POST['action'] === 'publish' ? 'admin.story_published' : 'admin.story_unpublished'));
+                }
+                header('Location: ?page=admin-story&id=' . $id);
+                exit;
+            case 'delete':
+                if ($st->delete($id)) {
+                    $this->audit('story_delete', null, 'story ' . $id);
+                    $this->flash('success', t('admin.story_deleted'));
+                }
+                header('Location: ?page=admin-stories');
+                exit;
+            case 'category':
+                $r = $st->addCategory((string)($_POST['slug'] ?? ''), ['en' => trim((string)($_POST['name'] ?? ''))]);
+                $this->flash(empty($r['error']) ? 'success' : 'danger', empty($r['error']) ? t('admin.story_cat_added') : t('admin.story_cat_err'));
+                header('Location: ?page=admin-stories');
+                exit;
+        }
+        header('Location: ?page=admin-stories');
+        exit;
+    }
+
     // ------------------- AI usage -------------------
     public function aiUsage(): void {
         $this->requireAdmin();

@@ -12,6 +12,8 @@ use App\Src\GeminiClient;
 use App\Src\Language;
 use App\Src\Mailer;
 use App\Src\Mistakes;
+use App\Src\Stories;
+use App\Src\StoryGenerator;
 use App\Src\TokenManager;
 
 /**
@@ -146,6 +148,10 @@ class Router
 
             ['GET', 'mistakes', 'mistakes', 'plan'],
             ['POST', 'mistakes/(\d+)/review', 'mistakeReview', 'plan'],
+
+            ['GET', 'stories', 'stories', 'public'],
+            ['GET', 'stories/([a-z0-9-]{1,80})', 'story', 'public'],
+            ['POST', 'stories/([a-z0-9-]{1,80})/words', 'storySaveWord', 'user'],
 
             ['GET', 'alphabet', 'alphabet', 'public'],
             ['POST', 'alphabet/toggle', 'alphabetToggle', 'user'],
@@ -1082,6 +1088,68 @@ class Router
     {
         $h = (string)($_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
         return preg_match('/^Bearer\s+(\S+)$/i', $h, $m) ? $m[1] : '';
+    }
+
+    // ── Stories (public; saving a word needs an account) ────────────
+
+    /** ?lang=&cat=&len= — published stories with title and summary in lang (English when missing), and the categories. */
+    private function stories(): void
+    {
+        $lang = strtolower((string)($_GET['lang'] ?? ''));
+        if (!Language::isUsable($lang, 'learn')) {
+            $lang = $this->user && Language::isUsable((string)($this->user['target_lang'] ?? ''), 'learn') ? $this->user['target_lang'] : 'en';
+        }
+        $st = new Stories($this->db);
+        $cats = $st->categories(Language::currentLang());
+        $cat = (string)($_GET['cat'] ?? '');
+        $cat = in_array($cat, array_column($cats, 'slug'), true) ? $cat : '';
+        $this->ok([
+            'lang' => $lang,
+            'categories' => $cats,
+            'lengths' => Stories::LENGTHS,
+            'stories' => array_map(fn($r) => [
+                'slug' => $r['slug'], 'category' => $r['category'], 'length' => $r['length'],
+                'lang' => $r['lang'], 'title' => $r['title'], 'summary' => $r['summary'],
+            ], $st->published($lang, $cat, (string)($_GET['len'] ?? ''))),
+        ]);
+    }
+
+    /** ?lang= — one story in one language, word by word: tokens [{t, r (reading), m: {lang: meaning}}]. */
+    private function story(string $slug): void
+    {
+        $st = new Stories($this->db);
+        $row = $st->findBySlug($slug);
+        if (!$row) {
+            throw new ApiError('not_found', t('api.not_found'), 404);
+        }
+        $have = $st->languagesOf((int)$row['id']);
+        $lang = strtolower((string)($_GET['lang'] ?? ''));
+        if (!in_array($lang, $have, true)) {
+            $lang = $this->user && in_array($this->user['target_lang'] ?? '', $have, true) ? $this->user['target_lang'] : (in_array('en', $have, true) ? 'en' : ($have[0] ?? 'en'));
+        }
+        $text = $st->text((int)$row['id'], $lang);
+        $this->ok([
+            'slug' => $row['slug'], 'category' => $row['category'], 'length' => $row['length'], 'source' => $row['source'],
+            'languages' => $have, 'lang' => $lang, 'dir' => Language::dir($lang), 'speech_locale' => Language::speechLocale($lang),
+            'title' => $text['title'], 'summary' => $text['summary'],
+            'sentences' => array_map(fn($s) => [
+                'text' => $s['text'],
+                'tokens' => array_map(fn($t) => ['t' => $t['t'], 'r' => $t['r'], 'm' => $t['m'], 'punct' => StoryGenerator::isPunct($t['t'])], $s['tokens']),
+            ], $text['sentences']),
+        ]);
+    }
+
+    /** {lang, s, t} — saves word t of sentence s to the user's cards (deck = story language) and their "Saved" list. */
+    private function storySaveWord(string $slug): void
+    {
+        $r = (new Stories($this->db))->saveWord(
+            (int)$this->user['id'], strtolower((string)($this->user['native_lang'] ?? 'en')), $slug,
+            strtolower($this->str('lang')), (int)($this->input['s'] ?? -1), (int)($this->input['t'] ?? -1)
+        );
+        if (!empty($r['error'])) {
+            throw new ApiError($r['error'], t('stories.save_failed'), $r['error'] === 'not_found' ? 404 : 422);
+        }
+        $this->ok(['card_id' => $r['card_id'], 'already' => !empty($r['already'])]);
     }
 
     private function str(string $key): string

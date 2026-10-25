@@ -20,6 +20,10 @@ class GeminiClient {
 
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     private string $lastError = '';
+    /** Full body of the last non-200 answer (quota details are past the first 200 characters). */
+    private string $lastBody = '';
+    /** generateJson(): "keyIndex|model" pairs that answered 429/404 in this process. */
+    private static array $unusable = [];
     private ?array $lastUsage = null;
 
     public function __construct(string $primaryKey, string $backupKey = '') {
@@ -195,7 +199,83 @@ class GeminiClient {
         return ['text' => $data['text'], 'translation' => (string)($data['translation'] ?? ''), 'tokens' => $tokens];
     }
 
-    private function httpPost(string $url, array $data, int $timeout = 30): string {
+    /**
+     * One JSON answer for a long content job (story translation and
+     * annotation): a bigger output cap and a longer deadline than a chat
+     * reply, and optional thinking. Only for admin tools and CLI scripts,
+     * never in a request a learner waits on. Returns the decoded array;
+     * throws when no model answers or the answer isn't JSON.
+     */
+    public function generateJson(string $system, string $user, int $maxOutputTokens = 32768, int $thinkingBudget = 0, int $seconds = 600): array {
+        $payload = [
+            'contents' => [['role' => 'user', 'parts' => [['text' => $user]]]],
+            'systemInstruction' => ['parts' => [['text' => $system]]],
+            'generationConfig' => [
+                'responseMimeType' => 'application/json',
+                'temperature' => 0.2,
+                'thinkingConfig' => ['thinkingBudget' => $thinkingBudget],
+                'maxOutputTokens' => $maxOutputTokens,
+            ],
+        ];
+        $errors = [];
+        $this->lastUsage = null;
+        $deadline = microtime(true) + $seconds;
+        foreach ($this->apiKeys as $ki => $key) {
+            foreach ($this->models as $model) {
+                if (isset(self::$unusable[$ki . '|' . $model])) {
+                    continue;
+                }
+                for ($attempt = 1; $attempt <= 2; $attempt++) {
+                    $left = $deadline - microtime(true);
+                    if ($left < 10) {
+                        $errors[] = "key" . ($ki + 1) . "/{$model}: out of time";
+                        break 3;
+                    }
+                    try {
+                        $url = $this->baseUrl . $model . ':generateContent?key=' . urlencode($key);
+                        $data = json_decode($this->httpPost($url, $payload, (int)ceil($left), 600), true);
+                        $text = '';
+                        foreach ($data['candidates'][0]['content']['parts'] ?? [] as $part) {
+                            if (empty($part['thought'])) {
+                                $text .= $part['text'] ?? '';
+                            }
+                        }
+                        $meta = $data['usageMetadata'] ?? [];
+                        $this->lastUsage = [
+                            'model' => $model,
+                            'prompt_tokens' => (int)($meta['promptTokenCount'] ?? 0),
+                            'output_tokens' => (int)($meta['candidatesTokenCount'] ?? 0),
+                            'thought_tokens' => (int)($meta['thoughtsTokenCount'] ?? 0),
+                        ];
+                        $text = trim(preg_replace('/^```(?:json)?\s*|\s*```$/', '', trim($text)));
+                        $out = json_decode($text, true);
+                        if (is_array($out)) {
+                            return $out;
+                        }
+                        $errors[] = "key" . ($ki + 1) . "/{$model}: not JSON (" . ($data['candidates'][0]['finishReason'] ?? '?') . ')';
+                    } catch (\Exception $e) {
+                        $msg = $e->getMessage();
+                        $errors[] = "key" . ($ki + 1) . "/{$model}: " . substr($msg, 0, 120);
+                        // Out of today's quota, or not offered to this key:
+                        // don't ask that key/model again in this process. A
+                        // per-minute limit or a busy model only needs a pause.
+                        if (str_contains($msg, 'HTTP 404') || (str_contains($msg, 'HTTP 429') && str_contains($this->lastBody, 'PerDay'))) {
+                            self::$unusable[$ki . '|' . $model] = true;
+                            break;
+                        }
+                        if ((str_contains($msg, 'HTTP 429') || str_contains($msg, 'HTTP 503')) && $attempt < 2 && $deadline - microtime(true) > 90) {
+                            sleep(str_contains($msg, 'HTTP 429') ? 45 : 10);
+                            continue;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        throw new \RuntimeException('Gemini generateJson failed: ' . implode(' | ', $errors));
+    }
+
+    private function httpPost(string $url, array $data, int $timeout = 30, int $maxTimeout = 30): string {
         $json = json_encode($data);
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -206,7 +286,7 @@ class GeminiClient {
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json),
             ],
-            CURLOPT_TIMEOUT => max(1, min(30, $timeout)),
+            CURLOPT_TIMEOUT => max(1, min($maxTimeout, $timeout)),
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
@@ -222,6 +302,7 @@ class GeminiClient {
         }
 
         if ($httpCode !== 200) {
+            $this->lastBody = (string)$result;
             $this->lastError = "Gemini API returned HTTP {$httpCode}: " . substr($result, 0, 200);
             throw new \RuntimeException($this->lastError);
         }

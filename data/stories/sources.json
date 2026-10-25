@@ -1,0 +1,235 @@
+{
+  "_note": "English source texts for the starter stories. scripts/stories/generate.php turns each one into all 11 languages (data/stories/<slug>.json). One array item per sentence: every translation keeps the same sentences in the same order, so a word's example sentence can be shown in the learner's own language. Religious stories follow well-attested narrations (see 'source'); popular stories without a reliable chain are left out.",
+  "stories": [
+    {
+      "slug": "pied-piper-of-hamelin",
+      "category": "fairy-tale",
+      "source": "German legend, as told by the Brothers Grimm (public domain)",
+      "title": "The Pied Piper of Hamelin",
+      "summary": "A stranger rids Hamelin of its rats with his pipe, and the town breaks its promise.",
+      "sentences": [
+        "The town of Hamelin was full of rats.",
+        "They ran through the houses, ate the bread and bit the dogs.",
+        "One day a stranger in a coat of many colours came to the town hall.",
+        "\"I can take all the rats away,\" he said, \"if you pay me a thousand coins.\"",
+        "The mayor agreed at once.",
+        "The stranger took out a small pipe and began to play.",
+        "From every house the rats came running and followed him.",
+        "He walked into the river, and all the rats went in after him and drowned.",
+        "But when he asked for his money, the mayor only laughed.",
+        "\"The rats are gone,\" he said. \"Why should we pay you now?\"",
+        "The piper said nothing and left.",
+        "A few weeks later he came back and played a new, sweet tune.",
+        "This time the children came out of the houses and followed him.",
+        "He led them up to a mountain, and a door in the rock opened and closed behind them.",
+        "Only one boy, who could not walk fast, stayed behind.",
+        "The people of Hamelin learned too late that a promise must be kept."
+      ]
+    },
+    {
+      "slug": "little-match-girl",
+      "category": "fairy-tale",
+      "source": "Hans Christian Andersen, 1845 (public domain)",
+      "title": "The Little Match Girl",
+      "summary": "On New Year's Eve, a poor girl lights her matches one by one to keep warm.",
+      "sentences": [
+        "It was very cold on the last evening of the year.",
+        "A poor little girl walked through the snowy streets with bare feet.",
+        "In her old apron she carried matches, but nobody bought any.",
+        "She was afraid to go home, because her father would be angry.",
+        "She sat down in a corner between two houses.",
+        "Her hands were almost frozen, so she lit one match.",
+        "In its warm light she saw a big iron stove.",
+        "But the match went out, and the stove was gone.",
+        "She lit another match and saw a table with a roast goose.",
+        "With the third match she saw a beautiful Christmas tree full of candles.",
+        "Then she lit one more and saw her dear grandmother.",
+        "\"Grandmother, please take me with you!\" she cried.",
+        "She quickly lit all the matches so her grandmother would not disappear.",
+        "Her grandmother took her in her arms, and they flew up to where there is no cold and no hunger.",
+        "In the morning people found the little girl in the corner.",
+        "She was smiling, but nobody knew what beautiful things she had seen."
+      ]
+    },
+    {
+      "slug": "chicken-little",
+      "category": "fairy-tale",
+      "source": "Traditional European folk tale",
+      "title": "Chicken Little",
+      "summary": "An acorn falls on Chicken Little's head, and she is sure the sky is falling.",
+      "sentences": [
+        "One day an acorn fell on Chicken Little's head.",
+        "\"Oh no! The sky is falling!\" she cried.",
+        "\"I must go and tell the king.\"",
+        "On the way she met Henny Penny, Ducky Lucky and Goosey Loosey.",
+        "\"The sky is falling!\" she told them, and they all ran with her.",
+        "Then they met Foxy Loxy.",
+        "\"I know a short way to the king,\" said the fox with a smile.",
+        "He led them straight into his dark den.",
+        "Only Chicken Little was quick enough to run away.",
+        "And the sky? It never fell at all."
+      ]
+    },
+    {
+      "slug": "snow-white",
+      "category": "fairy-tale",
+      "source": "Brothers Grimm, 1812 (public domain)",
+      "title": "Snow White",
+      "summary": "A jealous queen, seven dwarfs and a poisoned apple.",
+      "sentences": [
+        "Once upon a time there was a princess called Snow White.",
+        "Her skin was as white as snow and her hair was as black as ebony.",
+        "Her stepmother, the queen, had a magic mirror.",
+        "\"Mirror, mirror on the wall, who is the fairest of them all?\" she asked every day.",
+        "One day the mirror answered: \"Snow White is the fairest of all.\"",
+        "The queen was so jealous that she sent Snow White into the forest.",
+        "Snow White ran until she found a little house.",
+        "Seven dwarfs lived there, and they let her stay with them.",
+        "But the queen found out where she was.",
+        "She dressed as an old woman and gave Snow White a poisoned apple.",
+        "Snow White took one bite and fell down as if she were dead.",
+        "The dwarfs were very sad and put her in a glass coffin.",
+        "One day a prince came by and wanted to take the coffin with him.",
+        "When his servants lifted it, the piece of apple fell out of her mouth.",
+        "Snow White opened her eyes, and soon she and the prince were married."
+      ]
+    },
+    {
+      "slug": "city-of-brass",
+      "category": "fairy-tale",
+      "source": "One Thousand and One Nights, 'The City of Brass' (public domain)",
+      "title": "The City of Brass",
+      "summary": "Travellers cross the desert to a city of brass, and find that its riches saved no one.",
+      "sentences": [
+        "Long ago, the caliph in Damascus heard about old brass bottles hidden by the sea.",
+        "He sent the wise governor Musa ibn Nusayr to find them.",
+        "Musa and his men travelled through the desert for many months.",
+        "One day they saw a huge city with walls of shining brass.",
+        "There was no gate, so they had to climb over the walls.",
+        "Inside, the streets were silent.",
+        "The markets were full of silk, gold and jewels, but there were no people.",
+        "In the palace they found a queen on a throne.",
+        "She looked alive, but she had died long ago.",
+        "On a tablet beside her they read: \"I had more gold than anyone.",
+        "But when hunger came to my city, gold could not buy one piece of bread.\"",
+        "Musa read the words and cried.",
+        "He took only what he had come for and left all the treasure behind.",
+        "On the way home he said to his men: \"Riches do not last. Only good deeds do.\""
+      ]
+    },
+    {
+      "slug": "prophet-and-the-camel",
+      "category": "islamic",
+      "source": "Sunan Abu Dawud 2549",
+      "title": "The Prophet and the Camel",
+      "summary": "A camel cries when it sees the Prophet Muhammad, and he speaks to its owner.",
+      "sentences": [
+        "One day the Prophet Muhammad, peace be upon him, walked into a garden in Medina.",
+        "A camel was standing there.",
+        "When the camel saw the Prophet, it made a sad sound and tears ran from its eyes.",
+        "The Prophet went to the camel and gently stroked its head.",
+        "Slowly the camel became calm.",
+        "\"Who owns this camel?\" the Prophet asked.",
+        "A young man came and said, \"It is mine, O Messenger of Allah.\"",
+        "The Prophet said: \"Do you not fear Allah about this animal that Allah has given you?",
+        "It has told me that you keep it hungry and make it work too hard.\"",
+        "From that day the young man took good care of his camel."
+      ]
+    },
+    {
+      "slug": "woman-and-the-thirsty-dog",
+      "category": "islamic",
+      "source": "Sahih al-Bukhari 3467, Sahih Muslim 2245",
+      "title": "The Woman and the Thirsty Dog",
+      "summary": "A woman uses her own shoe to give water to a dog dying of thirst.",
+      "sentences": [
+        "On a very hot day, a woman was walking past a well.",
+        "She had done many wrong things in her life.",
+        "Beside the well she saw a dog.",
+        "It was walking round and round the well, almost dying of thirst.",
+        "The woman had no bucket and no rope.",
+        "So she took off her leather shoe and tied it to her headscarf.",
+        "She lowered the shoe into the well and filled it with water.",
+        "Then she gave the water to the dog until it was no longer thirsty.",
+        "The Prophet Muhammad, peace be upon him, told this story to his companions.",
+        "He said that Allah forgave the woman because of this one act of mercy."
+      ]
+    },
+    {
+      "slug": "garden-of-abu-talha",
+      "category": "islamic",
+      "source": "Sahih al-Bukhari 1461, Sahih Muslim 998",
+      "title": "The Garden of Abu Talha",
+      "summary": "Abu Talha gives away the garden he loves most.",
+      "sentences": [
+        "Abu Talha was one of the richest men in Medina.",
+        "He had many date gardens, but he loved one of them most of all.",
+        "It was called Bayruha, and it was close to the Prophet's mosque.",
+        "The Prophet, peace be upon him, often went there to drink its fresh, clear water.",
+        "Then a verse of the Quran came: \"You will not reach true goodness until you give from what you love.\"",
+        "Abu Talha went to the Prophet and said: \"The thing I love most is Bayruha.",
+        "I give it for the sake of Allah.\"",
+        "The Prophet was happy and said: \"That is wealth that brings great profit!",
+        "I think you should give it to your relatives.\"",
+        "So Abu Talha shared the garden among his relatives and his cousins."
+      ]
+    },
+    {
+      "slug": "ibrahim-ibn-adham",
+      "category": "islamic",
+      "source": "Traditional story told about Ibrahim ibn Adham (8th century)",
+      "title": "The King of Balkh",
+      "summary": "A rich king hears a strange voice on his roof and changes his life.",
+      "sentences": [
+        "It is told that Ibrahim ibn Adham was once the king of Balkh.",
+        "He lived in a great palace and slept on a soft bed.",
+        "One night he heard footsteps on the roof.",
+        "\"Who is there?\" he called.",
+        "\"I am looking for my camel,\" answered a voice.",
+        "\"You fool! How can a camel be on a roof?\" said the king.",
+        "\"And how can you find Allah on a soft bed in a palace?\" the voice replied.",
+        "The king could not sleep for the rest of the night.",
+        "In the morning he put on a simple coat and left the palace.",
+        "He spent the rest of his life working with his hands, praying and helping the poor."
+      ]
+    },
+    {
+      "slug": "the-sleepy-little-star",
+      "category": "bedtime",
+      "source": "Original story written for Jumplearner",
+      "title": "The Sleepy Little Star",
+      "summary": "A little star is too tired to shine, and the moon helps her rest.",
+      "sentences": [
+        "High in the night sky lived a little star called Lumi.",
+        "Every night she shone as brightly as she could.",
+        "But one night she felt very, very tired.",
+        "\"I cannot shine tonight,\" she said quietly.",
+        "The big round moon smiled at her.",
+        "\"Then rest, little one,\" said the moon. \"I will shine for both of us.\"",
+        "Lumi closed her eyes and slept on a soft white cloud.",
+        "Down below, a boy looked up at the sky from his window.",
+        "\"Good night, moon,\" he whispered. \"Good night, little star.\"",
+        "And the next night, Lumi shone brighter than ever."
+      ]
+    },
+    {
+      "slug": "the-bear-who-could-not-sleep",
+      "category": "bedtime",
+      "source": "Original story written for Jumplearner",
+      "title": "The Bear Who Could Not Sleep",
+      "summary": "It is time for the winter sleep, but Little Bear is wide awake.",
+      "sentences": [
+        "Winter was coming, and all the bears were going to sleep.",
+        "Little Bear lay in the warm cave, but his eyes were wide open.",
+        "\"I am not sleepy,\" he said to his mother.",
+        "\"Then let us count the things we saw this year,\" said Mother Bear.",
+        "\"One: the river full of fish.\"",
+        "\"Two: the tall tree with sweet honey,\" said Little Bear.",
+        "\"Three: the yellow flowers on the hill.\"",
+        "\"Four: the stars over the forest,\" said Little Bear, and he yawned.",
+        "\"Five…\" said Mother Bear softly.",
+        "But Little Bear was already asleep, and he dreamed of spring."
+      ]
+    }
+  ]
+}

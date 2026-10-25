@@ -81,6 +81,13 @@
                   <span class="pages-menu-desc"><?= __('nav.mistakes_desc') ?></span>
                 </span>
               </a>
+              <a href="/stories" class="pages-menu-item">
+                <span class="material-symbols-outlined pages-menu-icon">auto_stories</span>
+                <span>
+                  <span class="pages-menu-title"><?= __('stories.heading') ?> <span class="ml-1 align-middle text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-primary text-on-primary"><?= __('stories.new') ?></span></span>
+                  <span class="pages-menu-desc"><?= __('stories.nav_desc') ?></span>
+                </span>
+              </a>
             </div>
           </div>
           <div>
@@ -365,6 +372,11 @@
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
         <span class="material-symbols-outlined text-[20px]">menu_book</span>
         <?= __('nav.instructions') ?>
+      </a>
+      <a href="/stories"
+        class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
+        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+        <?= __('stories.heading') ?>
       </a>
       <a href="?page=blog"
         class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors">
