@@ -21,6 +21,28 @@
     if (io) io.observe(v); else playIfVisible(v);
   });
 
+  // Larger player: the same recording with controls; full screen from its controls.
+  var box = document.getElementById('hm-lightbox');
+  var big = document.getElementById('hm-lightbox-video');
+  function openLarge(src, title) {
+    if (!box) return;
+    document.querySelectorAll('.hm-video').forEach(function (v) { v.pause(); });
+    big.src = src;
+    document.getElementById('hm-lightbox-title').textContent = title;
+    if (typeof box.showModal === 'function') box.showModal(); else box.setAttribute('open', '');
+    var p = big.play(); if (p && p.catch) p.catch(function () {});
+  }
+  if (box) {
+    box.addEventListener('close', function () { big.pause(); big.removeAttribute('src'); big.load(); });
+    box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
+    document.getElementById('hm-lightbox-close').addEventListener('click', function () { box.close(); });
+  }
+  document.querySelectorAll('.hm-expand').forEach(function (b) {
+    b.addEventListener('click', function () { openLarge(b.dataset.video, b.dataset.title); });
+    var v = b.parentNode.querySelector('.hm-video');
+    if (v) v.addEventListener('click', function () { openLarge(b.dataset.video, b.dataset.title); });
+  });
+
   // Feature tabs
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.hm-tab'));
   function show(tab) {

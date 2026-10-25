@@ -3,7 +3,11 @@
 // links (every page the Pages menu has), interface language, cookie banner.
 ?>
 <link rel="stylesheet" href="/css/footer.css?v=1">
-<?php $footGuest = !(isset($auth) && $auth->isLoggedIn()); ?>
+<?php
+// Full-height app screens (flashcards: no page scroll) set $hideFooter;
+// they keep only the cookie banner below.
+if (empty($hideFooter)):
+$footGuest = !(isset($auth) && $auth->isLoggedIn()); ?>
 <footer class="jl-footer">
   <div class="jl-footer-grid">
     <div class="jl-footer-brand">
@@ -65,6 +69,7 @@
     <?php endif; ?>
   </div>
 </footer>
+<?php endif; ?>
 <!-- Cookie Banner -->
 <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-surface-container-high border-t border-outline-variant/20 p-3 sm:p-4 z-50 transform translate-y-full transition-transform duration-300">
   <div class="container mx-auto flex flex-row items-center justify-between gap-3 sm:gap-4">

@@ -36,6 +36,18 @@ $dir = Language::dir($lang);
 $unspaced = in_array($lang, ['zh', 'ja'], true);
 $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 
+// Recorded read-aloud (scripts/stories/audio.py): the MP3 and when each
+// sentence and word starts and ends. Without it the browser's voice reads.
+$audio = null;
+$audioBase = '/media/stories/' . $storyRow['slug'] . '/' . $lang;
+$audioJson = __DIR__ . '/../public' . $audioBase . '.json';
+if (is_file($audioJson) && is_file(__DIR__ . '/../public' . $audioBase . '.mp3')) {
+    $timing = json_decode((string)file_get_contents($audioJson), true);
+    if (is_array($timing) && !empty($timing['sentences'])) {
+        $audio = ['src' => $audioBase . '.mp3?v=' . filemtime(__DIR__ . '/../public' . $audioBase . '.mp3'), 'sentences' => $timing['sentences'], 'words' => (object)($timing['words'] ?? [])];
+    }
+}
+
 $pageTitle = $text['title'] . ' – ' . __('stories.heading') . ' – Jumplearner';
 $pageDescription = $text['summary'];
 $selfPath = '/stories/' . $storyRow['slug'] . '/' . $lang;
@@ -160,6 +172,7 @@ window.__STORY__ = {
   lang: <?= json_encode($lang) ?>,
   unspaced: <?= $unspaced ? 'true' : 'false' ?>,
   speechLocale: <?= json_encode(Language::speechLocale($lang)) ?>,
+  audio: <?= json_encode($audio, $jsonFlags) ?>,
   meaning: <?= json_encode($meaning) ?>,
   names: <?= json_encode(array_combine($meaningLangs, array_map(fn($l) => Language::nativeName($l), $meaningLangs)) ?: new stdClass(), $jsonFlags) ?>,
   dirs: <?= json_encode(array_combine($meaningLangs, array_map(fn($l) => Language::dir($l), $meaningLangs)) ?: new stdClass(), $jsonFlags) ?>,
@@ -174,7 +187,7 @@ window.__STORY__ = {
   ], $jsonFlags) ?>,
 };
 </script>
-<script src="/js/story.js?v=1"></script>
+<script src="/js/story.js?v=2"></script>
 
 <?php require __DIR__ . '/partials/footer.php'; ?>
 </body>

@@ -57,7 +57,7 @@ $plans = [
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="/css/home.css?v=1">
+<link rel="stylesheet" href="/css/home.css?v=2">
 
 <main class="hm">
   <section class="hm-hero" aria-labelledby="hm-hero-title">
@@ -77,7 +77,10 @@ $plans = [
       </div>
       <figure class="hm-video-box">
         <?php if ($m = $media('chat')): ?>
-          <video class="hm-video" src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline autoplay preload="metadata" aria-label="<?= htmlspecialchars(__('home.hero_video')) ?>"></video>
+          <div class="hm-video-wrap">
+            <video class="hm-video" src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline autoplay preload="metadata" aria-label="<?= htmlspecialchars(__('home.hero_video')) ?>"></video>
+            <button type="button" class="hm-expand" data-video="<?= $m['mp4'] ?>" data-title="<?= htmlspecialchars(__('home.hero_video')) ?>"><span class="material-symbols-outlined" aria-hidden="true">open_in_full</span><?= __('home.watch_larger') ?></button>
+          </div>
         <?php endif; ?>
         <figcaption class="hm-caption"><?= __('home.hero_video') ?></figcaption>
       </figure>
@@ -112,7 +115,10 @@ $plans = [
         <div class="hm-pane" role="tabpanel" id="hm-pane-<?= $f['key'] ?>" aria-labelledby="hm-tab-<?= $f['key'] ?>"<?= $i === 0 ? '' : ' hidden' ?>>
           <div class="hm-pane-media">
             <?php if ($m): ?>
-              <video class="hm-video" data-src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline preload="none" aria-label="<?= htmlspecialchars($f['name']) ?>"></video>
+              <div class="hm-video-wrap">
+                <video class="hm-video" data-src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline preload="none" aria-label="<?= htmlspecialchars($f['name']) ?>"></video>
+                <button type="button" class="hm-expand" data-video="<?= $m['mp4'] ?>" data-title="<?= htmlspecialchars($f['name']) ?>"><span class="material-symbols-outlined" aria-hidden="true">open_in_full</span><?= __('home.watch_larger') ?></button>
+              </div>
             <?php endif; ?>
           </div>
           <div class="hm-pane-copy">
@@ -219,7 +225,14 @@ $plans = [
     </div>
   </section>
 </main>
-<script src="/js/home.js?v=1" defer></script>
+<dialog class="hm-lightbox" id="hm-lightbox" aria-labelledby="hm-lightbox-title">
+  <div class="hm-lightbox-head">
+    <p id="hm-lightbox-title"></p>
+    <button type="button" class="hm-lightbox-close" id="hm-lightbox-close" aria-label="<?= htmlspecialchars(__('home.close_video')) ?>"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+  </div>
+  <video id="hm-lightbox-video" controls playsinline preload="none"></video>
+</dialog>
+<script src="/js/home.js?v=2" defer></script>
 <?php require __DIR__ . '/partials/footer.php'; ?>
 </body>
 

@@ -36,6 +36,22 @@
   border: 1px solid var(--hm-line); background: var(--hm-card-2); }
 .hm-caption { font-size: 13px; color: var(--hm-dim); }
 
+/* Every recording opens larger, with controls and full screen */
+.hm-video-wrap { position: relative; }
+.hm-video-wrap .hm-video { cursor: zoom-in; }
+.hm-expand { position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px;
+  border-radius: 999px; border: 1px solid rgba(212, 228, 250, 0.25); background: rgba(5, 20, 36, 0.82); color: #d4e4fa; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.hm-expand:hover { background: rgba(5, 20, 36, 0.95); }
+.hm-expand .material-symbols-outlined { font-size: 18px; }
+[dir="rtl"] .hm-expand { right: auto; left: 12px; }
+.hm-lightbox { width: min(1200px, 96vw); max-height: 94vh; padding: 0; border: 1px solid #2c3a4c; border-radius: 16px; background: #051424; color: #d4e4fa; overflow: hidden; }
+.hm-lightbox::backdrop { background: rgba(1, 15, 31, 0.85); }
+.hm-lightbox[open] { display: flex; flex-direction: column; }
+.hm-lightbox-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px 10px 18px; }
+.hm-lightbox-head p { margin: 0; font-weight: 600; }
+.hm-lightbox-close { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #434655; background: transparent; color: #d4e4fa; cursor: pointer; }
+.hm-lightbox video { display: block; width: 100%; max-height: calc(94vh - 64px); background: #000; }
+
 /* How it works */
 .hm-steps { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; }
 .hm-step { background: var(--hm-card); border: 1px solid var(--hm-line); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }

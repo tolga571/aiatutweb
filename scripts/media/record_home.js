@@ -71,6 +71,7 @@ const scenes = {
     }
     await wait(2500);
   },
+  // A deck of your own: create a list, add a word to it, rename it.
   async lists(page) {
     await page.goto(BASE + '/?page=flashcards');
     await page.waitForSelector('#fc-list-nav');
@@ -82,9 +83,22 @@ const scenes = {
     await page.keyboard.type('Travel', { delay: 90 });
     await wait(500);
     await page.keyboard.press('Enter');
-    await wait(2500);
-    await page.mouse.wheel(0, 300);
-    await wait(2000);
+    await wait(2200);
+    await moveTo(page, page.locator('#btn-new-card'));
+    await page.click('#btn-new-card');
+    await wait(800);
+    await typeSlow(page, '#fc-form input[name=word]', 'aeropuerto');
+    await typeSlow(page, '#fc-form input[name=translation]', 'airport');
+    await wait(500);
+    await page.locator('#fc-form [type=submit]').click();
+    await wait(2200);
+    await moveTo(page, page.locator('#btn-list-rename'));
+    await page.click('#btn-list-rename');
+    await wait(700);
+    await page.keyboard.press('End');
+    await page.keyboard.type(' 2026', { delay: 110 });
+    await page.keyboard.press('Enter');
+    await wait(2800);
   },
   async mistakes(page) {
     await page.goto(BASE + '/?page=mistakes');
@@ -126,7 +140,11 @@ const scenes = {
     await moveTo(page, card);
     await card.click();
     await page.waitForSelector('.st-tok');
-    await wait(1800);
+    await wait(1500);
+    await moveTo(page, page.locator('#st-play'));
+    await page.click('#st-play');
+    await wait(5000);
+    await page.click('#st-play');
     const toks = page.locator('.st-tok');
     await moveTo(page, toks.nth(4));
     await toks.nth(4).click();
