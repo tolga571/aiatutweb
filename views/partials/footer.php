@@ -1,34 +1,61 @@
 <?php
-// views/partials/footer.php – site footer with navigation links
+// views/partials/footer.php – site footer: brand, Learn / Company / Legal
+// links (every page the Pages menu has), interface language, cookie banner.
 ?>
-<footer class="bg-surface-container-low/80 border-t border-outline-variant/20 py-4 mt-8">
-  <div
-    class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-on-surface-variant">
-    <div class="mb-2 md:mb-0 flex items-center gap-3">
-      <img src="/brand/emblem.svg?v=3" alt="" width="37" height="40" class="jl-emblem h-10 shrink-0" loading="lazy" decoding="async">
-      <span><?= sprintf(__('footer.copyright'), date('Y')) ?></span>
+<link rel="stylesheet" href="/css/footer.css?v=1">
+<?php $footGuest = !(isset($auth) && $auth->isLoggedIn()); ?>
+<footer class="jl-footer">
+  <div class="jl-footer-grid">
+    <div class="jl-footer-brand">
+      <a href="?page=home" class="jl-footer-logo">
+        <img src="/brand/emblem.svg?v=3" alt="" width="44" height="48" class="jl-emblem" loading="lazy" decoding="async">
+        <span>Jumplearner</span>
+      </a>
+      <p><?= __('footer.tagline') ?></p>
+      <?php if ($footGuest): ?>
+        <a href="?page=register" class="jl-footer-cta"><?= __('home.get_started') ?></a>
+        <span class="jl-footer-note"><?= __('home.free_note') ?></span>
+      <?php endif; ?>
     </div>
-    <nav class="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-0 md:gap-4">
-      <a href="?page=privacy-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.privacy') ?></a>
-      <a href="?page=terms-and-conditions" class="hover:underline py-2 md:py-0.5"><?= __('footer.terms') ?></a>
-      <a href="?page=refund-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.refund') ?></a>
-      <a href="?page=cookie-policy" class="hover:underline py-2 md:py-0.5"><?= __('footer.cookie') ?></a>
-      <a href="?page=delete-account" class="hover:underline py-2 md:py-0.5"><?= __('footer.delete_account') ?></a>
-      <a href="?page=pricing" class="hover:underline py-2 md:py-0.5"><?= __('footer.pricing') ?></a>
-      <a href="?page=about" class="hover:underline py-2 md:py-0.5"><?= __('footer.about') ?></a>
-      <a href="?page=contact" class="hover:underline py-2 md:py-0.5"><?= __('footer.contact') ?></a>
-      <a href="?page=faq" class="hover:underline py-2 md:py-0.5"><?= __('footer.faq') ?></a>
+    <nav aria-labelledby="jl-f-learn">
+      <h2 id="jl-f-learn"><?= __('footer.col_learn') ?></h2>
+      <a href="?page=chat"><?= __('nav.chat') ?></a>
+      <a href="?page=flashcards"><?= __('nav.flashcards') ?></a>
+      <a href="/stories"><?= __('stories.heading') ?></a>
+      <a href="?page=mistakes"><?= __('nav.mistakes') ?></a>
+      <a href="?page=alphabet"><?= __('nav.alphabet') ?></a>
+      <a href="?page=dashboard"><?= __('nav.dashboard') ?></a>
+      <a href="?page=chat-tips"><?= __('nav.instructions') ?></a>
     </nav>
+    <nav aria-labelledby="jl-f-company">
+      <h2 id="jl-f-company"><?= __('footer.col_company') ?></h2>
+      <a href="?page=about"><?= __('footer.about') ?></a>
+      <a href="?page=pricing"><?= __('footer.pricing') ?></a>
+      <a href="?page=blog"><?= __('nav.blog') ?></a>
+      <a href="?page=faq"><?= __('footer.faq') ?></a>
+      <a href="?page=contact"><?= __('footer.contact') ?></a>
+    </nav>
+    <nav aria-labelledby="jl-f-legal">
+      <h2 id="jl-f-legal"><?= __('footer.col_legal') ?></h2>
+      <a href="?page=privacy-policy"><?= __('footer.privacy') ?></a>
+      <a href="?page=terms-and-conditions"><?= __('footer.terms') ?></a>
+      <a href="?page=refund-policy"><?= __('footer.refund') ?></a>
+      <a href="?page=cookie-policy"><?= __('footer.cookie') ?></a>
+      <a href="?page=license-agreement"><?= __('nav.license_agreement') ?></a>
+      <a href="?page=delete-account"><?= __('footer.delete_account') ?></a>
+    </nav>
+  </div>
+  <div class="jl-footer-bottom">
+    <span><?= sprintf(__('footer.copyright'), date('Y')) ?></span>
     <?php
     // Interface-language picker, reachable on every screen size.
     $footUiLang = \App\Src\Language::currentLang();
     $footUiLangs = \App\Src\Language::listed('ui', $footUiLang);
     if (count($footUiLangs) > 1): ?>
-    <label class="mt-2 md:mt-0 flex items-center gap-1.5">
-      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">translate</span>
+    <label class="jl-footer-lang">
+      <span class="material-symbols-outlined" aria-hidden="true">translate</span>
       <span class="sr-only"><?= __('nav.interface_language') ?></span>
       <select aria-label="<?= htmlspecialchars(__('nav.interface_language')) ?>"
-        class="bg-transparent border border-outline-variant/30 rounded-lg py-1 pl-2 pr-7 text-sm text-on-surface-variant focus:outline-none focus:border-primary"
         onchange="var q=new URLSearchParams(location.search);q.set('ui_lang',this.value);location.search=q.toString();">
         <?php foreach ($footUiLangs as $l): ?>
           <option value="<?= $l ?>" <?= $l === $footUiLang ? 'selected' : '' ?>><?= htmlspecialchars(\App\Src\Language::nativeName($l)) ?></option>

@@ -249,9 +249,14 @@ class GeminiClient {
                         ];
                         $text = trim(preg_replace('/^```(?:json)?\s*|\s*```$/', '', trim($text)));
                         $out = json_decode($text, true);
+                        if (!is_array($out) && ($a = strpos($text, '{')) !== false && ($b = strrpos($text, '}')) > $a) {
+                            // Some models wrap the JSON in a sentence or two.
+                            $out = json_decode(substr($text, $a, $b - $a + 1), true);
+                        }
                         if (is_array($out)) {
                             return $out;
                         }
+                        error_log('generateJson not JSON from ' . $model . ': ' . substr($text, 0, 300) . ' … ' . substr($text, -200));
                         $errors[] = "key" . ($ki + 1) . "/{$model}: not JSON (" . ($data['candidates'][0]['finishReason'] ?? '?') . ')';
                     } catch (\Exception $e) {
                         $msg = $e->getMessage();

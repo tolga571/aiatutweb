@@ -55,7 +55,7 @@ class StoryGenerator
         $this->gemini = $gemini;
         // Not gemini-2.5-flash / 3.1-flash-lite: on the free tier those carry
         // the live tutor's daily quota (20 requests per model per day).
-        $this->gemini->useModels(self::MODELS);
+        $this->gemini->useModels(getenv('STORY_MODELS') ? explode(',', getenv('STORY_MODELS')) : self::MODELS);
         $this->db = $db;
         $this->langs = array_values($langs);
     }
