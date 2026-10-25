@@ -497,4 +497,4 @@ window.__FC_CONFIG__ = {
 </script>
 <script src="/js/flashcard.js?v=11"></script>
 
-<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php $hideFooter = true; require __DIR__ . '/partials/footer.php'; ?>

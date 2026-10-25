@@ -2,6 +2,10 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.2.1 — 2026-10-25
+
+- **Flashcards:** the site footer no longer shows under the flashcards screen. It is a full-height app screen; the footer took space below it and covered nothing useful there (the cookie banner stays).
+
 ## v1.2 — 2026-10-25
 
 - **Stories:** short stories in all 11 languages at `/stories`. Read the plain text or go word by word: every word shows how it is read and what it means in the learner's own language (switchable). Tap a word to hear it (the browser's own voices) and save it to your cards; listen to the whole story sentence by sentence. Everyone can read; saving needs a free account. Admin: write a story in English, build all languages, publish.
