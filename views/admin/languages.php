@@ -33,7 +33,7 @@ ob_start();
         <div class="card h-100" id="lang-<?= $e($code) ?>">
             <div class="card-header">
                 <div class="d-flex align-items-center gap-2 flex-fill" style="min-width:0;">
-                    <?php if ($l['flag']): ?><img src="https://flagcdn.com/<?= $e($l['flag']) ?>.svg" alt="" width="22" height="16" style="border-radius:2px;object-fit:cover;"><?php endif; ?>
+                    <?php if ($l['flag']): ?><img src="/img/flags/<?= $e($l['flag']) ?>.svg" alt="" width="22" height="16" style="border-radius:2px;object-fit:cover;"><?php endif; ?>
                     <div class="text-truncate">
                         <div class="fw-semibold text-truncate" lang="<?= $e($code) ?>"><?= $e($l['native_name']) ?></div>
                         <div class="text-secondary small"><?= $e($l['name']) ?> · <code><?= $e($code) ?></code><?= $l['dir'] === 'rtl' ? ' · RTL' : '' ?></div>

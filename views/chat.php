@@ -357,7 +357,7 @@ if ($quotaPercent > 75) {
             ?>
             <div style="--i:0"
               class="m-in w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant/30 mb-4 overflow-hidden shadow-lg">
-              <img src="https://flagcdn.com/<?= $country ?>.svg" class="w-full h-full object-cover" />
+              <img src="/img/flags/<?= $country ?>.svg" class="w-full h-full object-cover" />
             </div>
             <h2 style="--i:1" class="m-in font-headline-md text-headline-sm text-primary mb-1"><?= __('chat.start_chatting') ?></h2>
             <p style="--i:2" class="m-in text-body-md text-on-surface-variant">

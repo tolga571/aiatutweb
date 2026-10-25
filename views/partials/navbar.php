@@ -204,7 +204,7 @@
       <div class="relative hidden lg:inline-block text-left group" id="nav-lang-switcher" title="<?= __('nav.learning_language') ?>">
         <button
           class="flex items-center gap-1.5 p-1.5 pr-2.5 rounded-full hover:bg-surface-variant/50 transition-colors border border-outline-variant/20 cursor-pointer">
-          <img src="https://flagcdn.com/<?= $navTargetCountry ?>.svg"
+          <img src="/img/flags/<?= $navTargetCountry ?>.svg"
             class="w-5 h-3.5 rounded-[2px] object-cover shrink-0" />
           <span class="material-symbols-outlined text-[14px] text-on-surface-variant">expand_more</span>
         </button>
@@ -215,7 +215,7 @@
                 continue; ?>
               <a href="?page=update_lang&lang=<?= $l ?>"
                 class="flex items-center gap-2 px-3 py-2.5 text-xs text-on-surface hover:bg-surface-variant transition">
-                <img src="https://flagcdn.com/<?= $c ?>.svg" class="w-5 h-3.5 rounded-[2px] object-cover shrink-0" />
+                <img src="/img/flags/<?= $c ?>.svg" class="w-5 h-3.5 rounded-[2px] object-cover shrink-0" />
                 <?= __("languages.{$l}") ?>
               </a>
             <?php endforeach; ?>
@@ -340,7 +340,7 @@
             $isCur = ($l === $navTargetLang); ?>
             <a href="<?= $isCur ? '#' : '?page=update_lang&lang=' . $l ?>" <?= $isCur ? 'aria-current="true"' : '' ?>
               class="shrink-0 flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs transition-colors <?= $isCur ? 'border-primary/50 bg-primary/15 text-primary font-semibold' : 'border-outline-variant/20 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50' ?>">
-              <img src="https://flagcdn.com/<?= $c ?>.svg" class="w-4 h-3 rounded-[2px] object-cover shrink-0" alt="" />
+              <img src="/img/flags/<?= $c ?>.svg" class="w-4 h-3 rounded-[2px] object-cover shrink-0" alt="" />
               <?= __("languages.{$l}") ?>
             </a>
           <?php endforeach; ?>
