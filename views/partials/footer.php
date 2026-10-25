@@ -2,7 +2,7 @@
 // views/partials/footer.php – site footer: brand, Learn / Company / Legal
 // links (every page the Pages menu has), interface language, cookie banner.
 ?>
-<link rel="stylesheet" href="/css/footer.css?v=1">
+<link rel="stylesheet" href="/css/footer.css?v=2">
 <?php
 // Learning tools (flashcards, word bank, my mistakes, alphabet, quizzes,
 // the grammar card form) set $hideFooter: the link footer belongs to the

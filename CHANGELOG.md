@@ -6,6 +6,7 @@ Versions of jumplearner.com (web + API). Each one is a git tag on the `master` c
 
 - **Footer only on content pages:** the learning tools — flashcards, word bank, my mistakes, alphabet — no longer have the site's link footer under them (it took more room than some of the tools; the cookie banner stays).
 - **Pricing:** now has the footer, with the legal links (terms, refunds, privacy) every other content page has.
+- **Footer on phones:** about 40% shorter — the links of each group sit side by side instead of one per line, and the tagline is left to the homepage. Desktop is unchanged.
 
 ## v1.2 — 2026-10-25
 

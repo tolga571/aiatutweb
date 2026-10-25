@@ -21,7 +21,16 @@
   .jl-footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .jl-footer-brand { grid-column: 1 / -1; }
 }
+/* Phone: one column, the links of each group flow side by side instead of one
+   per line, and the tagline is left to the homepage — about half the height. */
 @media (max-width: 560px) {
-  .jl-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 40px 16px 24px; gap: 28px 20px; }
-  .jl-footer-bottom { padding: 18px 16px 24px; }
+  .jl-footer-grid { grid-template-columns: minmax(0, 1fr); padding: 24px 16px 16px; gap: 18px; }
+  .jl-footer-brand { gap: 10px; }
+  .jl-footer-brand p { display: none; }
+  .jl-footer-logo { font-size: 19px; gap: 10px; }
+  .jl-footer-logo img { width: 34px; height: 37px; }
+  .jl-footer nav { flex-direction: row; flex-wrap: wrap; gap: 0 18px; }
+  .jl-footer nav h2 { flex-basis: 100%; margin-bottom: 2px; }
+  .jl-footer nav a { padding: 3px 0; min-height: 24px; }
+  .jl-footer-bottom { padding: 14px 16px 20px; gap: 10px 16px; font-size: 13px; }
 }
