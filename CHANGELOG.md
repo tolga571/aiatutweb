@@ -2,6 +2,12 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.2.4 — 2026-10-26
+
+- **Chat video flag icons:** re-recorded and composed Chat feature video with all self-hosted language flags rendering cleanly in the dropdown selector.
+- **Lists video footer fix:** re-recorded and composed Lists feature video with clean background cards and no site footer overflow behind modal dialogs.
+- **Cache buster bump:** bumped marketing video and asset cache strings to `?v=4`.
+
 ## v1.2.3 — 2026-10-26
 
 - **Google Flow Leo videos & interactive player:** all 9 feature videos (Chat, Cards, Word bank, Lists, Mistakes, Alphabet, Stories, Grammar cards, Practice) narrated by Leo are now integrated. Every video preview on the homepage is clickable and opens in a larger full-screen player with audio narration and native controls.
