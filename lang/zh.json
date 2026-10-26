@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "工作面试",
     "tips.topic_interview_desc": "自我介绍，谈论经历。",
     "tips.topic_smalltalk": "闲聊",
-    "tips.topic_smalltalk_desc": "谈论天气、爱好和周末。"
+    "tips.topic_smalltalk_desc": "谈论天气、爱好和周末。",
+    "home.close_video": "关闭视频",
+    "home.watch_larger": "放大观看",
+    "home.tour_grammar_title": "语法卡片",
+    "home.tour_grammar": "典型的语法陷阱与常见错误，均配有母语解析。",
+    "home.tour_practice_title": "练习",
+    "home.tour_practice": "找出错误、判断正误以及基于间隔重复的词汇测验。"
 }

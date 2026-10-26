@@ -21,6 +21,75 @@
     if (io) io.observe(v); else playIfVisible(v);
   });
 
+  // Larger player with sound: plays the full Leo narrated recording
+  var box = document.getElementById('hm-lightbox');
+  var big = document.getElementById('hm-lightbox-video');
+
+  function openLarge(src, title) {
+    if (!box || !big || !src) return;
+    document.querySelectorAll('.hm-video').forEach(function (v) { v.pause(); });
+    big.src = src;
+    big.muted = false;
+    big.volume = 1;
+    var titleEl = document.getElementById('hm-lightbox-title');
+    if (titleEl) titleEl.textContent = title || '';
+    if (typeof box.showModal === 'function') {
+      box.showModal();
+    } else {
+      box.setAttribute('open', '');
+    }
+    big.currentTime = 0;
+    var p = big.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+
+  function closeLarge() {
+    if (!box || !big) return;
+    big.pause();
+    big.removeAttribute('src');
+    big.load();
+    if (typeof box.close === 'function') {
+      box.close();
+    } else {
+      box.removeAttribute('open');
+    }
+    // resume active tab video preview
+    var activePane = document.querySelector('.hm-pane:not([hidden])');
+    if (activePane) {
+      var v = activePane.querySelector('.hm-video');
+      if (v) playIfVisible(v);
+    }
+  }
+
+  if (box && big) {
+    box.addEventListener('close', function () {
+      big.pause();
+      big.removeAttribute('src');
+      big.load();
+    });
+    box.addEventListener('click', function (e) {
+      if (e.target === box) closeLarge();
+    });
+    var closeBtn = document.getElementById('hm-lightbox-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeLarge);
+  }
+
+  // Any click on button or preview wrapper opens the narrated video
+  document.querySelectorAll('.hm-expand').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openLarge(b.dataset.video, b.dataset.title);
+    });
+  });
+
+  document.querySelectorAll('.hm-video-wrap').forEach(function (wrap) {
+    wrap.addEventListener('click', function (e) {
+      if (e.target.closest('.hm-expand')) return;
+      var b = wrap.querySelector('.hm-expand') || wrap;
+      if (b && b.dataset.video) openLarge(b.dataset.video, b.dataset.title);
+    });
+  });
+
   // Feature tabs
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.hm-tab'));
   function show(tab) {
@@ -30,9 +99,11 @@
       t.setAttribute('aria-selected', on ? 'true' : 'false');
       t.tabIndex = on ? 0 : -1;
       var pane = document.getElementById(t.getAttribute('aria-controls'));
-      pane.hidden = !on;
-      var v = pane.querySelector('.hm-video');
-      if (v) { if (on) playIfVisible(v); else v.pause(); }
+      if (pane) {
+        pane.hidden = !on;
+        var v = pane.querySelector('.hm-video');
+        if (v) { if (on) playIfVisible(v); else v.pause(); }
+      }
     });
   }
   tabs.forEach(function (t, i) {

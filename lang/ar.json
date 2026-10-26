@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "مقابلة عمل",
     "tips.topic_interview_desc": "قدم نفسك، تحدث عن الخبرة.",
     "tips.topic_smalltalk": "أحاديث قصيرة",
-    "tips.topic_smalltalk_desc": "تحدث عن الطقس والهوايات وعطلات نهاية الأسبوع."
+    "tips.topic_smalltalk_desc": "تحدث عن الطقس والهوايات وعطلات نهاية الأسبوع.",
+    "home.close_video": "إغلاق الفيديو",
+    "home.watch_larger": "شاهد بحجم أكبر",
+    "home.tour_grammar_title": "بطاقات القواعد",
+    "home.tour_grammar": "أفخاخ القواعد الشائعة والأخطاء المتكررة، مع شرح بلغتك الأم.",
+    "home.tour_practice_title": "تمرين",
+    "home.tour_practice": "اكتشاف الأخطاء، صح أم خطأ، واختبارات المفردات مع مراجعة التكرار المتباعد."
 }

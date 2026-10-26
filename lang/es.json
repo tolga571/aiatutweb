@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "Entrevista de trabajo",
     "tips.topic_interview_desc": "Preséntate, habla sobre tu experiencia.",
     "tips.topic_smalltalk": "Charlas informales",
-    "tips.topic_smalltalk_desc": "Habla sobre el clima, pasatiempos y fines de semana."
+    "tips.topic_smalltalk_desc": "Habla sobre el clima, pasatiempos y fines de semana.",
+    "home.close_video": "Cerrar el vídeo",
+    "home.watch_larger": "Ver en grande",
+    "home.tour_grammar_title": "Tarjetas de gramática",
+    "home.tour_grammar": "Trampas gramaticales típicas y errores comunes, explicados en tu lengua materna.",
+    "home.tour_practice_title": "Práctica",
+    "home.tour_practice": "Detecta errores, verdadero o falso, y cuestionarios de vocabulario con repaso espaciado."
 }

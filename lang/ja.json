@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "就職面接",
     "tips.topic_interview_desc": "自己紹介、経験について話す。",
     "tips.topic_smalltalk": "雑談",
-    "tips.topic_smalltalk_desc": "天気、趣味、週末について話す。"
+    "tips.topic_smalltalk_desc": "天気、趣味、週末について話す。",
+    "home.close_video": "動画を閉じる",
+    "home.watch_larger": "大きく見る",
+    "home.tour_grammar_title": "文法カード",
+    "home.tour_grammar": "よくある文法の落とし穴やつまずきやすい間違いを、母国語の解説付きで確認できます。",
+    "home.tour_practice_title": "練習",
+    "home.tour_practice": "間違い探し、正誤問題、間隔反復による語彙クイズでしっかり定着。"
 }

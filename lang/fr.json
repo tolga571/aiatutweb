@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "Entretien d'embauche",
     "tips.topic_interview_desc": "Présentez-vous, parlez de votre expérience.",
     "tips.topic_smalltalk": "Conversation légère",
-    "tips.topic_smalltalk_desc": "Parlez de la météo, des loisirs et des week-ends."
+    "tips.topic_smalltalk_desc": "Parlez de la météo, des loisirs et des week-ends.",
+    "home.close_video": "Fermer la vidéo",
+    "home.watch_larger": "Voir en grand",
+    "home.tour_grammar_title": "Cartes de grammaire",
+    "home.tour_grammar": "Pièges grammaticaux typiques et erreurs fréquentes, expliqués dans votre langue maternelle.",
+    "home.tour_practice_title": "Pratique",
+    "home.tour_practice": "Repérez les fautes, vrai ou faux, et quiz de vocabulaire avec révision espacée."
 }

@@ -974,5 +974,11 @@
     "tips.topic_interview": "नौकरी का इंटरव्यू",
     "tips.topic_interview_desc": "अपना परिचय दें, अपने अनुभव के बारे में बताएँ।",
     "tips.topic_smalltalk": "हल्की-फुल्की बातचीत",
-    "tips.topic_smalltalk_desc": "मौसम, शौक और सप्ताहांत के बारे में बात करें।"
+    "tips.topic_smalltalk_desc": "मौसम, शौक और सप्ताहांत के बारे में बात करें।",
+    "home.close_video": "वीडियो बंद करें",
+    "home.watch_larger": "बड़ा करके देखें",
+    "home.tour_grammar_title": "व्याकरण कार्ड",
+    "home.tour_grammar": "सामान्य व्याकरण की गलतियाँ और नियम, आपकी मातृभाषा में स्पष्टीकरण के साथ।",
+    "home.tour_practice_title": "अभ्यास",
+    "home.tour_practice": "गलतियाँ पहचानें, सही या गलत, और अंतराल पुनरावृत्ति के साथ शब्दावली प्रश्नोत्तरी।"
 }

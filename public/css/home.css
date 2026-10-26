@@ -37,6 +37,25 @@
 .hm-video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 16px;
   border: 1px solid var(--hm-line); background: var(--hm-card-2); }
 .hm-caption { font-size: 13px; color: var(--hm-dim); }
+/* Every recording opens larger, with Leo narration, controls and full screen */
+.hm-video-wrap { position: relative; cursor: pointer; border-radius: 16px; overflow: hidden; }
+.hm-video-wrap .hm-video { cursor: pointer; transition: transform 0.25s ease; }
+.hm-video-wrap:hover .hm-video { transform: scale(1.01); }
+.hm-expand { position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 16px;
+  border-radius: 999px; border: 1px solid rgba(212, 228, 250, 0.3); background: rgba(5, 20, 36, 0.88); color: #d4e4fa; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; backdrop-filter: blur(8px); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45); transition: all 0.2s ease; z-index: 2; }
+.hm-expand:hover { background: rgba(14, 42, 71, 0.98); border-color: rgba(212, 228, 250, 0.6); transform: scale(1.04); color: #fff; }
+.hm-expand .material-symbols-outlined { font-size: 22px; color: var(--hm-gold, #f59e0b); }
+[dir="rtl"] .hm-expand { right: auto; left: 12px; }
+
+.hm-lightbox { width: min(1200px, 96vw); max-height: 94vh; padding: 0; border: 1px solid #2c3a4c; border-radius: 16px; background: #051424; color: #d4e4fa; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85); margin: auto; }
+.hm-lightbox::backdrop { background: rgba(1, 15, 31, 0.88); backdrop-filter: blur(8px); }
+.hm-lightbox[open] { display: flex; flex-direction: column; }
+.hm-lightbox-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 20px; background: rgba(255, 255, 255, 0.04); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.hm-lightbox-head p { margin: 0; font-weight: 700; font-size: 16px; color: #ffffff; }
+.hm-lightbox-close { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #434655; background: rgba(255, 255, 255, 0.06); color: #d4e4fa; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.hm-lightbox-close:hover { background: rgba(255, 255, 255, 0.18); color: #ffffff; }
+.hm-lightbox video { display: block; width: 100%; max-height: calc(94vh - 64px); background: #000; outline: none; }
+
 
 /* How it works */
 .hm-steps { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 20px; }

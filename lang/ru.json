@@ -974,5 +974,11 @@
     "tips.topic_interview": "Собеседование",
     "tips.topic_interview_desc": "Представьтесь и расскажите о своём опыте.",
     "tips.topic_smalltalk": "Светская беседа",
-    "tips.topic_smalltalk_desc": "Поговорите о погоде, хобби и выходных."
+    "tips.topic_smalltalk_desc": "Поговорите о погоде, хобби и выходных.",
+    "home.close_video": "Закрыть видео",
+    "home.watch_larger": "Смотреть крупнее",
+    "home.tour_grammar_title": "Грамматические карточки",
+    "home.tour_grammar": "Типичные грамматические ловушки и частые ошибки с объяснениями на родном языке.",
+    "home.tour_practice_title": "Практика",
+    "home.tour_practice": "Поиск ошибок, верно/неверно и викторины по словарю с интервальным повторением."
 }

@@ -974,5 +974,11 @@
     "tips.topic_interview": "Աշխատանքային հարցազրույց",
     "tips.topic_interview_desc": "Ներկայացեք և պատմեք Ձեր փորձի մասին։",
     "tips.topic_smalltalk": "Թեթև զրույց",
-    "tips.topic_smalltalk_desc": "Խոսեք եղանակի, հոբբիների և հանգստյան օրերի մասին։"
+    "tips.topic_smalltalk_desc": "Խոսեք եղանակի, հոբբիների և հանգստյան օրերի մասին։",
+    "home.close_video": "Փակել տեսանյութը",
+    "home.watch_larger": "Դիտել ավելի մեծ",
+    "home.tour_grammar_title": "Քերականական քարտեր",
+    "home.tour_grammar": "Տիպիկ քերականական թակարդներ և հաճախակի սխալներ՝ ձեր մայրենի լեզվով բացատրություններով:",
+    "home.tour_practice_title": "Պրակտիկա",
+    "home.tour_practice": "Գտեք սխալները, ճիշտ թե սխալ, և բառապաշարի թեստեր տարածական կրկնությամբ:"
 }

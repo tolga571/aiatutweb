@@ -1645,5 +1645,11 @@
     "tips.topic_interview": "Job interview",
     "tips.topic_interview_desc": "Introduce yourself, talk about experience.",
     "tips.topic_smalltalk": "Small talk",
-    "tips.topic_smalltalk_desc": "Talk about weather, hobbies, and weekends."
+    "tips.topic_smalltalk_desc": "Talk about weather, hobbies, and weekends.",
+    "home.close_video": "Close video",
+    "home.watch_larger": "Watch larger",
+    "home.tour_grammar_title": "Grammar cards",
+    "home.tour_grammar": "Typical grammar traps and common mistakes, with explanations in your native language.",
+    "home.tour_practice_title": "Practice",
+    "home.tour_practice": "Spot mistakes, true or false, and vocabulary quizzes with spaced repetition review."
 }

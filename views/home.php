@@ -44,10 +44,22 @@ $tour = [
     ['key' => 'mistakes', 'icon' => 'edit_note', 'name' => __('nav.mistakes'), 'desc' => __('home.tour_mistakes'), 'video' => 'mistakes'],
     ['key' => 'alphabet', 'icon' => 'abc', 'name' => __('nav.alphabet'), 'desc' => __('home.tour_alphabet'), 'video' => 'alphabet'],
     ['key' => 'stories', 'icon' => 'auto_stories', 'name' => __('stories.heading'), 'desc' => __('home.tour_stories'), 'video' => 'stories'],
+    ['key' => 'grammar', 'icon' => 'menu_book', 'name' => __('home.tour_grammar_title'), 'desc' => __('home.tour_grammar'), 'video' => 'grammar'],
+    ['key' => 'practice', 'icon' => 'quiz', 'name' => __('home.tour_practice_title'), 'desc' => __('home.tour_practice'), 'video' => 'practice'],
 ];
 $media = function (string $name): ?array {
     $dir = __DIR__ . '/../public/media/home/';
-    return is_file($dir . $name . '.mp4') ? ['mp4' => '/media/home/' . $name . '.mp4?v=1', 'poster' => is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=1' : ''] : null;
+    $hasSilent = is_file($dir . $name . '.mp4');
+    $hasLeo = is_file($dir . 'leo/' . $name . '.mp4');
+    if (!$hasSilent && !$hasLeo) return null;
+    $silentMp4 = $hasSilent ? '/media/home/' . $name . '.mp4?v=3' : '/media/home/leo/' . $name . '.mp4?v=3';
+    $leoMp4 = $hasLeo ? '/media/home/leo/' . $name . '.mp4?v=3' : $silentMp4;
+    $poster = is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=3' : '';
+    return [
+        'mp4' => $silentMp4,
+        'leo' => $leoMp4,
+        'poster' => $poster,
+    ];
 };
 $plans = [
     ['id' => 'starter', 'features' => 4, 'rec' => false],
@@ -57,7 +69,7 @@ $plans = [
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="/css/home.css?v=2">
+<link rel="stylesheet" href="/css/home.css?v=3">
 
 <main class="hm">
   <section class="hm-hero" aria-labelledby="hm-hero-title">
@@ -80,7 +92,10 @@ $plans = [
       </div>
       <figure class="hm-video-box">
         <?php if ($m = $media('chat')): ?>
-          <video class="hm-video" src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline autoplay preload="metadata" aria-label="<?= htmlspecialchars(__('home.hero_video')) ?>"></video>
+          <div class="hm-video-wrap" data-video="<?= $m['leo'] ?>" data-title="<?= htmlspecialchars(__('home.hero_video')) ?>" title="<?= htmlspecialchars(__('home.watch_larger')) ?>">
+            <video class="hm-video" src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline autoplay preload="metadata" aria-label="<?= htmlspecialchars(__('home.hero_video')) ?>"></video>
+            <button type="button" class="hm-expand" data-video="<?= $m['leo'] ?>" data-title="<?= htmlspecialchars(__('home.hero_video')) ?>" aria-label="<?= htmlspecialchars(__('home.watch_larger')) ?>"><span class="material-symbols-outlined" aria-hidden="true">play_circle</span><span><?= __('home.watch_larger') ?></span></button>
+          </div>
         <?php endif; ?>
         <figcaption class="hm-caption"><?= __('home.hero_video') ?></figcaption>
       </figure>
@@ -115,7 +130,10 @@ $plans = [
         <div class="hm-pane" role="tabpanel" id="hm-pane-<?= $f['key'] ?>" aria-labelledby="hm-tab-<?= $f['key'] ?>"<?= $i === 0 ? '' : ' hidden' ?>>
           <div class="hm-pane-media">
             <?php if ($m): ?>
-              <video class="hm-video" data-src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline preload="none" aria-label="<?= htmlspecialchars($f['name']) ?>"></video>
+              <div class="hm-video-wrap" data-video="<?= $m['leo'] ?>" data-title="<?= htmlspecialchars($f['name']) ?>" title="<?= htmlspecialchars(__('home.watch_larger')) ?>">
+                <video class="hm-video" data-src="<?= $m['mp4'] ?>" poster="<?= $m['poster'] ?>" muted loop playsinline preload="none" aria-label="<?= htmlspecialchars($f['name']) ?>"></video>
+                <button type="button" class="hm-expand" data-video="<?= $m['leo'] ?>" data-title="<?= htmlspecialchars($f['name']) ?>" aria-label="<?= htmlspecialchars(__('home.watch_larger')) ?>"><span class="material-symbols-outlined" aria-hidden="true">play_circle</span><span><?= __('home.watch_larger') ?></span></button>
+              </div>
             <?php endif; ?>
           </div>
           <div class="hm-pane-copy">
@@ -222,7 +240,14 @@ $plans = [
     </div>
   </section>
 </main>
-<script src="/js/home.js?v=1" defer></script>
+<dialog class="hm-lightbox" id="hm-lightbox" aria-labelledby="hm-lightbox-title">
+  <div class="hm-lightbox-head">
+    <p id="hm-lightbox-title"></p>
+    <button type="button" class="hm-lightbox-close" id="hm-lightbox-close" aria-label="<?= htmlspecialchars(__('home.close_video')) ?>"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+  </div>
+  <video id="hm-lightbox-video" controls playsinline preload="none"></video>
+</dialog>
+<script src="/js/home.js?v=3" defer></script>
 <?php require __DIR__ . '/partials/footer.php'; ?>
 </body>
 

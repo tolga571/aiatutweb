@@ -1044,5 +1044,11 @@
     "tips.topic_interview": "Vorstellungsgespräch",
     "tips.topic_interview_desc": "Stell dich vor, sprich über deine Erfahrung.",
     "tips.topic_smalltalk": "Small Talk",
-    "tips.topic_smalltalk_desc": "Über Wetter, Hobbys und Wochenenden sprechen."
+    "tips.topic_smalltalk_desc": "Über Wetter, Hobbys und Wochenenden sprechen.",
+    "home.close_video": "Video schließen",
+    "home.watch_larger": "Größer ansehen",
+    "home.tour_grammar_title": "Grammatikkarten",
+    "home.tour_grammar": "Typische Grammatikfallen und häufige Fehler, erklärt in deiner Muttersprache.",
+    "home.tour_practice_title": "Üben",
+    "home.tour_practice": "Fehler finden, Richtig oder Falsch und Vokabelquizze mit Spaced-Repetition-Wiederholung."
 }
