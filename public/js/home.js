@@ -24,6 +24,23 @@
   // Larger player with sound: plays the full Leo narrated recording
   var box = document.getElementById('hm-lightbox');
   var big = document.getElementById('hm-lightbox-video');
+  var tip = document.getElementById('hm-lightbox-tip');
+  var tipTimer = null;
+
+  function requestFs(el) {
+    if (!el) return;
+    try {
+      if (el.requestFullscreen) {
+        el.requestFullscreen().catch(function () {});
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+      } else if (el.webkitEnterFullscreen) {
+        el.webkitEnterFullscreen();
+      } else if (el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+      }
+    } catch (e) {}
+  }
 
   function openLarge(src, title) {
     if (!box || !big || !src) return;
@@ -41,10 +58,19 @@
     big.currentTime = 0;
     var p = big.play();
     if (p && p.catch) p.catch(function () {});
+
+    if (tip) {
+      tip.style.opacity = '1';
+      clearTimeout(tipTimer);
+      tipTimer = setTimeout(function () {
+        if (tip) tip.style.opacity = '0';
+      }, 5000);
+    }
   }
 
   function closeLarge() {
     if (!box || !big) return;
+    clearTimeout(tipTimer);
     big.pause();
     big.removeAttribute('src');
     big.load();
@@ -63,6 +89,7 @@
 
   if (box && big) {
     box.addEventListener('close', function () {
+      clearTimeout(tipTimer);
       big.pause();
       big.removeAttribute('src');
       big.load();
@@ -72,6 +99,12 @@
     });
     var closeBtn = document.getElementById('hm-lightbox-close');
     if (closeBtn) closeBtn.addEventListener('click', closeLarge);
+    if (tip) {
+      tip.addEventListener('click', function (e) {
+        e.stopPropagation();
+        requestFs(big);
+      });
+    }
   }
 
   // Any click on button or preview wrapper opens the narrated video

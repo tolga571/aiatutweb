@@ -52,9 +52,9 @@ $media = function (string $name): ?array {
     $hasSilent = is_file($dir . $name . '.mp4');
     $hasLeo = is_file($dir . 'leo/' . $name . '.mp4');
     if (!$hasSilent && !$hasLeo) return null;
-    $silentMp4 = $hasSilent ? '/media/home/' . $name . '.mp4?v=4' : '/media/home/leo/' . $name . '.mp4?v=4';
-    $leoMp4 = $hasLeo ? '/media/home/leo/' . $name . '.mp4?v=4' : $silentMp4;
-    $poster = is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=4' : '';
+    $silentMp4 = $hasSilent ? '/media/home/' . $name . '.mp4?v=5' : '/media/home/leo/' . $name . '.mp4?v=5';
+    $leoMp4 = $hasLeo ? '/media/home/leo/' . $name . '.mp4?v=5' : $silentMp4;
+    $poster = is_file($dir . $name . '.jpg') ? '/media/home/' . $name . '.jpg?v=5' : '';
     return [
         'mp4' => $silentMp4,
         'leo' => $leoMp4,
@@ -69,7 +69,7 @@ $plans = [
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="/css/home.css?v=4">
+<link rel="stylesheet" href="/css/home.css?v=5">
 
 <main class="hm">
   <section class="hm-hero" aria-labelledby="hm-hero-title">
@@ -246,8 +246,9 @@ $plans = [
     <button type="button" class="hm-lightbox-close" id="hm-lightbox-close" aria-label="<?= htmlspecialchars(__('home.close_video')) ?>"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
   </div>
   <video id="hm-lightbox-video" controls playsinline preload="none"></video>
+  <button type="button" class="hm-lightbox-tip" id="hm-lightbox-tip" aria-label="<?= htmlspecialchars(__('home.rotate_tip')) ?>"><span class="material-symbols-outlined" aria-hidden="true">screen_rotation</span><span><?= __('home.rotate_tip') ?></span></button>
 </dialog>
-<script src="/js/home.js?v=4" defer></script>
+<script src="/js/home.js?v=5" defer></script>
 <?php require __DIR__ . '/partials/footer.php'; ?>
 </body>
 

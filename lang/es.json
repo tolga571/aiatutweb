@@ -1050,5 +1050,6 @@
     "home.tour_grammar_title": "Tarjetas de gramática",
     "home.tour_grammar": "Trampas gramaticales típicas y errores comunes, explicados en tu lengua materna.",
     "home.tour_practice_title": "Práctica",
-    "home.tour_practice": "Detecta errores, verdadero o falso, y cuestionarios de vocabulario con repaso espaciado."
+    "home.tour_practice": "Detecta errores, verdadero o falso, y cuestionarios de vocabulario con repaso espaciado.",
+    "home.rotate_tip": "Gira el teléfono o toca para pantalla completa"
 }

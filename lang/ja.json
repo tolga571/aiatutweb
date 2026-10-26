@@ -1050,5 +1050,6 @@
     "home.tour_grammar_title": "文法カード",
     "home.tour_grammar": "よくある文法の落とし穴やつまずきやすい間違いを、母国語の解説付きで確認できます。",
     "home.tour_practice_title": "練習",
-    "home.tour_practice": "間違い探し、正誤問題、間隔反復による語彙クイズでしっかり定着。"
+    "home.tour_practice": "間違い探し、正誤問題、間隔反復による語彙クイズでしっかり定着。",
+    "home.rotate_tip": "全画面または横向きで見る"
 }

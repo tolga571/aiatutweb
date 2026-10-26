@@ -2,6 +2,14 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.2.5 — 2026-10-26
+
+- **Mobile video experience & aspect ratio:** corrected `.hm-video` aspect ratio from `16/10` to `16/9` to prevent bottom-edge cropping of input bars and quotas.
+- **Mobile immersive lightbox player:** transformed `.hm-lightbox` into an edge-to-edge full-viewport player on mobile devices with floating header overlay, rotation tip button, and seamless fullscreen support.
+- **Mobile landscape full-screen:** smartphones held horizontally now fill 100% of the display with zero letterboxing or margin waste.
+- **Video composition zoom & clarity:** upgraded video composition engine (`compose.py`) with `ZMAX = 2.0`, `SCALE_MULT = 3` (3840x2160 lanczos resampling) and refined focus rectangles across all 9 feature videos, increasing in-video text size by up to 2x for crystal-clear readability on phones.
+- **Cache buster bump:** bumped all media and frontend cache strings to `?v=5`.
+
 ## v1.2.4 — 2026-10-26
 
 - **Chat video flag icons:** re-recorded and composed Chat feature video with all self-hosted language flags rendering cleanly in the dropdown selector.
