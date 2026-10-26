@@ -1,0 +1,9 @@
+.git
+.env
+vendor
+.agents
+.claude
+.vscode
+.idea
+*.log
+__pycache__
