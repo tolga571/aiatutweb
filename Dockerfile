@@ -1,8 +1,10 @@
 FROM dunglas/frankenphp:1-php8.2-bookworm
 
-RUN install-php-extensions pdo_pgsql opcache
+RUN install-php-extensions pdo_pgsql opcache zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /app
 
