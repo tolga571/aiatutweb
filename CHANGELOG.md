@@ -2,6 +2,11 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.2.6 — 2026-10-26
+
+- **Mobile landscape video sizing:** refined mobile landscape video styling (`width: auto`, `height: 100dvh`, `aspect-ratio: 16/9`) to ensure exact 16:9 geometric aspect ratio and full screen height on all smartphone viewports.
+- **Cache buster bump:** bumped frontend CSS, JS, and media version strings to `?v=6`.
+
 ## v1.2.5 — 2026-10-26
 
 - **Mobile video experience & aspect ratio:** corrected `.hm-video` aspect ratio from `16/10` to `16/9` to prevent bottom-edge cropping of input bars and quotas.

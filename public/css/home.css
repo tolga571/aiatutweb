@@ -274,7 +274,8 @@
     height: 32px !important;
   }
   .hm-lightbox video {
-    width: 100% !important;
+    width: auto !important;
+    max-width: 100vw !important;
     height: 100dvh !important;
     max-height: 100dvh !important;
     aspect-ratio: 16 / 9 !important;
