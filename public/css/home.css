@@ -18,10 +18,12 @@
 .hm-hero { padding: 64px 0 56px; }
 .hm-hero-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr)); gap: 48px; align-items: center; }
 .hm-hero-copy { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
-.hm-badge-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.hm-hero-emblem { width: 58px; height: 64px; }
+.hm-brand-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+.hm-brand-lockup { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.hm-hero-emblem { width: 56px; height: 62px; }
+.hm-brand-name { font-family: 'Hanken Grotesk', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #ffffff; line-height: 1; }
 .hm-badge { font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-gold);
-  border: 1px solid var(--hm-gold-line); padding: 6px 10px; border-radius: 999px; }
+  border: 1px solid var(--hm-gold-line); padding: 6px 12px; border-radius: 999px; align-self: flex-start; margin-bottom: 4px; }
 .hm-lead { margin: 0; font-size: 18px; line-height: 1.6; color: var(--hm-muted); max-width: 34em; text-wrap: pretty; }
 .hm-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
 .hm-note { margin: 0; font-size: 14px; color: var(--hm-dim); }

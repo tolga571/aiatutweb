@@ -57,14 +57,17 @@ $plans = [
 ?>
 <?php require __DIR__ . '/partials/head.php'; ?>
 <?php require __DIR__ . '/partials/navbar.php'; ?>
-<link rel="stylesheet" href="/css/home.css?v=1">
+<link rel="stylesheet" href="/css/home.css?v=2">
 
 <main class="hm">
   <section class="hm-hero" aria-labelledby="hm-hero-title">
     <div class="hm-wrap hm-hero-grid">
       <div class="hm-hero-copy">
-        <div class="hm-badge-row">
-          <img src="/brand/emblem.svg?v=3" alt="Jumplearner" width="58" height="64" class="jl-emblem hm-hero-emblem" fetchpriority="high" decoding="async">
+        <div class="hm-brand-header">
+          <div class="hm-brand-lockup">
+            <img src="/brand/emblem.svg?v=3" alt="Jumplearner" width="56" height="62" class="jl-emblem hm-hero-emblem" fetchpriority="high" decoding="async">
+            <span class="hm-brand-name">Jumplearner</span>
+          </div>
           <span class="hm-badge"><?= __('home.badge') ?></span>
         </div>
         <h1 id="hm-hero-title" class="hm-h1"><?= preg_replace('#<br\s*/?>#i', ' ', __('home.heading')) ?></h1>
