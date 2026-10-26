@@ -7,9 +7,11 @@ extensions = ["pdo", "pdo_pgsql"]
 # brings its own PHP: v1.13.2 ships PHP 8.5.12, which fixes PHP2Shell
 # (CVE-2026-109618, CVE-2026-109619). Verified locally that it has pdo_pgsql,
 # session, curl, mbstring and opcache; it requires glibc >= 2.28.
+[phases.setup]
+nixPkgs = ["...", "curl", "cacert"]
+
 [phases.frankenphp]
 dependsOn = ["install"]
-aptPkgs = ["curl", "ca-certificates"]
 cmds = [
     "curl -fsSL -o frankenphp https://github.com/php/frankenphp/releases/download/v1.13.2/frankenphp-linux-x86_64-gnu",
     "chmod +x frankenphp"
