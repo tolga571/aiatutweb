@@ -38,15 +38,15 @@ const RAW = /\b(stories|home|footer|nav|pricing|faq)\.[a-z][a-z0-9_]+\b/;
         assert(await page.locator('#' + id).count() === 1, 'missing #' + id);
       }
       assert(await page.locator('.jl-footer nav').count() === 3, 'footer columns');
-      assert(await page.locator('.hm-tab').count() === 7, 'feature tabs');
+      assert(await page.locator('.hm-tab').count() === 9, 'feature tabs');
       assert(await page.locator('html').getAttribute('dir') === (ui === 'ar' ? 'rtl' : 'ltr'), 'dir');
       noErr();
     });
   }
   await check('home: every recording file exists and is served as video/mp4', async () => {
     await page.goto(BASE + '?ui_lang=en');
-    const srcs = await page.$$eval('video', vs => vs.map(v => v.getAttribute('src') || v.dataset.src));
-    assert(srcs.length === 8, 'videos: ' + srcs.length);
+    const srcs = await page.$$eval('.hm-video', vs => vs.map(v => v.getAttribute('src') || v.dataset.src));
+    assert(srcs.length === 10, 'videos: ' + srcs.length);
     for (const s of new Set(srcs)) {
       const r = await page.request.get(BASE.replace(/\/$/, '') + s);
       assert(r.ok() && /video\/mp4/.test(r.headers()['content-type'] || ''), s + ' ' + r.status() + ' ' + r.headers()['content-type']);
@@ -66,6 +66,15 @@ const RAW = /\b(stories|home|footer|nav|pricing|faq)\.[a-z][a-z0-9_]+\b/;
     await page.click('.hm-period-btn[data-period="yearly"]');
     assert(await page.locator('.hm-price[data-period="yearly"]').first().isVisible(), 'yearly prices');
     noErr();
+  });
+  await check('home: "Watch larger" opens the recording in a player with controls', async () => {
+    await page.goto(BASE + '?ui_lang=en');
+    assert(await page.locator('.hm-expand').count() === 10, 'expand buttons');
+    await page.locator('.hm-expand').first().click();
+    assert(await page.locator('#hm-lightbox').isVisible(), 'player open');
+    assert(await page.locator('#hm-lightbox-video').evaluate(v => v.controls && /\.mp4/.test(v.currentSrc || v.src)), 'controls + src');
+    await page.click('#hm-lightbox-close');
+    assert(await page.locator('#hm-lightbox').isHidden(), 'closes');
   });
   await check('navbar: Pages menu keeps every page and adds Stories', async () => {
     await page.click('#pagesBtn');
@@ -121,6 +130,19 @@ const RAW = /\b(stories|home|footer|nav|pricing|faq)\.[a-z][a-z0-9_]+\b/;
     const after = await page.locator('.st-tok .st-m').first().innerText();
     assert(await page.locator('.st-tok .st-m').first().getAttribute('lang') === 'ja', 'lang attr');
     assert(before !== after, `${before} → ${after}`);
+  });
+  await check('reader: recorded read-aloud (MP3 + timings) drives the listen controls and the word button', async () => {
+    await page.goto(BASE + `stories/${slug}/ja`);
+    const audio = await page.evaluate(() => window.__STORY__.audio);
+    if (!audio) return 'no recording for this story (browser voice fallback)';
+    assert(audio.sentences.length === await page.locator('.st-sent').count(), 'one timing per sentence');
+    assert(await page.locator('#st-audio').isVisible(), 'listen controls');
+    const r = await page.request.get(BASE.replace(/\/$/, '') + audio.src);
+    assert(r.ok() && /audio\/mpeg/.test(r.headers()['content-type'] || ''), audio.src + ' ' + r.status());
+    await page.locator('.st-tok').first().click();
+    assert(await page.locator('#st-d-listen').isVisible(), 'word listen button');
+    await page.keyboard.press('Escape');
+    return Object.keys(audio.words).length + ' word timings';
   });
   await check('reader (guest): word drawer shows word, reading, meaning and the sign-up offer', async () => {
     await page.locator('.st-tok').nth(3).click();
@@ -182,6 +204,13 @@ const RAW = /\b(stories|home|footer|nav|pricing|faq)\.[a-z][a-z0-9_]+\b/;
     await page.click('#st-d-save');
     await page.waitForTimeout(1200);
     assert(sql(`SELECT COUNT(*) FROM vocabulary_words WHERE user_id = ${uid} AND category = 'Stories'`) === '1', 'duplicate card');
+  });
+  await check('flashcards page: no footer (full-height screen), lists section visible', async () => {
+    await page.goto(BASE + '?page=flashcards');
+    assert(await page.locator('.jl-footer').count() === 0, 'footer present');
+    assert(await page.locator('[data-new-list]').first().isVisible(), 'new list button');
+    const over = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    assert(over <= 2, 'page scrolls by ' + over + 'px');
   });
   await check('save endpoint: CSRF required, guests refused, never a 5xx', async () => {
     const bad = await page.request.post(BASE + '?page=story-word-save', { data: { slug, lang: 'es', s: 0, t: 0 } });

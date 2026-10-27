@@ -1622,6 +1622,46 @@ switch ($page) {
         }
         exit;
 
+    // Sitemap: the public pages plus every published story in every
+    // language it has, each listing its other languages (hreflang).
+    case 'sitemap.xml':
+        $base = 'https://jumplearner.com';
+        $smUrl = function (string $path, string $freq, string $prio, ?string $changed = null, array $alt = []) use ($base): string {
+            $x = "  <url>\n    <loc>" . htmlspecialchars($base . $path, ENT_XML1) . "</loc>\n";
+            foreach ($alt as $l => $p) {
+                $x .= '    <xhtml:link rel="alternate" hreflang="' . $l . '" href="' . htmlspecialchars($base . $p, ENT_XML1) . "\"/>\n";
+            }
+            if ($changed) {
+                $x .= '    <lastmod>' . date('Y-m-d', strtotime($changed)) . "</lastmod>\n";
+            }
+            return $x . "    <changefreq>$freq</changefreq>\n    <priority>$prio</priority>\n  </url>\n";
+        };
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+             . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "\n";
+        foreach ([['/', 'weekly', '1.0'], ['/stories', 'weekly', '0.9'], ['/pricing', 'weekly', '0.9'], ['/about', 'monthly', '0.7'],
+                  ['/faq', 'monthly', '0.7'], ['/alphabet', 'monthly', '0.6'], ['/blog', 'weekly', '0.6'], ['/contact', 'monthly', '0.5'],
+                  ['/terms-and-conditions', 'yearly', '0.3'], ['/privacy-policy', 'yearly', '0.3'], ['/refund-policy', 'yearly', '0.3'],
+                  ['/delete-account', 'yearly', '0.3']] as [$p, $f, $pr]) {
+            $xml .= $smUrl($p, $f, $pr);
+        }
+        try {
+            foreach ((new \App\Src\Stories($db))->sitemap(\App\Src\Language::listed('learn')) as $st) {
+                $alt = [];
+                foreach ($st['langs'] as $l) {
+                    $alt[$l] = '/stories/' . $st['slug'] . '/' . $l;
+                }
+                foreach ($alt as $p) {
+                    $xml .= $smUrl($p, 'monthly', '0.8', $st['changed'], $alt);
+                }
+            }
+        } catch (\Throwable $e) {
+            error_log('sitemap stories: ' . $e->getMessage());
+        }
+        header('Content-Type: application/xml; charset=utf-8');
+        header('Cache-Control: public, max-age=3600');
+        echo $xml . "</urlset>\n";
+        exit;
+
     // ── Static pages ──────────────────────────────────────────────
     case 'chat-tips':
     case 'privacy-policy':

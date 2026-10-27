@@ -91,6 +91,22 @@ class Stories
         return $this->db->fetchOne('SELECT * FROM stories WHERE id = ?', [$id]) ?: null;
     }
 
+    /** Published stories for the sitemap: slug, last change, and the listed languages each has text in. */
+    public function sitemap(array $langs): array {
+        $rows = $this->db->fetchAll(
+            "SELECT s.slug, s.updated_at AS changed, string_agg(t.lang, ',' ORDER BY t.lang) AS langs
+             FROM stories s JOIN story_texts t ON t.story_id = s.id
+             WHERE s.status = 'published'
+             GROUP BY s.id, s.slug, s.updated_at, s.sort_order
+             ORDER BY s.sort_order, s.id"
+        );
+        return array_map(fn($r) => [
+            'slug' => $r['slug'],
+            'changed' => $r['changed'],
+            'langs' => array_values(array_intersect(explode(',', (string)$r['langs']), $langs)),
+        ], $rows);
+    }
+
     /** Languages a story has text in. */
     public function languagesOf(int $storyId): array {
         return array_column($this->db->fetchAll('SELECT lang FROM story_texts WHERE story_id = ? ORDER BY lang', [$storyId]), 'lang');

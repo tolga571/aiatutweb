@@ -1,5 +1,5 @@
 // Story reader (views/story.php): tabs, meaning language, the word drawer,
-// read-aloud with the browser's own voices, and saving a word to the cards.
+// recorded read-aloud (browser voice as fallback), and saving a word to the cards.
 (function () {
   'use strict';
   var S = window.__STORY__;
@@ -56,9 +56,15 @@
     } catch (e) {}
   }
 
-  // ── Speech: only the browser's own voices; no voice → no buttons ──
+  // ── Read-aloud ──────────────────────────────────────────────
+  // A recorded MP3 with sentence and word timings when the story has one
+  // (natural voices, every language); otherwise the browser's own voice,
+  // and no buttons at all when the browser has none for the language.
+  var A = S.audio;
+  var player = A ? new Audio(A.src) : null;
   var synth = window.speechSynthesis;
   var voice = null;
+  var rate = 1;
   var prefix = (S.speechLocale || S.lang).toLowerCase().slice(0, 2);
   function findVoice() {
     if (!synth) return null;
@@ -67,17 +73,20 @@
     var near = vs.filter(function (v) { return (v.lang || '').toLowerCase().slice(0, 2) === prefix; });
     return exact[0] || near[0] || null;
   }
+  // Can this word be heard? From the recording when it has the word's timing.
+  function wordTime(si, ti) { return A && A.words[si + '.' + ti]; }
   function refreshVoice() {
     voice = findVoice();
-    $('st-audio').hidden = !voice;
-    $('st-d-listen').hidden = !voice;
+    $('st-audio').hidden = !(player || voice);
   }
-  if (synth) {
+  if (player) {
+    player.preload = 'metadata';
+    $('st-audio').hidden = false;
+  } else if (synth) {
     refreshVoice();
     if (typeof synth.addEventListener === 'function') synth.addEventListener('voiceschanged', refreshVoice);
     else synth.onvoiceschanged = refreshVoice;
   }
-  var rate = 1;
   function speak(text, onEnd) {
     if (!voice) return;
     var u = new SpeechSynthesisUtterance(text);
@@ -89,7 +98,7 @@
   }
 
   // Whole story, sentence by sentence, with the sentence marked.
-  var playing = false, current = -1, runId = 0;
+  var playing = false, current = -1, runId = 0, segEnd = null;
   function mark(i) {
     document.querySelectorAll('.st-sent.is-reading, .st-line.is-reading').forEach(function (el) { el.classList.remove('is-reading'); });
     if (i < 0) return;
@@ -103,14 +112,43 @@
     b.querySelector('.material-symbols-outlined').textContent = playing ? 'pause' : 'play_arrow';
     $('st-play-label').textContent = playing ? S.t.pause : (current > 0 ? S.t.resume : S.t.listen);
   }
+  function sentenceAt(t) {
+    for (var i = 0; i < A.sentences.length; i++) if (t < A.sentences[i][1] + 0.2) return i;
+    return A.sentences.length - 1;
+  }
+  if (player) {
+    player.addEventListener('timeupdate', function () {
+      if (segEnd !== null) {
+        if (player.currentTime >= segEnd) { player.pause(); segEnd = null; }
+        return;
+      }
+      if (!playing) return;
+      var i = sentenceAt(player.currentTime);
+      if (i !== current) { current = i; mark(i); }
+    });
+    player.addEventListener('ended', function () { playing = false; current = -1; mark(-1); setPlayUi(); });
+  }
   function playFrom(i) {
+    if (player) {
+      segEnd = null;
+      current = i;
+      mark(i);
+      player.currentTime = i > 0 ? A.sentences[i][0] : 0;
+      player.playbackRate = rate;
+      player.play();
+      return;
+    }
     if (i >= S.sentences.length) { playing = false; current = -1; mark(-1); setPlayUi(); return; }
     current = i;
     mark(i);
     var id = runId;
     speak(S.sentences[i].text, function () { if (playing && id === runId) playFrom(i + 1); });
   }
-  function stop() { runId++; if (synth) synth.cancel(); }
+  function stop() {
+    runId++;
+    if (player) player.pause();
+    if (synth) synth.cancel();
+  }
   $('st-play').addEventListener('click', function () {
     if (playing) { playing = false; stop(); setPlayUi(); return; }
     stop();
@@ -126,10 +164,25 @@
         x.classList.toggle('is-on', on);
         x.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
+      if (player) { player.playbackRate = rate; return; }
       if (playing) { stop(); playing = true; playFrom(current); }
     });
   });
   window.addEventListener('pagehide', stop);
+
+  // One word: its own stretch of the recording; else the browser's voice.
+  function playWord(w) {
+    playing = false; stop(); setPlayUi();
+    var tm = wordTime(w.s, w.t);
+    if (tm) {
+      segEnd = tm[1] + 0.05;
+      player.currentTime = Math.max(0, tm[0] - 0.03);
+      player.playbackRate = rate;
+      player.play();
+    } else {
+      speak(w.word);
+    }
+  }
 
   // ── Word drawer ─────────────────────────────────────────────
   var drawer = $('st-drawer'), open = null, opener = null;
@@ -162,6 +215,7 @@
       other.appendChild(sp);
     }
     $('st-d-msg').textContent = '';
+    $('st-d-listen').hidden = !(wordTime(si, ti) || voice);
     var save = $('st-d-save');
     if (save) {
       var done = btn.classList.contains('is-saved');
@@ -190,9 +244,7 @@
     if (b) openWord(b);
   });
   $('st-d-listen').addEventListener('click', function () {
-    if (!open) return;
-    playing = false; stop(); setPlayUi();
-    speak(open.word);
+    if (open) playWord(open);
   });
 
   var saveBtn = $('st-d-save');

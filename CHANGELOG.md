@@ -2,6 +2,12 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.3 — 2026-10-27
+
+- **Stories read aloud with natural voices:** every story has a recorded reading in ten languages (Microsoft Edge neural voices), with the sentence marked while it plays and each word playable on its own in the word drawer. The browser's voice is only a fallback now — and for Armenian, which has no free voice we could verify (Gemini's TTS read the wrong sentences).
+- **More stories:** 11 stories in all 11 languages (was 3).
+- **Search engines:** the sitemap now lists every story in every language, so Google can find them.
+
 ## v1.2.6 — 2026-10-26
 
 - **Mobile landscape video sizing:** refined mobile landscape video styling (`width: auto`, `height: 100dvh`, `aspect-ratio: 16/9`) to ensure exact 16:9 geometric aspect ratio and full screen height on all smartphone viewports.
