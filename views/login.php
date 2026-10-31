@@ -91,6 +91,7 @@
              data-logo_alignment="left">
         </div>
       </div>
+      <p class="text-xs text-on-surface-variant text-center mt-3"><?= t('auth.google_notice', ['terms' => '<a href="?page=terms-and-conditions" class="text-primary underline" target="_blank">' . __('auth.terms') . '</a>', 'privacy' => '<a href="?page=privacy-policy" class="text-primary underline" target="_blank">' . __('auth.privacy') . '</a>']) ?></p>
       <script>
         // Google's button is a fixed-width iframe: a hardcoded data-width
         // (was 382) overflows the card and gets clipped on narrow phones.

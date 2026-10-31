@@ -30,9 +30,9 @@ $canonicalUrl = 'https://jumplearner.com' . (($_SERVER['REQUEST_URI'] ?? '/') ==
 <meta name="twitter:image" content="https://jumplearner.com/brand/og-image-v4.jpg"/>
 <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle ?? 'Jumplearner') ?>"/>
 <meta name="twitter:description" content="<?= htmlspecialchars($metaDescription) ?>"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Play CDN 3.4.17 (+forms, container-queries), served from our own domain. -->
+<script src="/js/lib/tailwindcss-3.4.17-forms-cq.js"></script>
+<link rel="stylesheet" href="/css/fonts.css?v=1"/>
 <style>
   /* Japanese has no spaces: keep headings whole and break them only at a
      zero-width space in the string (or anywhere if a line is still too long). */
@@ -335,10 +335,10 @@ if ($motionOn): ?>
 </script>
 <link rel="stylesheet" href="<?= $motionVer('css/motion.css') ?>"/>
 <?php if ($motionGsap): ?>
-<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
+<script defer src="/js/lib/gsap-3.15.0.min.js" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly" crossorigin="anonymous"></script>
 <?php endif; ?>
 <?php if ($motionSmooth): ?>
-<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" integrity="sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw" crossorigin="anonymous"></script>
+<script defer src="/js/lib/lenis-1.3.26.min.js" integrity="sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw" crossorigin="anonymous"></script>
 <?php endif; ?>
 <script defer src="<?= $motionVer('js/motion.js') ?>"></script>
 <?php endif; ?>

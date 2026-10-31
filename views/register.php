@@ -64,9 +64,10 @@
         <div class="flex items-start gap-3 mt-4 mb-2">
           <input type="checkbox" name="terms" id="terms" required class="mt-1 shrink-0 w-4 h-4 rounded border-outline-variant/30 text-primary focus:ring-primary bg-surface-container-high">
           <label for="terms" class="text-xs text-on-surface-variant">
-            <?= __('auth.terms_agreement') ?> <a href="?page=terms-and-conditions" class="text-primary hover:underline" target="_blank"><?= __('auth.terms') ?></a> <?= __('auth.and') ?> <a href="?page=privacy-policy" class="text-primary hover:underline" target="_blank"><?= __('auth.privacy') ?></a>.
+            <?= t('auth.terms_accept', ['terms' => '<a href="?page=terms-and-conditions" class="text-primary underline" target="_blank">' . __('auth.terms') . '</a>']) ?>
           </label>
         </div>
+        <p class="text-xs text-on-surface-variant"><?= t('auth.privacy_notice', ['privacy' => '<a href="?page=privacy-policy" class="text-primary underline" target="_blank">' . __('auth.privacy') . '</a>']) ?></p>
         <button type="submit" id="register-submit-btn"
           class="w-full bg-primary text-on-primary font-semibold py-3 rounded-xl transition mt-2 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed">
           <?= __('auth.create_account_btn') ?>
@@ -110,6 +111,7 @@
              data-logo_alignment="left">
         </div>
       </div>
+      <p class="text-xs text-on-surface-variant text-center mt-3"><?= t('auth.google_notice', ['terms' => '<a href="?page=terms-and-conditions" class="text-primary underline" target="_blank">' . __('auth.terms') . '</a>', 'privacy' => '<a href="?page=privacy-policy" class="text-primary underline" target="_blank">' . __('auth.privacy') . '</a>']) ?></p>
       <script>
         // Google's button is a fixed-width iframe: a hardcoded data-width
         // (was 382) overflows the card and gets clipped on narrow phones.

@@ -85,6 +85,27 @@
             <?= __('privacy.s6_body') ?>
           </p>
         </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s7_title') ?></h2>
+          <p>
+            <?= __('privacy.s7_body') ?>
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s8_title') ?></h2>
+          <p>
+            <?= __('privacy.s8_body') ?>
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('privacy.s9_title') ?></h2>
+          <p>
+            <?= __('privacy.s9_body') ?>
+          </p>
+        </div>
       </div>
 
     </div>

@@ -7,6 +7,11 @@ Versions of jumplearner.com (web + API). Each one is a git tag on the `master` c
 - **Stories read aloud with natural voices:** every story has a recorded reading in ten languages (Microsoft Edge neural voices), with the sentence marked while it plays and each word playable on its own in the word drawer. The browser's voice is only a fallback now — and for Armenian, which has no free voice we could verify (Gemini's TTS read the wrong sentences).
 - **More stories:** 11 stories in all 11 languages (was 3).
 - **Search engines:** the sitemap now lists every story in every language, so Google can find them.
+- **Sign-up consent:** the sign-up box is now for the Terms of Service only, with the Privacy Policy as a separate notice; signing up with Google shows that continuing accepts the terms. When and which version of the terms each new account accepted is stored.
+- **Pricing:** a line under the plans says subscriptions renew automatically and can be cancelled anytime on that page, with links to the terms and refund policy.
+- **Privacy Policy:** new sections on the data controller, international transfers and your rights under KVKK and the GDPR (all 11 languages).
+- **No third-party files on public pages:** fonts (Inter, Hanken Grotesk, Geist, Material Symbols), Tailwind, GSAP and Lenis are served from jumplearner.com instead of Google Fonts and CDNs; the admin panel's CDN files are pinned with integrity hashes.
+- **Data breach plan:** `docs/veri-ihlali.md`.
 
 ## v1.2.6 — 2026-10-26
 

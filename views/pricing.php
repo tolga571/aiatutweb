@@ -504,6 +504,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
           <?php endif; ?>
         </div>
       </div>
+      <p class="max-w-3xl mx-auto mt-8 text-center text-sm text-on-surface-variant"><?= t('pricing.renewal_note', ['terms' => '<a href="?page=terms-and-conditions" class="text-primary underline">' . __('auth.terms') . '</a>', 'refund' => '<a href="?page=refund-policy" class="text-primary underline">' . __('footer.refund') . '</a>']) ?></p>
     </div>
   </div>
 </main>

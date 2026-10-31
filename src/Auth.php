@@ -118,8 +118,9 @@ class Auth {
                 return [null, false];
             } else {
                 $this->db->execute(
-                    'INSERT INTO users (email, password, name, google_id, profile_image) VALUES (?, ?, ?, ?, ?)',
-                    [$email, password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT), $name, $googleId, $picture ?: null]
+                    // The Google buttons say continuing accepts the terms.
+                    'INSERT INTO users (email, password, name, google_id, profile_image, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?)',
+                    [$email, password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT), $name, $googleId, $picture ?: null, self::TERMS_VERSION]
                 );
                 $created = true;
             }
@@ -134,8 +135,9 @@ class Auth {
         $hash = password_hash($password, PASSWORD_BCRYPT);
         try {
             $this->db->execute(
-                'INSERT INTO users (email, password, name, profile_image) VALUES (?, ?, ?, ?)',
-                [$email, $hash, $name, null]
+                // Callers (web form, API) refuse a sign-up without the terms box.
+                'INSERT INTO users (email, password, name, profile_image, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)',
+                [$email, $hash, $name, null, self::TERMS_VERSION]
             );
             return true;
         } catch (\PDOException $e) {
@@ -308,6 +310,9 @@ class Auth {
         $user = $this->db->fetchOne('SELECT onboarding_completed FROM users WHERE id = ?', [$this->userId()]);
         return $user && $user['onboarding_completed'] == 1;
     }
+
+    /** Date of the Terms of Service text new accounts accept (stored in users.terms_version). */
+    public const TERMS_VERSION = '2026-10-31';
 
     public const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     public const LEARNING_GOALS = ['conversation', 'travel', 'work', 'exam'];

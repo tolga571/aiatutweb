@@ -520,6 +520,10 @@ class Database {
         // the work queue. A request newer than this reopens it.
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS refund_handled_at TIMESTAMP DEFAULT NULL");
         $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS cancel_handled_at TIMESTAMP DEFAULT NULL");
+        // When the user accepted the Terms of Service and which version
+        // (Auth::TERMS_VERSION): the sign-up form's box, or continuing with Google.
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMP DEFAULT NULL");
+        $this->pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS terms_version TEXT DEFAULT NULL");
         // One row per day with real (Dodo) MRR, written by AdminRevenue::snapshot()
         // when an admin opens the panel — MRR history can't be rebuilt after the fact.
         $this->exec("CREATE TABLE IF NOT EXISTS revenue_snapshots (
