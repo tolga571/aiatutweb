@@ -570,6 +570,12 @@ switch ($page) {
         // plan itself is granted by the Dodo webhook, which the pricing page
         // waits for through check-payment-status.
         $requireAuth();
+        // No sales to visitors from a blocked country (the pricing page
+        // already disables the buttons; this stops a direct link).
+        if (sales_closed_here($config)) {
+            header('Location: ?page=pricing&sales_closed=1');
+            exit;
+        }
         $planKey = $_GET['plan'] ?? '';
         $interval = $_GET['interval'] ?? 'month';
         if (!in_array($planKey, ['starter', 'pro', 'active'], true) || !in_array($interval, ['month', 'year'], true)) {

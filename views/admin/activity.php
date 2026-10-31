@@ -5,7 +5,7 @@ $pagePretitle = t('admin.activity_pretitle', ['n' => number_format($totalCount, 
 
 $e = fn($v) => htmlspecialchars((string)$v);
 $eventLabels = [];
-foreach (['subscription_started' => 'green', 'subscription_upgraded' => 'blue', 'subscription_downgraded' => 'yellow', 'downgrade_scheduled' => 'yellow', 'cancellation_requested' => 'orange', 'subscription_canceled' => 'red', 'cancellation_resumed' => 'teal', 'refund_requested' => 'orange', 'account_deleted' => 'red'] as $type => $color) {
+foreach (['subscription_started' => 'green', 'subscription_upgraded' => 'blue', 'subscription_downgraded' => 'yellow', 'downgrade_scheduled' => 'yellow', 'cancellation_requested' => 'orange', 'subscription_canceled' => 'red', 'cancellation_resumed' => 'teal', 'refund_requested' => 'orange', 'account_deleted' => 'red', 'sale_refused_country' => 'red'] as $type => $color) {
     $eventLabels[$type] = [t('admin.event_' . $type), $color];
 }
 $planLabels = ['inactive' => t('admin.plan_inactive'), 'trial' => t('admin.plan_trial'), 'starter' => 'Starter', 'pro' => 'Pro', 'active' => 'Premium'];

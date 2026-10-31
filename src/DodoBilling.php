@@ -189,6 +189,101 @@ class DodoBilling
         return $result;
     }
 
+    /**
+     * Sales are closed to the subscription's billing country (config
+     * sales_blocked_countries): cancel it now, refund what it charged, keep
+     * the user off the paid plan, and tell the owner and the user. Throws
+     * when Dodo can't be reached or a refund fails, so the webhook answers
+     * non-2xx and Dodo retries; refunded payments are skipped on a retry.
+     */
+    public function refuseBlockedCountry(?int $userId, array $sub, ?int $eventTimestamp = null): string
+    {
+        $subId = (string)($sub['subscription_id'] ?? '');
+        $country = strtoupper((string)($sub['billing']['country'] ?? ''));
+        if ($this->client === null || $subId === '') {
+            throw new \RuntimeException("cannot refuse subscription '{$subId}': no Dodo client or subscription id");
+        }
+        $reason = "Jumplearner does not sell to customers in {$country}.";
+        if (!$this->client->cancelSubscriptionNow($subId, $reason)) {
+            // A second event for the same purchase finds it cancelled already.
+            $current = $this->client->getSubscription($subId);
+            if (($current['status'] ?? '') !== 'cancelled') {
+                throw new \RuntimeException("cancelling subscription {$subId} failed");
+            }
+        }
+        $payments = $this->client->listSubscriptionPayments($subId);
+        if ($payments === null) {
+            throw new \RuntimeException("listing payments of subscription {$subId} failed");
+        }
+        $refunded = 0;
+        foreach ($payments as $p) {
+            if (($p['status'] ?? '') !== 'succeeded' || !empty($p['refund_status'])) {
+                continue;
+            }
+            if (!$this->client->refundPayment((string)($p['payment_id'] ?? ''), $reason)) {
+                throw new \RuntimeException('refunding payment ' . ($p['payment_id'] ?? '?') . " of subscription {$subId} failed");
+            }
+            $refunded++;
+        }
+
+        // The plan is never granted. If this subscription was somehow linked
+        // already, take it back the same way a cancellation does.
+        $user = $userId ? $this->db->fetchOne('SELECT email, name, plan_status, dodo_subscription_id, ui_lang, native_lang FROM users WHERE id = ?', [$userId]) : null;
+        if (!$user && !empty($sub['customer']['email'])) {
+            // Not matched to an account: still tell the payer.
+            $user = ['email' => (string)$sub['customer']['email'], 'ui_lang' => null, 'native_lang' => null, 'dodo_subscription_id' => null, 'plan_status' => null];
+        }
+        if ($userId && $user && ($user['dodo_subscription_id'] ?? '') === $subId) {
+            $this->db->execute(
+                "UPDATE users SET plan_status = 'canceled', has_paid = 0, cancel_requested_at = NULL, cancel_method = NULL,
+                 pending_plan_change = NULL, next_billed_at = NULL WHERE id = ?",
+                [$userId]
+            );
+            $this->adjustTokenBonus($userId, (string)$user['plan_status'], 'canceled');
+        }
+        if ($userId) {
+            $this->db->execute(
+                'UPDATE users SET payment_pending_at = NULL, pending_purchase_plan = NULL, pending_purchase_interval = NULL,
+                 dodo_last_event_at = COALESCE(?, dodo_last_event_at) WHERE id = ?',
+                [$eventTimestamp, $userId]
+            );
+        }
+
+        $result = "refused subscription {$subId} for user " . ($userId ?: 'unmatched') . ": billing country {$country}; cancelled, refunded {$refunded} payment(s)";
+        $already = $refunded === 0 && $this->db->fetchOne(
+            "SELECT 1 FROM activity_events WHERE event_type = 'sale_refused_country' AND detail LIKE ?",
+            ['refused subscription ' . $subId . ' %']
+        );
+        if ($already) {
+            return "subscription {$subId} already refused (billing country {$country})";
+        }
+        ActivityLog::record($this->db, $userId, 'sale_refused_country', 'dodo', null, null, $result);
+        $this->mailRefused($user, $result, $refunded);
+        return $result;
+    }
+
+    /** Owner + customer e-mails for refuseBlockedCountry(); a failed e-mail never undoes the refund. */
+    private function mailRefused(?array $user, string $result, int $refunded): void
+    {
+        try {
+            $mailer = new Mailer($this->config);
+            $owner = (string)($this->config['mail_from_address'] ?? '');
+            if ($owner !== '') {
+                $mailer->send($owner, 'Sale refused: blocked country',
+                    '<p>' . htmlspecialchars($result) . '</p>'
+                    . ($refunded === 0 ? '<p><strong>No payment was refunded — check the subscription in the Dodo dashboard.</strong></p>' : ''));
+            }
+            if ($user && !empty($user['email'])) {
+                Language::boot($this->db);
+                Language::load((string)($user['ui_lang'] ?: $user['native_lang'] ?: 'en'));
+                $mailer->send((string)$user['email'], __('billing.country_refused_subject'),
+                    '<p>' . __('billing.country_refused_body') . '</p>');
+            }
+        } catch (\Throwable $e) {
+            error_log('DodoBilling::mailRefused: ' . $e->getMessage());
+        }
+    }
+
     /** Same upgrade/downgrade quota handling as Paddle/FastSpring. */
     private function adjustTokenBonus(int $userId, string $oldPlan, string $newPlan): void
     {

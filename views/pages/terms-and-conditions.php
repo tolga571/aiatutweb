@@ -40,6 +40,13 @@
           </p>
         </div>
 
+        <div>
+          <h2 class="text-headline-sm text-on-surface font-semibold mb-3"><?= __('terms.purchase_title') ?></h2>
+          <p>
+            <?= __('terms.purchase_body') ?>
+          </p>
+        </div>
+
         <div class="border-t border-outline-variant/10 my-6"></div>
 
         <div>

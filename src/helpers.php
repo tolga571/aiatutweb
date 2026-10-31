@@ -133,6 +133,20 @@ function ip_in_cidr(string $ip, string $cidr): bool
     return (ord($ipBin[$bytes]) & $mask) === (ord($subnetBin[$bytes]) & $mask);
 }
 
+/** The visitor's country as Cloudflare sees it (CF-IPCountry header), '' when unknown (e.g. locally). */
+function visitor_country(): string
+{
+    $c = strtoupper(trim((string)($_SERVER['HTTP_CF_IPCOUNTRY'] ?? '')));
+    return preg_match('/^[A-Z]{2}$/', $c) ? $c : '';
+}
+
+/** True when sales are closed to the visitor's country (config sales_blocked_countries). */
+function sales_closed_here(array $config): bool
+{
+    $c = visitor_country();
+    return $c !== '' && in_array($c, $config['sales_blocked_countries'] ?? [], true);
+}
+
 /**
  * The client's IP, for rate limiting and audit logs.
  *

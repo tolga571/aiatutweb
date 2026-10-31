@@ -86,6 +86,31 @@ class DodoClient
         ]) !== null;
     }
 
+    /** PATCH /subscriptions/{id} status=cancelled — ends it now, not at the period end. */
+    public function cancelSubscriptionNow(string $subscriptionId, string $reason = ''): bool
+    {
+        return $this->request('PATCH', '/subscriptions/' . rawurlencode($subscriptionId), [
+            'status' => 'cancelled',
+            'cancellation_comment' => $reason !== '' ? $reason : null,
+        ]) !== null;
+    }
+
+    /** GET /payments?subscription_id= — the payments a subscription made (first page, up to 100). Null on failure. */
+    public function listSubscriptionPayments(string $subscriptionId): ?array
+    {
+        $res = $this->request('GET', '/payments?' . http_build_query(['subscription_id' => $subscriptionId, 'page_size' => 100, 'page_number' => 0]));
+        return $res === null ? null : ($res['items'] ?? []);
+    }
+
+    /** POST /refunds — refunds a whole payment. */
+    public function refundPayment(string $paymentId, string $reason = ''): bool
+    {
+        return $this->request('POST', '/refunds', [
+            'payment_id' => $paymentId,
+            'reason' => $reason !== '' ? $reason : null,
+        ]) !== null;
+    }
+
     /** Removes a scheduled cancellation so the subscription keeps renewing. */
     public function resumeSubscription(string $subscriptionId): bool
     {

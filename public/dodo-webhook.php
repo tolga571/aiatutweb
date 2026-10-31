@@ -119,13 +119,21 @@ $billing = new DodoBilling($db, $config, $client);
 
 try {
     $userId = $billing->findUserId($sub);
-    if (!$userId) {
+    // No sales to blocked countries (config sales_blocked_countries): a
+    // live subscription billed there is cancelled and refunded instead,
+    // even when it can't be matched to a user.
+    $billingCountry = strtoupper((string)($sub['billing']['country'] ?? ''));
+    $refuse = $billingCountry !== '' && in_array($billingCountry, $config['sales_blocked_countries'] ?? [], true)
+        && in_array((string)($sub['status'] ?? ''), ['active', 'on_hold', 'paused', 'past_due'], true);
+    if (!$userId && !$refuse) {
         dodoLog($logFile, "UNMATCHED {$type} ({$webhookId}): no user for subscription " . ($sub['subscription_id'] ?? '?'));
         http_response_code(200);
         echo 'OK';
         exit;
     }
-    $result = $billing->applySubscription($userId, $sub, $eventTimestamp);
+    $result = $refuse
+        ? $billing->refuseBlockedCountry($userId, $sub, $eventTimestamp)
+        : $billing->applySubscription($userId, $sub, $eventTimestamp);
     $db->execute('INSERT INTO dodo_processed_events (event_id) VALUES (?) ON CONFLICT (event_id) DO NOTHING', [$webhookId]);
     dodoLog($logFile, "OK {$type} ({$webhookId}): {$result}");
     http_response_code(200);

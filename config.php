@@ -111,6 +111,12 @@ return [
     // update (see /api/v1/config).
     'mobile_min_version' => getenv('MOBILE_MIN_VERSION') ?: '1.0.0',
 
+    // Countries we don't sell to (ISO codes, comma-separated; default TR).
+    // The checkout is refused to visitors Cloudflare places there, and a
+    // Dodo subscription billed to one of them is cancelled and refunded by
+    // the webhook (DodoBilling::refuseBlockedCountry). Set it to "" to sell everywhere.
+    'sales_blocked_countries' => array_values(array_filter(array_map('trim', explode(',', strtoupper(getenv('SALES_BLOCKED_COUNTRIES') !== false ? (string)getenv('SALES_BLOCKED_COUNTRIES') : 'TR'))))),
+
     // Mailtrap Email Sending
     'mailtrap_api_token'      => getenv('MAILTRAP_API_TOKEN') ?: '',
     'mail_from_address'       => getenv('MAIL_FROM_ADDRESS') ?: 'noreply@jumplearner.com',

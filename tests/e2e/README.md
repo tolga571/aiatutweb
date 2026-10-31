@@ -10,7 +10,8 @@ Browser tests against the **local staging** site (see `AGENTS.md` → Local stag
 | `words_test.js <outDir>` | Word bank page + API, 5 UI languages | 16 |
 | `api_lists_test.sh` | Card-list API incl. other-user (IDOR) checks | 22 |
 | `legal_pages_test.py [BASE]` | Privacy, terms, cookie and account-deletion pages in all 11 languages: real text present, lang/dir, no raw keys or `{placeholders}`, no Paddle | 44 |
-| `billing_test.py` | Dodo webhooks (signed): activation, duplicates, old/failed/pending subscriptions never end a trial or a paid plan; `check-payment-status` reports only a real payment. Start the server with `DODO_WEBHOOK_SECRET=whsec_cWEtbG9jYWwtdGVzdC1zZWNyZXQtMTIzNDU2` | 19 |
+| `billing_test.py` | Dodo webhooks (signed): activation, duplicates, old/failed/pending subscriptions never end a trial or a paid plan; `check-payment-status` reports only a real payment. Start the server with `DODO_WEBHOOK_SECRET=whsec_cWEtbG9jYWwtdGVzdC1zZWNyZXQtMTIzNDU2` | 24 |
+| `tr_sales_test.php` | Sales closed to Türkiye: webhook refusal (cancel + refund, idempotent, unmatched payer, Dodo down → retry) with a fake Dodo client, checkout/pricing guard via `CF-IPCountry`, terms link | 14 |
 | `account_delete_test.sh` | Account deletion on the web: password and Google sign-in users, wrong password/email, CSRF, data cascade, deletion record | 18 |
 | `mobile_lists_test.js <outDir>` | Mobile app (Expo web on :8083) lists + study screen | 9 |
 | `mobile_words_test.js` | Mobile app word bank, Russian UI | 4 |

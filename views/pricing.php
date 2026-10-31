@@ -49,6 +49,11 @@ if ($paymentProvider === 'fastspring') {
 } else {
     $checkoutEnabled = !empty($paddleClientToken);
 }
+// Sales are closed to some countries (config sales_blocked_countries).
+$salesClosed = sales_closed_here($config);
+if ($salesClosed) {
+    $checkoutEnabled = false;
+}
 $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $premiumYearlyPriceId !== '';
 ?>
 
@@ -243,6 +248,9 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
       </div>
       <?php endif; ?>
 
+      <?php if ($salesClosed): ?>
+      <div class="max-w-3xl mx-auto mb-8 p-4 rounded-xl border border-outline-variant/40 bg-surface-container-high text-on-surface text-sm text-center" role="status" id="sales-closed-note"><?= __('pricing.sales_closed') ?></div>
+      <?php endif; ?>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
       <!-- Starter Plan Card -->
       <div id="card-starter" data-m="card" class="glass-panel rounded-2xl p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] relative <?= $userPlan === 'starter' ? 'border-2 border-primary ring-2 ring-primary/30' : 'border border-outline/20' ?>">
@@ -505,6 +513,7 @@ $hasYearlyOption = $starterYearlyPriceId !== '' || $proYearlyPriceId !== '' || $
         </div>
       </div>
       <p class="max-w-3xl mx-auto mt-8 text-center text-sm text-on-surface-variant"><?= t('pricing.renewal_note', ['terms' => '<a href="?page=terms-and-conditions" class="text-primary underline">' . __('auth.terms') . '</a>', 'refund' => '<a href="?page=refund-policy" class="text-primary underline">' . __('footer.refund') . '</a>']) ?></p>
+      <p class="max-w-3xl mx-auto mt-2 text-center text-sm text-on-surface-variant"><?= t('pricing.mor_note', ['buyer_terms' => '<a href="https://dodopayments.com/legal/buyer-terms" class="text-primary underline" target="_blank" rel="noopener">' . __('pricing.buyer_terms') . '</a>']) ?></p>
     </div>
   </div>
 </main>

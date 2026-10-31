@@ -37,11 +37,11 @@ def http(url, data=None, headers=None):
         return e.code, e.read().decode()
 
 
-def send(evt, sub_id, status, uid, wid=None, product=PRO, sig_secret=SECRET):
+def send(evt, sub_id, status, uid, wid=None, product=PRO, sig_secret=SECRET, country='DE'):
     body = json.dumps({'type': evt, 'data': {
         'subscription_id': sub_id, 'product_id': product, 'status': status,
         'metadata': {'user_id': str(uid)}, 'customer': {'customer_id': 'cus_billing_test'},
-        'next_billing_date': '2030-01-01T00:00:00Z'}})
+        'billing': {'country': country}, 'next_billing_date': '2030-01-01T00:00:00Z'}})
     wid = wid or 'msg_billing_%d_%d' % (time.time_ns(), uid)
     ts = str(int(time.time()))
     key = base64.b64decode(sig_secret[len('whsec_'):])
@@ -111,5 +111,15 @@ send('subscription.failed', 'sub_bt_m', 'failed', m)
 ok(state(m), 'starter/1', 'manual plan survives a failed checkout')
 
 sql(f"DELETE FROM users WHERE id IN ({u}, {m})")
+# sales are closed to Türkiye: a subscription billed there never grants the
+# plan. Locally there is no Dodo API key, so cancelling/refunding fails and the
+# webhook answers 500 for Dodo to retry (DodoBilling::refuseBlockedCountry).
+t = user('trial')
+ok(send('subscription.active', 'sub_bt_tr', 'active', t, country='TR'), 500, 'TR billing country -> refused, Dodo retries (500 without an API key)')
+ok(state(t), 'trial/0', 'TR purchase never grants the plan')
+ok(sql(f'SELECT dodo_subscription_id IS NULL FROM users WHERE id = {t}'), 't', 'TR subscription not linked')
+ok(send('subscription.cancelled', 'sub_bt_tr', 'cancelled', t, country='TR'), 200, 'TR cancellation event is applied normally')
+ok(state(t), 'trial/0', 'TR cancellation keeps the trial')
+
 print(f'TOTAL {n}  PASS {n - fails}  FAIL {fails}')
 raise SystemExit(1 if fails else 0)

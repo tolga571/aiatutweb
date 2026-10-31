@@ -2,6 +2,11 @@
 
 Versions of jumplearner.com (web + API). Each one is a git tag on the `master` commit that went live; see "Versions and rollback" in `AGENTS.md`.
 
+## v1.3.1 — 2026-10-31
+
+- **No sales to Türkiye:** visitors Cloudflare places in Türkiye see a notice on the pricing page and the buy buttons are off; a direct checkout link is refused. If a subscription billed to Türkiye still goes through, the Dodo webhook cancels it at once, refunds it in full and e-mails the owner and the customer (`SALES_BLOCKED_COUNTRIES`, default `TR`). The free trial and the stories stay open.
+- **Terms:** a "Purchases and Payments" section — Dodo Payments is the merchant of record (link to its Buyer Terms), renewal and cancellation, our refund policy on top, and no sales to consumers in Türkiye. The pricing page links the Buyer Terms too.
+
 ## v1.3 — 2026-10-27
 
 - **Stories read aloud with natural voices:** every story has a recorded reading in ten languages (Microsoft Edge neural voices), with the sentence marked while it plays and each word playable on its own in the word drawer. The browser's voice is only a fallback now — and for Armenian, which has no free voice we could verify (Gemini's TTS read the wrong sentences).
